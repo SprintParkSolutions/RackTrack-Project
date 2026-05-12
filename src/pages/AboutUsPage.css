@@ -1,0 +1,157 @@
+.about-page {
+  min-height: 100vh;
+}
+
+.about-mission {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  align-items: center;
+  gap: clamp(36px, 6vw, 86px);
+}
+
+.about-mission-copy h1 span {
+  color: var(--cyan);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.about-mission-copy p {
+  max-width: 650px;
+}
+
+.values-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.values-grid article,
+.timeline-card,
+.showcase-card {
+  border-radius: 8px;
+  border: 1px solid rgba(0, 210, 255, 0.14);
+  background: rgba(8, 20, 40, 0.72);
+  padding: 28px;
+}
+
+.values-grid span,
+.timeline-card span,
+.showcase-card span {
+  display: block;
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.values-grid p,
+.timeline-card p,
+.about-showcase p,
+.about-cta p {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.timeline-card {
+  min-height: 260px;
+}
+
+.timeline-card svg {
+  width: 30px;
+  height: 30px;
+  color: var(--cyan);
+  margin-bottom: 24px;
+}
+
+.timeline-card h3,
+.showcase-card h3 {
+  color: var(--text);
+  font-size: 1.1rem;
+}
+
+.showcase-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.showcase-card {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.about-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 520px);
+  align-items: center;
+  gap: 34px;
+  background: linear-gradient(135deg, rgba(0, 210, 255, 0.12), rgba(4, 12, 24, 0.98));
+}
+
+.about-cta h2 {
+  max-width: 620px;
+}
+
+.about-access-form {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 210, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.about-access-form input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  padding: 0 14px;
+  font: inherit;
+}
+
+.about-access-form button {
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 20px;
+  background: var(--cyan);
+  color: #03101f;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+@media (max-width: 1040px) {
+  .about-mission,
+  .about-cta,
+  .timeline-grid,
+  .showcase-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .about-mission {
+    padding-top: 130px;
+  }
+}
+
+@media (max-width: 620px) {
+  .about-access-form {
+    border-radius: 18px;
+    flex-direction: column;
+  }
+
+  .about-access-form input {
+    min-height: 44px;
+  }
+}
