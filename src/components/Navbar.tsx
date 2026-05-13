@@ -22,7 +22,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="rt-nav-shell">
+      <header className="rt-nav-shell navbar">
         <motion.nav
           id="main-nav"
           className="rt-nav"

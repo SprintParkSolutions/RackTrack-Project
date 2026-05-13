@@ -9,8 +9,8 @@
   --font-mono: 'IBM Plex Mono', monospace;
 }
 
-html { overflow: hidden; background: var(--ab-bg-dark); }
-html.ab-unlocked { overflow-y: auto; overflow-x: hidden; }
+html.ab-about { overflow: hidden; background: var(--ab-bg-dark); }
+html.ab-about.ab-unlocked { overflow-y: auto; overflow-x: hidden; }
 
 .about-page {
   font-family: var(--font-sans); color: #fff;

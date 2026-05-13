@@ -13,15 +13,23 @@
 
 /* NAVBAR HIDE/SHOW FIX */
 .navbar {
-  transition:
-    transform 0.4s ease,
-    opacity 0.4s ease !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1100;
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+  transition: transform 0.4s ease, opacity 0.4s ease !important;
 }
 
 .navbar-hidden {
   transform: translateY(-120%) !important;
   opacity: 0 !important;
   pointer-events: none !important;
+  transition: transform 0.4s ease, opacity 0.4s ease !important;
 }
 
 .home-frame-section {
