@@ -11,6 +11,35 @@ type FrameScrubberProps = {
   folder: string
 }
 
+function useScrollReveal<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const node = ref.current
+    if (!node) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+
+        setVisible(true)
+        observer.disconnect()
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '0px 0px -8% 0px',
+      },
+    )
+
+    observer.observe(node)
+
+    return () => observer.disconnect()
+  }, [])
+
+  return { ref, visible }
+}
+
 function useSectionProgress(sectionId: string) {
   const [progress, setProgress] = useState(0)
   const rafRef = useRef<number | null>(null)
@@ -118,14 +147,26 @@ function useFrameScrubber({
 
   useEffect(() => {
     let active = true
+    const settleDelayMs = 140
+
+    const wait = (ms: number) =>
+      new Promise((resolve) => {
+        window.setTimeout(resolve, ms)
+      })
 
     async function loadFrames() {
       try {
         const indexRes = await fetch(`/${folder}_index.json`)
         const index: [number, number][] = await indexRes.json()
+        if (!active) return
+
+        setLoadPct(18)
 
         const binRes = await fetch(`/${folder}_data.bin`)
         const buffer = await binRes.arrayBuffer()
+        if (!active) return
+
+        setLoadPct(52)
 
         const images: HTMLImageElement[] = []
         imagesRef.current = images
@@ -145,12 +186,17 @@ function useFrameScrubber({
             await img.decode()
             if (!active) return
 
+            setLoadPct(100)
             drawFrame(0)
+            await wait(settleDelayMs)
+            if (!active) return
+
             setReady(true)
           }
 
-          if (i % 12 === 0 || i === index.length - 1) {
-            setLoadPct(Math.round(((i + 1) / index.length) * 100))
+          if (i % 8 === 0 || i === index.length - 1) {
+            const frameProgress = Math.round(((i + 1) / index.length) * 38)
+            setLoadPct(Math.min(98, 52 + frameProgress))
           }
         }
 
@@ -449,20 +495,70 @@ const FEATURES = [
 ]
 
 function FeatureSection() {
+  const headingReveal = useScrollReveal<HTMLDivElement>()
+  const progress = useSectionProgress('features')
+  const activeIndex = Math.min(
+    FEATURES.length - 1,
+    Math.floor(progress * FEATURES.length),
+  )
+
   return (
-    <section className="home-features-section">
-      <div className="home-section-heading">
+    <section id="features" className="home-features-section">
+      <div className="home-features-sticky">
+      <div
+        ref={headingReveal.ref}
+        className={`home-section-heading home-reveal${
+          headingReveal.visible ? ' is-visible' : ''
+        }`}
+      >
         <span className="home-eyebrow">Detection Capabilities</span>
         <h2>
           AI that sees
           <br />
           <em>every component.</em>
         </h2>
+
+        <div className="home-feature-progress">
+          <div className="home-feature-progress-dots">
+            {FEATURES.map((feature, index) => (
+              <span
+                key={feature.title}
+                className={
+                  index < activeIndex
+                    ? 'is-complete'
+                    : index === activeIndex
+                      ? 'is-active'
+                      : ''
+                }
+              />
+            ))}
+          </div>
+
+          <strong>
+            {String(activeIndex + 1).padStart(2, '0')} / {String(FEATURES.length).padStart(2, '0')}
+          </strong>
+        </div>
       </div>
 
-      <div className="home-feature-grid">
+      <div className="home-feature-grid home-feature-grid-stepped">
         {FEATURES.map((feature, index) => (
-          <article className="home-feature-card" key={feature.title}>
+          <article
+            className={`home-feature-card ${
+              index < activeIndex
+                ? 'is-complete'
+                : index === activeIndex
+                  ? 'is-active'
+                  : ''
+            }`}
+            key={feature.title}
+            style={{
+              transitionDelay: `${index * 90}ms`,
+              ['--feature-progress' as string]: Math.max(
+                0,
+                Math.min(1, progress * FEATURES.length - index),
+              ),
+            }}
+          >
             <img src={feature.img} alt={feature.title} />
 
             <div>
@@ -472,6 +568,7 @@ function FeatureSection() {
             </div>
           </article>
         ))}
+      </div>
       </div>
     </section>
   )
