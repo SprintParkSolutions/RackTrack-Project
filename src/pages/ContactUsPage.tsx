@@ -4,14 +4,11 @@ import './ContactUsPage.css'
 import {
   ArrowUpRight,
   Building2,
-  Cable,
   CheckCircle2,
   Clock3,
   Mail,
-  MapPin,
-  RadioTower,
-  Server,
-  ShieldCheck,
+  PhoneCall,
+  Rocket,
 } from 'lucide-react'
 
 const faqs = [
@@ -20,39 +17,13 @@ const faqs = [
   ['Is it useful for audits?', 'Yes, it helps maintain rack and port inventory visibility.'],
 ]
 
-const rackRows = Array.from({ length: 9 })
-
-const contactStats = [
-  ['Response Window', '1 business day'],
-  ['Consultation Mode', 'Demo + discovery'],
-  ['Office Base', 'Hyderabad'],
-]
-
-const engagementSteps = [
-  {
-    icon: Server,
-    title: 'Share your environment',
-    text: 'Tell us about rack count, switch density, and audit goals.',
-  },
-  {
-    icon: RadioTower,
-    title: 'We scope the workflow',
-    text: 'Our team maps the rollout, coverage needs, and reporting flow.',
-  },
-  {
-    icon: CheckCircle2,
-    title: 'Launch the demo',
-    text: 'See RackTrack identify ports, cables, and device inventory live.',
-  },
-]
-
 export default function ContactUsPage() {
-  const [sent, setSent] = useState(false)
+  const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'sent'>('idle')
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setSent(true)
-    setTimeout(() => setSent(false), 3000)
+    setSubmitState('sending')
+    setTimeout(() => setSubmitState('sent'), 2400)
   }
 
   return (
@@ -72,29 +43,6 @@ export default function ContactUsPage() {
             rack reviews to reliable visibility across devices, ports, and cables.
           </p>
 
-          <div className="hero-address-card">
-            <MapPin size={18} />
-            <div>
-              <span>Registered Office</span>
-              <strong>
-                Unit No 1204, Forest Department,
-                <br />
-                Asian Sun City, Block B, Kondapur,
-                <br />
-                Hyderabad 500084
-              </strong>
-            </div>
-          </div>
-
-          <div className="hero-stat-row">
-            {contactStats.map(([label, value]) => (
-              <div key={label} className="hero-stat-card">
-                <span>{label}</span>
-                <strong>{value}</strong>
-              </div>
-            ))}
-          </div>
-
           <div className="hero-actions">
             <a href="#contact" className="primary-btn">
               Get a Demo <ArrowUpRight size={16} />
@@ -104,67 +52,40 @@ export default function ContactUsPage() {
               Contact Us
             </a>
           </div>
-
-          <div className="hero-trust-strip">
-            <div>
-              <ShieldCheck size={18} />
-              <span>Customer-first onboarding</span>
-            </div>
-            <div>
-              <Cable size={18} />
-              <span>Infrastructure workflow expertise</span>
-            </div>
-          </div>
         </div>
 
-        <div className="rack-stage">
-          <div className="rack-glow" />
-          <div className="rack-orbit rack-orbit-one" />
-          <div className="rack-orbit rack-orbit-two" />
+        <div className="contact-stage" aria-hidden="true">
+          <div className="contact-glow" />
+          <div className="contact-orbit contact-orbit-one" />
+          <div className="contact-orbit contact-orbit-two" />
 
-          <div className="rack-visual">
-            <div className="rack-top">
-              <Server size={16} />
-              <span>RackTrack Node</span>
+          <div className="contact-visual">
+            <div className="contact-envelope">
+              <div className="envelope-flap" />
+              <div className="envelope-line" />
+              <div className="envelope-line short" />
             </div>
 
-            <div className="rack-body">
-              {rackRows.map((_, rowIndex) => (
-                <div className="rack-row" key={rowIndex}>
-                  <div className="rack-label" />
-
-                  <div className="ports">
-                    {Array.from({ length: 20 }).map((_, portIndex) => (
-                      <span
-                        key={portIndex}
-                        className={
-                          portIndex % 5 === 0 || portIndex % 7 === 0
-                            ? 'port active'
-                            : 'port'
-                        }
-                      />
-                    ))}
-                  </div>
-
-                  <div className="leds">
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                </div>
-              ))}
-
-              <div className="server-blocks">
-                <div />
-                <div />
-                <div />
-                <div />
-              </div>
-
-              <div className="cable-bundle cable-one" />
-              <div className="cable-bundle cable-two" />
-              <div className="cable-bundle cable-three" />
+            <div className="contact-phone-card">
+              <PhoneCall size={24} />
+              <span>+91 93985 85511</span>
             </div>
+
+            <div className="contact-message-card message-one">
+              <Mail size={20} />
+              <span>support@racktrack.com</span>
+            </div>
+
+            <div className="contact-message-card message-two">
+              <Clock3 size={20} />
+              <span>1 day response</span>
+            </div>
+
+            <div className="signal-ring ring-one" />
+            <div className="signal-ring ring-two" />
+            <div className="signal-dot dot-one" />
+            <div className="signal-dot dot-two" />
+            <div className="signal-dot dot-three" />
           </div>
         </div>
       </section>
@@ -174,55 +95,28 @@ export default function ContactUsPage() {
           <Building2 />
           <span>Office Address</span>
           <strong>Asian Sun City, Block B, Kondapur</strong>
-          <p>
-            Unit No 1204, Forest Department, Hyderabad 500084. Best for customer
-            visits, partnership discussions, and scheduled meetings.
-          </p>
+          <p>Unit No 1204, Forest Department, Hyderabad 500084.</p>
         </div>
 
         <div className="info-card">
           <Mail />
           <span>Email</span>
           <strong>support@racktrack.com</strong>
-          <p>
-            Share your audit goals, rollout questions, or customer requirements and
-            our team will route your request quickly.
-          </p>
+          <p>Share audit goals, rollout questions, or support requests.</p>
+        </div>
+
+        <div className="info-card">
+          <PhoneCall />
+          <span>Phone Numbers</span>
+          <strong>+91 93985 85511</strong>
+          <p>Call our contact team for demos, support, and meeting schedules.</p>
         </div>
 
         <div className="info-card">
           <Clock3 />
           <span>Response Time</span>
           <strong>Within 1 business day</strong>
-          <p>
-            We aim to respond promptly to customer contact requests for demos,
-            implementation planning, and general support conversations.
-          </p>
-        </div>
-      </section>
-
-      <section className="contact-process-section">
-        <div className="process-copy">
-          <span className="eyebrow">ENGAGEMENT FLOW</span>
-          <h2>
-            A clear route from
-            <span> inquiry to rollout.</span>
-          </h2>
-          <p>
-            Whether you need a first conversation, a customer demo, or deployment
-            planning, RackTrack keeps the process clear, practical, and fast.
-          </p>
-        </div>
-
-        <div className="process-grid">
-          {engagementSteps.map((step, index) => (
-            <article className="process-card" key={step.title}>
-              <div className="process-index">0{index + 1}</div>
-              <step.icon size={20} />
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
-            </article>
-          ))}
+          <p>We respond quickly to demos, planning, and support conversations.</p>
         </div>
       </section>
 
@@ -257,8 +151,24 @@ export default function ContactUsPage() {
             required
           />
 
-          <button type="submit" className={sent ? 'is-sent' : ''}>
-            {sent ? 'Message Sent' : 'Submit Request'} <ArrowUpRight size={16} />
+          <button
+            type="submit"
+            className={`submit-rocket-btn is-${submitState}`}
+            disabled={submitState === 'sending'}
+          >
+            <span className="rocket-flight" aria-hidden="true">
+              <span className="rocket-icon">
+                <Rocket size={18} />
+              </span>
+            </span>
+            <span className="submit-label">
+              {submitState === 'sent'
+                ? 'Message Sent'
+                : submitState === 'sending'
+                  ? 'Sending'
+                  : 'Submit Request'}
+            </span>
+            {submitState === 'sent' ? <CheckCircle2 size={16} /> : <ArrowUpRight size={16} />}
           </button>
         </form>
 
@@ -266,21 +176,6 @@ export default function ContactUsPage() {
           <span className="eyebrow">FAQ</span>
 
           <h2>Before you connect</h2>
-
-          <div className="quick-points">
-            <div>
-              <ShieldCheck />
-              <span>Customer-ready product walkthroughs</span>
-            </div>
-            <div>
-              <Cable />
-              <span>Switch, port, and cable intelligence</span>
-            </div>
-            <div>
-              <RadioTower />
-              <span>Fast planning and response</span>
-            </div>
-          </div>
 
           <div className="faq-list">
             {faqs.map(([question, answer]) => (
