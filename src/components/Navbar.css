@@ -1,4 +1,5 @@
 :root {
+  --rt-nav-height: 88px;
   --rt-nav-cyan: #00d2ff;
   --rt-nav-cyan-soft: rgba(0, 210, 255, 0.16);
   --rt-nav-text: #e8edf5;
@@ -8,7 +9,10 @@
 }
 
 .rt-nav-shell {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   width: 100%;
   padding: 0;
@@ -196,8 +200,8 @@
 
 .rt-mobile-panel {
   pointer-events: all;
-  position: absolute;
-  top: calc(100% + 8px);
+  position: fixed;
+  top: calc(var(--rt-nav-height, 88px) + 8px);
   left: clamp(18px, 5vw, 72px);
   right: clamp(18px, 5vw, 72px);
   z-index: 999;
@@ -237,6 +241,10 @@
 }
 
 @media (max-width: 920px) {
+  :root {
+    --rt-nav-height: 68px;
+  }
+
   .rt-nav {
     grid-template-columns: 1fr auto;
     min-height: 68px;
@@ -254,6 +262,10 @@
 }
 
 @media (max-width: 520px) {
+  :root {
+    --rt-nav-height: 62px;
+  }
+
   .rt-nav-shell {
     padding: 0;
   }
@@ -275,7 +287,7 @@
   }
 
   .rt-mobile-panel {
-    top: calc(100% + 8px);
+    top: calc(var(--rt-nav-height, 62px) + 8px);
     left: 14px;
     right: 14px;
     border-radius: 22px;
