@@ -46,30 +46,19 @@ function useSectionProgress(sectionId: string) {
 function useHideNavbarWhileFramesScroll() {
   useEffect(() => {
     const updateNavbar = () => {
-      const hero = document.getElementById('hero')
-      const server = document.getElementById('server')
+      const sections = ['hero', 'server']
+        .map((id) => document.getElementById(id))
+        .filter(Boolean) as HTMLElement[]
 
-      let shouldHide = false
-
-      ;[hero, server].forEach((section) => {
-        if (!section) return
-
+      const shouldHide = sections.some((section) => {
         const rect = section.getBoundingClientRect()
-        const insideFrameSection = rect.top <= 0 && rect.bottom > window.innerHeight
-
-        if (insideFrameSection) {
-          shouldHide = true
-        }
+        return window.scrollY > 8 && rect.top < 0 && rect.bottom > 0
       })
 
       const navbar = document.querySelector('.navbar')
 
       if (navbar) {
-        if (shouldHide) {
-          navbar.classList.add('navbar-hidden')
-        } else {
-          navbar.classList.remove('navbar-hidden')
-        }
+        navbar.classList.toggle('navbar-hidden', shouldHide)
       }
     }
 
@@ -202,35 +191,57 @@ function useFrameScrubber({
     return () => window.removeEventListener('resize', resizeCanvas)
   }, [canvasRef, drawFrame])
 
+  const targetProgressRef = useRef(0)
+  const currentProgressRef = useRef(0)
+
   useEffect(() => {
+    const animateFrame = () => {
+      rafRef.current = null
+
+      const track = trackRef.current
+      if (!track) return
+
+      const frameCount = Math.max(1, imagesRef.current.length || totalFrames)
+      const target = targetProgressRef.current
+      const current = currentProgressRef.current
+      const delta = target - current
+      const next = Math.abs(delta) > 0.0005 ? current + delta * 0.16 : target
+
+      currentProgressRef.current = next
+
+      const frameIndex = Math.min(
+        frameCount - 1,
+        Math.round(next * (frameCount - 1)),
+      )
+
+      if (frameIndex !== currentFrameRef.current) {
+        currentFrameRef.current = frameIndex
+        drawFrame(frameIndex)
+      }
+
+      if (Math.abs(delta) > 0.0005) {
+        rafRef.current = requestAnimationFrame(animateFrame)
+      }
+    }
+
     const onScroll = () => {
       if (!ready) return
 
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      const track = trackRef.current
+      if (!track) return
 
-      rafRef.current = requestAnimationFrame(() => {
-        const track = trackRef.current
-        if (!track) return
+      const rect = track.getBoundingClientRect()
+      const trackHeight = Math.max(1, track.offsetHeight - window.innerHeight)
+      const scrolled = Math.max(0, -rect.top)
+      targetProgressRef.current = Math.min(1, scrolled / trackHeight)
 
-        const frameCount = imagesRef.current.length || totalFrames
-        const rect = track.getBoundingClientRect()
-        const trackHeight = track.offsetHeight - window.innerHeight
-        const scrolled = Math.max(0, -rect.top)
-        const progress = Math.min(1, scrolled / trackHeight)
-
-        const frameIndex = Math.min(
-          frameCount - 1,
-          Math.floor(progress * frameCount),
-        )
-
-        if (frameIndex !== currentFrameRef.current) {
-          currentFrameRef.current = frameIndex
-          drawFrame(frameIndex)
-        }
-      })
+      if (!rafRef.current) {
+        rafRef.current = requestAnimationFrame(animateFrame)
+      }
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
 
     return () => {
       window.removeEventListener('scroll', onScroll)
