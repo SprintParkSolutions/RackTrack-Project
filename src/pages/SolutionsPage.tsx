@@ -629,7 +629,7 @@ function WorkflowSection() {
       frameRef.current = null
     }
 
-    const duration = 10000
+    const duration = 7000
     const startTime = performance.now()
 
     const animate = (time: number) => {
@@ -845,7 +845,7 @@ export default function SolutionsPage() {
   }, [])
 
   const startAnimation = useCallback(() => {
-    const duration = 10000
+    const duration = 7000
     const startTime = performance.now()
 
     const animate = (time: number) => {
@@ -869,18 +869,11 @@ export default function SolutionsPage() {
   const handleResetScan = useCallback(() => {
     clearTimers()
     setProgress(0)
-
-    startTimeoutRef.current = window.setTimeout(() => {
-      startTimeoutRef.current = null
-      startAnimation()
-    }, 1800)
+    startAnimation()
   }, [clearTimers, startAnimation])
 
   useEffect(() => {
-    startTimeoutRef.current = window.setTimeout(() => {
-      startTimeoutRef.current = null
-      startAnimation()
-    }, 1600)
+    startAnimation()
 
     return () => {
       clearTimers()
