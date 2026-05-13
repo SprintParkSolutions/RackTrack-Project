@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, LockKeyhole, Network, Rocket, ChevronRight } from 'lucide-react';
 import './AboutUsPage.css';
@@ -54,6 +54,8 @@ export default function AboutUsPage() {
 
   // Cinematic Horizontal Scroll Timeline
   useEffect(() => {
+    document.documentElement.classList.add('ab-about');
+
     const TOTAL = 4;
     const SENS = 0.0008;
     const TOUCH_SENS = 0.002;
@@ -145,6 +147,7 @@ export default function AboutUsPage() {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchmove', onTouchMove);
       document.documentElement.classList.remove('ab-unlocked');
+      document.documentElement.classList.remove('ab-about');
     };
   }, []);
 
