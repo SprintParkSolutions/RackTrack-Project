@@ -5,8 +5,8 @@ import { ArrowUpRight, Menu, X } from 'lucide-react'
 import './Navbar.css'
 
 const navItems = [
-  { label: 'Home', path: '/' },
-  { label: 'Solutions', path: '/solutions' },
+  { label: 'Home', path: '/', plainActive: true },
+  { label: 'Solutions', path: '/solutions', plainActive: true },
   { label: 'About Us', path: '/about-us' },
   { label: 'Contact Us', path: '/contact-us' },
 ]
@@ -22,7 +22,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="rt-nav-shell">
+      <header className="rt-nav-shell navbar">
         <motion.nav
           id="main-nav"
           className="rt-nav"
@@ -56,7 +56,7 @@ export default function Navbar() {
               >
                 {({ isActive }) => (
                   <>
-                    {isActive && (
+                    {isActive && !item.plainActive && (
                       <motion.span
                         className="rt-nav-active-pill"
                         layoutId="rt-nav-active-pill"
@@ -67,7 +67,13 @@ export default function Navbar() {
                         }}
                       />
                     )}
-                    {item.label}
+                    <span
+                      className={
+                        item.plainActive ? 'rt-nav-link-label rt-nav-link-label-plain' : 'rt-nav-link-label'
+                      }
+                    >
+                      {item.label}
+                    </span>
                   </>
                 )}
               </NavLink>
