@@ -11,10 +11,12 @@ import {
 } from 'framer-motion';
 import { ArrowRight, BarChart3, Cpu, Gauge, GitBranch, Network, Radar, Shield, Sparkles, Zap } from 'lucide-react';
 import * as THREE from 'three';
-import datacenterBg from '../assets/datacenter-bg.jpg';
-import phoneScanBefore from '../assets/phone-scan-before.jpg';
-import portsScanOutput from '../assets/ports-scan-output.jpg';
-import workflowAfter from '../assets/workflow-after.png';
+
+const datacenterBg = "/solutions-page-images/datacenter-bg.jpg";
+const phoneScanBefore = "/assets/phone-scan-before.jpg";
+const portsScanOutput = "/assets/ports-scan-output.jpg";
+const workflowAfter = "/assets/workflow-after.png";
+
 import './AboutUsPage.css';
 
 type IconType = React.ComponentType<{ className?: string }>;
