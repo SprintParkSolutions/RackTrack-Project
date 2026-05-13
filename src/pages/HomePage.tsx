@@ -46,13 +46,19 @@ function useSectionProgress(sectionId: string) {
 function useHideNavbarWhileFramesScroll() {
   useEffect(() => {
     const updateNavbar = () => {
-      const sections = ['hero', 'server']
+      const sections = ['hero']
         .map((id) => document.getElementById(id))
         .filter(Boolean) as HTMLElement[]
 
       const shouldHide = sections.some((section) => {
-        const rect = section.getBoundingClientRect()
-        return window.scrollY > 8 && rect.top < 0 && rect.bottom > 0
+        const top = section.offsetTop
+        const bottom = top + section.offsetHeight
+        const scrollBuffer = 8
+
+        return (
+          window.scrollY >= top + scrollBuffer &&
+          window.scrollY < bottom
+        )
       })
 
       const navbar = document.querySelector('.navbar')
