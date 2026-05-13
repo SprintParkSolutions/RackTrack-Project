@@ -54,6 +54,8 @@ export default function AboutUsPage() {
 
   // Cinematic Horizontal Scroll Timeline
   useEffect(() => {
+    document.documentElement.classList.add('ab-about');
+
     const TOTAL = 4;
     const SENS = 0.0008;
     const TOUCH_SENS = 0.002;
@@ -145,6 +147,7 @@ export default function AboutUsPage() {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchmove', onTouchMove);
       document.documentElement.classList.remove('ab-unlocked');
+      document.documentElement.classList.remove('ab-about');
     };
   }, []);
 
