@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import {
+  LayoutGroup,
   motion,
   useMotionTemplate,
   useMotionValue,
@@ -9,6 +10,7 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
+import { Environment } from '@react-three/drei';
 import { ArrowRight, BarChart3, Cpu, Gauge, GitBranch, Network, Radar, Shield, Sparkles, Zap } from 'lucide-react';
 import * as THREE from 'three';
 
@@ -66,7 +68,12 @@ function RackCoreModel() {
     <group ref={groupRef}>
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[2.6, 3.8, 1.2]} />
-        <meshStandardMaterial color="#0f1d33" metalness={0.75} roughness={0.28} />
+        <meshStandardMaterial
+          color="#111d31"
+          metalness={0.9}
+          roughness={0.1}
+          envMapIntensity={1.35}
+        />
       </mesh>
 
       {[-1.2, -0.6, 0, 0.6, 1.2].map((y, index) => (
@@ -75,16 +82,24 @@ function RackCoreModel() {
           <meshStandardMaterial
             color={index % 2 === 0 ? '#7adfff' : '#5fa8ff'}
             emissive={index % 2 === 0 ? '#3bc6ff' : '#2a7dff'}
-            emissiveIntensity={0.5}
-            metalness={0.6}
-            roughness={0.25}
+            emissiveIntensity={0.72}
+            metalness={0.88}
+            roughness={0.12}
+            envMapIntensity={1.15}
           />
         </mesh>
       ))}
 
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.1]}>
         <torusGeometry args={[2.4, 0.04, 16, 120]} />
-        <meshStandardMaterial color="#7adfff" emissive="#2fcbff" emissiveIntensity={0.38} />
+        <meshStandardMaterial
+          color="#7adfff"
+          emissive="#2fcbff"
+          emissiveIntensity={0.52}
+          metalness={0.86}
+          roughness={0.1}
+          envMapIntensity={1.2}
+        />
       </mesh>
     </group>
   );
@@ -93,11 +108,12 @@ function RackCoreModel() {
 function ThreeModelShell() {
   return (
     <div className="about-3d-shell" aria-hidden="true">
-      <Canvas camera={{ position: [0, 0, 6], fov: 38 }}>
+      <Canvas camera={{ position: [0, 0, 6], fov: 38 }} gl={{ antialias: true, alpha: true }}>
         <color attach="background" args={['#07111d']} />
-        <ambientLight intensity={0.9} />
-        <directionalLight position={[4, 6, 6]} intensity={1.2} color="#a3eeff" />
-        <pointLight position={[-4, -3, 3]} intensity={1.1} color="#5fa8ff" />
+        <ambientLight intensity={0.62} />
+        <directionalLight position={[4, 6, 6]} intensity={1.65} color="#d7fbff" />
+        <pointLight position={[-4, -3, 3]} intensity={1.55} color="#5fa8ff" />
+        <Environment preset="city" />
         <RackCoreModel />
       </Canvas>
     </div>
@@ -116,7 +132,13 @@ function MetricCard({
   icon: IconType;
 }) {
   return (
-    <motion.article variants={reveal} className="about-metric-card">
+    <motion.article
+      layout
+      variants={reveal}
+      whileHover={{ y: -16, scale: 1.055 }}
+      transition={{ type: 'spring', stiffness: 240, damping: 20, mass: 0.55 }}
+      className="about-metric-card"
+    >
       <div className="about-metric-card__header">
         <span>{label}</span>
         <Icon className="about-card-icon" />
@@ -158,236 +180,6 @@ function ScrollScene({
   );
 }
 
-function HeroVisual({
-  y,
-  rotateX,
-  rotateY,
-  reducedMotion,
-}: {
-  y: ReturnType<typeof useSpring>;
-  rotateX: ReturnType<typeof useSpring>;
-  rotateY: ReturnType<typeof useSpring>;
-  reducedMotion: boolean | null;
-}) {
-  return (
-    <motion.div
-      className="about-hero-visual"
-      style={{
-        y,
-        rotateX: reducedMotion ? 0 : rotateX,
-        rotateY: reducedMotion ? 0 : rotateY,
-        transformPerspective: 1800,
-      }}
-      initial={{ opacity: 0, y: 36, scale: 0.986 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 1.06, ease: cinematicEase }}
-    >
-      <div className="about-hero-visual__ambient" />
-      <div className="about-hero-visual__grid" />
-      <motion.div
-        className="about-hero-visual__scan"
-        animate={reducedMotion ? { opacity: 0.68 } : { y: ['-10%', '112%'] }}
-        transition={reducedMotion ? undefined : { duration: 5.2, ease: 'linear', repeat: Infinity, repeatDelay: 0.8 }}
-      />
-
-      <div className="about-hero-visual__surface">
-        <div className="about-hero-visual__header about-hero-visual__header--minimal">
-          <div className="about-hero-visual__header-line" />
-          <div className="about-status-pill about-status-pill--minimal">
-            <span className="about-status-pill__dot" />
-          </div>
-        </div>
-
-        <div className="about-hero-visual__body about-hero-visual__body--concept">
-          <div className="about-concept-scene">
-            <div className="about-concept-aura about-concept-aura--one" />
-            <div className="about-concept-aura about-concept-aura--two" />
-            <div className="about-concept-orbit about-concept-orbit--one" />
-            <div className="about-concept-orbit about-concept-orbit--two" />
-            <div className="about-concept-column" />
-            <motion.div
-              className="about-concept-phone"
-              animate={reducedMotion ? { y: 0 } : { y: [0, -12, 0], rotateZ: [-5, -3, -5] }}
-              transition={reducedMotion ? undefined : { duration: 5.4, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <div className="about-concept-phone__notch" />
-              <div className="about-concept-phone__screen">
-                <div className="about-concept-phone__grid" />
-                <div className="about-concept-phone__rackframe">
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <span key={`phone-rack-${index}`} />
-                  ))}
-                </div>
-                <motion.div
-                  className="about-concept-phone__scanline"
-                  animate={reducedMotion ? { opacity: 0.7 } : { y: ['-8%', '112%'] }}
-                  transition={reducedMotion ? undefined : { duration: 3.6, ease: 'linear', repeat: Infinity }}
-                />
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="about-concept-rack"
-              animate={reducedMotion ? { y: 0 } : { y: [0, 10, 0] }}
-              transition={reducedMotion ? undefined : { duration: 5.8, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <div className="about-concept-rack__header" aria-hidden="true">
-                <span />
-                <strong />
-              </div>
-              <div className="about-concept-rack__frame">
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <div key={`rack-model-${index}`} className="about-concept-rack__unit">
-                    <i />
-                    <i />
-                    <span />
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="about-concept-stream"
-              animate={reducedMotion ? { opacity: 0.8 } : { opacity: [0.6, 1, 0.6] }}
-              transition={reducedMotion ? undefined : { duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <span />
-              <span />
-              <span />
-            </motion.div>
-
-            <motion.div
-              className="about-concept-card about-concept-card--inventory"
-              animate={reducedMotion ? { y: 0 } : { y: [0, -8, 0] }}
-              transition={reducedMotion ? undefined : { duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
-            />
-
-            <motion.div
-              className="about-concept-card about-concept-card--topology"
-              animate={reducedMotion ? { x: 0 } : { x: [0, 8, 0] }}
-              transition={reducedMotion ? undefined : { duration: 4.1, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <div className="about-concept-card__chips" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="about-concept-card about-concept-card--confidence"
-              animate={reducedMotion ? { y: 0 } : { y: [0, 10, 0] }}
-              transition={reducedMotion ? undefined : { duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-            />
-
-            <div className="about-concept-pulse about-concept-pulse--one" />
-            <div className="about-concept-pulse about-concept-pulse--two" />
-            <div className="about-concept-spark about-concept-spark--one" />
-            <div className="about-concept-spark about-concept-spark--two" />
-            <div className="about-concept-spark about-concept-spark--three" />
-            <div className="about-concept-floor" />
-          </div>
-        </div>
-
-        <div className="about-hero-visual__body">
-          <div className="about-rack-stack">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <motion.div
-                key={`rack-${index}`}
-                initial={{ opacity: 0, x: 18 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.72, delay: 0.2 + index * 0.07, ease: cinematicEase }}
-                className="about-rack-unit"
-              >
-                <div className="about-rack-unit__lights">
-                  <span />
-                  <span />
-                </div>
-                <div className="about-rack-unit__copy">
-                  <strong>Compute Cluster {index + 1}</strong>
-                  <small>Inference routing · thermal aware · topology locked</small>
-                </div>
-                <div className="about-rack-unit__score">{96 + (index % 3)}%</div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.86, delay: 0.62, ease: cinematicEase }}
-            className="about-hero-visual__telemetry"
-          >
-            <div className="about-telemetry-panel">
-              <div className="about-telemetry-panel__top">
-                <div>
-                  <span className="about-eyebrow">Scan confidence</span>
-                  <strong>98.4%</strong>
-                </div>
-                <div className="about-telemetry-badge">Live validation</div>
-              </div>
-
-              <div className="about-telemetry-stats">
-                <div className="about-telemetry-stat">
-                  <span>Ports mapped</span>
-                  <strong>184</strong>
-                </div>
-                <div className="about-telemetry-stat">
-                  <span>Assets matched</span>
-                  <strong>42</strong>
-                </div>
-              </div>
-
-              <div className="about-telemetry-flow" aria-hidden="true">
-                <motion.span
-                  className="about-telemetry-flow__beam"
-                  animate={reducedMotion ? { opacity: 0.7 } : { y: ['-12%', '112%'] }}
-                  transition={reducedMotion ? undefined : { duration: 3.8, ease: 'linear', repeat: Infinity }}
-                />
-                <div className="about-telemetry-node about-telemetry-node--capture">
-                  <strong>Capture</strong>
-                  <small>Frame locked</small>
-                </div>
-                <div className="about-telemetry-node about-telemetry-node--parse">
-                  <strong>AI Parse</strong>
-                  <small>Labels + ports read</small>
-                </div>
-                <div className="about-telemetry-node about-telemetry-node--sync">
-                  <strong>Sync Ready</strong>
-                  <small>Inventory pushed cleanly</small>
-                </div>
-              </div>
-
-              <div className="about-telemetry-footer">
-                <div className="about-telemetry-footer__signal">
-                  <span className="about-status-pill__dot" />
-                  Topology verified
-                </div>
-                <div className="about-telemetry-bars" aria-hidden="true">
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <span key={`bar-${index}`} style={{ animationDelay: `${index * 0.18}s` }} />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        <svg className="about-hero-visual__paths" viewBox="0 0 700 520" fill="none" aria-hidden="true">
-          <path d="M80 418C166 346 238 304 334 278C432 250 520 186 618 94" />
-          <path d="M84 130C170 190 228 218 286 230C392 252 498 324 620 426" />
-          <path d="M118 268H604" />
-          <circle cx="80" cy="418" r="5" />
-          <circle cx="334" cy="278" r="6" />
-          <circle cx="618" cy="94" r="7" />
-          <circle cx="84" cy="130" r="5" />
-          <circle cx="620" cy="426" r="6" />
-        </svg>
-      </div>
-    </motion.div>
-  );
-}
-
 function ScanDemo({ reducedMotion }: { reducedMotion: boolean | null }) {
   return (
     <div className="about-demo-scan">
@@ -421,6 +213,8 @@ function ScanDemo({ reducedMotion }: { reducedMotion: boolean | null }) {
 }
 
 function DashboardPreview() {
+  const reducedMotion = useReducedMotion();
+
   return (
     <div className="about-dashboard-preview">
       <div className="about-dashboard-preview__main">
@@ -439,7 +233,26 @@ function DashboardPreview() {
               <span>98.7%</span>
             </div>
             <div className="about-line-chart">
-              <span />
+              <motion.svg viewBox="0 0 420 240" preserveAspectRatio="none" aria-hidden="true">
+                <motion.path
+                  d="M8 188 C58 164 92 182 132 128 C174 72 210 142 248 94 C294 36 330 80 412 24"
+                  fill="none"
+                  stroke="url(#aboutLineGradient)"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  initial={reducedMotion ? false : { pathLength: 0, opacity: 0 }}
+                  whileInView={reducedMotion ? undefined : { pathLength: 1, opacity: 1 }}
+                  viewport={viewport}
+                  transition={{ duration: 1.5, ease: cinematicEase }}
+                />
+                <defs>
+                  <linearGradient id="aboutLineGradient" x1="0" x2="1" y1="0" y2="0">
+                    <stop stopColor="#7adfff" />
+                    <stop offset="0.55" stopColor="#5fa8ff" />
+                    <stop offset="1" stopColor="#a278ff" />
+                  </linearGradient>
+                </defs>
+              </motion.svg>
             </div>
           </div>
           <div className="about-chart-card">
@@ -448,10 +261,16 @@ function DashboardPreview() {
               <span>12</span>
             </div>
             <div className="about-bar-chart">
-              <span />
-              <span />
-              <span />
-              <span />
+              {[58, 84, 44, 72].map((height, index) => (
+                <motion.span
+                  key={`dashboard-bar-${height}`}
+                  initial={reducedMotion ? false : { scaleY: 0, opacity: 0.28 }}
+                  whileInView={reducedMotion ? undefined : { scaleY: 1, opacity: 1 }}
+                  viewport={viewport}
+                  transition={{ duration: 0.82, delay: index * 0.08, ease: cinematicEase }}
+                  style={{ height: `${height}%` }}
+                />
+              ))}
             </div>
           </div>
           <div className="about-chart-card">
@@ -459,7 +278,27 @@ function DashboardPreview() {
               <strong>Power Risk</strong>
               <span>Low</span>
             </div>
-            <div className="about-donut-chart" />
+            <div className="about-donut-chart">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <defs>
+                  <linearGradient id="aboutDonutGradient" x1="0" x2="1" y1="0" y2="1">
+                    <stop stopColor="#7adfff" />
+                    <stop offset="1" stopColor="#5fa8ff" />
+                  </linearGradient>
+                </defs>
+                <circle className="about-donut-chart__track" cx="60" cy="60" r="43" />
+                <motion.circle
+                  className="about-donut-chart__value"
+                  cx="60"
+                  cy="60"
+                  r="43"
+                  initial={reducedMotion ? false : { pathLength: 0 }}
+                  whileInView={reducedMotion ? undefined : { pathLength: 0.68 }}
+                  viewport={viewport}
+                  transition={{ duration: 1.1, ease: cinematicEase }}
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -484,6 +323,8 @@ function DashboardPreview() {
 }
 
 function AnalyticsPreview() {
+  const reducedMotion = useReducedMotion();
+
   return (
     <div className="about-analytics-preview">
       <div className="about-analytics-preview__metrics">
@@ -502,12 +343,16 @@ function AnalyticsPreview() {
       </div>
       <div className="about-analytics-preview__surface">
         <div className="about-analytics-bars">
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
+          {[34, 62, 48, 88, 66, 94].map((height, index) => (
+            <motion.span
+              key={`analytics-bar-${height}`}
+              initial={reducedMotion ? false : { scaleY: 0, opacity: 0.28 }}
+              whileInView={reducedMotion ? undefined : { scaleY: 1, opacity: 1 }}
+              viewport={viewport}
+              transition={{ duration: 0.9, delay: index * 0.07, ease: cinematicEase }}
+              style={{ height: `${height}%` }}
+            />
+          ))}
         </div>
         <div className="about-analytics-recommendation">
           <Sparkles className="about-card-icon" />
@@ -522,16 +367,31 @@ function AnalyticsPreview() {
 }
 
 function SignalBand() {
+  const reducedMotion = useReducedMotion();
+
   return (
     <div className="about-signal-band">
       <div className="about-signal-band__glow" />
       {signalSteps.map(({ label, value, icon: Icon }, index) => (
         <motion.article
           key={label}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={viewport}
-          transition={{ duration: 0.72, delay: index * 0.08, ease: cinematicEase }}
+          animate={reducedMotion ? undefined : { y: [0, -6, 0] }}
+          transition={
+            reducedMotion
+              ? { duration: 0.72, delay: index * 0.08, ease: cinematicEase }
+              : {
+                  y: {
+                    duration: 4 + index * 0.22,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: index * 0.18,
+                  },
+                  opacity: { duration: 0.72, delay: index * 0.08, ease: cinematicEase },
+                }
+          }
           className="about-signal-card"
         >
           <div className="about-signal-card__icon">
@@ -551,9 +411,9 @@ export default function AboutUsPage() {
 
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(32);
-  const lightX = useSpring(mouseX, { stiffness: 120, damping: 24, mass: 0.6 });
-  const lightY = useSpring(mouseY, { stiffness: 120, damping: 24, mass: 0.6 });
-  const spotlight = useMotionTemplate`radial-gradient(38rem circle at ${lightX}% ${lightY}%, rgba(122, 223, 255, 0.15), transparent 60%)`;
+  const lightX = useSpring(mouseX, { stiffness: 400, damping: 30, mass: 0.1 });
+  const lightY = useSpring(mouseY, { stiffness: 400, damping: 30, mass: 0.1 });
+  const spotlight = useMotionTemplate`radial-gradient(54rem circle at ${lightX}% ${lightY}%, rgba(122, 223, 255, 0.18), rgba(95, 168, 255, 0.08) 34%, transparent 68%)`;
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -563,18 +423,6 @@ export default function AboutUsPage() {
   const heroCopyY = useSpring(useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -28]), {
     stiffness: 100,
     damping: 26,
-  });
-  const heroVisualY = useSpring(useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -76]), {
-    stiffness: 100,
-    damping: 26,
-  });
-  const heroRotateX = useSpring(useTransform(lightY, [0, 100], [5, -5]), {
-    stiffness: 88,
-    damping: 22,
-  });
-  const heroRotateY = useSpring(useTransform(lightX, [0, 100], [-6, 6]), {
-    stiffness: 88,
-    damping: 22,
   });
 
   return (
@@ -603,32 +451,49 @@ export default function AboutUsPage() {
 
       <main className="about-shell">
         <section ref={heroRef} className="about-hero">
+          {/* Background Video */}
+          <video
+            className="about-hero__video"
+            autoPlay={true}
+            loop={true}
+            muted={true}
+            playsInline={true}
+          >
+            <source src="/media/AboutUsHero.mp4" type="video/mp4" />
+          </video>
+          {/* Dark Gradient Overlay for text contrast */}
+          <div className="about-hero__video-overlay" />
+
           <motion.div style={{ y: heroCopyY }} className="about-hero__copy">
             <motion.div initial="hidden" animate="visible" variants={stagger} className="about-hero__intro">
               <motion.h1 variants={reveal} className="about-hero-title">
-                <span>Point your phone at a rack and</span>
-                <span className="about-hero-title__accent">know what is</span>
-                <span className="about-hero-title__accent about-hero-title__accent--secondary">inside in seconds.</span>
+                <span className="about-hero-title__line-1">Point your phone at a rack and</span>
+                <span className="about-hero-title__line-2">
+                  <span className="about-hero-title__accent">know what is</span>
+                  {' '}
+                  <span className="about-hero-title__accent about-hero-title__accent--secondary">inside in seconds.</span>
+                </span>
               </motion.h1>
-              <motion.p variants={reveal}>
+
+              <motion.p variants={reveal} className="about-hero-caption">
                 RackTrack turns one rack scan into device visibility, port context, and inventory data your team can use immediately.
               </motion.p>
 
               <motion.div variants={reveal} className="about-hero__actions">
                 <motion.a
-                  whileHover={{ y: -2, scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   href="/contact"
                   className="about-button about-button--primary"
                 >
                   Book a Strategic Demo
-                  <ArrowRight className="about-button__icon" />
+                  <ArrowRight size={18} className="about-button__icon" />
                 </motion.a>
                 <motion.a
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.99 }}
-                  transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   href="/solutions"
                   className="about-button about-button--ghost"
                 >
@@ -636,15 +501,24 @@ export default function AboutUsPage() {
                 </motion.a>
               </motion.div>
 
-              <motion.div variants={stagger} className="about-hero__metrics">
-                {heroMetrics.map((item) => (
-                  <MetricCard key={item.label} {...item} />
-                ))}
-              </motion.div>
             </motion.div>
           </motion.div>
+        </section>
 
-          <HeroVisual y={heroVisualY} rotateX={heroRotateX} rotateY={heroRotateY} reducedMotion={reducedMotion} />
+        <section className="about-metrics-section" aria-label="RackTrack platform metrics">
+          <LayoutGroup>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewport}
+              variants={stagger}
+              className="about-hero__metrics"
+            >
+              {heroMetrics.map((item) => (
+                <MetricCard key={item.label} {...item} />
+              ))}
+            </motion.div>
+          </LayoutGroup>
         </section>
 
         <ScrollScene className="about-story">
@@ -706,7 +580,15 @@ export default function AboutUsPage() {
         <ScrollScene className="about-visual-section about-visual-section--reverse">
           <motion.div variants={reveal} className="about-visual-card about-visual-card--workflow-shot">
             <div className="about-workflow-shot">
-              <img src={workflowAfter} alt="RackTrack workflow visualization" />
+              <motion.div
+                className="about-workflow-shot__media"
+                initial={reducedMotion ? false : { opacity: 0, scale: 0.95, filter: 'blur(18px)' }}
+                whileInView={reducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                viewport={viewport}
+                transition={{ duration: 1.05, ease: cinematicEase }}
+              >
+                <img src={workflowAfter} alt="RackTrack workflow visualization" />
+              </motion.div>
               <div className="about-image-card__overlay about-image-card__overlay--workflow">
                 <span className="about-eyebrow">Workflow</span>
                 <strong>Compare, approve, sync, and share the rack state across your operating stack</strong>
