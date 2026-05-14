@@ -36,13 +36,11 @@ export default function Navbar() {
             aria-label="Go to RackTrack home"
             onClick={() => setMenuOpen(false)}
           >
-            <span className="rt-nav-mark" aria-hidden="true">
-              <span className="rt-nav-mark-core" />
-            </span>
-            <span className="rt-nav-wordmark">
-              <span>Rack</span>
-              <span>Track</span>
-            </span>
+            <img
+              src="/RackTrack_Logo.png"
+              alt="RackTrack"
+              className="rt-nav-logo-image"
+            />
           </NavLink>
 
           <div className="rt-nav-links" aria-label="Primary navigation">
