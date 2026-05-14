@@ -329,6 +329,34 @@ const RACK_UNITS = [
 const RU_START = 0.5
 const RU_END = 0.96
 
+function HeroIntroText() {
+  const progress = useSectionProgress('hero')
+  const hideProgress = Math.min(1, progress / 0.12)
+
+  return (
+    <section
+      className="home-hero-copy"
+      style={{
+        opacity: 1 - hideProgress,
+        transform: `translate3d(0, ${hideProgress * -42}px, 0)`,
+        pointerEvents: hideProgress > 0.85 ? 'none' : 'auto',
+      }}
+    >
+      <h1>
+        <span className="hero-line hero-line-white">
+          Scan Any Rack.
+        </span>
+        <span className="hero-line hero-line-gradient">
+          Find Any Port. 
+        </span>
+        <span className="hero-line hero-line-gradient">
+          Instantly.
+        </span>
+      </h1>
+    </section>
+  )
+}
+
 function RackLabels() {
   const progress = useSectionProgress('hero')
   const half = Math.ceil(RACK_UNITS.length / 2)
@@ -413,14 +441,31 @@ const REPORT_CARDS = [
 
 function NetworkTopologyImageSection() {
   return (
-    <section className="home-network-image-section" aria-hidden="true">
-      <img
-        src="/Images/rack-network-topology.png"
-        alt=""
-        className="home-network-image"
-        loading="lazy"
-      />
-      <div className="home-network-image-glow" />
+    <section className="home-network-image-section">
+      <div className="home-network-content">
+        <span className="home-network-eyebrow">Live Network Visibility</span>
+
+        <h2>
+          See how every rack
+          <br />
+          connects in real time.
+        </h2>
+
+        <p>
+          RackTrack converts rack scans into a visual network map, helping teams
+          understand device relationships, cable paths, and connectivity faster.
+        </p>
+      </div>
+
+      <div className="home-network-visual">
+        <img
+          src="/Images/rack-network-topology.png"
+          alt="Rack Network Topology"
+          className="home-network-image"
+          loading="lazy"
+        />
+        <div className="home-network-image-glow" />
+      </div>
     </section>
   )
 }
@@ -557,6 +602,7 @@ export default function HomePage() {
         totalFrames={HERO_FRAMES}
         scrollHeight={950}
       >
+        <HeroIntroText />
         <RackLabels />
         <div className="home-scroll-hint">Scroll</div>
       </ScrollCanvasSection>
