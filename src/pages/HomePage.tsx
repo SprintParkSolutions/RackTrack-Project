@@ -11,30 +11,6 @@ type FrameScrubberProps = {
   folder: string
 }
 
-function useScrollReveal<T extends HTMLElement>() {
-  const ref = useRef<T | null>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const node = ref.current
-    if (!node) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return
-        setVisible(true)
-        observer.disconnect()
-      },
-      { threshold: 0.2, rootMargin: '0px 0px -8% 0px' },
-    )
-
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [])
-
-  return { ref, visible }
-}
-
 function useSectionProgress(sectionId: string) {
   const [progress, setProgress] = useState(0)
   const rafRef = useRef<number | null>(null)
@@ -408,446 +384,168 @@ function RackLabels() {
   )
 }
 
-function HeroText() {
-  const progress = useSectionProgress('hero')
-  const opacity = Math.max(0, 1 - progress / 0.16)
+const SCAN_FLOW_ITEMS = [
+  { label: 'Capture', value: 'Video sweep', color: '#00d2ff' },
+  { label: 'Identify', value: '14 rack units', color: '#7dd3fc' },
+  { label: 'Classify', value: 'Ports + cables', color: '#a78bfa' },
+  { label: 'Map', value: 'Connections', color: '#34d399' },
+  { label: 'Verify', value: 'Exceptions', color: '#fbbf24' },
+  { label: 'Report', value: 'Audit pack', color: '#fb7185' },
+]
 
-  return (
-    <div
-      className="home-corner-text"
-      style={{
-        opacity,
-        transform: `translate3d(0, ${-progress * 44}px, 0)`,
-        pointerEvents: opacity < 0.05 ? 'none' : 'auto',
-      }}
-    >
-      <span className="home-eyebrow">AI-Powered Rack Auditing</span>
-
-      <h1 className="home-hero-title">
-        One sweep.
-        <br />
-        <em>Full audit.</em>
-      </h1>
-
-      <p>
-        Turn one walkthrough into a clean physical-layer audit.
-        <br />
-        Track devices, ports, panels, and cable paths instantly.
-      </p>
-
-      <a href="/contact-us" className="home-main-btn">
-        Request Demo
-      </a>
-    </div>
-  )
-}
-
-const FEATURES = [
+const REPORT_CARDS = [
   {
-    img: '/Images/Video_Capture.png',
-    title: 'Video Capture',
-    text: 'Capture a rack sweep and extract clear frames automatically.',
+    title: 'Rack Inventory',
+    value: '14U mapped',
+    meta: 'Devices, models, unit positions',
   },
   {
-    img: '/Images/Switch_Recognition.png',
-    title: 'Switch Recognition',
-    text: 'Identify switch vendor, model, and port layout.',
+    title: 'Port Report',
+    value: '186 ports',
+    meta: 'Used, empty, cable state',
   },
   {
-    img: '/Images/Port_Classification.png',
-    title: 'Port Classification',
-    text: 'Detect RJ45, SFP, QSFP, fiber, console, and empty ports.',
-  },
-  {
-    img: '/Images/Cable_Mapping.png',
-    title: 'Cable Mapping',
-    text: 'Trace cables end-to-end and build connectivity visibility.',
-  },
-  {
-    img: '/Images/Audit_Report.png',
-    title: 'Audit Report',
-    text: 'Generate a structured rack report for operations teams.',
+    title: 'Cable Audit',
+    value: '42 links',
+    meta: 'Trace paths and mismatches',
   },
 ]
 
-function FeatureSection() {
-  const headingReveal = useScrollReveal<HTMLDivElement>()
-  const progress = useSectionProgress('features')
-  const activeIndex = Math.min(
-    FEATURES.length - 1,
-    Math.floor(progress * FEATURES.length),
-  )
-
+function NetworkTopologyImageSection() {
   return (
-    <section id="features" className="home-features-section">
-      <div className="home-features-sticky">
-        <div
-          ref={headingReveal.ref}
-          className={`home-section-heading home-reveal${
-            headingReveal.visible ? ' is-visible' : ''
-          }`}
-        >
-          <span className="home-eyebrow">Detection Capabilities</span>
-          <h2>
-            AI that sees
-            <br />
-            <em>every component.</em>
-          </h2>
-
-          <div className="home-feature-progress">
-            <div className="home-feature-progress-dots">
-              {FEATURES.map((feature, index) => (
-                <span
-                  key={feature.title}
-                  className={
-                    index < activeIndex
-                      ? 'is-complete'
-                      : index === activeIndex
-                        ? 'is-active'
-                        : ''
-                  }
-                />
-              ))}
-            </div>
-
-            <strong>
-              {String(activeIndex + 1).padStart(2, '0')} /{' '}
-              {String(FEATURES.length).padStart(2, '0')}
-            </strong>
-          </div>
-        </div>
-
-        <div className="home-feature-grid home-feature-grid-stepped">
-          {FEATURES.map((feature, index) => (
-            <article
-              className={`home-feature-card ${
-                index < activeIndex
-                  ? 'is-complete'
-                  : index === activeIndex
-                    ? 'is-active'
-                    : ''
-              }`}
-              key={feature.title}
-              style={{
-                transitionDelay: `${index * 90}ms`,
-                ['--feature-progress' as string]: Math.max(
-                  0,
-                  Math.min(1, progress * FEATURES.length - index),
-                ),
-              }}
-            >
-              <img src={feature.img} alt={feature.title} />
-
-              <div>
-                <span>0{index + 1}</span>
-                <h3>{feature.title}</h3>
-                <p>{feature.text}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
+    <section className="home-network-image-section" aria-hidden="true">
+      <img
+        src="/Images/rack-network-topology.png"
+        alt=""
+        className="home-network-image"
+        loading="lazy"
+      />
+      <div className="home-network-image-glow" />
     </section>
   )
 }
 
-const NETWORK_STEPS = [
-  {
-    id: 'patch',
-    label: 'UNIT 01 - PATCH PANEL',
-    title: 'Patch Panel',
-    body: 'Patch panel type, labeling, and occupied ports are resolved into a clean physical record.',
-  },
-  {
-    id: 'switch',
-    label: 'UNIT 02 - NETWORK SWITCH',
-    title: 'Network Switch',
-    body: 'Vendor, model, uplinks, and active port posture become instantly visible for operations teams.',
-  },
-  {
-    id: 'server',
-    label: 'UNIT 03 - COMPUTER SERVER',
-    title: 'Computer Server',
-    body: 'Server identity, rack unit, and interface visibility are captured as structured inventory.',
-  },
-  {
-    id: 'router',
-    label: 'UNIT 04 - ROUTER',
-    title: 'Router',
-    body: 'Critical route devices and uplink paths are placed into one topology-aware operational view.',
-  },
-  {
-    id: 'firewall',
-    label: 'UNIT 05 - FIREWALL',
-    title: 'Firewall',
-    body: 'Security control points and protected paths are highlighted inside the same rack intelligence layer.',
-  },
-  {
-    id: 'storage',
-    label: 'UNIT 06 - STORAGE UNIT',
-    title: 'Storage Unit',
-    body: 'Storage arrays, capacity surfaces, and service dependencies roll into one live physical map.',
-  },
-]
-
-const AUDIT_PROOF_POINTS = [
-  {
-    value: '24x7',
-    label: 'Visibility',
-    text: 'Turn one capture into a live physical-layer record your team can revisit any time.',
-  },
-  {
-    value: '42U',
-    label: 'Rack Context',
-    text: 'Understand device order, port density, and cabling posture in one visual pass.',
-  },
-  {
-    value: 'AI',
-    label: 'Recognition',
-    text: 'Map switches, servers, panels, and power gear into one operational workflow.',
-  },
-]
-
-const AUDIT_PROOF_SIGNALS = [
-  'Ports mapped',
-  'Uplinks verified',
-  'Device order locked',
-  'Patch state matched',
-]
-
-function AuditDesignSection() {
-  const progress = useSectionProgress('audit-design')
-
+function ScanReportSection() {
+  const progress = useSectionProgress('scan-report')
+  const reportProgress = Math.max(0, Math.min(1, (progress - 0.68) / 0.28))
+  const scanProgress = Math.max(0, Math.min(1, progress / 0.7))
   const activeIndex = Math.min(
-    NETWORK_STEPS.length - 1,
-    Math.floor(progress * NETWORK_STEPS.length),
+    SCAN_FLOW_ITEMS.length - 1,
+    Math.floor(scanProgress * SCAN_FLOW_ITEMS.length),
   )
 
-  const current = NETWORK_STEPS[activeIndex]
+  const renderFlowItem = (
+    item: { label: string; value: string; color: string },
+    index: number,
+    side: 'left' | 'right',
+  ) => {
+    const visible = progress > 0.08 + index * 0.075
+
+    return (
+      <article
+        key={`${side}-${item.label}`}
+        className={`home-scan-chip home-scan-chip-${side} ${
+          visible ? 'is-visible' : ''
+        }`}
+        style={{
+          borderColor: visible ? `${item.color}aa` : 'rgba(0, 210, 255, 0.14)',
+          boxShadow: visible
+            ? `0 0 24px ${item.color}33, 0 18px 44px rgba(0, 0, 0, 0.34)`
+            : '0 14px 34px rgba(0, 0, 0, 0.24)',
+          transitionDelay: `${index * 45}ms`,
+          ['--scan-color' as string]: item.color,
+        }}
+      >
+        <i />
+        <div>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <strong>{item.label}</strong>
+          <small>{item.value}</small>
+        </div>
+      </article>
+    )
+  }
 
   return (
-    <section id="audit-design" className="rt-journey-section">
-      <div className="rt-journey-sticky">
-        <div className="rt-grid-floor" />
-        <div className="rt-dark-vignette" />
+    <section id="scan-report" className="home-scan-report-section">
+      <div className="home-scan-report-sticky">
+        <div className="home-scan-bg" />
+        <div className="home-scan-grid-lines" />
 
-        <div className={`rt-cinematic-scene scene-${activeIndex}`}>
-          <div className="rt-scene-badge">
-            <span className="rt-scene-badge-dot" />
-            Rack intelligence graph
+        <div
+          className="home-scan-intro"
+          style={{
+            opacity: Math.max(0, 1 - progress / 0.18),
+            transform: `translate3d(-50%, ${-progress * 70}px, 0)`,
+          }}
+        >
+          <span className="home-eyebrow">Post Scan Intelligence</span>
+          <h2>
+            Components become
+            <br />
+            <em>reports.</em>
+          </h2>
+        </div>
+
+        <div className="home-scan-flow home-scan-flow-left">
+          {SCAN_FLOW_ITEMS.slice(0, 3).map((item, index) =>
+            renderFlowItem(item, index, 'left'),
+          )}
+        </div>
+
+        <div className="home-scan-flow home-scan-flow-right">
+          {SCAN_FLOW_ITEMS.slice(3).map((item, index) =>
+            renderFlowItem(item, index + 3, 'right'),
+          )}
+        </div>
+
+        <div className="home-scan-core" aria-hidden="true">
+          <div className="home-scan-frame">
+            <span style={{ height: `${Math.max(12, scanProgress * 100)}%` }} />
+            <div className="home-scan-beam" />
+            <strong>{SCAN_FLOW_ITEMS[activeIndex].label}</strong>
+            <small>{Math.round(scanProgress * 100)}%</small>
+          </div>
+        </div>
+
+        <div
+          className="home-report-stage"
+          style={{
+            opacity: reportProgress,
+            transform: `translate3d(-50%, ${42 - reportProgress * 42}px, 0) scale(${
+              0.96 + reportProgress * 0.04
+            })`,
+            pointerEvents: reportProgress > 0.9 ? 'auto' : 'none',
+          }}
+        >
+          <div className="home-report-header">
+            <span className="home-eyebrow">Final Reports</span>
+            <h3>Audit package ready</h3>
+            <p>
+              Inventory, port classification, cable mapping, and exceptions in
+              one export-ready view.
+            </p>
           </div>
 
-          <div className="rt-scan-pulse rt-scan-pulse-one" />
-          <div className="rt-scan-pulse rt-scan-pulse-two" />
-
-          <div className="rt-ghost-fleet" aria-hidden="true">
-            {Array.from({ length: 10 }).map((_, index) => (
-              <div key={index} className={`rt-ghost-rack ghost-${index + 1}`}>
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-            ))}
-          </div>
-
-          <div className="rt-device-row">
-            {NETWORK_STEPS.map((item, index) => (
+          <div className="home-report-grid">
+            {REPORT_CARDS.map((report, index) => (
               <article
-                key={item.id}
-                className={`rt-device ${item.id} ${
-                  index === activeIndex ? 'active' : ''
-                }`}
+                className="home-report-card"
+                key={report.title}
+                style={{ transitionDelay: `${index * 90}ms` }}
               >
-                <div className="rt-device-side" />
-                <div className="rt-device-face">
-                  <div className="rt-device-top" />
-                  <strong>{item.title}</strong>
-
-                  <div className="rt-port-grid">
-                    {Array.from({ length: item.id === 'patch' ? 72 : 108 }).map(
-                      (_, portIndex) => (
-                        <i
-                          key={portIndex}
-                          className={
-                            portIndex % 13 === 0
-                              ? 'gold'
-                              : portIndex % 9 === 0
-                                ? 'off'
-                                : ''
-                          }
-                        />
-                      ),
-                    )}
-                  </div>
-
-                  <div className={`rt-device-detail ${item.id}`}>
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                </div>
-
-                <div className="rt-device-shadow" />
+                <span>0{index + 1}</span>
+                <strong>{report.title}</strong>
+                <h4>{report.value}</h4>
+                <p>{report.meta}</p>
               </article>
             ))}
           </div>
-
-          <svg className="rt-network-arcs" viewBox="0 0 1300 620">
-            <path d="M80 500 C260 150, 470 150, 650 500" />
-            <path d="M250 520 C470 70, 780 70, 1030 520" />
-            <path d="M450 500 C650 150, 900 150, 1190 500" />
-            <path d="M120 560 C420 300, 840 300, 1220 560" />
-            <path d="M360 560 C560 360, 760 360, 960 560" />
-            <path d="M180 180 C420 20, 760 20, 1100 240" />
-            <path d="M180 340 C520 120, 760 120, 1080 360" />
-          </svg>
-
-          <div className="rt-scene-hud rt-scene-hud-left">
-            <span>Live capture</span>
-            <strong>Structured rack focus</strong>
-            <p>
-              Every highlighted unit moves from visual detection into a
-              queryable infrastructure object.
-            </p>
-          </div>
-
-          <div className="rt-scene-hud rt-scene-hud-right">
-            <span>Topology graph</span>
-            <strong>Operational context online</strong>
-            <p>
-              Ports, devices, and rack positions roll into one physical-layer
-              intelligence graph.
-            </p>
-          </div>
-        </div>
-
-        <div className="rt-caption">
-          <span>{current.label}</span>
-          <h2>{current.title}</h2>
-          <p>{current.body}</p>
-        </div>
-
-        <div className="rt-step-rail">
-          {NETWORK_STEPS.map((step, index) => (
-            <i key={step.id} className={index === activeIndex ? 'active' : ''} />
-          ))}
         </div>
       </div>
     </section>
   )
 }
-
-function AuditProofSection() {
-  const reveal = useScrollReveal<HTMLElement>()
-
-  return (
-    <section
-      ref={reveal.ref}
-      className={`home-proof-section${reveal.visible ? ' is-visible' : ''}`}
-    >
-      <div className="home-proof-bg-orb home-proof-bg-orb-one" />
-      <div className="home-proof-bg-orb home-proof-bg-orb-two" />
-
-      <div className="home-proof-copy">
-        <span className="home-eyebrow">Physical Layer Replay</span>
-        <h2>
-          Review the rack
-          <br />
-          <em>exactly as it happened.</em>
-        </h2>
-        <p>
-          RackTrack preserves the real cabinet view, then layers intelligence on
-          top so infrastructure teams can verify ports, devices, and layout
-          decisions without repeating the audit walk.
-        </p>
-
-        <div className="home-proof-points">
-          {AUDIT_PROOF_POINTS.map((point) => (
-            <article key={point.label} className="home-proof-point">
-              <strong>{point.value}</strong>
-              <h3>{point.label}</h3>
-              <p>{point.text}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <div className="home-proof-stage">
-        <div className="home-proof-stage-frame">
-          <div className="home-proof-stage-topline">
-            <span>RackTrack design</span>
-            <i />
-            <span>Static intelligence view</span>
-          </div>
-
-          <div className="home-proof-display" aria-hidden="true">
-            <div className="home-proof-rack">
-              <div className="home-proof-rack-header">
-                <span />
-                <span />
-                <span />
-              </div>
-
-              <div className="home-proof-rack-body">
-                {Array.from({ length: 7 }).map((_, rackIndex) => (
-                  <div key={rackIndex} className="home-proof-rack-unit">
-                    <b />
-                    <div className="home-proof-rack-leds">
-                      {Array.from({ length: 10 }).map((_, ledIndex) => (
-                        <i
-                          key={ledIndex}
-                          className={ledIndex % 4 === 0 ? 'is-gold' : ''}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="home-proof-overlay-card home-proof-overlay-card-top">
-              <span>Rack state</span>
-              <strong>42U audit panel</strong>
-              <p>Devices, ports, and panel layout merged into one clean operator view.</p>
-            </div>
-
-            <div className="home-proof-overlay-card home-proof-overlay-card-bottom">
-              <span>Signal map</span>
-              <div className="home-proof-signal-list">
-                {AUDIT_PROOF_SIGNALS.map((signal) => (
-                  <i key={signal}>{signal}</i>
-                ))}
-              </div>
-            </div>
-
-            <div className="home-proof-orbit home-proof-orbit-one" />
-            <div className="home-proof-orbit home-proof-orbit-two" />
-            <div className="home-proof-beam home-proof-beam-left" />
-            <div className="home-proof-beam home-proof-beam-right" />
-          </div>
-
-          <div className="home-proof-scanline" aria-hidden="true" />
-          <div className="home-proof-grid" aria-hidden="true" />
-
-          <div className="home-proof-callout home-proof-callout-left">
-            <span>Trace</span>
-            <strong>Device position confirmed</strong>
-          </div>
-
-          <div className="home-proof-callout home-proof-callout-right">
-            <span>Verify</span>
-            <strong>Port state aligned with scan</strong>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 export default function HomePage() {
   useHideNavbarWhileFramesScroll()
 
@@ -859,16 +557,13 @@ export default function HomePage() {
         totalFrames={HERO_FRAMES}
         scrollHeight={950}
       >
-        <HeroText />
         <RackLabels />
         <div className="home-scroll-hint">Scroll</div>
       </ScrollCanvasSection>
 
-      <FeatureSection />
+      <NetworkTopologyImageSection />
 
-      <AuditDesignSection />
-
-      <AuditProofSection />
+      <ScanReportSection />
 
       <section className="home-cta-section">
         <span className="home-eyebrow">Audit Engine Ready</span>
