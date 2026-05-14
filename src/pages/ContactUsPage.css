@@ -312,9 +312,45 @@
   animation: contactFloat 6s ease-in-out infinite;
 }
 
-.contact-envelope,
-.contact-phone-card,
-.contact-message-card {
+.contact-visual__aura,
+.contact-visual__spine,
+.signal-link {
+  position: absolute;
+  pointer-events: none;
+}
+
+.contact-visual__aura {
+  border-radius: 50%;
+  filter: blur(18px);
+}
+
+.contact-visual__aura--one {
+  inset: 14% auto auto 8%;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.26), transparent 70%);
+}
+
+.contact-visual__aura--two {
+  inset: auto 6% 8% auto;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(84, 217, 255, 0.16), rgba(0, 210, 255, 0.08) 38%, transparent 72%);
+}
+
+.contact-visual__spine {
+  left: 50%;
+  top: 8%;
+  bottom: 8%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, rgba(0, 210, 255, 0), rgba(0, 210, 255, 0.4), rgba(0, 210, 255, 0));
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.22);
+}
+
+.contact-hub,
+.contact-node,
+.contact-mini-card {
   position: absolute;
   border: 1px solid rgba(125, 211, 252, 0.2);
   background:
@@ -328,62 +364,177 @@
   transform-style: preserve-3d;
 }
 
-.contact-envelope {
-  inset: 58px 60px 110px 70px;
-  border-radius: 34px;
+.contact-hub {
+  inset: 84px 110px 84px 116px;
+  border-radius: 40px;
   overflow: hidden;
-  transform: translateZ(70px);
+  padding: 24px;
+  transform: translateZ(92px) rotateY(-6deg);
+  box-shadow:
+    0 46px 110px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 56px rgba(0, 210, 255, 0.1);
 }
 
-.contact-envelope::before,
-.contact-envelope::after {
+.contact-hub__header {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 12px;
+}
+
+.contact-hub__header span,
+.contact-hub__header strong,
+.contact-node__lines small,
+.contact-node__lines span,
+.contact-mini-card strong,
+.contact-mini-card span {
+  display: block;
+  border-radius: 999px;
+}
+
+.contact-hub__header span {
+  width: 92px;
+  height: 10px;
+  background: rgba(84, 217, 255, 0.24);
+}
+
+.contact-hub__header strong {
+  width: 180px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.contact-hub__screen {
+  position: absolute;
+  inset: 78px 26px 26px;
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 60% 18%, rgba(0, 210, 255, 0.18), transparent 24%),
+    linear-gradient(180deg, rgba(8, 20, 36, 0.96), rgba(4, 13, 24, 0.98));
+  border: 1px solid rgba(125, 211, 252, 0.14);
+}
+
+.contact-hub__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 210, 255, 0.05) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.4;
+}
+
+.contact-hub__signal {
+  position: absolute;
+  inset: 16% 12% auto auto;
+  width: 182px;
+  height: 182px;
+  border-radius: 50%;
+  border: 1px solid rgba(125, 211, 252, 0.14);
+  box-shadow: 0 0 42px rgba(0, 210, 255, 0.12);
+}
+
+.contact-hub__signal::before,
+.contact-hub__signal::after {
   content: '';
   position: absolute;
-  inset: auto 0 0;
-  height: 62%;
+  inset: 18%;
+  border-radius: 50%;
+  border: 1px solid rgba(125, 211, 252, 0.12);
+}
+
+.contact-hub__signal::after {
+  inset: 34%;
+}
+
+.contact-hub__rack {
+  position: absolute;
+  left: 28px;
+  top: 24px;
+  bottom: 28px;
+  width: 40%;
+  padding: 16px;
+  border-radius: 24px;
+  border: 1px solid rgba(125, 211, 252, 0.14);
   background:
-    linear-gradient(145deg, rgba(0, 210, 255, 0.2), transparent 58%),
-    rgba(8, 24, 46, 0.74);
-  clip-path: polygon(0 100%, 50% 28%, 100% 100%);
+    linear-gradient(180deg, rgba(7, 16, 29, 0.88), rgba(6, 15, 27, 0.64));
+  box-shadow: inset 0 0 0 1px rgba(125, 211, 252, 0.04);
 }
 
-.contact-envelope::after {
-  inset: 0 0 auto;
-  height: 58%;
-  background: linear-gradient(180deg, rgba(84, 217, 255, 0.2), rgba(3, 12, 28, 0.55));
-  clip-path: polygon(0 0, 50% 72%, 100% 0);
+.contact-hub__rack span {
+  display: block;
+  height: 44px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(125, 211, 252, 0.14);
+  background: linear-gradient(90deg, rgba(84, 217, 255, 0.18), rgba(84, 217, 255, 0.04));
+  position: relative;
 }
 
-.envelope-flap {
+.contact-hub__rack span::before {
+  content: '';
   position: absolute;
-  inset: 34px 34px auto;
-  height: 120px;
-  border-radius: 22px;
-  background: rgba(0, 210, 255, 0.1);
-  transform: translateZ(22px);
+  left: 12px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #aefbff;
+  box-shadow: 18px 0 0 #aefbff;
+  transform: translateY(-50%);
 }
 
-.envelope-line,
-.envelope-line.short {
+.contact-hub__rack span::after {
+  content: '';
   position: absolute;
-  left: 50px;
-  top: 66px;
-  width: 42%;
+  left: 52px;
+  right: 18px;
+  top: 50%;
   height: 10px;
   border-radius: 999px;
-  background: rgba(226, 242, 255, 0.72);
-  box-shadow: 0 0 18px rgba(0, 210, 255, 0.32);
-  transform: translateZ(32px);
+  background: linear-gradient(90deg, rgba(84, 217, 255, 0.34), rgba(84, 217, 255, 0.08));
+  transform: translateY(-50%);
 }
 
-.envelope-line.short {
-  top: 92px;
-  width: 28%;
-  opacity: 0.52;
+.contact-hub__rack span:last-child {
+  margin-bottom: 0;
 }
 
-.contact-phone-card,
-.contact-message-card {
+.contact-hub__beam {
+  position: absolute;
+  left: 38%;
+  right: 8%;
+  top: 50%;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(0, 210, 255, 0), rgba(0, 210, 255, 0.96), rgba(84, 217, 255, 0.56), rgba(0, 210, 255, 0));
+  box-shadow: 0 0 22px rgba(0, 210, 255, 0.56);
+}
+
+.contact-hub__beam::before,
+.contact-hub__beam::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #bffcff;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.86);
+  transform: translateY(-50%);
+}
+
+.contact-hub__beam::before {
+  left: 12%;
+}
+
+.contact-hub__beam::after {
+  right: 8%;
+}
+
+.contact-node,
+.contact-mini-card {
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -391,40 +542,98 @@
   font-weight: 800;
 }
 
-.contact-phone-card {
-  right: 8px;
-  top: 44px;
-  padding: 18px 22px;
-  border-radius: 22px;
-  transform: translateZ(145px) rotateY(-8deg);
+.contact-node {
+  min-width: 220px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  font-size: 0.86rem;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.03)),
+    rgba(5, 17, 35, 0.92);
+  box-shadow:
+    0 28px 72px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 24px rgba(0, 210, 255, 0.08);
+}
+
+.contact-node__lines {
+  flex: 1;
+}
+
+.contact-node__lines small {
+  width: 70px;
+  height: 8px;
+  background: rgba(84, 217, 255, 0.24);
+}
+
+.contact-node__lines span {
+  width: 100%;
+  max-width: 150px;
+  height: 12px;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.contact-node-phone {
+  right: -12px;
+  top: 16px;
+  transform: translateZ(156px) rotateY(-10deg) rotateZ(-2deg);
   animation: cardBob 4.8s ease-in-out infinite;
 }
 
-.contact-message-card {
-  left: 12px;
-  min-width: 250px;
-  padding: 16px 18px;
-  border-radius: 20px;
-  font-size: 0.86rem;
-}
-
-.message-one {
-  bottom: 88px;
-  transform: translateZ(125px) rotateY(9deg);
+.contact-node-mail {
+  left: -24px;
+  bottom: 116px;
+  transform: translateZ(130px) rotateY(12deg) rotateZ(2deg);
   animation: cardBob 5.2s ease-in-out infinite 0.4s;
 }
 
-.message-two {
-  right: 32px;
-  bottom: 28px;
-  transform: translateZ(100px) rotateY(-11deg);
+.contact-node-response {
+  right: -4px;
+  bottom: 18px;
+  transform: translateZ(110px) rotateY(-12deg) rotateZ(2deg);
   animation: cardBob 5.6s ease-in-out infinite 0.8s;
 }
 
-.contact-phone-card svg,
-.contact-message-card svg {
+.contact-node svg {
   color: #00d2ff;
   filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.55));
+}
+
+.contact-mini-card {
+  flex-direction: column;
+  align-items: flex-start;
+  width: 162px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02)),
+    rgba(5, 17, 35, 0.86);
+}
+
+.contact-mini-card span {
+  width: 100%;
+  height: 12px;
+  margin-top: 12px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.contact-mini-card strong {
+  width: 92px;
+  height: 12px;
+  background: rgba(84, 217, 255, 0.22);
+}
+
+.contact-mini-card-one {
+  left: 86px;
+  top: 42px;
+  transform: translateZ(106px) rotateY(10deg) rotateZ(-5deg);
+}
+
+.contact-mini-card-two {
+  right: 54px;
+  top: 204px;
+  transform: translateZ(96px) rotateY(-10deg) rotateZ(4deg);
 }
 
 .signal-ring,
@@ -454,6 +663,14 @@
   animation: pulseRing 2.9s ease-out infinite 0.7s;
 }
 
+.ring-three {
+  left: 86px;
+  bottom: 76px;
+  width: 138px;
+  height: 138px;
+  animation: pulseRing 2.9s ease-out infinite 1.1s;
+}
+
 .signal-dot {
   width: 12px;
   height: 12px;
@@ -477,6 +694,26 @@
   right: 220px;
   bottom: 56px;
   animation-delay: 1.1s;
+}
+
+.signal-link {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0, 210, 255, 0), rgba(0, 210, 255, 0.72), rgba(0, 210, 255, 0));
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.22);
+}
+
+.signal-link-one {
+  left: 112px;
+  top: 118px;
+  width: 132px;
+  transform: rotate(18deg);
+}
+
+.signal-link-two {
+  right: 120px;
+  bottom: 110px;
+  width: 116px;
+  transform: rotate(-28deg);
 }
 
 @keyframes contactFloat {
@@ -797,6 +1034,10 @@
   .contact-stage {
     height: 620px;
   }
+
+  .contact-hub {
+    inset: 92px 130px 86px 110px;
+  }
 }
 
 @media (max-width: 780px) {
@@ -824,28 +1065,50 @@
     height: 430px;
   }
 
-  .contact-envelope {
-    inset: 58px 24px 104px;
+  .contact-visual__spine,
+  .signal-link,
+  .ring-three {
+    display: none;
   }
 
-  .contact-phone-card {
-    right: 0;
-    top: 34px;
-    padding: 14px 16px;
+  .contact-hub {
+    inset: 84px 42px 84px;
+    padding: 18px;
   }
 
-  .contact-message-card {
-    min-width: 220px;
+  .contact-hub__screen {
+    inset: 64px 18px 18px;
+  }
+
+  .contact-node,
+  .contact-mini-card {
+    min-width: 0;
+    width: 176px;
     font-size: 0.78rem;
   }
 
-  .message-one {
-    left: 0;
-    bottom: 86px;
+  .contact-node-phone {
+    right: -8px;
+    top: 12px;
   }
 
-  .message-two {
-    right: 0;
-    bottom: 22px;
+  .contact-node-mail {
+    left: -12px;
+    bottom: 92px;
+  }
+
+  .contact-node-response {
+    right: -6px;
+    bottom: 14px;
+  }
+
+  .contact-mini-card-one {
+    left: 38px;
+    top: 46px;
+  }
+
+  .contact-mini-card-two {
+    right: 22px;
+    top: 166px;
   }
 }

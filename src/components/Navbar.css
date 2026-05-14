@@ -1,4 +1,5 @@
 :root {
+  --rt-nav-height: 88px;
   --rt-nav-cyan: #00d2ff;
   --rt-nav-cyan-soft: rgba(0, 210, 255, 0.16);
   --rt-nav-text: #e8edf5;
@@ -8,7 +9,10 @@
 }
 
 .rt-nav-shell {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   width: 100%;
   padding: 0;
@@ -42,46 +46,23 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 46px;
+  min-height: 60px;
   color: var(--rt-nav-text);
   text-decoration: none;
 }
 
-.rt-nav-mark {
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(145deg, rgba(0, 210, 255, 0.22), rgba(0, 153, 204, 0.08));
-  border: 1px solid rgba(0, 210, 255, 0.24);
-  box-shadow: 0 0 22px rgba(0, 210, 255, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.rt-nav-mark-core {
-  width: 10px;
-  height: 10px;
-  border-radius: 4px;
-  border: 2px solid var(--rt-nav-cyan);
-  box-shadow: 0 0 14px rgba(0, 210, 255, 0.74);
-}
-
-.rt-nav-wordmark {
-  display: inline-flex;
-  align-items: baseline;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.rt-nav-wordmark span:first-child {
-  color: var(--rt-nav-text);
-}
-
-.rt-nav-wordmark span:last-child {
-  color: var(--rt-nav-cyan);
+.rt-nav-logo-image {
+  display: block;
+  width: clamp(188px, 14vw, 224px);
+  height: auto;
+  max-height: 90px;
+  object-fit: contain;
+  object-position: center;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.16));
 }
 
 .rt-nav-links {
@@ -196,8 +177,8 @@
 
 .rt-mobile-panel {
   pointer-events: all;
-  position: absolute;
-  top: calc(100% + 8px);
+  position: fixed;
+  top: calc(var(--rt-nav-height, 88px) + 8px);
   left: clamp(18px, 5vw, 72px);
   right: clamp(18px, 5vw, 72px);
   z-index: 999;
@@ -237,6 +218,10 @@
 }
 
 @media (max-width: 920px) {
+  :root {
+    --rt-nav-height: 68px;
+  }
+
   .rt-nav {
     grid-template-columns: 1fr auto;
     min-height: 68px;
@@ -254,6 +239,10 @@
 }
 
 @media (max-width: 520px) {
+  :root {
+    --rt-nav-height: 62px;
+  }
+
   .rt-nav-shell {
     padding: 0;
   }
@@ -263,19 +252,13 @@
     border-radius: 0;
   }
 
-  .rt-nav-mark {
-    width: 30px;
-    height: 30px;
-    border-radius: 10px;
-  }
-
-  .rt-nav-wordmark {
-    font-size: 0.66rem;
-    letter-spacing: 0.2em;
+  .rt-nav-logo-image {
+    width: 156px;
+    max-height: 44px;
   }
 
   .rt-mobile-panel {
-    top: calc(100% + 8px);
+    top: calc(var(--rt-nav-height, 62px) + 8px);
     left: 14px;
     right: 14px;
     border-radius: 22px;

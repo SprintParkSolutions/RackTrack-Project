@@ -60,32 +60,69 @@ export default function ContactUsPage() {
           <div className="contact-orbit contact-orbit-two" />
 
           <div className="contact-visual">
-            <div className="contact-envelope">
-              <div className="envelope-flap" />
-              <div className="envelope-line" />
-              <div className="envelope-line short" />
+            <div className="contact-visual__aura contact-visual__aura--one" />
+            <div className="contact-visual__aura contact-visual__aura--two" />
+            <div className="contact-visual__spine" />
+            <div className="contact-hub">
+              <div className="contact-hub__header" aria-hidden="true">
+                <span />
+                <strong />
+              </div>
+
+              <div className="contact-hub__screen">
+                <div className="contact-hub__signal" />
+                <div className="contact-hub__grid" />
+                <div className="contact-hub__rack">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <span key={`contact-rack-${index}`} />
+                  ))}
+                </div>
+                <div className="contact-hub__beam" />
+              </div>
             </div>
 
-            <div className="contact-phone-card">
-              <PhoneCall size={24} />
-              <span>+91 93985 85511</span>
+            <div className="contact-node contact-node-phone">
+              <PhoneCall size={22} />
+              <div className="contact-node__lines" aria-hidden="true">
+                <small />
+                <span />
+              </div>
             </div>
 
-            <div className="contact-message-card message-one">
+            <div className="contact-node contact-node-mail">
               <Mail size={20} />
-              <span>support@racktrack.com</span>
+              <div className="contact-node__lines" aria-hidden="true">
+                <small />
+                <span />
+              </div>
             </div>
 
-            <div className="contact-message-card message-two">
+            <div className="contact-node contact-node-response">
               <Clock3 size={20} />
-              <span>1 day response</span>
+              <div className="contact-node__lines" aria-hidden="true">
+                <small />
+                <span />
+              </div>
+            </div>
+
+            <div className="contact-mini-card contact-mini-card-one" aria-hidden="true">
+              <strong />
+              <span />
+            </div>
+
+            <div className="contact-mini-card contact-mini-card-two" aria-hidden="true">
+              <strong />
+              <span />
             </div>
 
             <div className="signal-ring ring-one" />
             <div className="signal-ring ring-two" />
+            <div className="signal-ring ring-three" />
             <div className="signal-dot dot-one" />
             <div className="signal-dot dot-two" />
             <div className="signal-dot dot-three" />
+            <div className="signal-link signal-link-one" />
+            <div className="signal-link signal-link-two" />
           </div>
         </div>
       </section>
