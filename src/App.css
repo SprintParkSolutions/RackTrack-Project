@@ -91,48 +91,104 @@
 
 .app-footer {
   display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 34px clamp(20px, 5vw, 72px) 20px;
+  border-top: 1px solid var(--border);
+  background: rgba(3, 8, 18, 0.94);
+}
+
+.app-footer-main {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 28px;
-  padding: 48px clamp(20px, 5vw, 72px);
-  border-top: 1px solid var(--border);
-  background: rgba(3, 8, 18, 0.72);
 }
 
-.app-footer strong {
+.app-footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.app-footer-logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.app-footer-logo-image {
   display: block;
-  color: var(--text);
-  letter-spacing: 0.24em;
-  margin-bottom: 8px;
-}
-
-.app-footer strong span {
-  color: var(--cyan);
+  width: clamp(150px, 11vw, 205px);
+  height: auto;
+  max-height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.18));
 }
 
 .app-footer p {
   color: var(--muted);
   margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.55;
 }
 
 .app-footer nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 28px;
 }
 
 .app-footer a {
   color: var(--muted);
   text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: color 0.22s ease;
 }
 
 .app-footer a:hover {
   color: var(--cyan);
 }
 
+.app-footer-bottom {
+  padding-top: 18px;
+  border-top: 1px solid rgba(0, 210, 255, 0.12);
+  color: rgba(220, 232, 255, 0.5);
+  text-align: center;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+}
+
 @media (max-width: 720px) {
   .app-footer {
+    padding: 26px 20px 18px;
+  }
+
+  .app-footer-main {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .app-footer-brand {
+    gap: 10px;
+  }
+
+  .app-footer-logo-image {
+    width: 160px;
+  }
+
+  .app-footer nav {
+    justify-content: flex-start;
+    gap: 18px;
+  }
+
+  .app-footer-bottom {
+    width: 100%;
+    font-size: 0.74rem;
   }
 }
