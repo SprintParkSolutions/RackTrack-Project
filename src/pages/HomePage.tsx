@@ -495,7 +495,8 @@ const FEATURES = [
 ]
 
 function FeatureSection() {
-  const headingReveal = useScrollReveal<HTMLDivElement>()
+  const { ref: headingRevealRef, visible: headingRevealVisible } =
+    useScrollReveal<HTMLDivElement>()
   const progress = useSectionProgress('features')
   const activeIndex = Math.min(
     FEATURES.length - 1,
@@ -506,9 +507,9 @@ function FeatureSection() {
     <section id="features" className="home-features-section">
       <div className="home-features-sticky">
       <div
-        ref={headingReveal.ref}
+        ref={headingRevealRef}
         className={`home-section-heading home-reveal${
-          headingReveal.visible ? ' is-visible' : ''
+          headingRevealVisible ? ' is-visible' : ''
         }`}
       >
         <span className="home-eyebrow">Detection Capabilities</span>
