@@ -30,17 +30,15 @@ export default function ContactUsPage() {
     <main className="contact-page">
       <section className="contact-hero">
         <div className="hero-content">
-          <span className="eyebrow">DATA CENTER CONTACT</span>
-
           <h1>
             Talk to
             <span> RackTrack.</span>
           </h1>
 
           <p>
-            Connect with RackTrack for customer inquiries, demo requests, audit planning,
-            and deployment discussions. We help infrastructure teams move from manual
-            rack reviews to reliable visibility across devices, ports, and cables.
+            Partner with RackTrack to simplify data center operations and accelerate
+            decision-making. From real-time visibility to smarter workflows, we deliver
+            the insights you need to build, manage, and scale with confidence.
           </p>
 
           <div className="hero-actions">
@@ -54,75 +52,17 @@ export default function ContactUsPage() {
           </div>
         </div>
 
-        <div className="contact-stage" aria-hidden="true">
+        <div className="contact-stage contact-stage-showcase" aria-hidden="true">
           <div className="contact-glow" />
-          <div className="contact-orbit contact-orbit-one" />
-          <div className="contact-orbit contact-orbit-two" />
 
-          <div className="contact-visual">
-            <div className="contact-visual__aura contact-visual__aura--one" />
-            <div className="contact-visual__aura contact-visual__aura--two" />
-            <div className="contact-visual__spine" />
-            <div className="contact-hub">
-              <div className="contact-hub__header" aria-hidden="true">
-                <span />
-                <strong />
-              </div>
+          <div className="contact-render-scene">
+            <img
+              src="/Images/racktrack-contact-hero.png"
+              alt=""
+              className="contact-render-image"
+              draggable="false"
+            />
 
-              <div className="contact-hub__screen">
-                <div className="contact-hub__signal" />
-                <div className="contact-hub__grid" />
-                <div className="contact-hub__rack">
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <span key={`contact-rack-${index}`} />
-                  ))}
-                </div>
-                <div className="contact-hub__beam" />
-              </div>
-            </div>
-
-            <div className="contact-node contact-node-phone">
-              <PhoneCall size={22} />
-              <div className="contact-node__lines" aria-hidden="true">
-                <small />
-                <span />
-              </div>
-            </div>
-
-            <div className="contact-node contact-node-mail">
-              <Mail size={20} />
-              <div className="contact-node__lines" aria-hidden="true">
-                <small />
-                <span />
-              </div>
-            </div>
-
-            <div className="contact-node contact-node-response">
-              <Clock3 size={20} />
-              <div className="contact-node__lines" aria-hidden="true">
-                <small />
-                <span />
-              </div>
-            </div>
-
-            <div className="contact-mini-card contact-mini-card-one" aria-hidden="true">
-              <strong />
-              <span />
-            </div>
-
-            <div className="contact-mini-card contact-mini-card-two" aria-hidden="true">
-              <strong />
-              <span />
-            </div>
-
-            <div className="signal-ring ring-one" />
-            <div className="signal-ring ring-two" />
-            <div className="signal-ring ring-three" />
-            <div className="signal-dot dot-one" />
-            <div className="signal-dot dot-two" />
-            <div className="signal-dot dot-three" />
-            <div className="signal-link signal-link-one" />
-            <div className="signal-link signal-link-two" />
           </div>
         </div>
       </section>
@@ -159,8 +99,6 @@ export default function ContactUsPage() {
 
       <section id="contact" className="contact-main-section">
         <form className="contact-form" onSubmit={handleSubmit}>
-          <span className="eyebrow">CONTACT FORM</span>
-
           <h2>
             Start your
             <span> conversation.</span>
@@ -181,7 +119,15 @@ export default function ContactUsPage() {
             <input type="text" placeholder="Rack Count or Site Size" />
           </div>
 
-          <input type="text" placeholder="Subject" required />
+          <select required defaultValue="" draggable="false">
+            <option value="" disabled hidden>What are you trying to improve?</option>
+            <option value="AR Rack Scanning">AR Rack Scanning</option>
+            <option value="AI Device Detection">AI Device Detection</option>
+            <option value="Port Tracking">Port Tracking</option>
+            <option value="Network Topology">Network Topology</option>
+            <option value="Automated Inventory">Automated Inventory</option>
+            <option value="Security & Compliance">Security & Compliance</option>
+          </select>
 
           <textarea
             placeholder="Tell us about your racks, switches, ports, or audit requirement."
@@ -210,9 +156,10 @@ export default function ContactUsPage() {
         </form>
 
         <aside className="faq-panel">
-          <span className="eyebrow">FAQ</span>
-
-          <h2>Before you connect</h2>
+          <h2>
+            Before you
+            <span> connect.</span>
+          </h2>
 
           <div className="faq-list">
             {faqs.map(([question, answer]) => (
