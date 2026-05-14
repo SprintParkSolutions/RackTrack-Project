@@ -98,22 +98,6 @@
   display: inline-block;
 }
 
-.rt-nav-link-label-plain::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -6px;
-  height: 1px;
-  border-radius: 999px;
-  background: transparent;
-  transition: background 0.22s ease;
-}
-
-.rt-nav-link-active .rt-nav-link-label-plain::after {
-  background: rgba(0, 210, 255, 0.65);
-}
-
 .rt-nav-active-pill {
   position: absolute;
   inset: 0;
@@ -192,6 +176,7 @@
 }
 
 .rt-mobile-link {
+  position: relative;
   width: 100%;
   border-radius: 18px;
   padding: 16px 18px;
@@ -204,6 +189,10 @@
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  transition:
+    color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 .rt-mobile-link-active {
@@ -226,6 +215,11 @@
     grid-template-columns: 1fr auto;
     min-height: 68px;
     padding: 10px clamp(16px, 5vw, 32px);
+    gap: 12px;
+  }
+
+  .rt-nav-actions {
+    justify-self: end;
   }
 
   .rt-nav-links,
@@ -250,11 +244,17 @@
   .rt-nav {
     min-height: 62px;
     border-radius: 0;
+    padding: 9px 14px;
   }
 
   .rt-nav-logo-image {
-    width: 156px;
-    max-height: 44px;
+    width: 140px;
+    max-height: 40px;
+  }
+
+  .rt-nav-menu-btn {
+    width: 40px;
+    height: 40px;
   }
 
   .rt-mobile-panel {
