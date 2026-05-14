@@ -12,9 +12,6 @@ import {
 import { ArrowRight, BarChart3, Cpu, Gauge, GitBranch, Network, Radar, Shield, Sparkles, Zap } from 'lucide-react';
 import * as THREE from 'three';
 
-const datacenterBg = "/solutions-page-images/datacenter-bg.jpg";
-const phoneScanBefore = "/assets/phone-scan-before.jpg";
-const portsScanOutput = "/assets/ports-scan-output.jpg";
 const workflowAfter = "/assets/workflow-after.png";
 
 import './AboutUsPage.css';
@@ -49,11 +46,11 @@ const heroMetrics = [
   { label: 'Ops time saved', value: '34%', detail: 'less manual discovery and triage', icon: Zap },
 ];
 
-const statCards = [
-  { label: 'Rack inventory', value: 'Auto-built', icon: Cpu },
-  { label: 'Port visibility', value: 'Live', icon: Gauge },
-  { label: 'CMDB sync', value: 'ServiceNow', icon: Network },
-  { label: 'Reports ready', value: 'HTML / CSV / JSON', icon: Sparkles },
+const signalSteps = [
+  { label: 'Capture', value: 'Phone-guided', icon: Cpu },
+  { label: 'Detect', value: 'Ports and devices', icon: Gauge },
+  { label: 'Sync', value: 'CMDB ready', icon: Network },
+  { label: 'Share', value: 'Audit report', icon: Sparkles },
 ];
 
 function RackCoreModel() {
@@ -194,14 +191,101 @@ function HeroVisual({
       />
 
       <div className="about-hero-visual__surface">
-        <div className="about-hero-visual__header">
-          <div>
-            <span className="about-eyebrow">AI Detection Active</span>
-            <h2>Infrastructure Intelligence Mesh</h2>
-          </div>
-          <div className="about-status-pill">
+        <div className="about-hero-visual__header about-hero-visual__header--minimal">
+          <div className="about-hero-visual__header-line" />
+          <div className="about-status-pill about-status-pill--minimal">
             <span className="about-status-pill__dot" />
-            Live topology
+          </div>
+        </div>
+
+        <div className="about-hero-visual__body about-hero-visual__body--concept">
+          <div className="about-concept-scene">
+            <div className="about-concept-aura about-concept-aura--one" />
+            <div className="about-concept-aura about-concept-aura--two" />
+            <div className="about-concept-orbit about-concept-orbit--one" />
+            <div className="about-concept-orbit about-concept-orbit--two" />
+            <div className="about-concept-column" />
+            <motion.div
+              className="about-concept-phone"
+              animate={reducedMotion ? { y: 0 } : { y: [0, -12, 0], rotateZ: [-5, -3, -5] }}
+              transition={reducedMotion ? undefined : { duration: 5.4, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <div className="about-concept-phone__notch" />
+              <div className="about-concept-phone__screen">
+                <div className="about-concept-phone__grid" />
+                <div className="about-concept-phone__rackframe">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <span key={`phone-rack-${index}`} />
+                  ))}
+                </div>
+                <motion.div
+                  className="about-concept-phone__scanline"
+                  animate={reducedMotion ? { opacity: 0.7 } : { y: ['-8%', '112%'] }}
+                  transition={reducedMotion ? undefined : { duration: 3.6, ease: 'linear', repeat: Infinity }}
+                />
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="about-concept-rack"
+              animate={reducedMotion ? { y: 0 } : { y: [0, 10, 0] }}
+              transition={reducedMotion ? undefined : { duration: 5.8, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <div className="about-concept-rack__header" aria-hidden="true">
+                <span />
+                <strong />
+              </div>
+              <div className="about-concept-rack__frame">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <div key={`rack-model-${index}`} className="about-concept-rack__unit">
+                    <i />
+                    <i />
+                    <span />
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="about-concept-stream"
+              animate={reducedMotion ? { opacity: 0.8 } : { opacity: [0.6, 1, 0.6] }}
+              transition={reducedMotion ? undefined : { duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <span />
+              <span />
+              <span />
+            </motion.div>
+
+            <motion.div
+              className="about-concept-card about-concept-card--inventory"
+              animate={reducedMotion ? { y: 0 } : { y: [0, -8, 0] }}
+              transition={reducedMotion ? undefined : { duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
+            />
+
+            <motion.div
+              className="about-concept-card about-concept-card--topology"
+              animate={reducedMotion ? { x: 0 } : { x: [0, 8, 0] }}
+              transition={reducedMotion ? undefined : { duration: 4.1, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <div className="about-concept-card__chips" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="about-concept-card about-concept-card--confidence"
+              animate={reducedMotion ? { y: 0 } : { y: [0, 10, 0] }}
+              transition={reducedMotion ? undefined : { duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            />
+
+            <div className="about-concept-pulse about-concept-pulse--one" />
+            <div className="about-concept-pulse about-concept-pulse--two" />
+            <div className="about-concept-spark about-concept-spark--one" />
+            <div className="about-concept-spark about-concept-spark--two" />
+            <div className="about-concept-spark about-concept-spark--three" />
+            <div className="about-concept-floor" />
           </div>
         </div>
 
@@ -228,34 +312,65 @@ function HeroVisual({
             ))}
           </div>
 
-          <div className="about-hero-visual__cards">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.82, delay: 0.66, ease: cinematicEase }}
-              className="about-overlay-card"
-            >
-              <span className="about-eyebrow">Prediction layer</span>
-              <strong>Failure path isolated 41 minutes before escalation</strong>
-              <p>RackTrack fused power variance, airflow drift, and port instability into one intervention signal.</p>
-            </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.86, delay: 0.62, ease: cinematicEase }}
+            className="about-hero-visual__telemetry"
+          >
+            <div className="about-telemetry-panel">
+              <div className="about-telemetry-panel__top">
+                <div>
+                  <span className="about-eyebrow">Scan confidence</span>
+                  <strong>98.4%</strong>
+                </div>
+                <div className="about-telemetry-badge">Live validation</div>
+              </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.82, delay: 0.78, ease: cinematicEase }}
-              className="about-overlay-card about-overlay-card--compact"
-            >
-              <div className="about-mini-stat">
-                <span>Latency</span>
-                <strong>1.8ms</strong>
+              <div className="about-telemetry-stats">
+                <div className="about-telemetry-stat">
+                  <span>Ports mapped</span>
+                  <strong>184</strong>
+                </div>
+                <div className="about-telemetry-stat">
+                  <span>Assets matched</span>
+                  <strong>42</strong>
+                </div>
               </div>
-              <div className="about-mini-stat">
-                <span>Thermal drift</span>
-                <strong>Normal</strong>
+
+              <div className="about-telemetry-flow" aria-hidden="true">
+                <motion.span
+                  className="about-telemetry-flow__beam"
+                  animate={reducedMotion ? { opacity: 0.7 } : { y: ['-12%', '112%'] }}
+                  transition={reducedMotion ? undefined : { duration: 3.8, ease: 'linear', repeat: Infinity }}
+                />
+                <div className="about-telemetry-node about-telemetry-node--capture">
+                  <strong>Capture</strong>
+                  <small>Frame locked</small>
+                </div>
+                <div className="about-telemetry-node about-telemetry-node--parse">
+                  <strong>AI Parse</strong>
+                  <small>Labels + ports read</small>
+                </div>
+                <div className="about-telemetry-node about-telemetry-node--sync">
+                  <strong>Sync Ready</strong>
+                  <small>Inventory pushed cleanly</small>
+                </div>
               </div>
-            </motion.div>
-          </div>
+
+              <div className="about-telemetry-footer">
+                <div className="about-telemetry-footer__signal">
+                  <span className="about-status-pill__dot" />
+                  Topology verified
+                </div>
+                <div className="about-telemetry-bars" aria-hidden="true">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <span key={`bar-${index}`} style={{ animationDelay: `${index * 0.18}s` }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
         <svg className="about-hero-visual__paths" viewBox="0 0 700 520" fill="none" aria-hidden="true">
@@ -406,32 +521,26 @@ function AnalyticsPreview() {
   );
 }
 
-function ProductImageShowcase() {
+function SignalBand() {
   return (
-    <div className="about-image-showcase">
-      <div className="about-image-card about-image-card--hero">
-        <img src={datacenterBg} alt="Data center environment representing RackTrack deployment" />
-        <div className="about-image-card__overlay">
-          <span className="about-eyebrow">Environment</span>
-          <strong>Built for real-world rack aisles, live infrastructure, and operational pressure</strong>
-        </div>
-      </div>
-
-      <div className="about-image-card about-image-card--phone">
-        <img src={phoneScanBefore} alt="RackTrack mobile rack scanning interface" />
-        <div className="about-image-card__overlay">
-          <span className="about-eyebrow">Capture</span>
-          <strong>Live camera guidance for sharpness, lighting, and framing</strong>
-        </div>
-      </div>
-
-      <div className="about-image-card about-image-card--results">
-        <img src={portsScanOutput} alt="RackTrack scan results with detected ports and infrastructure details" />
-        <div className="about-image-card__overlay">
-          <span className="about-eyebrow">Results</span>
-          <strong>Devices, ports, cables, and availability detected automatically</strong>
-        </div>
-      </div>
+    <div className="about-signal-band">
+      <div className="about-signal-band__glow" />
+      {signalSteps.map(({ label, value, icon: Icon }, index) => (
+        <motion.article
+          key={label}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
+          transition={{ duration: 0.72, delay: index * 0.08, ease: cinematicEase }}
+          className="about-signal-card"
+        >
+          <div className="about-signal-card__icon">
+            <Icon className="about-card-icon" />
+          </div>
+          <strong>{value}</strong>
+          <span>{label}</span>
+        </motion.article>
+      ))}
     </div>
   );
 }
@@ -496,14 +605,13 @@ export default function AboutUsPage() {
         <section ref={heroRef} className="about-hero">
           <motion.div style={{ y: heroCopyY }} className="about-hero__copy">
             <motion.div initial="hidden" animate="visible" variants={stagger} className="about-hero__intro">
-              <motion.span variants={reveal} className="about-eyebrow">
-                AI Rack Intelligence for Data Center Teams
-              </motion.span>
-              <motion.h1 variants={reveal}>
-                Point your phone at a rack and instantly know everything inside it.
+              <motion.h1 variants={reveal} className="about-hero-title">
+                <span>Point your phone at a rack and</span>
+                <span className="about-hero-title__accent">know what is</span>
+                <span className="about-hero-title__accent about-hero-title__accent--secondary">inside in seconds.</span>
               </motion.h1>
               <motion.p variants={reveal}>
-                RackTrack helps data center technicians scan racks with a mobile camera, identify every device, port, and cable with AI, build a full inventory in seconds, and sync the result back to operational systems.
+                RackTrack turns one rack scan into device visibility, port context, and inventory data your team can use immediately.
               </motion.p>
 
               <motion.div variants={reveal} className="about-hero__actions">
@@ -542,29 +650,23 @@ export default function AboutUsPage() {
         <ScrollScene className="about-story">
           <div className="about-story__copy">
             <span className="about-eyebrow">What RackTrack Does</span>
-            <h2>Rack scanning, inventory, topology, and CMDB sync in one AI workflow.</h2>
+            <h2>Rack scanning, inventory, and sync in one AI workflow.</h2>
             <p>
-              The product is built around a real technician workflow: capture a rack photo, let AI identify devices and ports, compare with live network data, and push validated updates into the asset system.
+              Capture the rack once, let AI identify the hardware, then push the verified result into your operational systems.
             </p>
           </div>
 
-          <motion.div variants={stagger} initial="hidden" whileInView="visible" viewport={viewport} className="about-story__stats">
-            {statCards.map(({ label, value, icon: Icon }) => (
-              <motion.article key={label} variants={reveal} className="about-stat-card">
-                <Icon className="about-card-icon" />
-                <strong>{value}</strong>
-                <span>{label}</span>
-              </motion.article>
-            ))}
+          <motion.div variants={reveal} className="about-story__stats">
+            <SignalBand />
           </motion.div>
         </ScrollScene>
 
         <ScrollScene className="about-visual-section about-visual-section--split">
           <motion.div variants={reveal} className="about-section-copy">
             <span className="about-eyebrow">AI Rack Scanning</span>
-            <h2>RackTrack reads the rack the way a technician sees it, only faster and with more context.</h2>
+            <h2>RackTrack reads the rack the way a technician does, only faster and with cleaner context.</h2>
             <p>
-              The app checks photo quality in real time, detects devices, ports, and cable colors automatically, reads labels with OCR, and turns one image into a structured rack inventory.
+              The app checks framing, detects devices and ports, reads labels, and builds a structured rack inventory from one capture.
             </p>
           </motion.div>
           <motion.div variants={reveal} className="about-visual-card about-visual-card--scan">
@@ -578,9 +680,9 @@ export default function AboutUsPage() {
         <ScrollScene className="about-dashboard-section">
           <motion.div variants={reveal} className="about-section-heading">
             <span className="about-eyebrow">Product Screens</span>
-            <h2>From live camera capture to scan results, the product is designed as an end-to-end operational surface.</h2>
+            <h2>From live camera capture to scan results, the product stays clear, fast, and operational.</h2>
             <p>
-              RackTrack combines guided mobile capture, device cards, port availability views, 2D and 3D topology, and actionable change workflows into one polished experience.
+              Guided capture, rack intelligence, topology, and reporting all stay inside one connected workflow.
             </p>
           </motion.div>
           <motion.div variants={reveal} className="about-dashboard-shell">
@@ -594,23 +696,10 @@ export default function AboutUsPage() {
           </motion.div>
           <motion.div variants={reveal} className="about-section-copy">
             <span className="about-eyebrow">Operational Intelligence</span>
-            <h2>RackTrack connects scan results to topology, incidents, firmware posture, and reporting.</h2>
+            <h2>RackTrack connects scan results to topology, incidents, and reporting.</h2>
             <p>
-              Teams can see which ports are in use, discover network neighbors, compare physical findings to ServiceNow CMDB data, flag changes, and export or share results across Slack, Teams, or email.
+              Teams can review port usage, compare physical findings to CMDB data, and share the result without manual rework.
             </p>
-          </motion.div>
-        </ScrollScene>
-
-        <ScrollScene className="about-visual-section about-visual-section--split">
-          <motion.div variants={reveal} className="about-section-copy">
-            <span className="about-eyebrow">Real App Experience</span>
-            <h2>Mobile capture, annotated results, and workflow-ready outputs make the product feel usable immediately.</h2>
-            <p>
-              The website should show that RackTrack is not just analytics. It is a field-ready app for scanning racks, reviewing detections, checking available ports, and driving asset updates with confidence.
-            </p>
-          </motion.div>
-          <motion.div variants={reveal} className="about-visual-card about-visual-card--images">
-            <ProductImageShowcase />
           </motion.div>
         </ScrollScene>
 
@@ -626,9 +715,9 @@ export default function AboutUsPage() {
           </motion.div>
           <motion.div variants={reveal} className="about-section-copy">
             <span className="about-eyebrow">Why It Matters</span>
-            <h2>RackTrack reduces manual rack audits and turns physical infrastructure into live operational data.</h2>
+            <h2>Less manual audit work. More usable rack data.</h2>
             <p>
-              Instead of relying on outdated spreadsheets or slow visual checks, teams get a camera-first workflow that maps what is physically present, validates it against network and asset systems, and makes that intelligence immediately useful.
+              RackTrack keeps physical rack data current, structured, and ready for the teams that operate it every day.
             </p>
           </motion.div>
         </ScrollScene>
@@ -639,7 +728,7 @@ export default function AboutUsPage() {
             <span className="about-eyebrow">The Next Move</span>
             <h2>Give your team a faster way to understand every rack they touch.</h2>
             <p>
-              RackTrack brings mobile scanning, AI recognition, topology context, and system sync into one workflow built for real data center operations.
+              RackTrack brings scanning, AI recognition, and system sync into one workflow built for real data center operations.
             </p>
             <div className="about-cta__actions">
               <motion.a

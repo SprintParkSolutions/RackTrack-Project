@@ -11,7 +11,7 @@ const workflowAfterImage = `${solutionsImagePath}/workflow-after.png`
 const rackVideo = `${solutionsImagePath}/server_rack.mp4`
 
 const stats = [
-  { value: '10×', label: 'faster audits' },
+  { value: '10x', label: 'faster audits' },
   { value: '98%', label: 'scan accuracy' },
   { value: '0', label: 'manual entry' },
 ]
@@ -35,7 +35,7 @@ const principleCards = [
     number: '02',
     title: 'Data fusion',
     description:
-      'Camera + switch telemetry + CMDB → one source of truth in seconds.',
+      'Camera + switch telemetry + CMDB into one source of truth in seconds.',
     icon: 'diamond',
   },
   {
@@ -433,7 +433,7 @@ function RackTopologySection() {
 
         <p className="topology-description">
           RackTrack reads live rack footage to identify switches, patch panels,
-          servers, port activity, LEDs and cable routes — turning one cabinet video
+          servers, port activity, LEDs and cable routes, turning one cabinet video
           into a verified rack inventory.
         </p>
 
@@ -757,7 +757,7 @@ function WorkflowSection() {
         </h2>
 
         <p>
-          Every screen of the RackTrack experience is visible upfront — tap any
+          Every screen of the RackTrack experience is visible upfront - tap any
           moment to preview the scan output.
         </p>
       </div>
@@ -894,20 +894,18 @@ export default function SolutionsPage() {
 
         <div className="solutions-copy">
           <h1 className="hero-title">
-            <span className="title-line">One</span>
-            <span className="title-line">workflow.</span>
-            <span className="title-line title-gradient">Every rack</span>
-            <span className="title-line title-muted">in your fleet.</span>
+            <span className="title-line">One workflow.</span>
+            <span className="title-line title-gradient">Every rack in your fleet.</span>
           </h1>
 
           <p className="hero-description">
-            From a single shutter press to a synced CMDB record — RackTrack
-            collapses the entire rack-audit workflow into one mobile experience.
+            From one rack scan to a synced CMDB record, RackTrack turns audits
+            into one clear mobile workflow.
           </p>
 
           <div className="hero-actions">
             <a className="primary-action" href="#rack-3d">
-              Explore the 3D rack →
+              Explore the 3D rack {'->'}
             </a>
             <a className="secondary-action" href="#workflow">
               See the workflow
