@@ -13,11 +13,11 @@
   min-height: calc(100vh - var(--rt-nav-height, 88px));
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1.02fr 0.98fr;
-  gap: 76px;
+  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+  gap: 26px;
   align-items: center;
   margin-top: var(--rt-nav-height, 88px);
-  padding: clamp(48px, 6vh, 76px) max(32px, calc((100vw - 1420px) / 2)) 70px;
+  padding: clamp(48px, 6vh, 72px) 70px 70px;
   background:
     radial-gradient(circle at 78% 18%, rgba(0, 246, 255, 0.22), transparent 30%),
     radial-gradient(circle at 12% 92%, rgba(119, 82, 255, 0.34), transparent 29%),
@@ -95,16 +95,18 @@
 .solutions-copy {
   position: relative;
   z-index: 5;
-  max-width: 650px;
-  transform: translateY(-18px);
+  max-width: 690px;
+  transform: none;
+  justify-self: start;
+  width: 100%;
 }
 
 .hero-title {
   margin: 0 0 30px;
   color: #f7fbff;
   font-family: 'Inter Tight', 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(50px, 4.7vw, 84px);
-  line-height: 1.08;
+  font-size: clamp(52px, 5vw, 88px);
+  line-height: 1;
   letter-spacing: -0.048em;
   font-weight: 900;
   text-rendering: geometricPrecision;
@@ -116,7 +118,6 @@
 
 .title-line {
   display: block;
-  white-space: nowrap;
 }
 
 .title-gradient {
@@ -136,11 +137,11 @@
 }
 
 .hero-description {
-  max-width: 620px;
+  max-width: 560px;
   color: rgba(222, 234, 248, 0.8);
   font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  font-size: 18px;
-  line-height: 1.72;
+  font-size: 17px;
+  line-height: 1.62;
   letter-spacing: -0.014em;
   font-weight: 500;
   text-shadow: 0 8px 38px rgba(0, 0, 0, 0.45);
@@ -194,8 +195,8 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
-  margin-top: 46px;
-  max-width: 590px;
+  margin-top: 38px;
+  max-width: 540px;
 }
 
 .stat-card {
@@ -238,7 +239,9 @@
   place-items: center;
   min-height: clamp(560px, calc(100vh - 160px), 640px);
   perspective: 1400px;
-  transform: translateY(-14px);
+  transform: none;
+  justify-self: end;
+  width: min(100%, 720px);
 }
 
 .scan-stage::before {
@@ -1096,11 +1099,11 @@
 
 .principles-header h2 {
   margin: 0;
-  max-width: 720px;
+  max-width: 860px;
   color: #f3f8ff;
   font-family: 'Inter Tight', 'Manrope', ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(48px, 4.8vw, 82px);
-  line-height: 0.95;
+  line-height: 0.98;
   letter-spacing: -0.055em;
   font-weight: 900;
 }
@@ -1927,7 +1930,18 @@
 .topology-copy {
   position: relative;
   z-index: 6;
-  max-width: 670px;
+  max-width: 760px;
+}
+
+@media (max-width: 1200px) {
+  .solutions-hero {
+    gap: 20px;
+    padding-inline: 24px;
+  }
+
+  .solutions-copy {
+    max-width: 100%;
+  }
 }
 
 .topology-kicker {
@@ -1944,8 +1958,8 @@
   margin: 0;
   color: #f4f9ff;
   font-family: 'Inter Tight', 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(50px, 4.7vw, 82px);
-  line-height: 1.03;
+  font-size: clamp(52px, 4.9vw, 86px);
+  line-height: 1;
   letter-spacing: -0.055em;
   font-weight: 900;
   text-shadow: 0 24px 90px rgba(0, 0, 0, 0.45);
@@ -1964,12 +1978,12 @@
 }
 
 .topology-description {
-  max-width: 640px;
+  max-width: 700px;
   margin: 34px 0 0;
   color: rgba(224, 236, 248, 0.72);
   font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
   font-size: 19px;
-  line-height: 1.7;
+  line-height: 1.62;
   letter-spacing: -0.015em;
   font-weight: 500;
 }
@@ -2963,7 +2977,7 @@
 .workflow-header {
   position: relative;
   z-index: 4;
-  max-width: 780px;
+  max-width: 920px;
   margin-bottom: 72px;
 }
 
@@ -2981,8 +2995,8 @@
   margin: 0;
   color: #f4f9ff;
   font-family: 'Inter Tight', 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(48px, 5vw, 84px);
-  line-height: 0.98;
+  font-size: clamp(50px, 5vw, 88px);
+  line-height: 1;
   letter-spacing: -0.055em;
   font-weight: 900;
 }
@@ -2995,11 +3009,11 @@
 }
 
 .workflow-header p:last-child {
-  max-width: 650px;
+  max-width: 720px;
   margin: 30px 0 0;
   color: rgba(224, 236, 248, 0.68);
   font-size: 19px;
-  line-height: 1.7;
+  line-height: 1.62;
   font-weight: 500;
 }
 
