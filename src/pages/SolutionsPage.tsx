@@ -3,9 +3,7 @@ import type { CSSProperties } from 'react'
 import './SolutionsPage.css'
 
 const solutionsImagePath = '/solutions%20page%20images'
-const beforeScanImage = `${solutionsImagePath}/Before_scan.png`
-const afterScanImage = `${solutionsImagePath}/After_scan.png`
-const bgImage = `${solutionsImagePath}/datacenter-bg.jpg`
+const bgImage = `${solutionsImagePath}/network-topology-hero.png`
 const workflowRackScanImage = `${solutionsImagePath}/Server_rack-scan.png`
 const workflowArRackImage = `${solutionsImagePath}/AR_Rack.png`
 const workflowAiDetectionImage = `${solutionsImagePath}/AI_Device_Detection.png`
@@ -13,7 +11,7 @@ const workflowPortTrackingImage = `${solutionsImagePath}/Port_Tracking.png`
 const workflowNetworkTopologyImage = `${solutionsImagePath}/Network_Topology.png`
 const workflowAutomatedInventoryImage = `${solutionsImagePath}/Automated_Inventory.png`
 const workflowSecurityComplianceImage = `${solutionsImagePath}/Security_Compliance.png`
-const rackVideo = `${solutionsImagePath}/server_rack.mp4`
+const rackVideo = `${solutionsImagePath}/server_rack.webm`
 
 const stats = [
   { value: '10x', label: 'faster audits' },
@@ -138,204 +136,190 @@ function easeInOutCubic(value: number) {
     : 1 - Math.pow(-2 * value + 2, 3) / 2
 }
 
-function fastStartScanEase(value: number) {
-  return 1 - Math.pow(1 - value, 2.25)
-}
+function HeroNetworkLines3D() {
+  const nodeRows = [
+    /* row 0 — far background, dim */ [
+      { x: 582, y: 76 }, { x: 714, y: 56 }, { x: 846, y: 70 }, { x: 978, y: 56 }, { x: 1090, y: 72 },
+    ],
+    /* row 1 */ [
+      { x: 548, y: 168 }, { x: 680, y: 150 }, { x: 812, y: 166 }, { x: 944, y: 152 }, { x: 1056, y: 168 },
+    ],
+    /* row 2 — mid */ [
+      { x: 514, y: 265 }, { x: 646, y: 248 }, { x: 778, y: 263 }, { x: 910, y: 250 }, { x: 1022, y: 265 },
+    ],
+    /* row 3 */ [
+      { x: 578, y: 365 }, { x: 712, y: 350 }, { x: 846, y: 363 }, { x: 980, y: 350 },
+    ],
+    /* row 4 — near foreground, bright */ [
+      { x: 644, y: 468 }, { x: 780, y: 453 }, { x: 916, y: 466 },
+    ],
+  ]
 
-function ScanVisual({
-  progress,
-  onReset,
-}: {
-  progress: number
-  onReset: () => void
-}) {
-  const completed = progress > 0.98
+  const nodeVisuals = [
+    { r: 2.5,  coreOpacity: 0.55, haloR: 7 },
+    { r: 3.0,  coreOpacity: 0.66, haloR: 8.5 },
+    { r: 3.4,  coreOpacity: 0.78, haloR: 10 },
+    { r: 3.8,  coreOpacity: 0.88, haloR: 11.5 },
+    { r: 4.3,  coreOpacity: 0.96, haloR: 13.5 },
+  ]
 
-  const beforeOpacity = clamp(1 - progress * 1.35, 0, 1)
-  const afterOpacity = clamp((progress - 0.42) * 2.15, 0, 1)
-  const scanBeamOpacity = completed ? 0 : clamp(1 - progress * 0.08, 0.25, 1)
-  const networkOpacity = clamp(0.52 + progress * 0.48, 0.52, 1)
-  const scanLineTop = `${clamp(progress * 100, 7, 93)}%`
+  const connections = [
+    /* row-0 horizontals */
+    'M 582 76 L 714 56', 'M 714 56 L 846 70', 'M 846 70 L 978 56', 'M 978 56 L 1090 72',
+    /* row-1 horizontals */
+    'M 548 168 L 680 150', 'M 680 150 L 812 166', 'M 812 166 L 944 152', 'M 944 152 L 1056 168',
+    /* row-2 horizontals */
+    'M 514 265 L 646 248', 'M 646 248 L 778 263', 'M 778 263 L 910 250', 'M 910 250 L 1022 265',
+    /* row-3 horizontals */
+    'M 578 365 L 712 350', 'M 712 350 L 846 363', 'M 846 363 L 980 350',
+    /* row-4 horizontals */
+    'M 644 468 L 780 453', 'M 780 453 L 916 466',
+    /* row-0 → row-1 verticals */
+    'M 582 76 L 548 168', 'M 714 56 L 680 150', 'M 846 70 L 812 166', 'M 978 56 L 944 152', 'M 1090 72 L 1056 168',
+    /* row-1 → row-2 verticals */
+    'M 548 168 L 514 265', 'M 680 150 L 646 248', 'M 812 166 L 778 263', 'M 944 152 L 910 250', 'M 1056 168 L 1022 265',
+    /* row-2 → row-3 verticals */
+    'M 646 248 L 578 365', 'M 778 263 L 712 350', 'M 910 250 L 846 363', 'M 1022 265 L 980 350',
+    /* row-3 → row-4 verticals */
+    'M 712 350 L 644 468', 'M 846 363 L 780 453', 'M 980 350 L 916 466',
+    /* diagonal cross-links for visual richness */
+    'M 714 56 L 812 166', 'M 846 70 L 944 152', 'M 680 150 L 778 263',
+    'M 910 250 L 980 350', 'M 712 350 L 780 453',
+  ]
 
-  const scanStyle = {
-    '--scan-progress': progress,
-    '--scan-line-top': scanLineTop,
-    '--before-opacity': beforeOpacity,
-    '--after-opacity': afterOpacity,
-    '--scan-beam-opacity': scanBeamOpacity,
-    '--network-opacity': networkOpacity,
-  } as CSSProperties
+  const beams = [
+    { path: 'M 582 76 L 714 56 L 846 70 L 812 166 L 778 263 L 712 350 L 644 468', dur: '11s', begin: '0s' },
+    { path: 'M 1090 72 L 978 56 L 944 152 L 910 250 L 980 350 L 916 466',          dur: '9.5s', begin: '-3s' },
+    { path: 'M 514 265 L 646 248 L 778 263 L 846 363 L 780 453',                    dur: '13s',  begin: '-6s' },
+    { path: 'M 1056 168 L 944 152 L 846 70 L 714 56 L 680 150 L 646 248',           dur: '10s',  begin: '-2s' },
+    { path: 'M 644 468 L 712 350 L 778 263 L 812 166 L 846 70',                     dur: '12s',  begin: '-8s' },
+    { path: 'M 582 76 L 548 168 L 514 265 L 578 365 L 644 468',                     dur: '8.5s', begin: '-5s' },
+    { path: 'M 978 56 L 1056 168 L 1022 265 L 980 350',                             dur: '10.5s', begin: '-1s' },
+  ]
 
   return (
-    <div
-      className={`scan-stage hero-scan-stage ${completed ? 'is-complete' : ''}`}
-      style={scanStyle}
-    >
-      <div className="hero-network-3d" aria-hidden="true">
-        <svg
-          className="hero-wire-svg"
-          viewBox="0 0 720 660"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <linearGradient id="heroWireGradient" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="rgba(19, 245, 255, 0)" />
-              <stop offset="18%" stopColor="rgba(19, 245, 255, 0.42)" />
-              <stop offset="52%" stopColor="rgba(125, 211, 252, 0.92)" />
-              <stop offset="82%" stopColor="rgba(19, 245, 255, 0.46)" />
-              <stop offset="100%" stopColor="rgba(19, 245, 255, 0)" />
-            </linearGradient>
-
-            <filter id="heroWireGlow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="3.5" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
-          <path
-            className="hero-wire-path hero-wire-path-one"
-            d="M 20 120 C 130 40, 245 145, 355 92 S 570 38, 700 135"
-          />
-          <path
-            className="hero-wire-path hero-wire-path-two"
-            d="M 18 292 C 150 240, 230 326, 360 286 S 575 225, 704 304"
-          />
-          <path
-            className="hero-wire-path hero-wire-path-three"
-            d="M 28 520 C 150 430, 255 555, 370 492 S 570 440, 694 520"
-          />
-          <path
-            className="hero-wire-path hero-wire-path-four"
-            d="M 92 36 C 160 150, 125 270, 236 340 S 355 500, 280 630"
-          />
-          <path
-            className="hero-wire-path hero-wire-path-five"
-            d="M 632 42 C 560 160, 615 270, 502 350 S 390 508, 460 630"
-          />
-
-          <circle className="hero-wire-dot hero-wire-dot-one" r="4">
-            <animateMotion
-              dur="5.2s"
-              repeatCount="indefinite"
-              path="M 20 120 C 130 40, 245 145, 355 92 S 570 38, 700 135"
-            />
-          </circle>
-
-          <circle className="hero-wire-dot hero-wire-dot-two" r="4">
-            <animateMotion
-              dur="6.4s"
-              repeatCount="indefinite"
-              path="M 18 292 C 150 240, 230 326, 360 286 S 575 225, 704 304"
-            />
-          </circle>
-
-          <circle className="hero-wire-dot hero-wire-dot-three" r="4">
-            <animateMotion
-              dur="5.8s"
-              repeatCount="indefinite"
-              path="M 28 520 C 150 430, 255 555, 370 492 S 570 440, 694 520"
-            />
-          </circle>
-        </svg>
-
-        <span className="hero-network-grid hero-network-grid-one" />
-        <span className="hero-network-grid hero-network-grid-two" />
-
-        <span className="hero-network-orbit hero-network-orbit-one" />
-        <span className="hero-network-orbit hero-network-orbit-two" />
-        <span className="hero-network-orbit hero-network-orbit-three" />
-
-        <span className="hero-network-beam hero-network-beam-one" />
-        <span className="hero-network-beam hero-network-beam-two" />
-        <span className="hero-network-beam hero-network-beam-three" />
-
-        <span className="hero-network-node hero-network-node-one" />
-        <span className="hero-network-node hero-network-node-two" />
-        <span className="hero-network-node hero-network-node-three" />
-        <span className="hero-network-node hero-network-node-four" />
-        <span className="hero-network-node hero-network-node-five" />
-
-        <span className="hero-network-cube hero-network-cube-one">
-          <i />
-          <i />
-          <i />
-        </span>
-
-        <span className="hero-network-cube hero-network-cube-two">
-          <i />
-          <i />
-          <i />
-        </span>
-      </div>
-
-      <article
-        className={`scan-card hero-scan-card ${completed ? 'is-clickable' : ''}`}
-        onClick={completed ? onReset : undefined}
-        title={completed ? 'Click to scan again' : undefined}
+    <div className="hero-3d-network" aria-hidden="true">
+      <svg
+        className="hero-3d-network-svg"
+        viewBox="490 44 620 442"
+        preserveAspectRatio="xMidYMid meet"
       >
-        <div className="hero-scan-image-layer hero-before-scan">
-          <img src={beforeScanImage} alt="RackTrack rack before scan" />
-        </div>
+        <defs>
+          <filter id="net3dLineGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id="net3dBeamGlow" x="-100%" y="-100%" width="400%" height="400%">
+            <feGaussianBlur stdDeviation="3.5" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id="net3dNodeGlow" x="-80%" y="-80%" width="360%" height="360%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
 
-        <div className="hero-scan-image-layer hero-after-scan">
-          <img src={afterScanImage} alt="RackTrack rack after AI scan" />
-        </div>
+        {/* Connection lines */}
+        <g filter="url(#net3dLineGlow)">
+          {connections.map((d, i) => (
+            <path
+              key={i}
+              d={d}
+              className={`net3d-conn net3d-conn-v${(i % 5) + 1}`}
+            />
+          ))}
+        </g>
 
-        <div className="hero-scan-vignette" />
+        {/* Traveling beam packets */}
+        {beams.map((b, i) => (
+          <circle
+            key={i}
+            r={i < 4 ? 2.8 : 2.2}
+            className={`net3d-packet net3d-packet-${i + 1}`}
+            filter="url(#net3dBeamGlow)"
+          >
+            <animateMotion dur={b.dur} begin={b.begin} repeatCount="indefinite" path={b.path} />
+          </circle>
+        ))}
 
-        <div className="scan-top-meta hero-scan-top-meta">
-          <span className="scan-status-text">
-            {completed ? '• SCAN COMPLETE' : 'SCANNING RACK…'}
-          </span>
-          <span>42U · 9 DEVICES</span>
-        </div>
+        {/* Network nodes — depth-graded size & brightness */}
+        {nodeRows.map((row, rowIndex) => {
+          const vis = nodeVisuals[rowIndex]
+          return row.map((n, ni) => (
+            <g key={`${rowIndex}-${ni}`} filter="url(#net3dNodeGlow)">
+              <circle
+                cx={n.x} cy={n.y} r={vis.haloR}
+                fill={`rgba(19,245,255,${(vis.coreOpacity * 0.14).toFixed(3)})`}
+                className={`net3d-halo net3d-halo-r${rowIndex}`}
+              />
+              <circle
+                cx={n.x} cy={n.y} r={vis.r}
+                fill={`rgba(19,245,255,${vis.coreOpacity})`}
+                className={`net3d-node net3d-node-r${rowIndex}`}
+              />
+            </g>
+          ))
+        })}
+      </svg>
+    </div>
+  )
+}
 
-        {!completed && (
-          <>
-            <div className="hero-scan-lens">
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
+function HeroNetworkBackdrop() {
+  const links = [
+    'M 70 470 C 220 350, 360 400, 500 285 C 650 165, 790 220, 930 120',
+    'M 110 560 C 260 450, 410 500, 560 365 C 690 250, 790 345, 930 260',
+    'M 150 330 C 320 240, 440 315, 590 210 C 720 118, 850 170, 965 92',
+    'M 280 590 C 420 490, 560 545, 700 430 C 810 340, 900 382, 980 310',
+  ]
 
-            <div className="scan-line hero-main-scan-line" />
-            <div className="scan-sweep hero-main-scan-sweep" />
-            <div className="scan-glow hero-main-scan-glow" />
-          </>
-        )}
+  return (
+    <div className="hero-network-backdrop hero-network-backdrop-clean" aria-hidden="true">
+      <svg
+        className="hero-network-backdrop-svg"
+        viewBox="0 0 1000 620"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="heroBackdropLine" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgba(19, 245, 255, 0)" />
+            <stop offset="35%" stopColor="rgba(19, 245, 255, 0.16)" />
+            <stop offset="52%" stopColor="rgba(125, 211, 252, 0.48)" />
+            <stop offset="72%" stopColor="rgba(19, 245, 255, 0.14)" />
+            <stop offset="100%" stopColor="rgba(19, 245, 255, 0)" />
+          </linearGradient>
 
-        <div className="hero-scan-side-pill hero-pill-one">
-          <small>SWITCH</small>
-          <strong>24P</strong>
-        </div>
+          <filter id="heroBackdropGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="2.8" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
 
-        <div className="hero-scan-side-pill hero-pill-two">
-          <small>SERVER</small>
-          <strong>R740</strong>
-        </div>
+        {links.map((path, index) => (
+          <path
+            key={path}
+            className={`hero-network-backdrop-link hero-network-backdrop-link-${index + 1}`}
+            d={path}
+          />
+        ))}
 
-        <div className="hero-scan-side-pill hero-pill-three">
-          <small>PORTS</small>
-          <strong>ACTIVE</strong>
-        </div>
+        <circle className="hero-network-backdrop-packet packet-one" r="3.2">
+          <animateMotion dur="10s" repeatCount="indefinite" path={links[0]} />
+        </circle>
 
-        <div className="detected-panel hero-detected-panel">
-          <p>{completed ? 'Detected' : 'Analyzing'}</p>
-          <h3>{completed ? 'Rack inventory mapped' : 'Rack scan in progress'}</h3>
-          <span>
-            {completed
-              ? '✓ Devices, ports, cables and labels recognized'
-              : 'Reading switches, ports, servers and cable paths…'}
-          </span>
-          {!completed && <small>Scanning rack unit positions…</small>}
-        </div>
+        <circle className="hero-network-backdrop-packet packet-two" r="2.8">
+          <animateMotion dur="12s" repeatCount="indefinite" path={links[1]} />
+        </circle>
 
-        {completed && <div className="rescan-hint">Click to scan again</div>}
-      </article>
+        <circle className="hero-network-backdrop-packet packet-three" r="2.8">
+          <animateMotion dur="14s" repeatCount="indefinite" path={links[2]} />
+        </circle>
+      </svg>
+
+      <div className="hero-network-backdrop-plane" />
     </div>
   )
 }
@@ -1149,88 +1133,23 @@ function WorkflowSection() {
 }
 
 export default function SolutionsPage() {
-  const [progress, setProgress] = useState(0)
-
-  const startTimeoutRef = useRef<number | null>(null)
-  const frameRef = useRef<number | null>(null)
-
-  const clearTimers = useCallback(() => {
-    if (startTimeoutRef.current !== null) {
-      window.clearTimeout(startTimeoutRef.current)
-      startTimeoutRef.current = null
-    }
-
-    if (frameRef.current !== null) {
-      window.cancelAnimationFrame(frameRef.current)
-      frameRef.current = null
-    }
-  }, [])
-
-  const startAnimation = useCallback(() => {
-    if (frameRef.current !== null) {
-      window.cancelAnimationFrame(frameRef.current)
-      frameRef.current = null
-    }
-
-    if (startTimeoutRef.current !== null) {
-      window.clearTimeout(startTimeoutRef.current)
-      startTimeoutRef.current = null
-    }
-
-    /*
-      Infinite hero scan loop:
-      1. scanDuration  = scanning movement from top to bottom
-      2. holdDuration  = small pause on completed result
-      3. resetDuration = quick reset back to scan start
-    */
-    const scanDuration = 4200
-    const holdDuration = 950
-    const resetDuration = 300
-    const cycleDuration = scanDuration + holdDuration + resetDuration
-
-    const startTime = performance.now()
-
-    const animate = (time: number) => {
-      const elapsed = (time - startTime) % cycleDuration
-
-      if (elapsed <= scanDuration) {
-        const rawProgress = clamp(elapsed / scanDuration, 0, 1)
-        const easedProgress = fastStartScanEase(rawProgress)
-
-        setProgress(easedProgress)
-      } else if (elapsed <= scanDuration + holdDuration) {
-        setProgress(1)
-      } else {
-        setProgress(0)
-      }
-
-      frameRef.current = window.requestAnimationFrame(animate)
-    }
-
-    frameRef.current = window.requestAnimationFrame(animate)
-  }, [])
-
-  const handleResetScan = useCallback(() => {
-    clearTimers()
-    setProgress(0)
-    startAnimation()
-  }, [clearTimers, startAnimation])
-
-  useEffect(() => {
-    startAnimation()
-
-    return () => {
-      clearTimers()
-    }
-  }, [clearTimers, startAnimation])
-
   return (
     <main className="solutions-page">
       <section className="solutions-hero">
-        <div
-          className="hero-bg-image"
-          style={{ backgroundImage: `url(${bgImage})` }}
-        />
+        <div className="hero-bg-cinema" aria-hidden="true">
+          <div
+            className="hero-bg-image hero-bg-image--animated hero-bg-image-hd"
+            style={{ backgroundImage: `url(${bgImage})` }}
+          />
+
+          <div className="hero-bg-cinema-glow" />
+          <div className="hero-bg-cinema-sweep" />
+          <div className="hero-bg-cinema-depth" />
+        </div>
+
+        <HeroNetworkLines3D />
+
+        <HeroNetworkBackdrop />
 
         <div className="hero-noise" />
         <div className="hero-aurora hero-aurora-one" />
@@ -1268,7 +1187,12 @@ export default function SolutionsPage() {
           </div>
         </div>
 
-        <ScanVisual progress={progress} onReset={handleResetScan} />
+        {/*
+          Hero side scanning visual temporarily disabled for layout review.
+          Kept in place intentionally so it can be restored quickly.
+
+          <ScanVisual progress={progress} onReset={handleResetScan} />
+        */}
       </section>
 
       <PrinciplesSection />
