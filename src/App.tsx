@@ -33,8 +33,8 @@ export default function App() {
             <div className="app-footer-columns">
               <nav className="app-footer-nav" aria-label="Footer navigation">
                 <span className="app-footer-heading">Explore</span>
-                <Link to="/solutions">Solutions</Link>
                 <Link to="/about-us">About Us</Link>
+                <Link to="/solutions">Solutions</Link>
                 <Link to="/contact-us">Contact Us</Link>
               </nav>
 
