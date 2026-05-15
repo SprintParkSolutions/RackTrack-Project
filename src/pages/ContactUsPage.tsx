@@ -1,33 +1,170 @@
 import { useState } from 'react'
-import type { FormEvent } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import './ContactUsPage.css'
 import {
+  AlertCircle,
   ArrowUpRight,
   CheckCircle2,
+  CircleCheckBig,
   Clock3,
+  Home,
   Mail,
   MapPin,
   PhoneCall,
   Rocket,
+  X,
 } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import {
+  createRackTrackLead,
+  type RackTrackLeadPayload,
+} from '../services/salesforceApi'
 
 const faqs = [
   ['Can we scan existing racks?', 'Yes, RackTrack identifies racks, switches, ports, and cables.'],
   ['Can we request a demo?', 'Yes, submit the form and our team will schedule a walkthrough.'],
   ['Is it useful for audits?', 'Yes, it helps maintain rack and port inventory visibility.'],
-]
+] as const
+
+type SubmitState = 'idle' | 'sending' | 'sent' | 'error'
+
+type SuccessModalData = {
+  message: string
+}
+
+const initialFormData: RackTrackLeadPayload = {
+  fullName: '',
+  email: '',
+  companyName: '',
+  rackCount: '',
+  requirement: '',
+  description: '',
+}
+
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+}
 
 export default function ContactUsPage() {
-  const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState<RackTrackLeadPayload>(initialFormData)
+  const [submitState, setSubmitState] = useState<SubmitState>('idle')
+  const [formMessage, setFormMessage] = useState('')
+  const [successModal, setSuccessModal] = useState<SuccessModalData | null>(null)
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target
+
+    setFormData((current) => ({
+      ...current,
+      [name]: value,
+    }))
+
+    if (submitState !== 'idle') {
+      setSubmitState('idle')
+      setFormMessage('')
+    }
+  }
+
+  const validateForm = () => {
+    if (!formData.fullName.trim()) {
+      return 'Full Name is required.'
+    }
+
+    if (!formData.email.trim()) {
+      return 'Email Address is required.'
+    }
+
+    if (!isValidEmail(formData.email)) {
+      return 'Please enter a valid email address.'
+    }
+
+    if (!formData.requirement.trim()) {
+      return 'Please select what you are trying to improve.'
+    }
+
+    if (!formData.description.trim()) {
+      return 'Please tell us about your rack, audit, or workflow requirement.'
+    }
+
+    return null
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    const validationMessage = validateForm()
+    if (validationMessage) {
+      setSubmitState('error')
+      setFormMessage(validationMessage)
+      return
+    }
+
     setSubmitState('sending')
-    setTimeout(() => setSubmitState('sent'), 2400)
+    setFormMessage('')
+
+    const response = await createRackTrackLead(formData)
+
+    if (response.success) {
+      setSubmitState('sent')
+      setFormMessage(response.message || 'Your request has been submitted successfully.')
+      setSuccessModal({
+        message: response.message || 'Your demo request has been submitted successfully.',
+      })
+      setFormData(initialFormData)
+      return
+    }
+
+    setSubmitState('error')
+    setFormMessage(response.message || 'We could not submit your request right now.')
   }
 
   return (
     <main className="contact-page">
+      {successModal ? (
+        <div
+          className="contact-success-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contact-success-title"
+        >
+          <div className="contact-success-modal">
+            <button
+              type="button"
+              className="contact-success-close"
+              onClick={() => navigate('/')}
+              aria-label="Close success popup and go to home page"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="contact-success-badge" aria-hidden="true">
+              <CircleCheckBig size={28} />
+            </div>
+
+            <p className="contact-success-eyebrow">Demo Request Submitted</p>
+            <h2 id="contact-success-title">Your demo request has been submitted successfully.</h2>
+            <p className="contact-success-copy">
+              We have received your request and our team will review it shortly before
+              reaching out with the next steps.
+            </p>
+
+            <p className="contact-success-message">{successModal.message}</p>
+
+            <button
+              type="button"
+              className="contact-success-home"
+              onClick={() => navigate('/')}
+            >
+              <Home size={16} />
+              Close and Go Home
+            </button>
+          </div>
+        </div>
+      ) : null}
+
       <section className="contact-hero">
         <div className="hero-content">
           <h1>
@@ -98,7 +235,7 @@ export default function ContactUsPage() {
       </section>
 
       <section id="contact" className="contact-main-section">
-        <form className="contact-form" onSubmit={handleSubmit}>
+        <form className="contact-form" onSubmit={handleSubmit} noValidate>
           <h2>
             Start your
             <span> conversation.</span>
@@ -110,17 +247,51 @@ export default function ContactUsPage() {
           </p>
 
           <div className="form-row">
-            <input type="text" placeholder="Full Name" required />
-            <input type="email" placeholder="Email Address" required />
+            <input
+              type="text"
+              name="fullName"
+              placeholder="Full Name"
+              value={formData.fullName}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="form-row">
-            <input type="text" placeholder="Company Name" required />
-            <input type="text" placeholder="Rack Count or Site Size" />
+            <input
+              type="text"
+              name="companyName"
+              placeholder="Company Name"
+              value={formData.companyName}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="rackCount"
+              placeholder="Rack Count or Site Size"
+              value={formData.rackCount}
+              onChange={handleChange}
+            />
           </div>
 
-          <select required defaultValue="" draggable="false">
-            <option value="" disabled hidden>What are you trying to improve?</option>
+          <select
+            name="requirement"
+            required
+            value={formData.requirement}
+            onChange={handleChange}
+            draggable="false"
+          >
+            <option value="" disabled>
+              What are you trying to improve?
+            </option>
             <option value="AR Rack Scanning">AR Rack Scanning</option>
             <option value="AI Device Detection">AI Device Detection</option>
             <option value="Port Tracking">Port Tracking</option>
@@ -130,7 +301,10 @@ export default function ContactUsPage() {
           </select>
 
           <textarea
+            name="description"
             placeholder="Tell us about your racks, switches, ports, or audit requirement."
+            value={formData.description}
+            onChange={handleChange}
             required
           />
 
@@ -149,10 +323,28 @@ export default function ContactUsPage() {
                 ? 'Message Sent'
                 : submitState === 'sending'
                   ? 'Sending'
-                  : 'Submit Request'}
+                  : submitState === 'error'
+                    ? 'Try Again'
+                    : 'Submit Request'}
             </span>
-            {submitState === 'sent' ? <CheckCircle2 size={16} /> : <ArrowUpRight size={16} />}
+            {submitState === 'sent' ? (
+              <CheckCircle2 size={16} />
+            ) : submitState === 'error' ? (
+              <AlertCircle size={16} />
+            ) : (
+              <ArrowUpRight size={16} />
+            )}
           </button>
+
+          {formMessage ? (
+            <p
+              className={`contact-form-status contact-form-status--${submitState}`}
+              role={submitState === 'error' ? 'alert' : 'status'}
+              aria-live="polite"
+            >
+              {formMessage}
+            </p>
+          ) : null}
         </form>
 
         <aside className="faq-panel">
