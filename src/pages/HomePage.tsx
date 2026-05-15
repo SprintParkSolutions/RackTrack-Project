@@ -14,6 +14,7 @@ type FrameScrubberProps = {
 function useSectionProgress(sectionId: string) {
   const [progress, setProgress] = useState(0)
   const rafRef = useRef<number | null>(null)
+  const lastProgressRef = useRef(0)
 
   useEffect(() => {
     const onScroll = () => {
@@ -25,7 +26,11 @@ function useSectionProgress(sectionId: string) {
 
         const total = Math.max(1, el.offsetHeight - window.innerHeight)
         const scrolled = Math.max(0, -el.getBoundingClientRect().top)
-        setProgress(Math.min(1, Math.max(0, scrolled / total)))
+        const nextProgress = Math.min(1, Math.max(0, scrolled / total))
+        if (Math.abs(nextProgress - lastProgressRef.current) > 0.0025) {
+          lastProgressRef.current = nextProgress
+          setProgress(nextProgress)
+        }
       })
     }
 
@@ -71,97 +76,161 @@ function useFrameScrubber({
   totalFrames,
   folder,
 }: FrameScrubberProps) {
-  const imagesRef = useRef<HTMLImageElement[]>([])
+  const frameIndexRef = useRef<[number, number][]>([])
+  const frameBufferRef = useRef<ArrayBuffer | null>(null)
+  const bitmapCacheRef = useRef<Map<number, ImageBitmap>>(new Map())
+  const inflightFrameRef = useRef<Map<number, Promise<ImageBitmap | null>>>(new Map())
+  const contextRef = useRef<CanvasRenderingContext2D | null>(null)
   const currentFrameRef = useRef(0)
   const rafRef = useRef<number | null>(null)
+  const cacheLimit = 18
 
   const [ready, setReady] = useState(false)
   const [loadPct, setLoadPct] = useState(0)
 
+  const trimCache = useCallback((protectedIndexes: number[]) => {
+    const cache = bitmapCacheRef.current
+    if (cache.size <= cacheLimit) return
+
+    const protectedSet = new Set(protectedIndexes)
+    for (const [key, bitmap] of cache) {
+      if (cache.size <= cacheLimit) break
+      if (protectedSet.has(key)) continue
+      bitmap.close()
+      cache.delete(key)
+    }
+  }, [])
+
+  const loadFrameBitmap = useCallback(
+    async (idx: number) => {
+      const cache = bitmapCacheRef.current
+      if (cache.has(idx)) return cache.get(idx) ?? null
+
+      const inflight = inflightFrameRef.current.get(idx)
+      if (inflight) return inflight
+
+      const frameIndex = frameIndexRef.current[idx]
+      const frameBuffer = frameBufferRef.current
+      if (!frameIndex || !frameBuffer) return null
+
+      const task = (async () => {
+        try {
+          const [offset, length] = frameIndex
+          const blob = new Blob([frameBuffer.slice(offset, offset + length)], {
+            type: 'image/jpeg',
+          })
+          const bitmap = await createImageBitmap(blob)
+          cache.set(idx, bitmap)
+          trimCache([idx, idx - 1, idx + 1, idx - 2, idx + 2])
+          return bitmap
+        } catch {
+          return null
+        } finally {
+          inflightFrameRef.current.delete(idx)
+        }
+      })()
+
+      inflightFrameRef.current.set(idx, task)
+      return task
+    },
+    [trimCache],
+  )
+
   const drawFrame = useCallback(
     (idx: number) => {
       const canvas = canvasRef.current
-      const img = imagesRef.current[idx]
+      const img = bitmapCacheRef.current.get(idx)
       if (!canvas || !img) return
 
-      const ctx = canvas.getContext('2d', { alpha: false })
+      const ctx =
+        contextRef.current ?? canvas.getContext('2d', { alpha: false })
       if (!ctx) return
+      contextRef.current = ctx
 
       const cw = canvas.width
       const ch = canvas.height
-      const iw = img.naturalWidth
-      const ih = img.naturalHeight
+      const iw = img.width
+      const ih = img.height
 
-      const scale = Math.max(cw / iw, ch / ih)
-      const x = (cw - iw * scale) / 2
-      const y = (ch - ih * scale) / 2
+      const isMobilePortrait = window.innerWidth <= 640 && window.innerHeight > window.innerWidth
+      const coverScale = Math.max(cw / iw, ch / ih)
+      const isWideDesktop = window.innerWidth >= 1280
+      const heroScale =
+        folder === 'RackTrack_Home' && isWideDesktop
+          ? coverScale * 0.985
+          : folder === 'RackTrack_Home' && isMobilePortrait
+            ? Math.max(cw / iw, ch / ih * 0.9)
+            : coverScale
+
+      const shiftX =
+        folder === 'RackTrack_Home'
+          ? isMobilePortrait
+            ? cw * -0.055
+            : isWideDesktop
+              ? cw * -0.018
+              : 0
+          : 0
+      const shiftY =
+        folder === 'RackTrack_Home' && isWideDesktop ? ch * 0.01 : 0
+
+      const x = (cw - iw * heroScale) / 2 + shiftX
+      const y = (ch - ih * heroScale) / 2 + shiftY
 
       ctx.clearRect(0, 0, cw, ch)
-      ctx.drawImage(img, x, y, iw * scale, ih * scale)
+      ctx.drawImage(img, x, y, iw * heroScale, ih * heroScale)
     },
-    [canvasRef],
+    [canvasRef, folder],
+  )
+
+  const primeNearbyFrames = useCallback(
+    (centerIndex: number) => {
+      ;[centerIndex - 2, centerIndex - 1, centerIndex + 1, centerIndex + 2].forEach((idx) => {
+        if (idx >= 0 && idx < totalFrames) {
+          void loadFrameBitmap(idx)
+        }
+      })
+    },
+    [loadFrameBitmap, totalFrames],
+  )
+
+  const ensureFrameReady = useCallback(
+    async (idx: number) => {
+      const bitmap = await loadFrameBitmap(idx)
+      if (!bitmap) return
+
+      if (currentFrameRef.current === idx) {
+        drawFrame(idx)
+      }
+
+      primeNearbyFrames(idx)
+    },
+    [drawFrame, loadFrameBitmap, primeNearbyFrames],
   )
 
   useEffect(() => {
     let active = true
-
-    const wait = (ms: number) =>
-      new Promise((resolve) => window.setTimeout(resolve, ms))
 
     async function loadFrames() {
       try {
         const indexRes = await fetch(`/${folder}_index.json`)
         const index: [number, number][] = await indexRes.json()
         if (!active) return
+        frameIndexRef.current = index
 
-        setLoadPct(18)
+        setLoadPct(24)
 
         const binRes = await fetch(`/${folder}_data.bin`)
         const buffer = await binRes.arrayBuffer()
         if (!active) return
+        frameBufferRef.current = buffer
 
-        setLoadPct(52)
+        setLoadPct(62)
+        currentFrameRef.current = 0
+        await ensureFrameReady(0)
+        if (!active) return
 
-        const images: HTMLImageElement[] = []
-        imagesRef.current = images
-
-        for (let i = 0; i < index.length; i++) {
-          const [offset, length] = index[i]
-
-          const blob = new Blob([buffer.slice(offset, offset + length)], {
-            type: 'image/jpeg',
-          })
-
-          const img = new Image()
-          img.src = URL.createObjectURL(blob)
-          images.push(img)
-
-          if (i === 0) {
-            await img.decode()
-            if (!active) return
-
-            setLoadPct(100)
-            drawFrame(0)
-            await wait(140)
-
-            if (!active) return
-            setReady(true)
-          }
-
-          if (i % 8 === 0 || i === index.length - 1) {
-            const frameProgress = Math.round(((i + 1) / index.length) * 38)
-            setLoadPct(Math.min(98, 52 + frameProgress))
-          }
-        }
-
-        for (let i = 1; i < images.length; i++) {
-          if (!active) return
-          try {
-            await images[i].decode()
-          } catch {
-            // skip damaged frame
-          }
-        }
+        setLoadPct(100)
+        setReady(true)
       } catch (error) {
         console.error(`${folder} frame loading failed`, error)
       }
@@ -171,16 +240,21 @@ function useFrameScrubber({
 
     return () => {
       active = false
-      imagesRef.current.forEach((img) => URL.revokeObjectURL(img.src))
+      inflightFrameRef.current.clear()
+      bitmapCacheRef.current.forEach((bitmap) => bitmap.close())
+      bitmapCacheRef.current.clear()
+      frameBufferRef.current = null
+      frameIndexRef.current = []
     }
-  }, [drawFrame, folder])
+  }, [ensureFrameReady, folder])
 
   useEffect(() => {
     const resizeCanvas = () => {
       const canvas = canvasRef.current
       if (!canvas) return
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+      const isMobile = window.innerWidth <= 640
+      const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.25)
 
       canvas.width = Math.floor(window.innerWidth * dpr)
       canvas.height = Math.floor(window.innerHeight * dpr)
@@ -203,11 +277,11 @@ function useFrameScrubber({
     const animateFrame = () => {
       rafRef.current = null
 
-      const frameCount = Math.max(1, imagesRef.current.length || totalFrames)
+      const frameCount = Math.max(1, frameIndexRef.current.length || totalFrames)
       const target = targetProgressRef.current
       const current = currentProgressRef.current
       const delta = target - current
-      const next = Math.abs(delta) > 0.0005 ? current + delta * 0.16 : target
+      const next = Math.abs(delta) > 0.001 ? current + delta * 0.22 : target
 
       currentProgressRef.current = next
 
@@ -218,10 +292,15 @@ function useFrameScrubber({
 
       if (frameIndex !== currentFrameRef.current) {
         currentFrameRef.current = frameIndex
-        drawFrame(frameIndex)
+        if (bitmapCacheRef.current.has(frameIndex)) {
+          drawFrame(frameIndex)
+          primeNearbyFrames(frameIndex)
+        } else {
+          void ensureFrameReady(frameIndex)
+        }
       }
 
-      if (Math.abs(delta) > 0.0005) {
+      if (Math.abs(delta) > 0.001) {
         rafRef.current = requestAnimationFrame(animateFrame)
       }
     }
@@ -250,7 +329,7 @@ function useFrameScrubber({
       window.removeEventListener('scroll', onScroll)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [drawFrame, ready, totalFrames, trackRef])
+  }, [drawFrame, ensureFrameReady, primeNearbyFrames, ready, totalFrames, trackRef])
 
   return { ready, loadPct }
 }
@@ -328,6 +407,34 @@ const RACK_UNITS = [
 
 const RU_START = 0.5
 const RU_END = 0.96
+
+function HeroIntroText() {
+  const progress = useSectionProgress('hero')
+  const hideProgress = Math.min(1, progress / 0.12)
+
+  return (
+    <section
+      className="home-hero-copy"
+      style={{
+        opacity: 1 - hideProgress,
+        transform: `translate3d(0, ${hideProgress * -42}px, 0)`,
+        pointerEvents: hideProgress > 0.85 ? 'none' : 'auto',
+      }}
+    >
+      <h1>
+        <span className="hero-line hero-line-white">
+          Scan Any Rack.
+        </span>
+        <span className="hero-line hero-line-gradient">
+          Find Any Port.
+        </span>
+        <span className="hero-line hero-line-gradient">
+          Instantly.
+        </span>
+      </h1>
+    </section>
+  )
+}
 
 function RackLabels() {
   const progress = useSectionProgress('hero')
@@ -413,14 +520,31 @@ const REPORT_CARDS = [
 
 function NetworkTopologyImageSection() {
   return (
-    <section className="home-network-image-section" aria-hidden="true">
-      <img
-        src="/Images/rack-network-topology.png"
-        alt=""
-        className="home-network-image"
-        loading="lazy"
-      />
-      <div className="home-network-image-glow" />
+    <section className="home-network-image-section">
+      <div className="home-network-content">
+        <span className="home-network-eyebrow">Live Network Visibility</span>
+
+        <h2>
+          See how every rack
+          <br />
+          connects in real time.
+        </h2>
+
+        <p>
+          RackTrack converts rack scans into a visual network map, helping teams
+          understand device relationships, cable paths, and connectivity faster.
+        </p>
+      </div>
+
+      <div className="home-network-visual">
+        <img
+          src="/Images/rack-network-topology.png"
+          alt="Rack Network Topology"
+          className="home-network-image"
+          loading="lazy"
+        />
+        <div className="home-network-image-glow" />
+      </div>
     </section>
   )
 }
@@ -557,6 +681,7 @@ export default function HomePage() {
         totalFrames={HERO_FRAMES}
         scrollHeight={950}
       >
+        <HeroIntroText />
         <RackLabels />
         <div className="home-scroll-hint">Scroll</div>
       </ScrollCanvasSection>

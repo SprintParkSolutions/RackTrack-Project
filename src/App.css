@@ -99,10 +99,10 @@
 }
 
 .app-footer-main {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 36px;
 }
 
 .app-footer-brand {
@@ -121,9 +121,9 @@
 
 .app-footer-logo-image {
   display: block;
-  width: clamp(150px, 11vw, 205px);
+  width: clamp(190px, 13vw, 250px);
   height: auto;
-  max-height: 56px;
+  max-height: 68px;
   object-fit: contain;
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.18));
 }
@@ -137,10 +137,42 @@
 
 .app-footer nav {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 28px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.app-footer-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 32px;
+  align-items: start;
+}
+
+.app-footer-nav,
+.app-footer-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.app-footer-heading {
+  color: rgba(220, 232, 255, 0.52);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.app-footer-contact {
+  max-width: 300px;
+}
+
+.app-footer-contact p {
+  font-size: 0.92rem;
+  line-height: 1.7;
 }
 
 .app-footer a {
@@ -170,21 +202,24 @@
   }
 
   .app-footer-main {
-    align-items: flex-start;
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
   .app-footer-brand {
     gap: 10px;
   }
 
+  .app-footer-columns {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
   .app-footer-logo-image {
-    width: 160px;
+    width: min(210px, 58vw);
   }
 
   .app-footer nav {
-    justify-content: flex-start;
-    gap: 18px;
+    gap: 12px;
   }
 
   .app-footer-bottom {
