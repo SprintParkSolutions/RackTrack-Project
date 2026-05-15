@@ -2,7 +2,7 @@
   min-height: 100vh;
   overflow: hidden;
   color: #ffffff;
-  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-body);
   background:
     radial-gradient(circle at 12% 12%, rgba(0, 210, 255, 0.18), transparent 26%),
     radial-gradient(circle at 88% 18%, rgba(34, 84, 180, 0.22), transparent 32%),
@@ -94,17 +94,20 @@
 .contact-success-eyebrow {
   margin: 20px 0 10px;
   color: #7dd3fc;
-  font-size: 0.76rem;
-  font-weight: 900;
-  letter-spacing: 0.22em;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .contact-success-modal h2 {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 0.98;
-  letter-spacing: -0.05em;
+  font-family: var(--font-heading);
+  font-size: var(--text-page-title);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 
 .contact-success-copy,
@@ -169,14 +172,15 @@
 .hero-content h1,
 .contact-form h2,
 .faq-panel h2 {
+  font-family: var(--font-heading);
   margin: 22px 0;
-  line-height: 0.94;
-  letter-spacing: -0.05em;
-  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 700;
 }
 
 .hero-content h1 {
-  font-size: clamp(3.8rem, 6vw, 6.2rem);
+  font-size: var(--text-hero);
 }
 
 .hero-content h1 span,
@@ -191,14 +195,15 @@
 .contact-form-intro,
 .faq-panel p,
 .info-card p {
+  font-family: var(--font-body);
   color: rgba(226, 242, 255, 0.72);
-  font-size: 1rem;
-  line-height: 1.8;
+  font-size: var(--text-body);
+  line-height: 1.7;
 }
 
 .hero-content p {
   max-width: 560px;
-  font-size: 1.04rem;
+  font-size: var(--text-body);
 }
 
 .info-card,
@@ -2363,7 +2368,7 @@
 
 .contact-form h2,
 .faq-panel h2 {
-  font-size: clamp(2.3rem, 4vw, 3.9rem);
+  font-size: var(--text-page-title);
 }
 
 .contact-main-section {
