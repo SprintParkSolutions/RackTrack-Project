@@ -954,7 +954,6 @@ export default function HomePage() {
       >
         <HeroIntroText />
         <RackLabels />
-        <div className="home-scroll-hint">Scroll</div>
       </ScrollCanvasSection>
 
       <ScanReportSection />
