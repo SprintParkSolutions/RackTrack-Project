@@ -88,6 +88,7 @@
 .info-card,
 .contact-form,
 .faq-panel {
+  box-sizing: border-box;
   border: 1px solid rgba(125, 211, 252, 0.14);
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025)),
@@ -2247,6 +2248,7 @@
 .contact-form input,
 .contact-form select,
 .contact-form textarea {
+  box-sizing: border-box;
   width: 100%;
   margin-bottom: 16px;
   border: 1px solid rgba(125, 211, 252, 0.14);
@@ -2347,6 +2349,10 @@
     padding-right: 30px;
   }
 
+  .contact-info-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .contact-stage {
     height: 620px;
   }
@@ -2357,8 +2363,28 @@
 }
 
 @media (max-width: 780px) {
+  .contact-hero {
+    min-height: auto;
+    padding: 98px 20px 48px;
+    gap: 28px;
+  }
+
+  .contact-info-section,
+  .contact-main-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .contact-info-section {
+    margin-top: 0;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
   .hero-content h1 {
-    font-size: 3.5rem;
+    margin: 10px 0 16px;
+    font-size: clamp(2.6rem, 11vw, 3.5rem);
+    line-height: 0.98;
   }
 
   .hero-actions,
@@ -2367,13 +2393,53 @@
     flex-direction: column;
   }
 
+  .hero-content p {
+    max-width: none;
+    font-size: 0.98rem;
+    line-height: 1.7;
+  }
+
   .contact-form,
   .faq-panel {
-    padding: 28px;
+    border-radius: 24px;
+    padding: 24px 20px;
+  }
+
+  .contact-form h2,
+  .faq-panel h2 {
+    font-size: clamp(2rem, 10vw, 2.9rem);
+    line-height: 0.96;
+  }
+
+  .contact-form-intro {
+    margin: 0 0 22px;
+  }
+
+  .info-card {
+    min-height: 0;
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    padding: 15px 16px;
+    font-size: 16px;
+  }
+
+  .contact-form textarea {
+    min-height: 112px;
+  }
+
+  .submit-rocket-btn {
+    width: 100%;
+    min-width: 0;
+    padding: 15px 18px;
   }
 
   .contact-stage {
-    height: 540px;
+    height: 340px;
   }
 
   .contact-visual {
@@ -2445,5 +2511,20 @@
 
   .contact-render-image {
     animation-name: renderSceneSlideMobile;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-actions .primary-btn,
+  .hero-actions .secondary-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .contact-stage-showcase .contact-glow {
+    width: 420px;
+    height: 320px;
+    right: -18%;
+    filter: blur(48px);
   }
 }
