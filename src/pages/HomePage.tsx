@@ -1,5 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ReactNode, RefObject } from 'react'
+import {
+  AlertTriangle,
+  BarChart3,
+  Check,
+  Clock,
+  Crosshair,
+  Database,
+  DollarSign,
+  Rocket,
+  User,
+  X,
+  Zap,
+} from 'lucide-react'
 import './HomePage.css'
 
 const HERO_FRAMES = 568
@@ -518,32 +531,87 @@ const REPORT_CARDS = [
   },
 ]
 
+const OLD_WAY_ITEMS = [
+  {
+    title: 'Hours or Days',
+    text: 'to find a single port',
+    icon: Clock,
+  },
+  {
+    title: 'High Manual Effort',
+    text: 'more technicians, more human hours',
+    icon: User,
+  },
+  {
+    title: 'More Errors',
+    text: 'inaccurate or incomplete data',
+    icon: AlertTriangle,
+  },
+  {
+    title: 'Higher Costs',
+    text: 'wasted time, resources, and operational cost',
+    icon: DollarSign,
+  },
+]
+
+const RACKTRACK_WAY_ITEMS = [
+  {
+    title: 'Seconds to Find',
+    text: 'any port in any rack',
+    icon: Zap,
+  },
+  {
+    title: 'Accurate Detection',
+    text: 'AI identifies ports, devices, and connections',
+    icon: Crosshair,
+  },
+  {
+    title: 'Complete Inventory',
+    text: 'structured, accurate, and up-to-date data',
+    icon: Database,
+  },
+  {
+    title: 'Lower Costs',
+    text: 'save time and reduce operational expense',
+    icon: DollarSign,
+  },
+]
+
+const COMPARISON_METRICS = [
+  {
+    value: '10x Faster',
+    text: 'Find ports in seconds, not hours',
+    icon: Clock,
+  },
+  {
+    value: '99%+ Accuracy',
+    text: 'AI-powered detection you can trust',
+    icon: Crosshair,
+  },
+  {
+    value: '100% Visibility',
+    text: 'Every rack. Every port. Every connection.',
+    icon: Database,
+  },
+  {
+    value: 'Lower TCO',
+    text: 'Reduce costs and improve efficiency',
+    icon: DollarSign,
+  },
+]
+
 function NetworkTopologyImageSection() {
   return (
     <section className="home-network-image-section">
-      <div className="home-network-content">
-        <span className="home-network-eyebrow">Live Network Visibility</span>
-
-        <h2>
-          See how every rack
-          <br />
-          connects in real time.
-        </h2>
-
-        <p>
-          RackTrack converts rack scans into a visual network map, helping teams
-          understand device relationships, cable paths, and connectivity faster.
-        </p>
-      </div>
-
-      <div className="home-network-visual">
+      <h2 className="home-network-heading">Turn Physical <span className="home-network-heading-accent">Infrastructure Into Live Intelligence</span></h2>
+      <div className="home-network-gif-stage">
         <img
-          src="/Images/rack-network-topology.png"
-          alt="Rack Network Topology"
-          className="home-network-image"
+          src="/Images/network-connectivity.gif"
+          alt="Animated rack connectivity visualization"
+          className="home-network-gif"
           loading="lazy"
         />
-        <div className="home-network-image-glow" />
+        <div className="home-network-gif-text-mask" aria-hidden="true" />
       </div>
     </section>
   )
@@ -551,8 +619,10 @@ function NetworkTopologyImageSection() {
 
 function ScanReportSection() {
   const progress = useSectionProgress('scan-report')
-  const reportProgress = Math.max(0, Math.min(1, (progress - 0.68) / 0.28))
-  const scanProgress = Math.max(0, Math.min(1, progress / 0.7))
+  const introProgress = Math.max(0, Math.min(1, progress / 0.22))
+  const scanRevealProgress = Math.max(0, Math.min(1, (progress - 0.24) / 0.08))
+  const scanProgress = Math.max(0, Math.min(1, (progress - 0.26) / 0.48))
+  const reportProgress = Math.max(0, Math.min(1, (progress - 0.78) / 0.18))
   const activeIndex = Math.min(
     SCAN_FLOW_ITEMS.length - 1,
     Math.floor(scanProgress * SCAN_FLOW_ITEMS.length),
@@ -563,7 +633,7 @@ function ScanReportSection() {
     index: number,
     side: 'left' | 'right',
   ) => {
-    const visible = progress > 0.08 + index * 0.075
+    const visible = scanProgress > 0.08 + index * 0.12
 
     return (
       <article
@@ -599,11 +669,13 @@ function ScanReportSection() {
         <div
           className="home-scan-intro"
           style={{
-            opacity: Math.max(0, 1 - progress / 0.18),
-            transform: `translate3d(-50%, ${-progress * 70}px, 0)`,
+            opacity: Math.max(0, 1 - introProgress),
+            transform: `translate3d(-50%, ${-introProgress * 92}px, 0) scale(${
+              1 - introProgress * 0.04
+            })`,
           }}
         >
-          <span className="home-eyebrow">Post Scan Intelligence</span>
+          <span className="home-eyebrow">How It Works</span>
           <h2>
             Components become
             <br />
@@ -611,19 +683,38 @@ function ScanReportSection() {
           </h2>
         </div>
 
-        <div className="home-scan-flow home-scan-flow-left">
+        <div
+          className="home-scan-flow home-scan-flow-left"
+          style={{
+            opacity: scanRevealProgress,
+            transform: `translate3d(0, ${24 - scanRevealProgress * 24}px, 0)`,
+          }}
+        >
           {SCAN_FLOW_ITEMS.slice(0, 3).map((item, index) =>
             renderFlowItem(item, index, 'left'),
           )}
         </div>
 
-        <div className="home-scan-flow home-scan-flow-right">
+        <div
+          className="home-scan-flow home-scan-flow-right"
+          style={{
+            opacity: scanRevealProgress,
+            transform: `translate3d(0, ${24 - scanRevealProgress * 24}px, 0)`,
+          }}
+        >
           {SCAN_FLOW_ITEMS.slice(3).map((item, index) =>
             renderFlowItem(item, index + 3, 'right'),
           )}
         </div>
 
-        <div className="home-scan-core" aria-hidden="true">
+        <div
+          className="home-scan-core"
+          aria-hidden="true"
+          style={{
+            opacity: scanRevealProgress,
+            transform: `scale(${0.92 + scanRevealProgress * 0.08})`,
+          }}
+        >
           <div className="home-scan-frame">
             <span style={{ height: `${Math.max(12, scanProgress * 100)}%` }} />
             <div className="home-scan-beam" />
@@ -670,6 +761,186 @@ function ScanReportSection() {
     </section>
   )
 }
+
+function RackTrackComparisonSection() {
+  const progress = useSectionProgress('racktrack-comparison')
+  const headerProgress = Math.max(0, Math.min(1, (progress + 0.08) / 0.16))
+  const panelProgress = Math.max(0, Math.min(1, (progress + 0.04) / 0.2))
+  const detailProgress = Math.max(0, Math.min(1, (progress - 0.18) / 0.34))
+  const metricProgress = Math.max(0, Math.min(1, (progress - 0.5) / 0.22))
+
+  return (
+    <section id="racktrack-comparison" className="home-comparison-section">
+      <div className="home-comparison-sticky">
+        <div className="home-comparison-bg" />
+
+        <div
+          className="home-comparison-header"
+          style={{
+            opacity: headerProgress,
+            transform: `translate3d(-50%, ${28 - headerProgress * 28}px, 0)`,
+          }}
+        >
+          <span className="home-eyebrow">Port-Level Intelligence</span>
+          <h2>From rack scan to port-level intelligence in minutes.</h2>
+        </div>
+
+        <div
+          className="home-comparison-board"
+          style={{
+            opacity: panelProgress,
+            transform: `translate3d(-50%, ${54 - panelProgress * 54}px, 0) scale(${
+              0.96 + panelProgress * 0.04
+            })`,
+          }}
+        >
+          <article className="home-comparison-panel home-comparison-panel-old">
+            <div className="home-comparison-title">
+              <span className="home-comparison-mark">
+                <X size={34} strokeWidth={2.4} />
+              </span>
+              <div>
+                <h3>Without RackTrack</h3>
+                <p>Manual. Slow. Error-prone.</p>
+              </div>
+            </div>
+
+            <div className="home-comparison-old-grid">
+              <div className="home-comparison-list">
+                {OLD_WAY_ITEMS.map((item, index) => {
+                  const Icon = item.icon
+                  const visible = detailProgress > index * 0.14
+
+                  return (
+                    <div
+                      className={`home-comparison-row ${visible ? 'is-visible' : ''}`}
+                      key={item.title}
+                    >
+                      <span>
+                        <Icon size={24} strokeWidth={2.2} />
+                      </span>
+                      <div>
+                        <strong>{item.title}</strong>
+                        <small>{item.text}</small>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              <div className="home-comparison-old-visual" aria-hidden="true">
+                <img src="/solutions page images/Before_scan.png" alt="" />
+                <span>Manual trace</span>
+              </div>
+            </div>
+
+            <div className="home-comparison-warning">
+              <BarChart3 size={38} strokeWidth={2.2} />
+              <p>
+                Finding a port the old way?
+                <strong>Slow. Costly. Frustrating.</strong>
+              </p>
+            </div>
+          </article>
+
+          <div className="home-comparison-vs">VS</div>
+
+          <article className="home-comparison-panel home-comparison-panel-new">
+            <div className="home-comparison-title">
+              <span className="home-comparison-mark">
+                <Check size={34} strokeWidth={2.4} />
+              </span>
+              <div>
+                <h3>With RackTrack</h3>
+                <p>Automated. Fast. Accurate.</p>
+              </div>
+            </div>
+
+            <div className="home-comparison-new-grid">
+              <div className="home-comparison-list">
+                {RACKTRACK_WAY_ITEMS.map((item, index) => {
+                  const Icon = item.icon
+                  const visible = detailProgress > index * 0.14
+
+                  return (
+                    <div
+                      className={`home-comparison-row ${visible ? 'is-visible' : ''}`}
+                      key={item.title}
+                    >
+                      <span>
+                        <Icon size={24} strokeWidth={2.2} />
+                      </span>
+                      <div>
+                        <strong>{item.title}</strong>
+                        <small>{item.text}</small>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              <div className="home-comparison-product">
+                <div className="home-product-top">
+                  <strong>RackTrack</strong>
+                  <span>AI Scan Complete</span>
+                </div>
+                <div className="home-product-frame">
+                  <img
+                    src="/solutions page images/Server_rack-scan.png"
+                    alt="RackTrack AI rack scan interface"
+                  />
+                  <div className="home-product-scan-box" />
+                  <div className="home-product-card">
+                    <small>Port Identified</small>
+                    <strong>U42 - P17</strong>
+                    <span>Core-SW-01</span>
+                    <span>SFP+</span>
+                    <span>Verified</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <a href="/contact-us" className="home-comparison-cta">
+              <Rocket size={38} strokeWidth={2.2} />
+              <span>
+                Scan. Search. Find.
+                <strong>Any Rack. Any Port. Instantly.</strong>
+              </span>
+            </a>
+          </article>
+        </div>
+
+        <div
+          className="home-comparison-metrics"
+          style={{
+            opacity: metricProgress,
+            transform: `translate3d(-50%, ${38 - metricProgress * 38}px, 0)`,
+          }}
+        >
+          {COMPARISON_METRICS.map((metric, index) => {
+            const Icon = metric.icon
+
+            return (
+              <article
+                className="home-comparison-metric"
+                key={metric.value}
+                style={{ transitionDelay: `${index * 70}ms` }}
+              >
+                <Icon size={34} strokeWidth={2.1} />
+                <div>
+                  <strong>{metric.value}</strong>
+                  <span>{metric.text}</span>
+                </div>
+              </article>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function HomePage() {
   useHideNavbarWhileFramesScroll()
 
@@ -683,28 +954,13 @@ export default function HomePage() {
       >
         <HeroIntroText />
         <RackLabels />
-        <div className="home-scroll-hint">Scroll</div>
       </ScrollCanvasSection>
-
-      <NetworkTopologyImageSection />
 
       <ScanReportSection />
 
-      <section className="home-cta-section">
-        <span className="home-eyebrow">Audit Engine Ready</span>
+      <NetworkTopologyImageSection />
 
-        <h2>
-          One video.
-          <br />
-          <em>Complete inventory.</em>
-        </h2>
-
-        <p>Built for IT teams who manage data centers at scale.</p>
-
-        <a href="/contact-us" className="home-main-btn">
-          Book Consultation
-        </a>
-      </section>
+      <RackTrackComparisonSection />
     </main>
   )
 }
