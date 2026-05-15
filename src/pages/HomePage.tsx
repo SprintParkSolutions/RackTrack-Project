@@ -523,13 +523,11 @@ function NetworkTopologyImageSection() {
     <section className="home-network-image-section">
       <div className="home-network-content">
         <span className="home-network-eyebrow">Live Network Visibility</span>
-
         <h2>
           See how every rack
           <br />
           connects in real time.
         </h2>
-
         <p>
           RackTrack converts rack scans into a visual network map, helping teams
           understand device relationships, cable paths, and connectivity faster.
@@ -683,7 +681,6 @@ export default function HomePage() {
       >
         <HeroIntroText />
         <RackLabels />
-        <div className="home-scroll-hint">Scroll</div>
       </ScrollCanvasSection>
 
       <NetworkTopologyImageSection />
