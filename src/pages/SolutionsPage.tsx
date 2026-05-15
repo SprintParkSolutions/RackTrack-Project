@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react'
 import './SolutionsPage.css'
 
 const solutionsImagePath = '/solutions%20page%20images'
-const bgImage = `${solutionsImagePath}/network-topology-hero.png`
+const heroVideo = `${solutionsImagePath}/hero_video.mp4`
 const workflowRackScanImage = `${solutionsImagePath}/Server_rack-scan.png`
 const workflowArRackImage = `${solutionsImagePath}/AR_Rack.png`
 const workflowAiDetectionImage = `${solutionsImagePath}/AI_Device_Detection.png`
@@ -136,193 +136,6 @@ function easeInOutCubic(value: number) {
     : 1 - Math.pow(-2 * value + 2, 3) / 2
 }
 
-function HeroNetworkLines3D() {
-  const nodeRows = [
-    /* row 0 — far background, dim */ [
-      { x: 582, y: 76 }, { x: 714, y: 56 }, { x: 846, y: 70 }, { x: 978, y: 56 }, { x: 1090, y: 72 },
-    ],
-    /* row 1 */ [
-      { x: 548, y: 168 }, { x: 680, y: 150 }, { x: 812, y: 166 }, { x: 944, y: 152 }, { x: 1056, y: 168 },
-    ],
-    /* row 2 — mid */ [
-      { x: 514, y: 265 }, { x: 646, y: 248 }, { x: 778, y: 263 }, { x: 910, y: 250 }, { x: 1022, y: 265 },
-    ],
-    /* row 3 */ [
-      { x: 578, y: 365 }, { x: 712, y: 350 }, { x: 846, y: 363 }, { x: 980, y: 350 },
-    ],
-    /* row 4 — near foreground, bright */ [
-      { x: 644, y: 468 }, { x: 780, y: 453 }, { x: 916, y: 466 },
-    ],
-  ]
-
-  const nodeVisuals = [
-    { r: 2.5,  coreOpacity: 0.55, haloR: 7 },
-    { r: 3.0,  coreOpacity: 0.66, haloR: 8.5 },
-    { r: 3.4,  coreOpacity: 0.78, haloR: 10 },
-    { r: 3.8,  coreOpacity: 0.88, haloR: 11.5 },
-    { r: 4.3,  coreOpacity: 0.96, haloR: 13.5 },
-  ]
-
-  const connections = [
-    /* row-0 horizontals */
-    'M 582 76 L 714 56', 'M 714 56 L 846 70', 'M 846 70 L 978 56', 'M 978 56 L 1090 72',
-    /* row-1 horizontals */
-    'M 548 168 L 680 150', 'M 680 150 L 812 166', 'M 812 166 L 944 152', 'M 944 152 L 1056 168',
-    /* row-2 horizontals */
-    'M 514 265 L 646 248', 'M 646 248 L 778 263', 'M 778 263 L 910 250', 'M 910 250 L 1022 265',
-    /* row-3 horizontals */
-    'M 578 365 L 712 350', 'M 712 350 L 846 363', 'M 846 363 L 980 350',
-    /* row-4 horizontals */
-    'M 644 468 L 780 453', 'M 780 453 L 916 466',
-    /* row-0 → row-1 verticals */
-    'M 582 76 L 548 168', 'M 714 56 L 680 150', 'M 846 70 L 812 166', 'M 978 56 L 944 152', 'M 1090 72 L 1056 168',
-    /* row-1 → row-2 verticals */
-    'M 548 168 L 514 265', 'M 680 150 L 646 248', 'M 812 166 L 778 263', 'M 944 152 L 910 250', 'M 1056 168 L 1022 265',
-    /* row-2 → row-3 verticals */
-    'M 646 248 L 578 365', 'M 778 263 L 712 350', 'M 910 250 L 846 363', 'M 1022 265 L 980 350',
-    /* row-3 → row-4 verticals */
-    'M 712 350 L 644 468', 'M 846 363 L 780 453', 'M 980 350 L 916 466',
-    /* diagonal cross-links for visual richness */
-    'M 714 56 L 812 166', 'M 846 70 L 944 152', 'M 680 150 L 778 263',
-    'M 910 250 L 980 350', 'M 712 350 L 780 453',
-  ]
-
-  const beams = [
-    { path: 'M 582 76 L 714 56 L 846 70 L 812 166 L 778 263 L 712 350 L 644 468', dur: '11s', begin: '0s' },
-    { path: 'M 1090 72 L 978 56 L 944 152 L 910 250 L 980 350 L 916 466',          dur: '9.5s', begin: '-3s' },
-    { path: 'M 514 265 L 646 248 L 778 263 L 846 363 L 780 453',                    dur: '13s',  begin: '-6s' },
-    { path: 'M 1056 168 L 944 152 L 846 70 L 714 56 L 680 150 L 646 248',           dur: '10s',  begin: '-2s' },
-    { path: 'M 644 468 L 712 350 L 778 263 L 812 166 L 846 70',                     dur: '12s',  begin: '-8s' },
-    { path: 'M 582 76 L 548 168 L 514 265 L 578 365 L 644 468',                     dur: '8.5s', begin: '-5s' },
-    { path: 'M 978 56 L 1056 168 L 1022 265 L 980 350',                             dur: '10.5s', begin: '-1s' },
-  ]
-
-  return (
-    <div className="hero-3d-network" aria-hidden="true">
-      <svg
-        className="hero-3d-network-svg"
-        viewBox="490 44 620 442"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <defs>
-          <filter id="net3dLineGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2" result="b" />
-            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-          <filter id="net3dBeamGlow" x="-100%" y="-100%" width="400%" height="400%">
-            <feGaussianBlur stdDeviation="3.5" result="b" />
-            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-          <filter id="net3dNodeGlow" x="-80%" y="-80%" width="360%" height="360%">
-            <feGaussianBlur stdDeviation="3" result="b" />
-            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-
-        {/* Connection lines */}
-        <g filter="url(#net3dLineGlow)">
-          {connections.map((d, i) => (
-            <path
-              key={i}
-              d={d}
-              className={`net3d-conn net3d-conn-v${(i % 5) + 1}`}
-            />
-          ))}
-        </g>
-
-        {/* Traveling beam packets */}
-        {beams.map((b, i) => (
-          <circle
-            key={i}
-            r={i < 4 ? 2.8 : 2.2}
-            className={`net3d-packet net3d-packet-${i + 1}`}
-            filter="url(#net3dBeamGlow)"
-          >
-            <animateMotion dur={b.dur} begin={b.begin} repeatCount="indefinite" path={b.path} />
-          </circle>
-        ))}
-
-        {/* Network nodes — depth-graded size & brightness */}
-        {nodeRows.map((row, rowIndex) => {
-          const vis = nodeVisuals[rowIndex]
-          return row.map((n, ni) => (
-            <g key={`${rowIndex}-${ni}`} filter="url(#net3dNodeGlow)">
-              <circle
-                cx={n.x} cy={n.y} r={vis.haloR}
-                fill={`rgba(19,245,255,${(vis.coreOpacity * 0.14).toFixed(3)})`}
-                className={`net3d-halo net3d-halo-r${rowIndex}`}
-              />
-              <circle
-                cx={n.x} cy={n.y} r={vis.r}
-                fill={`rgba(19,245,255,${vis.coreOpacity})`}
-                className={`net3d-node net3d-node-r${rowIndex}`}
-              />
-            </g>
-          ))
-        })}
-      </svg>
-    </div>
-  )
-}
-
-function HeroNetworkBackdrop() {
-  const links = [
-    'M 70 470 C 220 350, 360 400, 500 285 C 650 165, 790 220, 930 120',
-    'M 110 560 C 260 450, 410 500, 560 365 C 690 250, 790 345, 930 260',
-    'M 150 330 C 320 240, 440 315, 590 210 C 720 118, 850 170, 965 92',
-    'M 280 590 C 420 490, 560 545, 700 430 C 810 340, 900 382, 980 310',
-  ]
-
-  return (
-    <div className="hero-network-backdrop hero-network-backdrop-clean" aria-hidden="true">
-      <svg
-        className="hero-network-backdrop-svg"
-        viewBox="0 0 1000 620"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <linearGradient id="heroBackdropLine" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="rgba(19, 245, 255, 0)" />
-            <stop offset="35%" stopColor="rgba(19, 245, 255, 0.16)" />
-            <stop offset="52%" stopColor="rgba(125, 211, 252, 0.48)" />
-            <stop offset="72%" stopColor="rgba(19, 245, 255, 0.14)" />
-            <stop offset="100%" stopColor="rgba(19, 245, 255, 0)" />
-          </linearGradient>
-
-          <filter id="heroBackdropGlow" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="2.8" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
-        {links.map((path, index) => (
-          <path
-            key={path}
-            className={`hero-network-backdrop-link hero-network-backdrop-link-${index + 1}`}
-            d={path}
-          />
-        ))}
-
-        <circle className="hero-network-backdrop-packet packet-one" r="3.2">
-          <animateMotion dur="10s" repeatCount="indefinite" path={links[0]} />
-        </circle>
-
-        <circle className="hero-network-backdrop-packet packet-two" r="2.8">
-          <animateMotion dur="12s" repeatCount="indefinite" path={links[1]} />
-        </circle>
-
-        <circle className="hero-network-backdrop-packet packet-three" r="2.8">
-          <animateMotion dur="14s" repeatCount="indefinite" path={links[2]} />
-        </circle>
-      </svg>
-
-      <div className="hero-network-backdrop-plane" />
-    </div>
-  )
-}
 
 function PrincipleIcon({ type }: { type: string }) {
   return (
@@ -1136,24 +949,16 @@ export default function SolutionsPage() {
   return (
     <main className="solutions-page">
       <section className="solutions-hero">
-        <div className="hero-bg-cinema" aria-hidden="true">
-          <div
-            className="hero-bg-image hero-bg-image--animated hero-bg-image-hd"
-            style={{ backgroundImage: `url(${bgImage})` }}
-          />
-
-          <div className="hero-bg-cinema-glow" />
-          <div className="hero-bg-cinema-sweep" />
-          <div className="hero-bg-cinema-depth" />
-        </div>
-
-        <HeroNetworkLines3D />
-
-        <HeroNetworkBackdrop />
-
-        <div className="hero-noise" />
-        <div className="hero-aurora hero-aurora-one" />
-        <div className="hero-aurora hero-aurora-two" />
+        <video
+          className="hero-bg-video"
+          src={heroVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
 
         <div className="solutions-copy">
           <h1 className="hero-title">
