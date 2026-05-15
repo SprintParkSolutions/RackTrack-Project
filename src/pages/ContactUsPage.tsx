@@ -3,10 +3,10 @@ import type { FormEvent } from 'react'
 import './ContactUsPage.css'
 import {
   ArrowUpRight,
-  Building2,
   CheckCircle2,
   Clock3,
   Mail,
+  MapPin,
   PhoneCall,
   Rocket,
 } from 'lucide-react'
@@ -69,23 +69,23 @@ export default function ContactUsPage() {
 
       <section className="contact-info-section">
         <div className="info-card">
-          <Building2 />
+          <MapPin />
           <span>Office Address</span>
-          <strong>Asian Sun City, Block B, Kondapur</strong>
-          <p>Unit No 1204, Forest Department, Hyderabad 500084.</p>
+          <strong>85 Felt Rd, Suite #604</strong>
+          <p>South Windsor, CT 06074</p>
         </div>
 
         <div className="info-card">
           <Mail />
           <span>Email</span>
-          <strong>support@racktrack.com</strong>
+          <strong>info@racktrack.ai</strong>
           <p>Share audit goals, rollout questions, or support requests.</p>
         </div>
 
         <div className="info-card">
           <PhoneCall />
-          <span>Phone Numbers</span>
-          <strong>+91 93985 85511</strong>
+          <span>Phone</span>
+          <strong>+1 (860) 566 9894</strong>
           <p>Call our contact team for demos, support, and meeting schedules.</p>
         </div>
 
