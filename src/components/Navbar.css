@@ -80,9 +80,10 @@
   text-decoration: none;
   padding: 11px 16px;
   border-radius: 999px;
-  font-size: 0.62rem;
-  font-weight: 750;
-  letter-spacing: 0.18em;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   transition: color 0.22s ease;
   white-space: nowrap;
@@ -127,10 +128,10 @@
   background: linear-gradient(135deg, #7dd3fc 0%, #00d2ff 44%, #0099cc 100%);
   box-shadow: 0 0 24px rgba(0, 210, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.42);
   cursor: pointer;
-  font: inherit;
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0.16em;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -185,9 +186,10 @@
   justify-content: space-between;
   color: var(--rt-nav-muted);
   text-decoration: none;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   transition:
     color 0.22s ease,
