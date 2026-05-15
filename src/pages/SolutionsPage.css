@@ -1,9 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 .solutions-page {
+  --solutions-navy: #050d1a;
+  --solutions-navy-mid: #081428;
+  --solutions-cyan: #00d2ff;
+  --solutions-sky: #7dd3fc;
+  --solutions-text: #f0f4ff;
+  --solutions-muted: rgba(220, 232, 255, 0.68);
+  --solutions-border: rgba(0, 210, 255, 0.18);
+
   min-height: 100vh;
-  background: #030910;
-  color: #f6fbff;
+  background: var(--solutions-navy);
+  color: var(--solutions-text);
   overflow-x: hidden;
   font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -13,15 +21,15 @@
   min-height: calc(100vh - var(--rt-nav-height, 88px));
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1.02fr 0.98fr;
-  gap: 76px;
+  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+  gap: 26px;
   align-items: center;
   margin-top: var(--rt-nav-height, 88px);
-  padding: clamp(48px, 6vh, 76px) max(32px, calc((100vw - 1420px) / 2)) 70px;
+  padding: clamp(48px, 6vh, 72px) 70px 70px;
   background:
-    radial-gradient(circle at 78% 18%, rgba(0, 246, 255, 0.22), transparent 30%),
-    radial-gradient(circle at 12% 92%, rgba(119, 82, 255, 0.34), transparent 29%),
-    linear-gradient(110deg, #050b12 0%, #06111a 48%, #02070d 100%);
+    radial-gradient(circle at 78% 18%, rgba(0, 210, 255, 0.2), transparent 30%),
+    radial-gradient(circle at 16% 88%, rgba(125, 211, 252, 0.2), transparent 31%),
+    linear-gradient(110deg, #050d1a 0%, #081428 48%, #020812 100%);
 }
 
 .hero-bg-image {
@@ -88,23 +96,25 @@
   height: 420px;
   left: 3%;
   bottom: -15%;
-  background: rgba(126, 94, 255, 0.25);
+  background: rgba(0, 115, 190, 0.24);
   animation: floatGlow 10s ease-in-out infinite alternate-reverse;
 }
 
 .solutions-copy {
   position: relative;
   z-index: 5;
-  max-width: 650px;
-  transform: translateY(-18px);
+  max-width: 690px;
+  transform: none;
+  justify-self: start;
+  width: 100%;
 }
 
 .hero-title {
   margin: 0 0 30px;
   color: #f7fbff;
   font-family: 'Inter Tight', 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(50px, 4.7vw, 84px);
-  line-height: 1.08;
+  font-size: clamp(52px, 5vw, 88px);
+  line-height: 1;
   letter-spacing: -0.048em;
   font-weight: 900;
   text-rendering: geometricPrecision;
@@ -116,13 +126,12 @@
 
 .title-line {
   display: block;
-  white-space: nowrap;
 }
 
 .title-gradient {
   display: inline-block;
   font-weight: 900;
-  background: linear-gradient(92deg, #22e5ff 7%, #75bfff 42%, #9b70ff 72%, #24f4ff 100%);
+  background: linear-gradient(92deg, #00d2ff 4%, #7dd3fc 50%, #f0f4ff 78%, #00d2ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -136,11 +145,11 @@
 }
 
 .hero-description {
-  max-width: 620px;
+  max-width: 560px;
   color: rgba(222, 234, 248, 0.8);
   font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  font-size: 18px;
-  line-height: 1.72;
+  font-size: 17px;
+  line-height: 1.62;
   letter-spacing: -0.014em;
   font-weight: 500;
   text-shadow: 0 8px 38px rgba(0, 0, 0, 0.45);
@@ -194,8 +203,8 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
-  margin-top: 46px;
-  max-width: 590px;
+  margin-top: 38px;
+  max-width: 540px;
 }
 
 .stat-card {
@@ -238,26 +247,266 @@
   place-items: center;
   min-height: clamp(560px, calc(100vh - 160px), 640px);
   perspective: 1400px;
-  transform: translateY(-14px);
+  transform: none;
+  justify-self: end;
+  width: min(100%, 720px);
+  isolation: isolate;
 }
 
 .scan-stage::before {
   content: '';
   position: absolute;
-  width: 660px;
-  height: 660px;
+  width: 720px;
+  height: 720px;
   border-radius: 999px;
   background: radial-gradient(
     circle,
-    rgba(0, 234, 255, 0.2),
-    rgba(0, 234, 255, 0.06) 34%,
+    rgba(0, 210, 255, 0.24),
+    rgba(0, 210, 255, 0.08) 34%,
     transparent 69%
   );
   animation: pulseHalo 4s ease-in-out infinite;
 }
 
+.scan-stage::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  right: 8%;
+  top: 17%;
+  width: 58%;
+  height: 56%;
+  border-radius: 999px;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 52% 48%, rgba(0, 210, 255, 0.16), transparent 58%),
+    conic-gradient(from 90deg, transparent, rgba(0, 210, 255, 0.2), transparent, rgba(125, 211, 252, 0.12), transparent);
+  filter: blur(1px);
+  opacity: 0.7;
+  transform: rotateX(68deg) rotateZ(-10deg);
+  animation: scanFocusOrbit 16s linear infinite;
+}
+
+.scan-backdrop-media {
+  position: absolute;
+  z-index: 1;
+  inset: -4% -10% -6% -10%;
+  overflow: hidden;
+  border-radius: 0;
+  opacity: 0.6;
+  filter: saturate(1.18) contrast(1.06) brightness(0.72) blur(0.25px);
+  transform:
+    rotateY(calc(-3deg + var(--scan-progress) * 1deg))
+    rotateX(calc(1deg - var(--scan-progress) * 0.5deg))
+    translate3d(calc(var(--scan-progress) * -4px), calc(var(--scan-progress) * -6px), 0);
+  transition: transform 0.12s linear;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, black 22%, black 70%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, black 14%, black 80%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0%, black 22%, black 70%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, black 14%, black 80%, transparent 100%);
+  mask-composite: intersect;
+  mix-blend-mode: lighten;
+}
+
+.scan-backdrop-media::before {
+  content: '';
+  position: absolute;
+  inset: -16%;
+  z-index: 3;
+  background:
+    radial-gradient(circle at 76% 18%, rgba(0, 210, 255, 0.28), transparent 35%),
+    radial-gradient(circle at 28% 72%, rgba(125, 211, 252, 0.18), transparent 30%),
+    linear-gradient(90deg, rgba(5, 13, 26, 0.76), rgba(5, 13, 26, 0.12) 45%, rgba(5, 13, 26, 0.84));
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.scan-backdrop-image {
+  position: absolute;
+  inset: 0;
+}
+
+.scan-backdrop-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.scan-backdrop-before {
+  opacity: var(--before-opacity);
+  transform: scale(calc(1.05 + var(--scan-progress) * 0.08));
+  filter: brightness(0.78) saturate(1.16) contrast(1.12);
+}
+
+.scan-backdrop-before img {
+  object-position: center center;
+}
+
+.scan-backdrop-after {
+  opacity: calc(var(--after-opacity) * 0.62);
+  transform:
+    scale(calc(1.12 - var(--scan-progress) * 0.05))
+    translateY(calc(-8px + var(--scan-progress) * 6px));
+  filter: brightness(0.82) saturate(1.28) contrast(1.08);
+}
+
+.scan-backdrop-after img {
+  object-position: center center;
+}
+
+.scan-backdrop-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background:
+    linear-gradient(90deg, rgba(5, 13, 26, 0.92) 0%, rgba(5, 13, 26, 0.28) 34%, rgba(5, 13, 26, 0.54) 72%, rgba(5, 13, 26, 0.96) 100%),
+    linear-gradient(180deg, rgba(5, 13, 26, 0.58), rgba(5, 13, 26, 0.08) 40%, rgba(5, 13, 26, 0.86)),
+    radial-gradient(circle at 52% 46%, transparent 0%, rgba(5, 13, 26, 0.34) 64%, rgba(5, 13, 26, 0.96) 100%);
+  pointer-events: none;
+}
+
+.scan-background-3d {
+  position: absolute;
+  inset: -8% -14% -8% -14%;
+  z-index: 2;
+  pointer-events: none;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  opacity: 0.58;
+  -webkit-mask-image: radial-gradient(ellipse at 56% 48%, black 0%, black 58%, transparent 82%);
+  mask-image: radial-gradient(ellipse at 56% 48%, black 0%, black 58%, transparent 82%);
+}
+
+.scan-depth-plane,
+.scan-depth-rail,
+.scan-depth-thread {
+  position: absolute;
+  display: block;
+  border: 1px solid rgba(0, 210, 255, 0.16);
+  transform-style: preserve-3d;
+}
+
+.scan-depth-plane {
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at center, rgba(0, 210, 255, 0.05), transparent 62%),
+    rgba(5, 13, 26, 0.025);
+  box-shadow:
+    0 0 42px rgba(0, 210, 255, 0.07),
+    inset 0 0 32px rgba(0, 210, 255, 0.05);
+}
+
+.scan-depth-plane-one {
+  width: 72%;
+  height: 28%;
+  right: 4%;
+  top: 20%;
+  transform: rotateX(62deg) rotateZ(-14deg) translateZ(-80px);
+  animation: scanPlaneFloatOne 17s ease-in-out infinite alternate;
+}
+
+.scan-depth-plane-two {
+  width: 64%;
+  height: 24%;
+  right: 16%;
+  bottom: 14%;
+  transform: rotateX(66deg) rotateZ(12deg) translateZ(-120px);
+  animation: scanPlaneFloatTwo 19s ease-in-out infinite alternate-reverse;
+}
+
+.scan-depth-plane-three {
+  width: 42%;
+  height: 18%;
+  left: 18%;
+  top: 38%;
+  transform: rotateX(58deg) rotateZ(-32deg) translateZ(-160px);
+  animation: scanPlaneFloatThree 15s ease-in-out infinite alternate;
+}
+
+.scan-depth-rail {
+  height: 2px;
+  border-width: 0;
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.52) 0 1px, transparent 2px);
+  background-size: 34px 2px;
+  box-shadow: none;
+  opacity: 0.32;
+}
+
+.scan-depth-rail-one {
+  width: 70%;
+  right: 4%;
+  top: 30%;
+  transform: rotateZ(-8deg);
+  animation: scanRailDrift 8s ease-in-out infinite;
+}
+
+.scan-depth-rail-two {
+  width: 58%;
+  right: 16%;
+  bottom: 28%;
+  transform: rotateZ(7deg);
+  animation: scanRailDrift 10s ease-in-out infinite reverse;
+}
+
+.scan-depth-node {
+  position: absolute;
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #00d2ff;
+  box-shadow:
+    0 0 18px rgba(0, 210, 255, 0.8),
+    0 0 44px rgba(0, 210, 255, 0.36);
+  animation: scanNodePulse 4.4s ease-in-out infinite;
+}
+
+.scan-depth-node-one {
+  right: 18%;
+  top: 24%;
+}
+
+.scan-depth-node-two {
+  right: 34%;
+  bottom: 22%;
+  animation-delay: -1.3s;
+}
+
+.scan-depth-node-three {
+  left: 30%;
+  top: 52%;
+  animation-delay: -2.4s;
+}
+
+.scan-depth-thread {
+  width: 42%;
+  height: 1px;
+  border-width: 0;
+  background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.18), transparent);
+  opacity: 0.28;
+}
+
+.scan-depth-thread-one {
+  right: 18%;
+  top: 48%;
+  transform: rotateZ(32deg);
+  animation: scanThreadSweep 7s ease-in-out infinite;
+}
+
+.scan-depth-thread-two {
+  right: 8%;
+  top: 60%;
+  transform: rotateZ(-24deg);
+  animation: scanThreadSweep 8.5s ease-in-out infinite reverse;
+}
+
 .orbit-ring {
   position: absolute;
+  z-index: 2;
   border: 1px solid rgba(66, 255, 255, 0.13);
   border-radius: 46px;
   transform: rotateX(64deg) rotateZ(-28deg);
@@ -279,16 +528,15 @@
 
 .scan-card {
   position: relative;
-  width: min(370px, 72vw);
+  z-index: 4;
+  width: min(520px, 78vw);
   height: 565px;
-  overflow: hidden;
-  border-radius: 34px;
-  background: #071018;
-  border: 1px solid rgba(28, 240, 255, 0.45);
-  box-shadow:
-    0 44px 130px rgba(0, 255, 255, 0.13),
-    0 30px 92px rgba(0, 0, 0, 0.58),
-    inset 0 1px 0 rgba(255, 255, 255, 0.11);
+  overflow: visible;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
   transform:
     rotateY(calc(-12deg + var(--scan-progress) * 5deg))
     rotateX(calc(4deg - var(--scan-progress) * 2deg))
@@ -300,51 +548,19 @@
   cursor: pointer;
 }
 
-.scan-image-layer {
-  position: absolute;
-  inset: 0;
-}
-
-.scan-image-layer img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.before-image {
-  opacity: var(--before-opacity);
-  transform: scale(calc(1.01 + var(--scan-progress) * 0.08));
-  filter: brightness(0.94) saturate(1.08) contrast(1.05);
-}
-
-.before-image img {
-  object-position: center center;
-}
-
-.after-image {
-  opacity: var(--after-opacity);
-  transform:
-    scale(calc(1.16 - var(--scan-progress) * 0.09))
-    translateY(calc(-12px + var(--scan-progress) * 12px));
-  filter: brightness(0.86) saturate(1.35) contrast(1.08);
-}
-
-.after-image img {
-  object-position: center center;
-}
-
 .scan-dark-overlay {
   position: absolute;
-  inset: 0;
+  inset: -8% -10%;
   z-index: 4;
   background:
     linear-gradient(
       180deg,
-      rgba(4, 12, 20, 0.1) 0%,
-      rgba(4, 12, 20, 0.04) 42%,
-      rgba(4, 12, 20, 0.78) 100%
+      rgba(5, 13, 26, 0.06) 0%,
+      rgba(5, 13, 26, 0.02) 42%,
+      rgba(5, 13, 26, 0.42) 100%
     ),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.2), transparent 45%);
+    linear-gradient(90deg, rgba(5, 13, 26, 0.36), transparent 45%);
+  pointer-events: none;
 }
 
 .scan-top-meta {
@@ -374,34 +590,30 @@
 .scan-line {
   position: absolute;
   z-index: 10;
-  left: 18px;
-  right: 18px;
+  left: 28px;
+  right: 28px;
   top: calc(var(--scan-line-top) - 1px);
   height: 2px;
-  background: #13f7ff;
+  background: linear-gradient(90deg, transparent, #13f7ff 12%, #8ff7ff 50%, #13f7ff 88%, transparent);
   box-shadow:
-    0 0 24px rgba(0, 255, 255, 0.8),
-    0 0 60px rgba(0, 255, 255, 0.42);
-  opacity: var(--scan-beam-opacity);
+    0 0 28px rgba(0, 255, 255, 0.92),
+    0 0 72px rgba(0, 255, 255, 0.5);
+  opacity: calc(var(--scan-beam-opacity) * 0.72);
 }
 
 .scan-sweep {
   position: absolute;
   z-index: 9;
-  left: -18%;
+  left: 0;
+  right: 0;
   top: calc(var(--scan-line-top) - 56px);
-  width: 136%;
+  width: 100%;
   height: 112px;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(19, 248, 255, 0.21) 48%,
-    transparent 100%
-  );
-  border-top: 1px solid rgba(32, 255, 255, 0.34);
-  border-bottom: 1px solid rgba(32, 255, 255, 0.28);
+  background: linear-gradient(180deg, transparent 0%, rgba(19, 248, 255, 0.07) 48%, transparent 100%);
+  border-top: 0;
+  border-bottom: 0;
   transform: skewY(-7deg);
-  opacity: var(--scan-beam-opacity);
+  opacity: calc(var(--scan-beam-opacity) * 0.22);
 }
 
 .scan-glow {
@@ -418,7 +630,7 @@
     transparent
   );
   mix-blend-mode: screen;
-  opacity: var(--scan-beam-opacity);
+  opacity: calc(var(--scan-beam-opacity) * 0.2);
 }
 
 .before-target {
@@ -427,11 +639,12 @@
   right: 40px;
   width: 118px;
   height: 58px;
-  border: 2px solid rgba(33, 255, 247, 0.72);
+  border: 2px solid rgba(33, 255, 247, 0.88);
   box-shadow:
-    0 0 22px rgba(33, 255, 247, 0.42),
-    inset 0 0 18px rgba(33, 255, 247, 0.13);
+    0 0 28px rgba(33, 255, 247, 0.5),
+    inset 0 0 22px rgba(33, 255, 247, 0.16);
   opacity: var(--target-opacity);
+  animation: scanTargetPulse 3.4s ease-in-out infinite;
 }
 
 .before-target::before,
@@ -476,12 +689,12 @@
   left: 28px;
   right: 26px;
   height: 52px;
-  border: 1.5px solid rgba(0, 239, 255, 0.88);
+  border: 1.5px solid rgba(0, 239, 255, 0.98);
   border-radius: 10px;
   background: rgba(0, 255, 255, 0.035);
   box-shadow:
-    0 0 25px rgba(0, 239, 255, 0.2),
-    inset 0 0 22px rgba(0, 239, 255, 0.06);
+    0 0 34px rgba(0, 239, 255, 0.28),
+    inset 0 0 24px rgba(0, 239, 255, 0.1);
   transform: translateX(calc((1 - var(--scan-progress)) * 42px));
   transition: transform 0.14s linear;
 }
@@ -514,6 +727,7 @@
   backdrop-filter: blur(18px);
   box-shadow:
     0 24px 70px rgba(0, 0, 0, 0.34),
+    0 0 46px rgba(0, 210, 255, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
@@ -595,7 +809,7 @@
   justify-content: center;
   background:
     radial-gradient(circle at 74% 18%, rgba(0, 238, 255, 0.2), transparent 28%),
-    radial-gradient(circle at 18% 82%, rgba(136, 98, 255, 0.22), transparent 30%),
+    radial-gradient(circle at 18% 82%, rgba(125, 211, 252, 0.22), transparent 30%),
     radial-gradient(circle at 52% 55%, rgba(0, 238, 255, 0.08), transparent 34%),
     linear-gradient(180deg, #030910 0%, #06101a 46%, #070912 100%);
 }
@@ -622,7 +836,7 @@
   opacity: 0.3;
   background:
     linear-gradient(90deg, transparent 0%, rgba(0, 238, 255, 0.18) 50%, transparent 100%),
-    linear-gradient(180deg, transparent 0%, rgba(127, 93, 255, 0.14) 58%, transparent 100%);
+    linear-gradient(180deg, transparent 0%, rgba(125, 211, 252, 0.14) 58%, transparent 100%);
   transform: translateX(-45%) skewX(-12deg);
   animation: principlesLightSweep 12s ease-in-out infinite;
 }
@@ -712,7 +926,7 @@
     90deg,
     transparent,
     rgba(0, 238, 255, 0.75),
-    rgba(135, 105, 255, 0.58),
+    rgba(125, 211, 252, 0.58),
     transparent
   );
   box-shadow: 0 0 18px rgba(0, 238, 255, 0.32);
@@ -1036,7 +1250,7 @@
       transparent,
       rgba(0, 238, 255, 0.26),
       transparent,
-      rgba(142, 112, 255, 0.22),
+      rgba(125, 211, 252, 0.22),
       transparent
     );
   filter: blur(0.2px) drop-shadow(0 0 34px rgba(0, 238, 255, 0.18));
@@ -1065,13 +1279,15 @@
   height: 440px;
   left: 4%;
   bottom: -8%;
-  background: rgba(121, 87, 255, 0.25);
+  background: rgba(0, 115, 190, 0.25);
 }
 
 .principles-header {
   position: relative;
   z-index: 5;
   margin-bottom: 72px;
+  width: min(100%, 920px);
+  text-align: left;
   opacity: 0.68;
   transform: translateY(18px);
   transition:
@@ -1096,18 +1312,18 @@
 
 .principles-header h2 {
   margin: 0;
-  max-width: 720px;
+  max-width: 920px;
   color: #f3f8ff;
   font-family: 'Inter Tight', 'Manrope', ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(48px, 4.8vw, 82px);
-  line-height: 0.95;
+  line-height: 0.96;
   letter-spacing: -0.055em;
   font-weight: 900;
 }
 
 .principles-header h2 span {
   display: inline-block;
-  background: linear-gradient(92deg, #17f4ff 5%, #67bdff 43%, #9b73ff 88%);
+  background: linear-gradient(92deg, #17f4ff 5%, #67bdff 43%, #f0f4ff 88%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1162,7 +1378,7 @@
   border-radius: inherit;
   pointer-events: none;
   opacity: 0.22;
-  background: linear-gradient(120deg, rgba(0, 238, 255, 0.2), transparent 32%, rgba(143, 112, 255, 0.16));
+  background: linear-gradient(120deg, rgba(0, 238, 255, 0.2), transparent 32%, rgba(125, 211, 252, 0.16));
   mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -1466,6 +1682,16 @@
   }
 }
 
+@keyframes scanFocusOrbit {
+  from {
+    transform: rotateX(68deg) rotateZ(-10deg);
+  }
+
+  to {
+    transform: rotateX(68deg) rotateZ(350deg);
+  }
+}
+
 @keyframes orbit {
   from {
     transform: rotateX(64deg) rotateZ(0deg);
@@ -1473,6 +1699,86 @@
 
   to {
     transform: rotateX(64deg) rotateZ(360deg);
+  }
+}
+
+@keyframes scanTargetPulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 rgba(0, 210, 255, 0));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 12px rgba(0, 210, 255, 0.36));
+  }
+}
+
+@keyframes scanPlaneFloatOne {
+  from {
+    transform: rotateX(62deg) rotateZ(-14deg) translate3d(0, 0, -80px);
+  }
+
+  to {
+    transform: rotateX(66deg) rotateZ(-20deg) translate3d(-24px, 18px, -30px);
+  }
+}
+
+@keyframes scanPlaneFloatTwo {
+  from {
+    transform: rotateX(66deg) rotateZ(12deg) translate3d(0, 0, -120px);
+  }
+
+  to {
+    transform: rotateX(60deg) rotateZ(18deg) translate3d(22px, -18px, -60px);
+  }
+}
+
+@keyframes scanPlaneFloatThree {
+  from {
+    transform: rotateX(58deg) rotateZ(-32deg) translate3d(0, 0, -160px);
+  }
+
+  to {
+    transform: rotateX(64deg) rotateZ(-25deg) translate3d(16px, 22px, -90px);
+  }
+}
+
+@keyframes scanRailDrift {
+  0%,
+  100% {
+    opacity: 0.32;
+    translate: -16px 0;
+  }
+
+  50% {
+    opacity: 0.8;
+    translate: 18px 0;
+  }
+}
+
+@keyframes scanNodePulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes scanThreadSweep {
+  0%,
+  100% {
+    opacity: 0.18;
+    translate: -10px 0;
+  }
+
+  45% {
+    opacity: 0.7;
+    translate: 18px 0;
   }
 }
 
@@ -1857,7 +2163,7 @@
   padding: 90px max(32px, calc((100vw - 1420px) / 2)) 96px;
   background:
     radial-gradient(circle at 70% 24%, rgba(0, 238, 255, 0.18), transparent 28%),
-    radial-gradient(circle at 24% 78%, rgba(124, 92, 255, 0.2), transparent 28%),
+    radial-gradient(circle at 24% 78%, rgba(0, 115, 190, 0.2), transparent 28%),
     linear-gradient(115deg, #020810 0%, #061522 48%, #02070d 100%);
 }
 
@@ -1906,7 +2212,7 @@
   height: 520px;
   left: 8%;
   bottom: -16%;
-  background: rgba(123, 91, 255, 0.2);
+  background: rgba(0, 115, 190, 0.2);
   animation: topologyGlowFloat 14s ease-in-out infinite alternate-reverse;
 }
 
@@ -1927,7 +2233,18 @@
 .topology-copy {
   position: relative;
   z-index: 6;
-  max-width: 670px;
+  max-width: 760px;
+}
+
+@media (max-width: 1200px) {
+  .solutions-hero {
+    gap: 20px;
+    padding-inline: 24px;
+  }
+
+  .solutions-copy {
+    max-width: 100%;
+  }
 }
 
 .topology-kicker {
@@ -1944,8 +2261,8 @@
   margin: 0;
   color: #f4f9ff;
   font-family: 'Inter Tight', 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(50px, 4.7vw, 82px);
-  line-height: 1.03;
+  font-size: clamp(52px, 4.9vw, 86px);
+  line-height: 1;
   letter-spacing: -0.055em;
   font-weight: 900;
   text-shadow: 0 24px 90px rgba(0, 0, 0, 0.45);
@@ -1953,7 +2270,7 @@
 
 .topology-copy h2 span,
 .topology-copy h2 strong {
-  background: linear-gradient(92deg, #20f0ff 0%, #6cbfff 45%, #9b75ff 100%);
+  background: linear-gradient(92deg, #20f0ff 0%, #6cbfff 45%, #f0f4ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1964,12 +2281,12 @@
 }
 
 .topology-description {
-  max-width: 640px;
+  max-width: 700px;
   margin: 34px 0 0;
   color: rgba(224, 236, 248, 0.72);
   font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
   font-size: 19px;
-  line-height: 1.7;
+  line-height: 1.62;
   letter-spacing: -0.015em;
   font-weight: 500;
 }
@@ -2115,7 +2432,7 @@
   opacity: 0.2;
   background:
     linear-gradient(90deg, transparent, rgba(0, 238, 255, 0.13), transparent),
-    linear-gradient(180deg, transparent, rgba(133, 94, 255, 0.12), transparent);
+    linear-gradient(180deg, transparent, rgba(125, 211, 252, 0.12), transparent);
   animation: topologyPanelSweep 10s ease-in-out infinite;
 }
 
@@ -2163,11 +2480,12 @@
       transparent,
       rgba(0, 238, 255, 0.2),
       transparent,
-      rgba(151, 110, 255, 0.24),
+      rgba(125, 211, 252, 0.24),
       transparent
     );
   filter: blur(4px);
   animation: topologyCoreRotate 20s linear infinite;
+  will-change: transform;
 }
 
 .rack-viewer-orbits {
@@ -2187,6 +2505,7 @@
     0 0 36px rgba(0, 238, 255, 0.1),
     inset 0 0 26px rgba(0, 238, 255, 0.05);
   transform: translate(-50%, -50%) rotateX(72deg);
+  will-change: transform;
 }
 
 .rack-viewer-orbits span:nth-child(1) {
@@ -2251,6 +2570,10 @@
   object-fit: cover;
   object-position: center;
   filter: brightness(0.9) saturate(1.12) contrast(1.08);
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .rack-video-frame::-webkit-media-controls {
@@ -2268,7 +2591,7 @@
   transform: translate(-50%, -50%);
   background:
     radial-gradient(circle, rgba(0, 238, 255, 0.24), transparent 58%),
-    radial-gradient(circle, rgba(147, 106, 255, 0.22), transparent 64%);
+    radial-gradient(circle, rgba(125, 211, 252, 0.22), transparent 64%);
   filter: blur(12px);
   opacity: 0.86;
   pointer-events: none;
@@ -2364,9 +2687,9 @@
 }
 
 .topology-stage.active-pulse .rack-scan-line {
-  background: linear-gradient(90deg, transparent, rgba(161, 92, 255, 0.76), rgba(0, 238, 255, 0.76), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.76), rgba(0, 238, 255, 0.76), transparent);
   box-shadow:
-    0 0 26px rgba(161, 92, 255, 0.28),
+    0 0 26px rgba(0, 210, 255, 0.28),
     0 0 38px rgba(0, 238, 255, 0.24);
 }
 
@@ -2415,8 +2738,8 @@
 }
 
 .topology-floor-lines span:nth-child(2) {
-  background: #a15cff;
-  box-shadow: 0 0 16px rgba(161, 92, 255, 0.75);
+  background: #7dd3fc;
+  box-shadow: 0 0 16px rgba(0, 210, 255, 0.75);
 }
 
 /* THIRD SECTION KEYFRAMES */
@@ -2627,7 +2950,7 @@
   padding: 90px max(32px, calc((100vw - 1420px) / 2)) 110px;
   background:
     radial-gradient(circle at 78% 16%, rgba(0, 238, 255, 0.16), transparent 28%),
-    radial-gradient(circle at 18% 84%, rgba(132, 92, 255, 0.2), transparent 30%),
+    radial-gradient(circle at 18% 84%, rgba(0, 115, 190, 0.2), transparent 30%),
     linear-gradient(180deg, #02070d 0%, #05101a 48%, #030910 100%);
 }
 
@@ -2703,7 +3026,7 @@
   height: 460px;
   left: 3%;
   bottom: -12%;
-  background: rgba(126, 92, 255, 0.2);
+  background: rgba(0, 115, 190, 0.2);
 }
 
 .workflow-ambient-3d {
@@ -2735,6 +3058,8 @@
     0 0 54px rgba(0, 238, 255, 0.09),
     inset 0 0 40px rgba(0, 238, 255, 0.04);
   opacity: 0.38;
+  will-change: transform;
+  transform-style: preserve-3d;
 }
 
 .workflow-ambient-plane-one {
@@ -2742,8 +3067,9 @@
   height: 360px;
   right: 5%;
   top: 34%;
-  transform: rotateX(68deg) rotateZ(-16deg) translateZ(-90px);
+  transform: rotateX(68deg) rotateZ(-16deg) translateZ(-90px) translateZ(0);
   animation: workflowAmbientPlaneOne 18s ease-in-out infinite alternate;
+  backface-visibility: hidden;
 }
 
 .workflow-ambient-plane-two {
@@ -2751,8 +3077,9 @@
   height: 280px;
   left: -6%;
   bottom: 3%;
-  transform: rotateX(70deg) rotateZ(18deg) translateZ(-130px);
+  transform: rotateX(70deg) rotateZ(18deg) translateZ(-130px) translateZ(0);
   animation: workflowAmbientPlaneTwo 21s ease-in-out infinite alternate-reverse;
+  backface-visibility: hidden;
 }
 
 .workflow-ambient-plane-three {
@@ -2780,12 +3107,14 @@
   height: 76px;
   border: 1px solid rgba(0, 238, 255, 0.2);
   background:
-    linear-gradient(135deg, rgba(0, 238, 255, 0.08), rgba(132, 92, 255, 0.06)),
+    linear-gradient(135deg, rgba(0, 238, 255, 0.08), rgba(0, 115, 190, 0.06)),
     rgba(4, 15, 25, 0.16);
   box-shadow:
     0 0 44px rgba(0, 238, 255, 0.12),
     inset 0 0 30px rgba(0, 238, 255, 0.05);
   opacity: 0.42;
+  will-change: transform;
+  transform-style: preserve-3d;
 }
 
 .workflow-ambient-cube::before,
@@ -2835,7 +3164,7 @@
 
 .workflow-ambient-thread {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 238, 255, 0.54), rgba(132, 92, 255, 0.36), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 238, 255, 0.54), rgba(0, 115, 190, 0.36), transparent);
   box-shadow: 0 0 22px rgba(0, 238, 255, 0.22);
   opacity: 0.34;
 }
@@ -2867,7 +3196,9 @@
 
 .workflow-ambient-orbit,
 .workflow-ambient-rail,
-.workflow-ambient-node {
+.workflow-ambient-node,
+.workflow-holo-stack,
+.workflow-data-ribbon {
   position: absolute;
   display: block;
   pointer-events: none;
@@ -2879,7 +3210,7 @@
   border-radius: 999px;
   box-shadow:
     0 0 40px rgba(0, 238, 255, 0.08),
-    inset 0 0 28px rgba(151, 110, 255, 0.06);
+    inset 0 0 28px rgba(125, 211, 252, 0.06);
 }
 
 .workflow-ambient-orbit-one {
@@ -2887,8 +3218,9 @@
   height: 235px;
   right: 13%;
   top: 22%;
-  transform: rotateX(70deg) rotateZ(22deg);
+  transform: rotateX(70deg) rotateZ(22deg) translateZ(0);
   animation: workflowAmbientOrbitOne 27s linear infinite;
+  will-change: transform;
 }
 
 .workflow-ambient-orbit-two {
@@ -2897,8 +3229,9 @@
   left: 23%;
   bottom: 16%;
   opacity: 0.52;
-  transform: rotateX(68deg) rotateZ(-28deg);
+  transform: rotateX(68deg) rotateZ(-28deg) translateZ(0);
   animation: workflowAmbientOrbitTwo 21s linear infinite reverse;
+  will-change: transform;
 }
 
 .workflow-ambient-rail {
@@ -2906,7 +3239,7 @@
   height: 340px;
   border-radius: 999px;
   background:
-    linear-gradient(180deg, transparent, rgba(0, 238, 255, 0.45), rgba(151, 110, 255, 0.2), transparent);
+    linear-gradient(180deg, transparent, rgba(0, 238, 255, 0.45), rgba(125, 211, 252, 0.2), transparent);
   box-shadow: 0 0 28px rgba(0, 238, 255, 0.18);
   opacity: 0.22;
 }
@@ -2935,6 +3268,8 @@
     0 0 42px rgba(19, 245, 255, 0.28);
   opacity: 0.72;
   animation: workflowAmbientNode 4.4s ease-in-out infinite;
+  will-change: transform, box-shadow;
+  transform-style: preserve-3d;
 }
 
 .workflow-node-one {
@@ -2960,10 +3295,101 @@
   animation-delay: 2s;
 }
 
+.workflow-holo-stack {
+  width: 150px;
+  height: 190px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 238, 255, 0.16);
+  background:
+    radial-gradient(circle at 50% 18%, rgba(0, 238, 255, 0.12), transparent 36%),
+    rgba(4, 15, 25, 0.08);
+  box-shadow:
+    0 0 46px rgba(0, 238, 255, 0.08),
+    inset 0 0 34px rgba(0, 238, 255, 0.05);
+  opacity: 0.44;
+}
+
+.workflow-holo-stack i {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  height: 20px;
+  border-radius: 7px;
+  border: 1px solid rgba(0, 238, 255, 0.2);
+  background: rgba(0, 238, 255, 0.045);
+  box-shadow: 0 0 18px rgba(0, 238, 255, 0.08);
+  animation: workflowStackUnit 4.8s ease-in-out infinite;
+}
+
+.workflow-holo-stack i:nth-child(1) {
+  top: 42px;
+}
+
+.workflow-holo-stack i:nth-child(2) {
+  top: 76px;
+  animation-delay: 0.35s;
+}
+
+.workflow-holo-stack i:nth-child(3) {
+  top: 110px;
+  animation-delay: 0.7s;
+}
+
+.workflow-holo-stack i:nth-child(4) {
+  top: 144px;
+  animation-delay: 1.05s;
+}
+
+.workflow-holo-stack-one {
+  left: 7%;
+  top: 20%;
+  transform: rotateX(12deg) rotateY(32deg) translateZ(-120px);
+  animation: workflowStackFloatOne 15s ease-in-out infinite alternate;
+}
+
+.workflow-holo-stack-two {
+  right: 6%;
+  bottom: 18%;
+  width: 126px;
+  height: 164px;
+  opacity: 0.34;
+  transform: rotateX(14deg) rotateY(-34deg) translateZ(-150px);
+  animation: workflowStackFloatTwo 17s ease-in-out infinite alternate-reverse;
+}
+
+.workflow-data-ribbon {
+  width: 560px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 238, 255, 0.5), rgba(125, 211, 252, 0.2), transparent);
+  box-shadow: 0 0 22px rgba(0, 238, 255, 0.16);
+  opacity: 0.24;
+}
+
+.workflow-data-ribbon-one {
+  right: 14%;
+  top: 28%;
+  transform: rotateZ(-20deg) translateZ(-80px);
+  animation: workflowRibbonTravel 8s ease-in-out infinite;
+}
+
+.workflow-data-ribbon-two {
+  left: 7%;
+  top: 56%;
+  transform: rotateZ(16deg) translateZ(-120px);
+  animation: workflowRibbonTravel 9s ease-in-out infinite reverse;
+}
+
+.workflow-data-ribbon-three {
+  right: 24%;
+  bottom: 20%;
+  transform: rotateZ(28deg) translateZ(-170px);
+  animation: workflowRibbonTravel 10.5s ease-in-out infinite;
+}
+
 .workflow-header {
   position: relative;
   z-index: 4;
-  max-width: 780px;
+  max-width: 920px;
   margin-bottom: 72px;
 }
 
@@ -2981,25 +3407,25 @@
   margin: 0;
   color: #f4f9ff;
   font-family: 'Inter Tight', 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(48px, 5vw, 84px);
-  line-height: 0.98;
+  font-size: clamp(50px, 5vw, 88px);
+  line-height: 1;
   letter-spacing: -0.055em;
   font-weight: 900;
 }
 
 .workflow-header h2 span {
-  background: linear-gradient(92deg, #18f4ff 4%, #65bdff 45%, #9d74ff 100%);
+  background: linear-gradient(92deg, #18f4ff 4%, #65bdff 45%, #f0f4ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .workflow-header p:last-child {
-  max-width: 650px;
+  max-width: 720px;
   margin: 30px 0 0;
   color: rgba(224, 236, 248, 0.68);
   font-size: 19px;
-  line-height: 1.7;
+  line-height: 1.62;
   font-weight: 500;
 }
 
@@ -3007,8 +3433,8 @@
   position: relative;
   z-index: 5;
   display: grid;
-  grid-template-columns: minmax(380px, 0.92fr) minmax(500px, 1.08fr);
-  gap: clamp(54px, 5vw, 86px);
+  grid-template-columns: minmax(360px, 0.76fr) minmax(620px, 1.24fr);
+  gap: clamp(42px, 4vw, 70px);
   align-items: start;
 }
 
@@ -3020,8 +3446,8 @@
 
 .workflow-scan-panel {
   position: relative;
-  min-height: 570px;
-  padding: 34px;
+  min-height: 520px;
+  padding: 26px;
   border-radius: 30px;
   background:
     radial-gradient(circle at 74% 20%, rgba(0, 238, 255, 0.08), transparent 32%),
@@ -3031,6 +3457,9 @@
     0 38px 120px rgba(0, 0, 0, 0.38),
     inset 0 1px 0 rgba(255, 255, 255, 0.045);
   overflow: hidden;
+  transform-style: preserve-3d;
+  animation: workflowPreviewFloat 8s ease-in-out infinite;
+  will-change: transform;
 }
 
 .workflow-scan-panel::before {
@@ -3038,7 +3467,7 @@
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(130deg, rgba(0, 238, 255, 0.26), transparent 34%, rgba(151, 110, 255, 0.18));
+  background: linear-gradient(130deg, rgba(0, 238, 255, 0.26), transparent 34%, rgba(125, 211, 252, 0.18));
   opacity: 0.36;
   pointer-events: none;
   mask:
@@ -3052,16 +3481,33 @@
   -webkit-mask-composite: xor;
 }
 
+.workflow-scan-panel::after {
+  content: '';
+  position: absolute;
+  inset: 12% -18%;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(0, 238, 255, 0.18), transparent),
+    radial-gradient(circle at 50% 50%, rgba(0, 210, 255, 0.16), transparent 42%);
+  opacity: 0.44;
+  transform: rotateX(68deg) rotateZ(-12deg);
+  animation: workflowPreviewOrbit 13s linear infinite;
+}
+
 .workflow-phone-frame {
   position: relative;
-  height: clamp(430px, 48vw, 520px);
+  z-index: 3;
+  height: clamp(430px, 42vw, 500px);
   overflow: hidden;
   border-radius: 23px;
   background: #020910;
   border: 1px solid rgba(0, 238, 255, 0.18);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.055),
-    0 26px 80px rgba(0, 0, 0, 0.34);
+    0 26px 80px rgba(0, 0, 0, 0.34),
+    0 0 52px rgba(0, 210, 255, 0.12);
+  transform: translateZ(36px);
 }
 
 .workflow-scan-image {
@@ -3134,14 +3580,15 @@
 .workflow-scan-line {
   position: absolute;
   z-index: 10;
-  left: 0;
-  right: 0;
+  left: -2px;
+  right: -2px;
   top: calc(var(--workflow-line-top) - 1px);
   height: 2px;
   background: #13f7ff;
   box-shadow:
     0 0 24px rgba(0, 255, 255, 0.8),
     0 0 60px rgba(0, 255, 255, 0.42);
+  will-change: top;
 }
 
 .workflow-scan-band {
@@ -3252,95 +3699,159 @@
   box-shadow: 0 0 18px rgba(19, 245, 255, 0.7);
 }
 
-.workflow-card-carousel {
+.workflow-card-grid-wrap {
   position: relative;
-  min-height: 520px;
-  display: grid;
-  align-items: center;
+  min-height: 620px;
   perspective: 1300px;
   transform-style: preserve-3d;
+  isolation: isolate;
 }
 
-.workflow-card-carousel::before {
+.workflow-card-grid-wrap::before {
   content: '';
   position: absolute;
-  inset: 8% 3% 6%;
-  border-radius: 34px;
+  inset: 5% 2% 2%;
+  border-radius: 38px;
   background:
-    radial-gradient(circle at 50% 16%, rgba(0, 238, 255, 0.18), transparent 38%),
-    linear-gradient(135deg, rgba(0, 238, 255, 0.08), rgba(132, 92, 255, 0.06));
-  filter: blur(20px);
-  opacity: 0.54;
-  transform: rotateX(60deg) translateY(22%);
+    radial-gradient(circle at 36% 22%, rgba(0, 238, 255, 0.18), transparent 30%),
+    radial-gradient(circle at 76% 72%, rgba(125, 211, 252, 0.12), transparent 32%);
+  filter: blur(24px);
+  opacity: 0.42;
+  transform: rotateX(62deg) translateY(22%);
 }
 
-.workflow-carousel-orbit {
+.workflow-card-grid-wrap::after {
+  content: '';
   position: absolute;
-  inset: 34px 24px;
-  border: 1px solid rgba(0, 238, 255, 0.12);
-  border-radius: 40px;
-  box-shadow:
-    0 0 58px rgba(0, 238, 255, 0.08),
-    inset 0 0 48px rgba(0, 238, 255, 0.04);
-  transform: rotateX(64deg) rotateZ(-7deg) translateY(38px);
-  animation: workflowCarouselOrbit 18s linear infinite;
+  inset: -6% -4%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(0, 238, 255, 0.16), transparent),
+    linear-gradient(180deg, transparent, rgba(125, 211, 252, 0.1), transparent);
+  opacity: 0.38;
+  transform: rotateX(70deg) rotateZ(11deg) translateY(130px);
+  animation: workflowHoloSweep 9s ease-in-out infinite;
 }
 
-.workflow-carousel-stage {
+.workflow-grid-depth {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(0, 238, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 238, 255, 0.07) 1px, transparent 1px);
+  background-size: 72px 72px;
+  opacity: 0.18;
+  transform: rotateX(68deg) rotateZ(-7deg) translateY(150px);
+  animation: workflowGridBreathe 11s ease-in-out infinite;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 48%, black 0%, transparent 72%);
+  mask-image: radial-gradient(ellipse at 50% 48%, black 0%, transparent 72%);
+}
+
+.workflow-card-grid {
   position: relative;
+  z-index: 2;
   display: grid;
-  width: min(100%, 560px);
-  min-height: 370px;
-  justify-self: center;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-content: start;
   transform-style: preserve-3d;
+  isolation: isolate;
 }
 
 .workflow-card {
   position: relative;
-  min-height: 370px;
+  min-height: 260px;
   overflow: hidden;
-  border-radius: 24px;
-  background: rgba(7, 17, 29, 0.72);
+  border-radius: 22px;
+  background:
+    linear-gradient(145deg, rgba(6, 17, 29, 0.76), rgba(5, 13, 22, 0.9));
   border: 1px solid rgba(220, 244, 255, 0.1);
   box-shadow:
-    0 26px 80px rgba(0, 0, 0, 0.26),
+    0 22px 66px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.045);
   cursor: pointer;
   isolation: isolate;
-  grid-area: 1 / 1;
   transform:
-    translate3d(
-      calc(var(--card-offset) * 42px),
-      calc(var(--card-distance) * 22px),
-      calc(var(--card-distance) * -130px)
-    )
-    rotateY(calc(var(--card-offset) * -8deg))
-    scale(calc(1 - var(--card-distance) * 0.075));
-  opacity: calc(1 - var(--card-distance) * 0.24);
-  z-index: calc(10 - var(--card-distance));
-  pointer-events: none;
+    translateY(0)
+    rotateX(0deg)
+    translateZ(0);
+  opacity: 1;
+  pointer-events: auto;
   transition:
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.7s ease,
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.45s ease,
-    box-shadow 0.45s ease;
+    box-shadow 0.45s ease,
+    filter 0.45s ease;
+  animation: workflowCardIdle 7s ease-in-out infinite;
+  animation-delay: calc(var(--card-index) * -0.55s);
+}
+
+.workflow-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 5;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(120deg, rgba(0, 238, 255, 0.42), transparent 28%, rgba(125, 211, 252, 0.2) 72%, transparent);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  padding: 1px;
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  transition: opacity 0.38s ease;
+}
+
+.workflow-card::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  right: 18px;
+  top: 72px;
+  width: 86px;
+  height: 86px;
+  border: 1px solid rgba(0, 238, 255, 0.2);
+  border-radius: 20px;
+  opacity: 0.28;
+  transform: rotateX(62deg) rotateZ(18deg);
+  box-shadow: inset 0 0 24px rgba(0, 238, 255, 0.08);
+  transition:
+    opacity 0.42s ease,
+    transform 0.58s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .workflow-card:hover,
 .workflow-card.is-active {
-  transform: translate3d(0, 0, 90px) rotateY(0deg) scale(1);
-  opacity: 1;
-  pointer-events: auto;
+  transform: translateY(-10px) rotateX(4deg) translateZ(42px);
+  z-index: 20;
   border-color: rgba(0, 238, 255, 0.42);
   box-shadow:
-    0 36px 110px rgba(0, 0, 0, 0.38),
-    0 0 70px rgba(0, 238, 255, 0.12),
+    0 32px 94px rgba(0, 0, 0, 0.36),
+    0 0 62px rgba(0, 238, 255, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  animation: workflowActiveCardFloat 4.8s ease-in-out infinite;
 }
 
-.workflow-card:not(.is-active) {
-  filter: saturate(0.78) brightness(0.78);
+.workflow-card:hover::before,
+.workflow-card.is-active::before {
+  opacity: 0.82;
+}
+
+.workflow-card:hover::after,
+.workflow-card.is-active::after {
+  opacity: 0.74;
+  transform: rotateX(64deg) rotateZ(48deg) translate3d(-10px, -8px, 40px);
+}
+
+.workflow-card-grid:hover .workflow-card:not(:hover):not(.is-active) {
+  filter: saturate(0.82) brightness(0.82);
+  transform: translateY(2px) translateZ(-14px);
 }
 
 .workflow-card img {
@@ -3350,7 +3861,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.52) saturate(1.15) contrast(1.08);
+  filter: brightness(0.46) saturate(1.08) contrast(1.05);
   transform: scale(1.04);
   transition:
     transform 0.85s ease,
@@ -3359,8 +3870,8 @@
 
 .workflow-card:hover img,
 .workflow-card.is-active img {
-  transform: scale(1.1);
-  filter: brightness(0.72) saturate(1.3) contrast(1.1);
+  transform: scale(1.09);
+  filter: brightness(0.66) saturate(1.22) contrast(1.08);
 }
 
 .workflow-card-shade {
@@ -3392,30 +3903,30 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 18px;
-  padding: 22px 24px 0;
+  padding: 18px 18px 0;
 }
 
 .workflow-card-number {
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 50px;
-  height: 50px;
-  border-radius: 15px;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
   color: #13f5ff;
   background: rgba(7, 17, 29, 0.76);
   border: 1px solid rgba(220, 244, 255, 0.1);
   font-family: 'Space Grotesk', 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.12em;
 }
 
 .workflow-card-badge {
-  max-width: 190px;
+  max-width: 160px;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 8px 18px;
+  padding: 7px 13px;
   border-radius: 999px;
   color: #13f5ff;
   background: rgba(3, 14, 23, 0.66);
@@ -3423,52 +3934,62 @@
   font-family: 'Space Grotesk', 'Manrope', ui-sans-serif, system-ui, sans-serif;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.2em;
   white-space: nowrap;
 }
 
 .workflow-card-content {
   position: absolute;
   z-index: 4;
-  left: 24px;
-  right: 24px;
-  bottom: 24px;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
 }
 
 .workflow-progress-track {
-  width: 100%;
-  height: 4px;
-  margin-bottom: 20px;
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: -18px;
+  height: 2px;
   border-radius: 999px;
-  background: rgba(224, 236, 248, 0.07);
+  background: rgba(224, 236, 248, 0.08);
   overflow: hidden;
 }
 
 .workflow-progress-track span {
   display: block;
+  width: 100% !important;
   height: 100%;
   border-radius: inherit;
-  background: #13f5ff;
-  box-shadow: 0 0 18px rgba(19, 245, 255, 0.7);
-  transition: width 0.4s ease;
+  background: linear-gradient(90deg, #13f5ff, rgba(125, 211, 252, 0.3));
+  box-shadow: 0 0 18px rgba(19, 245, 255, 0.56);
+  transform: scaleX(0.28);
+  transform-origin: left center;
+  transition: transform 0.45s ease;
+}
+
+.workflow-card:hover .workflow-progress-track span,
+.workflow-card.is-active .workflow-progress-track span {
+  transform: scaleX(1);
 }
 
 .workflow-card-content h3 {
   margin: 0;
   color: #f6fbff;
   font-family: 'Inter Tight', 'Manrope', ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(24px, 1.75vw, 30px);
+  font-size: clamp(21px, 1.45vw, 26px);
   line-height: 1;
   letter-spacing: -0.045em;
   font-weight: 900;
 }
 
 .workflow-card-content p {
-  max-width: 470px;
-  margin: 12px 0 0;
+  max-width: 360px;
+  margin: 10px 0 0;
   color: rgba(224, 236, 248, 0.72);
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 13px;
+  line-height: 1.46;
   font-weight: 500;
 }
 
@@ -3637,136 +4158,1838 @@
   }
 }
 
-@keyframes workflowCarouselOrbit {
+@keyframes workflowStackFloatOne {
   from {
-    transform: rotateX(64deg) rotateZ(-7deg) translateY(38px);
+    transform: rotateX(12deg) rotateY(32deg) translate3d(0, 0, -120px);
   }
 
   to {
-    transform: rotateX(64deg) rotateZ(353deg) translateY(38px);
+    transform: rotateX(16deg) rotateY(40deg) translate3d(20px, -18px, -64px);
   }
 }
 
-@keyframes workflowActiveCardFloat {
+@keyframes workflowStackFloatTwo {
+  from {
+    transform: rotateX(14deg) rotateY(-34deg) translate3d(0, 0, -150px);
+  }
+
+  to {
+    transform: rotateX(10deg) rotateY(-42deg) translate3d(-22px, 18px, -82px);
+  }
+}
+
+@keyframes workflowStackUnit {
   0%,
   100% {
-    translate: 0 0;
+    opacity: 0.28;
+    box-shadow: 0 0 12px rgba(0, 238, 255, 0.08);
   }
 
   50% {
-    translate: 0 -8px;
+    opacity: 0.9;
+    box-shadow: 0 0 26px rgba(0, 238, 255, 0.28);
   }
 }
 
-@keyframes workflowCardSheen {
+@keyframes workflowRibbonTravel {
   0%,
-  26% {
-    opacity: 0;
-    transform: translateX(-120%) skewX(-18deg);
-  }
-
-  44% {
-    opacity: 0.75;
-  }
-
-  68%,
   100% {
-    opacity: 0;
-    transform: translateX(120%) skewX(-18deg);
+    opacity: 0.14;
+    translate: -26px 0;
+    filter: blur(0);
+  }
+
+  50% {
+    opacity: 0.5;
+    translate: 34px 0;
+    filter: blur(0.3px);
   }
 }
 
-@media (max-width: 1100px) {
-  .workflow-layout {
-    grid-template-columns: 1fr;
+/* =========================================================
+   WORKFLOW SECTION FINAL OVERRIDE
+   Center rack + six network-connected callout cards
+   ========================================================= */
+
+.workflow-new-layout {
+  position: relative;
+  z-index: 5;
+  display: block;
+  margin-top: 64px;
+  min-height: 860px;
+  perspective: 1500px;
+  transform-style: preserve-3d;
+}
+
+.workflow-new-layout.is-scanning {
+  min-height: 660px;
+}
+
+.workflow-callout-map {
+  position: relative;
+  width: min(100%, 1320px);
+  min-height: 820px;
+  margin: 0 auto;
+  transform-style: preserve-3d;
+  isolation: isolate;
+}
+
+.workflow-new-layout.is-scanning .workflow-callout-map {
+  min-height: 620px;
+}
+
+.workflow-center-rack {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 24;
+  width: 430px;
+  min-height: 560px;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: center;
+  transition:
+    width 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+    min-height 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.workflow-new-layout.has-cards .workflow-center-rack {
+  width: 300px;
+  min-height: 420px;
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.workflow-rack-center-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.workflow-rack-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 540px;
+  padding: 0;
+  border: 1.5px solid rgba(0, 238, 255, 0.24);
+  border-radius: 30px;
+  overflow: hidden;
+  cursor: default;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(0, 238, 255, 0.16), transparent 42%),
+    rgba(5, 13, 22, 0.78);
+  box-shadow:
+    0 46px 140px rgba(0, 0, 0, 0.48),
+    0 0 86px rgba(0, 238, 255, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform-style: preserve-3d;
+  transition:
+    height 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.55s ease,
+    box-shadow 0.55s ease,
+    transform 0.55s ease;
+  animation: workflowCenterRackFloat 7s ease-in-out infinite;
+}
+
+.workflow-new-layout.has-cards .workflow-rack-frame {
+  height: 410px;
+}
+
+.workflow-rack-frame.is-complete {
+  cursor: pointer;
+  border-color: rgba(0, 238, 255, 0.5);
+  box-shadow:
+    0 42px 130px rgba(0, 0, 0, 0.52),
+    0 0 125px rgba(0, 238, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.11);
+}
+
+.workflow-rack-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.92) saturate(1.2) contrast(1.1);
+  transform: scale(calc(1.04 - var(--workflow-scan-progress) * 0.025));
+}
+
+.workflow-rack-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(2, 8, 14, 0.08), transparent 38%, rgba(2, 8, 14, 0.52)),
+    radial-gradient(circle at 50% 48%, transparent 0%, rgba(2, 8, 14, 0.16) 56%, rgba(2, 8, 14, 0.72) 100%);
+}
+
+.workflow-rack-status {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  top: 22px;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 14px;
+  border-radius: 999px;
+  background: rgba(3, 14, 23, 0.72);
+  border: 1px solid rgba(0, 238, 255, 0.24);
+  backdrop-filter: blur(12px);
+}
+
+.workflow-rack-status span {
+  color: #13f5ff;
+  font-family: 'Space Grotesk', 'Manrope', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+.workflow-rack-status strong {
+  color: #f6fbff;
+  font-family: 'Space Grotesk', 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.workflow-rack-scan-line {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  top: calc(var(--workflow-scan-line-top) - 1px);
+  height: 2px;
+  background: #13f7ff;
+  box-shadow:
+    0 0 24px rgba(0, 255, 255, 0.85),
+    0 0 66px rgba(0, 255, 255, 0.5);
+}
+
+.workflow-rack-scan-band {
+  position: absolute;
+  z-index: 9;
+  left: -10%;
+  right: -10%;
+  top: calc(var(--workflow-scan-line-top) - 54px);
+  height: 108px;
+  background: linear-gradient(180deg, transparent, rgba(0, 238, 255, 0.18), transparent);
+  border-top: 1px solid rgba(0, 238, 255, 0.3);
+  border-bottom: 1px solid rgba(0, 238, 255, 0.24);
+  transform: skewY(-4deg);
+}
+
+.workflow-rack-glow {
+  position: absolute;
+  z-index: 8;
+  left: 0;
+  right: 0;
+  top: calc(var(--workflow-scan-line-top) - 90px);
+  height: 180px;
+  background: linear-gradient(180deg, transparent, rgba(0, 238, 255, 0.16), transparent);
+  mix-blend-mode: screen;
+}
+
+.workflow-rack-frame.is-complete .workflow-rack-scan-line,
+.workflow-rack-frame.is-complete .workflow-rack-scan-band,
+.workflow-rack-frame.is-complete .workflow-rack-glow {
+  opacity: 0.22;
+}
+
+.workflow-rack-corner {
+  position: absolute;
+  z-index: 11;
+  width: 110px;
+  height: 80px;
+  border: 1px solid rgba(0, 238, 255, 0.5);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.workflow-rack-corner-one {
+  left: 26px;
+  top: 82px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.workflow-rack-corner-two {
+  right: 26px;
+  bottom: 82px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.workflow-rack-rescan {
+  position: absolute;
+  right: 20px;
+  bottom: 18px;
+  z-index: 13;
+  color: rgba(226, 245, 255, 0.62);
+  font-family: 'Space Grotesk', 'Manrope', sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
+}
+
+.workflow-rack-frame.is-complete:hover .workflow-rack-rescan {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* hide old connector span and old popup */
+.workflow-card-connector,
+.workflow-card-hover-popup {
+  display: none !important;
+}
+
+/* networking connector svg */
+
+.workflow-connector-svg {
+  position: absolute;
+  inset: 0;
+  z-index: 18;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.75s ease;
+}
+
+.workflow-connector-svg.is-visible {
+  opacity: 1;
+}
+
+.workflow-connector-group {
+  opacity: 0;
+}
+
+.workflow-connector-group.is-visible {
+  opacity: 1;
+}
+
+.workflow-connector-path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.workflow-connector-path-shadow {
+  stroke: rgba(0, 238, 255, 0.14);
+  stroke-width: 13;
+  filter: url(#workflowConnectorGlow);
+}
+
+.workflow-connector-path-main {
+  stroke: url(#workflowConnectorGradient);
+  stroke-width: 3.4;
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  filter: url(#workflowConnectorGlow);
+  animation: workflowConnectorDraw 1.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(0.06s + var(--connector-index) * 0.12s);
+}
+
+.workflow-connector-path-dash {
+  stroke: rgba(19, 245, 255, 0.26);
+  stroke-width: 2;
+  stroke-dasharray: none;
+  opacity: 0.62;
+  animation: none;
+}
+
+.workflow-connector-node {
+  fill: #13f5ff;
+  filter: url(#workflowConnectorGlow);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: workflowNodePop 0.58s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(0.46s + var(--connector-index) * 0.12s);
+}
+
+.workflow-connector-packet {
+  fill: #ffffff;
+  filter: url(#workflowConnectorGlow);
+  opacity: 0.95;
+}
+
+.workflow-connector-group.is-active .workflow-connector-path-shadow {
+  stroke: rgba(0, 238, 255, 0.36);
+  stroke-width: 18;
+}
+
+.workflow-connector-group.is-active .workflow-connector-path-main {
+  stroke-width: 4.4;
+}
+
+.workflow-connector-group.is-active .workflow-connector-node {
+  r: 8;
+}
+
+/* Callout cards */
+
+.workflow-callout-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.workflow-orbit-card {
+  position: absolute !important;
+  width: 320px !important;
+  min-height: 168px !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(28px) scale(0.92);
+  will-change: transform, opacity;
+}
+
+.workflow-orbit-card[data-position='left-top'] {
+  left: 0;
+  top: 18px;
+}
+
+.workflow-orbit-card[data-position='left-mid'] {
+  left: 36px;
+  top: 326px;
+}
+
+.workflow-orbit-card[data-position='left-bottom'] {
+  left: 0;
+  top: 635px;
+}
+
+.workflow-orbit-card[data-position='right-top'] {
+  right: 0;
+  top: 18px;
+}
+
+.workflow-orbit-card[data-position='right-mid'] {
+  right: 36px;
+  top: 326px;
+}
+
+.workflow-orbit-card[data-position='right-bottom'] {
+  right: 0;
+  top: 635px;
+}
+
+.workflow-orbit-card[data-visible='true'] {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  animation-duration: 1.22s !important;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
+  animation-fill-mode: both !important;
+  animation-delay: 0s !important;
+}
+
+.workflow-orbit-card[data-position^='left'][data-visible='true'] {
+  animation-name: workflowCalloutRevealLeft !important;
+}
+
+.workflow-orbit-card[data-position^='right'][data-visible='true'] {
+  animation-name: workflowCalloutRevealRight !important;
+}
+
+.workflow-card-new-surface {
+  position: relative;
+  min-height: 168px;
+  overflow: hidden;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 84% 16%, rgba(0, 238, 255, 0.11), transparent 36%),
+    linear-gradient(145deg, rgba(12, 28, 45, 0.94), rgba(8, 18, 32, 0.98));
+  border: 2.5px solid rgba(0, 238, 255, 0.34);
+  box-shadow:
+    0 22px 66px rgba(0, 0, 0, 0.34),
+    0 0 52px rgba(0, 238, 255, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform-style: preserve-3d;
+  transition:
+    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.36s ease,
+    box-shadow 0.36s ease,
+    filter 0.36s ease;
+}
+
+.workflow-card-new-surface::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 8;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    120deg,
+    rgba(0, 238, 255, 0.56),
+    transparent 30%,
+    rgba(125, 211, 252, 0.36) 72%,
+    transparent
+  );
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  padding: 1px;
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  transition: opacity 0.32s ease;
+}
+
+.workflow-orbit-card:hover .workflow-card-new-surface,
+.workflow-orbit-card.is-hovered .workflow-card-new-surface,
+.workflow-orbit-card.is-auto-active .workflow-card-new-surface {
+  border-color: rgba(0, 238, 255, 0.78);
+  box-shadow:
+    0 36px 106px rgba(0, 0, 0, 0.46),
+    0 0 118px rgba(0, 238, 255, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  filter: saturate(1.1);
+  transform:
+    perspective(1400px)
+    translateY(-9px)
+    translateZ(30px)
+    rotateX(-3deg)
+    scale(1.045);
+}
+
+.workflow-orbit-card:hover .workflow-card-new-surface::before,
+.workflow-orbit-card.is-hovered .workflow-card-new-surface::before,
+.workflow-orbit-card.is-auto-active .workflow-card-new-surface::before {
+  opacity: 0.96;
+}
+
+.workflow-card-image-container {
+  position: relative;
+  width: 100%;
+  height: 74px;
+  overflow: hidden;
+  background: rgba(0, 238, 255, 0.06);
+}
+
+.workflow-card-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.72) saturate(1.15) contrast(1.08);
+  transform: scale(1.04);
+  transition:
+    transform 0.62s ease,
+    filter 0.42s ease;
+}
+
+.workflow-orbit-card:hover .workflow-card-image-container img,
+.workflow-orbit-card.is-auto-active .workflow-card-image-container img {
+  transform: scale(1.1);
+  filter: brightness(0.88) saturate(1.25) contrast(1.1);
+}
+
+.workflow-card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(2, 8, 14, 0.48) 100%),
+    linear-gradient(90deg, rgba(2, 8, 14, 0.16), transparent 52%);
+  pointer-events: none;
+}
+
+.workflow-card-content-new {
+  position: relative;
+  z-index: 5;
+  padding: 13px 16px 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.workflow-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.workflow-card-number {
+  color: #13f5ff;
+  font-family: 'Space Grotesk', 'Manrope', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.workflow-card-badge {
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(0, 238, 255, 0.1);
+  color: #13f5ff;
+  font-family: 'Space Grotesk', 'Manrope', sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  border: 1px solid rgba(0, 238, 255, 0.22);
+  white-space: nowrap;
+}
+
+.workflow-card-content-new h3 {
+  margin: 0;
+  color: #f2f7ff;
+  font-family: 'Inter Tight', 'Manrope', sans-serif;
+  font-size: 17px;
+  font-weight: 850;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.workflow-card-content-new p {
+  margin: 0;
+  color: rgba(224, 236, 248, 0.68);
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.workflow-card-scan-pulse {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 11px;
+  z-index: 6;
+  height: 2px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(224, 236, 248, 0.08);
+}
+
+.workflow-card-scan-pulse::before {
+  content: '';
+  display: block;
+  width: 42%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #13f5ff, rgba(125, 211, 252, 0.32));
+  box-shadow: 0 0 18px rgba(19, 245, 255, 0.62);
+  transition: width 0.38s ease;
+}
+
+.workflow-orbit-card:hover .workflow-card-scan-pulse::before,
+.workflow-orbit-card.is-auto-active .workflow-card-scan-pulse::before {
+  width: 100%;
+}
+
+/* Animations */
+
+@keyframes workflowConnectorDraw {
+  from {
+    stroke-dashoffset: 900;
+    opacity: 0;
   }
 
-  .workflow-sticky-preview {
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes workflowConnectorDash {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+@keyframes workflowNodePop {
+  from {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes workflowCalloutRevealLeft {
+  from {
+    opacity: 0;
+    transform: translateX(120px) translateY(26px) scale(0.9);
+    filter: blur(8px);
+  }
+
+  65% {
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes workflowCalloutRevealRight {
+  from {
+    opacity: 0;
+    transform: translateX(-120px) translateY(26px) scale(0.9);
+    filter: blur(8px);
+  }
+
+  65% {
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes workflowCenterRackFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotateX(1.2deg) rotateY(-1.2deg);
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 1180px) {
+  .workflow-new-layout,
+  .workflow-new-layout.is-scanning {
+    min-height: auto;
+  }
+
+  .workflow-callout-map,
+  .workflow-new-layout.is-scanning .workflow-callout-map {
+    min-height: auto;
+    display: grid;
+    gap: 26px;
+  }
+
+  .workflow-center-rack,
+  .workflow-new-layout.has-cards .workflow-center-rack {
     position: relative;
+    left: auto;
     top: auto;
+    transform: none !important;
+    width: min(100%, 430px);
+    min-height: 500px;
+    margin: 0 auto;
   }
 
-  .workflow-card-carousel {
-    min-height: 520px;
+  .workflow-rack-frame,
+  .workflow-new-layout.has-cards .workflow-rack-frame {
+    height: 500px;
+  }
+
+  .workflow-connector-svg {
+    display: none;
+  }
+
+  .workflow-callout-layer {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    pointer-events: auto;
+  }
+
+  .workflow-orbit-card,
+  .workflow-orbit-card[data-position] {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
   }
 }
 
 @media (max-width: 720px) {
-  .workflow-section {
-    padding: 72px 14px 84px;
+  .workflow-callout-map {
+    gap: 22px;
   }
 
-  .workflow-header {
-    margin-bottom: 42px;
+  .workflow-center-rack,
+  .workflow-new-layout.has-cards .workflow-center-rack {
+    width: 100%;
+    min-height: 390px;
   }
 
-  .workflow-kicker {
-    font-size: 11px;
-    letter-spacing: 0.42em;
+  .workflow-rack-frame,
+  .workflow-new-layout.has-cards .workflow-rack-frame {
+    height: 390px;
+    border-radius: 22px;
   }
 
-  .workflow-header h2 {
-    font-size: clamp(42px, 14vw, 58px);
-    line-height: 1;
+  .workflow-callout-layer {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .workflow-header p:last-child {
+  .workflow-card-new-surface {
+    min-height: 155px;
+    display: grid;
+    grid-template-columns: 112px 1fr;
+  }
+
+  .workflow-card-image-container {
+    width: 112px;
+    height: 100%;
+  }
+
+  .workflow-card-content-new {
+    padding: 14px 15px 18px;
+  }
+
+  .workflow-card-content-new h3 {
     font-size: 16px;
-    line-height: 1.65;
   }
 
-  .workflow-scan-panel {
-    min-height: auto;
-    padding: 18px;
+  .workflow-card-content-new p {
+    font-size: 12px;
+  }
+}
+/* =========================================================
+   HERO SCAN OVERRIDE - PORTRAIT CARD
+   Before_scan -> scanning line -> After_scan
+   ========================================================= */
+
+.hero-scan-stage {
+  position: relative;
+  min-height: clamp(600px, calc(100vh - 145px), 720px);
+  width: min(100%, 560px);
+  justify-self: end;
+  perspective: 1600px;
+  isolation: isolate;
+}
+
+.hero-scan-stage::before {
+  content: '';
+  position: absolute;
+  width: 620px;
+  height: 720px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(19, 245, 255, 0.2), transparent 58%),
+    radial-gradient(circle, rgba(125, 211, 252, 0.12), transparent 70%);
+  filter: blur(5px);
+  opacity: 0.78;
+  animation: heroScanHaloPulse 5.8s ease-in-out infinite;
+}
+
+.hero-scan-stage::after {
+  content: '';
+  position: absolute;
+  inset: 10% -12%;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 46px;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(0, 238, 255, 0.17), transparent 42%),
+    conic-gradient(
+      from 0deg,
+      transparent,
+      rgba(0, 238, 255, 0.16),
+      transparent,
+      rgba(125, 211, 252, 0.13),
+      transparent
+    );
+  opacity: 0.54;
+  transform: rotateX(70deg) rotateZ(-8deg);
+  animation: heroScanOrbitSlow 18s linear infinite;
+}
+
+.hero-network-3d {
+  position: absolute;
+  inset: -8% -26%;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: var(--network-opacity);
+  transform-style: preserve-3d;
+  perspective: 1400px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 0%, black 64%, transparent 84%);
+  mask-image: radial-gradient(ellipse at 50% 50%, black 0%, black 64%, transparent 84%);
+}
+
+.hero-network-grid {
+  position: absolute;
+  display: block;
+  border: 1px solid rgba(0, 238, 255, 0.16);
+  background-image:
+    linear-gradient(rgba(0, 238, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 238, 255, 0.12) 1px, transparent 1px);
+  background-size: 42px 42px;
+  box-shadow:
+    0 0 46px rgba(0, 238, 255, 0.12),
+    inset 0 0 36px rgba(0, 238, 255, 0.05);
+  opacity: 0.3;
+}
+
+.hero-network-grid-one {
+  width: 640px;
+  height: 420px;
+  right: -32%;
+  top: 10%;
+  transform: rotateX(66deg) rotateZ(-16deg) translateZ(-130px);
+  animation: heroNetworkGridOne 18s ease-in-out infinite alternate;
+}
+
+.hero-network-grid-two {
+  width: 560px;
+  height: 350px;
+  left: -34%;
+  bottom: -5%;
+  transform: rotateX(68deg) rotateZ(18deg) translateZ(-170px);
+  animation: heroNetworkGridTwo 22s ease-in-out infinite alternate-reverse;
+}
+
+.hero-network-orbit {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 238, 255, 0.18);
+  box-shadow:
+    0 0 34px rgba(0, 238, 255, 0.1),
+    inset 0 0 26px rgba(0, 238, 255, 0.05);
+}
+
+.hero-network-orbit-one {
+  width: 560px;
+  height: 190px;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%) rotateX(72deg) rotateZ(-18deg);
+  animation: heroNetworkOrbitOne 20s linear infinite;
+}
+
+.hero-network-orbit-two {
+  width: 430px;
+  height: 145px;
+  left: 54%;
+  top: 40%;
+  opacity: 0.55;
+  transform: translate(-50%, -50%) rotateX(70deg) rotateZ(14deg);
+  animation: heroNetworkOrbitTwo 15s linear infinite reverse;
+}
+
+.hero-network-orbit-three {
+  width: 640px;
+  height: 230px;
+  left: 48%;
+  top: 58%;
+  opacity: 0.38;
+  transform: translate(-50%, -50%) rotateX(74deg) rotateZ(8deg);
+  animation: heroNetworkOrbitThree 28s linear infinite;
+}
+
+.hero-network-beam {
+  position: absolute;
+  display: block;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(19, 245, 255, 0.76),
+    rgba(125, 211, 252, 0.32),
+    transparent
+  );
+  box-shadow: 0 0 20px rgba(0, 238, 255, 0.24);
+  opacity: 0.36;
+}
+
+.hero-network-beam-one {
+  width: 560px;
+  left: 4%;
+  top: 28%;
+  transform: rotate(10deg);
+  animation: heroNetworkBeam 7s ease-in-out infinite;
+}
+
+.hero-network-beam-two {
+  width: 520px;
+  right: 0;
+  top: 62%;
+  transform: rotate(-12deg);
+  animation: heroNetworkBeam 8.4s ease-in-out infinite reverse;
+}
+
+.hero-network-beam-three {
+  width: 480px;
+  left: 16%;
+  bottom: 20%;
+  transform: rotate(24deg);
+  animation: heroNetworkBeam 9.2s ease-in-out infinite;
+}
+
+.hero-network-node {
+  position: absolute;
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #13f5ff;
+  box-shadow:
+    0 0 18px rgba(19, 245, 255, 0.9),
+    0 0 42px rgba(19, 245, 255, 0.38);
+  animation: heroNetworkNodePulse 4.2s ease-in-out infinite;
+}
+
+.hero-network-node-one {
+  left: 18%;
+  top: 18%;
+}
+
+.hero-network-node-two {
+  right: 16%;
+  top: 28%;
+  animation-delay: 0.6s;
+}
+
+.hero-network-node-three {
+  left: 30%;
+  bottom: 22%;
+  animation-delay: 1.2s;
+}
+
+.hero-network-node-four {
+  right: 28%;
+  bottom: 18%;
+  animation-delay: 1.8s;
+}
+
+.hero-network-node-five {
+  left: 54%;
+  top: 13%;
+  animation-delay: 2.4s;
+}
+
+.hero-network-cube {
+  position: absolute;
+  display: grid;
+  gap: 8px;
+  width: 120px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 238, 255, 0.2);
+  background:
+    radial-gradient(circle at 70% 10%, rgba(0, 238, 255, 0.13), transparent 44%),
+    rgba(5, 18, 31, 0.18);
+  box-shadow:
+    0 0 48px rgba(0, 238, 255, 0.1),
+    inset 0 0 28px rgba(0, 238, 255, 0.04);
+  opacity: 0.42;
+  transform-style: preserve-3d;
+}
+
+.hero-network-cube i {
+  height: 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 238, 255, 0.2);
+  background: rgba(0, 238, 255, 0.06);
+  box-shadow: 0 0 14px rgba(0, 238, 255, 0.1);
+  animation: heroRackUnitPulse 4.6s ease-in-out infinite;
+}
+
+.hero-network-cube i:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.hero-network-cube i:nth-child(3) {
+  animation-delay: 1s;
+}
+
+.hero-network-cube-one {
+  right: -4%;
+  top: 18%;
+  transform: rotateX(12deg) rotateY(-34deg) translateZ(-90px);
+  animation: heroCubeFloatOne 13s ease-in-out infinite alternate;
+}
+
+.hero-network-cube-two {
+  left: -4%;
+  bottom: 22%;
+  transform: rotateX(14deg) rotateY(34deg) translateZ(-120px);
+  animation: heroCubeFloatTwo 15s ease-in-out infinite alternate-reverse;
+}
+
+/* Portrait scan card */
+.hero-scan-card {
+  position: relative;
+  z-index: 5;
+  width: min(430px, 78vw);
+  height: clamp(560px, 72vh, 660px);
+  overflow: hidden;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 52% 44%, rgba(0, 238, 255, 0.14), transparent 38%),
+    rgba(3, 12, 21, 0.86);
+  border: 1px solid rgba(0, 238, 255, 0.24);
+  box-shadow:
+    0 44px 140px rgba(0, 0, 0, 0.48),
+    0 0 90px rgba(0, 238, 255, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  transform:
+    rotateY(calc(-5deg + var(--scan-progress) * 3deg))
+    rotateX(calc(2deg - var(--scan-progress) * 1deg))
+    translateY(calc(var(--scan-progress) * -8px));
+  transition: transform 0.12s linear;
+}
+
+.hero-scan-card.is-clickable {
+  cursor: pointer;
+}
+
+.hero-scan-image-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero-scan-image-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform: scale(1.04);
+}
+
+.hero-before-scan {
+  opacity: var(--before-opacity);
+  filter: brightness(0.78) saturate(1.12) contrast(1.08);
+}
+
+.hero-before-scan img {
+  transform: scale(calc(1.05 + var(--scan-progress) * 0.035));
+}
+
+.hero-after-scan {
+  opacity: var(--after-opacity);
+  filter: brightness(0.92) saturate(1.3) contrast(1.08);
+}
+
+.hero-after-scan img {
+  transform: scale(calc(1.08 - var(--scan-progress) * 0.025));
+}
+
+.hero-scan-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(2, 8, 14, 0.7), transparent 34%, rgba(2, 8, 14, 0.42) 72%, rgba(2, 8, 14, 0.78)),
+    linear-gradient(180deg, rgba(2, 8, 14, 0.34), transparent 38%, rgba(2, 8, 14, 0.78)),
+    radial-gradient(circle at 50% 50%, transparent 0%, transparent 52%, rgba(2, 8, 14, 0.72) 100%);
+}
+
+.hero-scan-top-meta {
+  z-index: 13;
+  left: 22px;
+  right: 22px;
+  top: 20px;
+  padding: 0;
+}
+
+.hero-main-scan-line {
+  z-index: 11;
+  left: 18px;
+  right: 18px;
+  top: calc(var(--scan-line-top) - 1px);
+  opacity: var(--scan-beam-opacity);
+}
+
+.hero-main-scan-sweep {
+  z-index: 10;
+  opacity: calc(var(--scan-beam-opacity) * 0.32);
+}
+
+.hero-main-scan-glow {
+  z-index: 9;
+  opacity: calc(var(--scan-beam-opacity) * 0.26);
+}
+
+.hero-scan-lens {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--scan-line-top));
+  z-index: 12;
+  width: 170px;
+  height: 108px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: var(--scan-beam-opacity);
+}
+
+.hero-scan-lens span {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-color: rgba(19, 245, 255, 0.92);
+  filter: drop-shadow(0 0 14px rgba(19, 245, 255, 0.62));
+}
+
+.hero-scan-lens span:nth-child(1) {
+  left: 0;
+  top: 0;
+  border-left: 3px solid;
+  border-top: 3px solid;
+}
+
+.hero-scan-lens span:nth-child(2) {
+  right: 0;
+  top: 0;
+  border-right: 3px solid;
+  border-top: 3px solid;
+}
+
+.hero-scan-lens span:nth-child(3) {
+  left: 0;
+  bottom: 0;
+  border-left: 3px solid;
+  border-bottom: 3px solid;
+}
+
+.hero-scan-lens span:nth-child(4) {
+  right: 0;
+  bottom: 0;
+  border-right: 3px solid;
+  border-bottom: 3px solid;
+}
+
+/* fully remove scanning symbol after scan completes */
+.hero-scan-stage.is-complete .hero-scan-lens,
+.hero-scan-stage.is-complete .hero-main-scan-line,
+.hero-scan-stage.is-complete .hero-main-scan-sweep,
+.hero-scan-stage.is-complete .hero-main-scan-glow {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.hero-scan-side-pill {
+  position: absolute;
+  z-index: 14;
+  min-width: 104px;
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: rgba(3, 14, 23, 0.74);
+  border: 1px solid rgba(0, 238, 255, 0.28);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.3),
+    0 0 28px rgba(0, 238, 255, 0.12);
+  backdrop-filter: blur(12px);
+  opacity: var(--after-opacity);
+  transform: translateY(calc((1 - var(--scan-progress)) * 12px));
+}
+
+.hero-scan-side-pill small {
+  display: block;
+  color: rgba(226, 245, 255, 0.52);
+  font-family: 'Space Grotesk', 'Manrope', sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.hero-scan-side-pill strong {
+  display: block;
+  margin-top: 3px;
+  color: #13f5ff;
+  font-family: 'Space Grotesk', 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.hero-pill-one {
+  left: 18px;
+  top: 25%;
+}
+
+.hero-pill-two {
+  right: 18px;
+  top: 42%;
+}
+
+.hero-pill-three {
+  right: 24px;
+  bottom: 31%;
+}
+
+.hero-detected-panel {
+  z-index: 15;
+  left: 20px;
+  right: 20px;
+  bottom: 22px;
+  opacity: calc(0.84 + var(--after-opacity) * 0.16);
+  padding: 16px 17px;
+}
+
+.hero-detected-panel h3 {
+  font-size: 19px;
+}
+
+.hero-detected-panel span {
+  font-size: 11px;
+}
+
+@keyframes heroScanHaloPulse {
+  0%,
+  100% {
+    opacity: 0.52;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes heroScanOrbitSlow {
+  from {
+    transform: rotateX(70deg) rotateZ(-8deg);
+  }
+
+  to {
+    transform: rotateX(70deg) rotateZ(352deg);
+  }
+}
+
+@keyframes heroNetworkGridOne {
+  from {
+    transform: rotateX(66deg) rotateZ(-16deg) translate3d(0, 0, -130px);
+  }
+
+  to {
+    transform: rotateX(69deg) rotateZ(-10deg) translate3d(-24px, 18px, -80px);
+  }
+}
+
+@keyframes heroNetworkGridTwo {
+  from {
+    transform: rotateX(68deg) rotateZ(18deg) translate3d(0, 0, -170px);
+  }
+
+  to {
+    transform: rotateX(64deg) rotateZ(26deg) translate3d(28px, -20px, -100px);
+  }
+}
+
+@keyframes heroNetworkOrbitOne {
+  from {
+    transform: translate(-50%, -50%) rotateX(72deg) rotateZ(-18deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotateX(72deg) rotateZ(342deg);
+  }
+}
+
+@keyframes heroNetworkOrbitTwo {
+  from {
+    transform: translate(-50%, -50%) rotateX(70deg) rotateZ(14deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotateX(70deg) rotateZ(374deg);
+  }
+}
+
+@keyframes heroNetworkOrbitThree {
+  from {
+    transform: translate(-50%, -50%) rotateX(74deg) rotateZ(8deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotateX(74deg) rotateZ(368deg);
+  }
+}
+
+@keyframes heroNetworkBeam {
+  0%,
+  100% {
+    opacity: 0.18;
+    filter: blur(0);
+  }
+
+  50% {
+    opacity: 0.62;
+    filter: blur(0.4px);
+  }
+}
+
+@keyframes heroNetworkNodePulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.22);
+  }
+}
+
+@keyframes heroRackUnitPulse {
+  0%,
+  100% {
+    opacity: 0.36;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes heroCubeFloatOne {
+  from {
+    transform: rotateX(12deg) rotateY(-34deg) translate3d(0, 0, -90px);
+  }
+
+  to {
+    transform: rotateX(16deg) rotateY(-42deg) translate3d(-20px, -16px, -34px);
+  }
+}
+
+@keyframes heroCubeFloatTwo {
+  from {
+    transform: rotateX(14deg) rotateY(34deg) translate3d(0, 0, -120px);
+  }
+
+  to {
+    transform: rotateX(10deg) rotateY(42deg) translate3d(24px, 18px, -58px);
+  }
+}
+
+@media (max-width: 1100px) {
+  .hero-scan-stage {
+    justify-self: center;
+    width: 100%;
+  }
+
+  .hero-scan-card {
+    width: min(430px, 88vw);
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-scan-stage {
+    min-height: 560px;
+    transform: scale(0.94);
+    transform-origin: top center;
+    margin-bottom: -42px;
+  }
+
+  .hero-scan-card {
+    width: min(390px, 92vw);
+    height: 560px;
     border-radius: 24px;
   }
 
-  .workflow-phone-frame {
-    height: min(520px, 138vw);
-    border-radius: 19px;
+  .hero-network-cube {
+    display: none;
   }
 
-  .workflow-scan-footer {
-    grid-template-columns: 1fr;
-    align-items: flex-start;
+  .hero-scan-side-pill {
+    display: none;
   }
 
-  .workflow-card-carousel {
-    min-height: 430px;
+  .hero-detected-panel {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
   }
 
-  .workflow-carousel-stage {
-    min-height: 360px;
+  .hero-scan-top-meta {
+    left: 18px;
+    right: 18px;
+    font-size: 8px;
+  }
+}
+
+/* =========================================================
+   HERO NETWORK WIRES + FASTER VISUAL ENERGY OVERRIDE
+   Add this at the very end of SolutionsPage.css
+   ========================================================= */
+
+.hero-network-3d {
+  opacity: calc(var(--network-opacity) * 1.12);
+  filter:
+    saturate(1.28)
+    brightness(1.08)
+    drop-shadow(0 0 24px rgba(0, 238, 255, 0.14));
+}
+
+.hero-scan-stage::before {
+  background:
+    radial-gradient(circle, rgba(19, 245, 255, 0.28), transparent 56%),
+    radial-gradient(circle, rgba(125, 211, 252, 0.18), transparent 70%);
+  opacity: 0.9;
+}
+
+.hero-scan-stage::after {
+  opacity: 0.72;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(0, 238, 255, 0.24), transparent 42%),
+    conic-gradient(
+      from 0deg,
+      transparent,
+      rgba(0, 238, 255, 0.24),
+      transparent,
+      rgba(125, 211, 252, 0.18),
+      transparent
+    );
+}
+
+.hero-wire-svg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  opacity: 0.86;
+  transform:
+    rotateX(10deg)
+    rotateY(-4deg)
+    translateZ(-90px);
+  pointer-events: none;
+  filter: drop-shadow(0 0 18px rgba(19, 245, 255, 0.24));
+}
+
+.hero-wire-path {
+  fill: none;
+  stroke: url(#heroWireGradient);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 18 22;
+  filter: url(#heroWireGlow);
+  animation: heroWireFlow 3.8s linear infinite;
+  opacity: 0.78;
+}
+
+.hero-wire-path-one {
+  animation-duration: 4.2s;
+}
+
+.hero-wire-path-two {
+  animation-duration: 3.6s;
+  opacity: 0.88;
+}
+
+.hero-wire-path-three {
+  animation-duration: 4.8s;
+}
+
+.hero-wire-path-four,
+.hero-wire-path-five {
+  stroke-width: 1.6;
+  stroke-dasharray: 14 26;
+  opacity: 0.48;
+  animation-duration: 5.8s;
+}
+
+.hero-wire-dot {
+  fill: #eaffff;
+  filter: url(#heroWireGlow);
+  opacity: 0.92;
+}
+
+.hero-wire-dot-one {
+  animation: heroWireDotPulse 1.8s ease-in-out infinite;
+}
+
+.hero-wire-dot-two {
+  animation: heroWireDotPulse 2.1s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.hero-wire-dot-three {
+  animation: heroWireDotPulse 1.9s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+.hero-network-beam {
+  opacity: 0.52;
+  height: 2px;
+  box-shadow:
+    0 0 24px rgba(0, 238, 255, 0.34),
+    0 0 62px rgba(0, 238, 255, 0.18);
+}
+
+.hero-network-node {
+  width: 10px;
+  height: 10px;
+  box-shadow:
+    0 0 22px rgba(19, 245, 255, 0.95),
+    0 0 54px rgba(19, 245, 255, 0.52);
+}
+
+.hero-network-grid {
+  opacity: 0.42;
+  border-color: rgba(0, 238, 255, 0.24);
+  box-shadow:
+    0 0 68px rgba(0, 238, 255, 0.18),
+    inset 0 0 52px rgba(0, 238, 255, 0.08);
+}
+
+.hero-network-orbit {
+  border-color: rgba(0, 238, 255, 0.26);
+  box-shadow:
+    0 0 46px rgba(0, 238, 255, 0.16),
+    inset 0 0 34px rgba(0, 238, 255, 0.08);
+}
+
+.hero-scan-card {
+  box-shadow:
+    0 44px 140px rgba(0, 0, 0, 0.48),
+    0 0 116px rgba(0, 238, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.hero-main-scan-line {
+  height: 3px;
+  box-shadow:
+    0 0 30px rgba(0, 255, 255, 0.96),
+    0 0 86px rgba(0, 255, 255, 0.58);
+}
+
+.hero-main-scan-sweep {
+  height: 132px;
+  top: calc(var(--scan-line-top) - 66px);
+  opacity: calc(var(--scan-beam-opacity) * 0.42);
+}
+
+.hero-main-scan-glow {
+  height: 220px;
+  top: calc(var(--scan-line-top) - 110px);
+  opacity: calc(var(--scan-beam-opacity) * 0.36);
+}
+
+@keyframes heroWireFlow {
+  from {
+    stroke-dashoffset: 0;
   }
 
-  .workflow-card {
-    min-height: 360px;
-    transform:
-      translate3d(
-        calc(var(--card-offset) * 18px),
-        calc(var(--card-distance) * 16px),
-        calc(var(--card-distance) * -80px)
-      )
-      rotateY(calc(var(--card-offset) * -5deg))
-      scale(calc(1 - var(--card-distance) * 0.06));
+  to {
+    stroke-dashoffset: -80;
+  }
+}
+
+@keyframes heroWireDotPulse {
+  0%,
+  100% {
+    opacity: 0.62;
+    r: 3.4;
   }
 
-  .workflow-card:hover,
-  .workflow-card.is-active {
-    transform: translate3d(0, 0, 70px) rotateY(0deg) scale(1);
+  50% {
+    opacity: 1;
+    r: 5.2;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-wire-svg {
+    opacity: 0.56;
   }
 
-  .workflow-card-badge {
-    max-width: 155px;
-    font-size: 9px;
-    letter-spacing: 0.2em;
+  .hero-network-grid {
+    opacity: 0.24;
   }
 
-  .workflow-card-content h3 {
-    font-size: 28px;
+  .hero-network-beam {
+    opacity: 0.34;
+  }
+}
+
+/* =========================================================
+   WORKFLOW CARD 02 + 05 DIRECT STRAIGHT SVG ARROWS
+   Keeps other workflow connector lines unchanged
+   ========================================================= */
+
+.workflow-connector-group[data-position='left-mid'] .workflow-connector-path-main,
+.workflow-connector-group[data-position='right-mid'] .workflow-connector-path-main {
+  stroke-width: 4.2;
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  animation: workflowStraightConnectorDraw 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(0.06s + var(--connector-index) * 0.12s);
+}
+
+.workflow-connector-group[data-position='left-mid'] .workflow-connector-path-shadow,
+.workflow-connector-group[data-position='right-mid'] .workflow-connector-path-shadow {
+  stroke-width: 16;
+  stroke: rgba(0, 238, 255, 0.22);
+}
+
+.workflow-connector-group[data-position='left-mid'] .workflow-connector-path-dash,
+.workflow-connector-group[data-position='right-mid'] .workflow-connector-path-dash {
+  stroke-width: 2.4;
+  stroke-dasharray: 12 14;
+  animation: workflowStraightSignalFlow 1.9s linear infinite;
+  opacity: 0.8;
+}
+
+.workflow-connector-group[data-position='left-mid'] .workflow-connector-node,
+.workflow-connector-group[data-position='right-mid'] .workflow-connector-node {
+  r: 6.5;
+}
+
+.workflow-connector-group[data-position='left-mid'].is-active .workflow-connector-path-shadow,
+.workflow-connector-group[data-position='right-mid'].is-active .workflow-connector-path-shadow {
+  stroke-width: 22;
+  stroke: rgba(0, 238, 255, 0.36);
+}
+
+.workflow-connector-group[data-position='left-mid'].is-active .workflow-connector-path-main,
+.workflow-connector-group[data-position='right-mid'].is-active .workflow-connector-path-main {
+  stroke-width: 5;
+}
+
+@keyframes workflowStraightConnectorDraw {
+  from {
+    stroke-dashoffset: 420;
+    opacity: 0;
   }
 
-  .workflow-card-content p {
-    font-size: 15px;
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes workflowStraightSignalFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -52;
+  }
+}
+
+/* =========================================================
+   WORKFLOW MIDDLE CARDS 02 + 05 SOLID STRAIGHT ARROWS
+   Removes dotted line only for middle cards
+   Keeps all other connector arrows unchanged
+   ========================================================= */
+
+/* Hide dotted overlay only for card 02 and card 05 */
+.workflow-connector-group[data-position='left-mid'] .workflow-connector-path-dash,
+.workflow-connector-group[data-position='right-mid'] .workflow-connector-path-dash {
+  display: none !important;
+}
+
+/* Make card 02 and 05 connector a clean solid glowing arrow */
+.workflow-connector-group[data-position='left-mid'] .workflow-connector-path-main,
+.workflow-connector-group[data-position='right-mid'] .workflow-connector-path-main {
+  stroke: #13f5ff !important;
+  stroke-width: 4.8 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
+  opacity: 1 !important;
+  filter: url(#workflowConnectorGlow);
+  animation: workflowMiddleStraightArrowGlow 2.4s ease-in-out infinite !important;
+}
+
+/* Strong glow behind the middle straight arrows */
+.workflow-connector-group[data-position='left-mid'] .workflow-connector-path-shadow,
+.workflow-connector-group[data-position='right-mid'] .workflow-connector-path-shadow {
+  stroke: rgba(19, 245, 255, 0.36) !important;
+  stroke-width: 18 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  opacity: 1 !important;
+  filter: url(#workflowConnectorGlow);
+}
+
+/* Make middle arrow nodes brighter */
+.workflow-connector-group[data-position='left-mid'] .workflow-connector-node,
+.workflow-connector-group[data-position='right-mid'] .workflow-connector-node {
+  fill: #13f5ff !important;
+  opacity: 1 !important;
+  r: 7;
+  filter: url(#workflowConnectorGlow);
+}
+
+/* Make signal packet move over solid line, not dotted line */
+.workflow-connector-group[data-position='left-mid'] .workflow-connector-packet,
+.workflow-connector-group[data-position='right-mid'] .workflow-connector-packet {
+  fill: #eaffff !important;
+  opacity: 1 !important;
+  filter: url(#workflowConnectorGlow);
+}
+
+/* Stronger active/hover state */
+.workflow-connector-group[data-position='left-mid'].is-active .workflow-connector-path-main,
+.workflow-connector-group[data-position='right-mid'].is-active .workflow-connector-path-main {
+  stroke-width: 5.8 !important;
+  stroke: #ffffff !important;
+}
+
+.workflow-connector-group[data-position='left-mid'].is-active .workflow-connector-path-shadow,
+.workflow-connector-group[data-position='right-mid'].is-active .workflow-connector-path-shadow {
+  stroke-width: 24 !important;
+  stroke: rgba(19, 245, 255, 0.48) !important;
+}
+
+/* Smooth pulsing like the other solid arrows */
+@keyframes workflowMiddleStraightArrowGlow {
+  0%,
+  100% {
+    opacity: 0.82;
+    filter: url(#workflowConnectorGlow) drop-shadow(0 0 8px rgba(19, 245, 255, 0.45));
+  }
+
+  50% {
+    opacity: 1;
+    filter: url(#workflowConnectorGlow) drop-shadow(0 0 18px rgba(19, 245, 255, 0.86));
   }
 }

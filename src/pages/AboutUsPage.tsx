@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import {
+  LayoutGroup,
   motion,
   useMotionTemplate,
   useMotionValue,
@@ -9,12 +10,10 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
+import { Environment } from '@react-three/drei';
 import { ArrowRight, BarChart3, Cpu, Gauge, GitBranch, Network, Radar, Shield, Sparkles, Zap } from 'lucide-react';
 import * as THREE from 'three';
 
-const datacenterBg = "/solutions-page-images/datacenter-bg.jpg";
-const phoneScanBefore = "/assets/phone-scan-before.jpg";
-const portsScanOutput = "/assets/ports-scan-output.jpg";
 const workflowAfter = "/assets/workflow-after.png";
 
 import './AboutUsPage.css';
@@ -49,11 +48,11 @@ const heroMetrics = [
   { label: 'Ops time saved', value: '34%', detail: 'less manual discovery and triage', icon: Zap },
 ];
 
-const statCards = [
-  { label: 'Rack inventory', value: 'Auto-built', icon: Cpu },
-  { label: 'Port visibility', value: 'Live', icon: Gauge },
-  { label: 'CMDB sync', value: 'ServiceNow', icon: Network },
-  { label: 'Reports ready', value: 'HTML / CSV / JSON', icon: Sparkles },
+const signalSteps = [
+  { label: 'Capture', value: 'Phone-guided', icon: Cpu },
+  { label: 'Detect', value: 'Ports and devices', icon: Gauge },
+  { label: 'Sync', value: 'CMDB ready', icon: Network },
+  { label: 'Share', value: 'Audit report', icon: Sparkles },
 ];
 
 function RackCoreModel() {
@@ -69,7 +68,12 @@ function RackCoreModel() {
     <group ref={groupRef}>
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[2.6, 3.8, 1.2]} />
-        <meshStandardMaterial color="#0f1d33" metalness={0.75} roughness={0.28} />
+        <meshStandardMaterial
+          color="#111d31"
+          metalness={0.9}
+          roughness={0.1}
+          envMapIntensity={1.35}
+        />
       </mesh>
 
       {[-1.2, -0.6, 0, 0.6, 1.2].map((y, index) => (
@@ -78,16 +82,24 @@ function RackCoreModel() {
           <meshStandardMaterial
             color={index % 2 === 0 ? '#7adfff' : '#5fa8ff'}
             emissive={index % 2 === 0 ? '#3bc6ff' : '#2a7dff'}
-            emissiveIntensity={0.5}
-            metalness={0.6}
-            roughness={0.25}
+            emissiveIntensity={0.72}
+            metalness={0.88}
+            roughness={0.12}
+            envMapIntensity={1.15}
           />
         </mesh>
       ))}
 
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.1]}>
         <torusGeometry args={[2.4, 0.04, 16, 120]} />
-        <meshStandardMaterial color="#7adfff" emissive="#2fcbff" emissiveIntensity={0.38} />
+        <meshStandardMaterial
+          color="#7adfff"
+          emissive="#2fcbff"
+          emissiveIntensity={0.52}
+          metalness={0.86}
+          roughness={0.1}
+          envMapIntensity={1.2}
+        />
       </mesh>
     </group>
   );
@@ -96,11 +108,12 @@ function RackCoreModel() {
 function ThreeModelShell() {
   return (
     <div className="about-3d-shell" aria-hidden="true">
-      <Canvas camera={{ position: [0, 0, 6], fov: 38 }}>
+      <Canvas camera={{ position: [0, 0, 6], fov: 38 }} gl={{ antialias: true, alpha: true }}>
         <color attach="background" args={['#07111d']} />
-        <ambientLight intensity={0.9} />
-        <directionalLight position={[4, 6, 6]} intensity={1.2} color="#a3eeff" />
-        <pointLight position={[-4, -3, 3]} intensity={1.1} color="#5fa8ff" />
+        <ambientLight intensity={0.62} />
+        <directionalLight position={[4, 6, 6]} intensity={1.65} color="#d7fbff" />
+        <pointLight position={[-4, -3, 3]} intensity={1.55} color="#5fa8ff" />
+        <Environment preset="city" />
         <RackCoreModel />
       </Canvas>
     </div>
@@ -119,7 +132,13 @@ function MetricCard({
   icon: IconType;
 }) {
   return (
-    <motion.article variants={reveal} className="about-metric-card">
+    <motion.article
+      layout
+      variants={reveal}
+      whileHover={{ y: -16, scale: 1.055 }}
+      transition={{ type: 'spring', stiffness: 240, damping: 20, mass: 0.55 }}
+      className="about-metric-card"
+    >
       <div className="about-metric-card__header">
         <span>{label}</span>
         <Icon className="about-card-icon" />
@@ -161,118 +180,6 @@ function ScrollScene({
   );
 }
 
-function HeroVisual({
-  y,
-  rotateX,
-  rotateY,
-  reducedMotion,
-}: {
-  y: ReturnType<typeof useSpring>;
-  rotateX: ReturnType<typeof useSpring>;
-  rotateY: ReturnType<typeof useSpring>;
-  reducedMotion: boolean | null;
-}) {
-  return (
-    <motion.div
-      className="about-hero-visual"
-      style={{
-        y,
-        rotateX: reducedMotion ? 0 : rotateX,
-        rotateY: reducedMotion ? 0 : rotateY,
-        transformPerspective: 1800,
-      }}
-      initial={{ opacity: 0, y: 36, scale: 0.986 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 1.06, ease: cinematicEase }}
-    >
-      <div className="about-hero-visual__ambient" />
-      <div className="about-hero-visual__grid" />
-      <motion.div
-        className="about-hero-visual__scan"
-        animate={reducedMotion ? { opacity: 0.68 } : { y: ['-10%', '112%'] }}
-        transition={reducedMotion ? undefined : { duration: 5.2, ease: 'linear', repeat: Infinity, repeatDelay: 0.8 }}
-      />
-
-      <div className="about-hero-visual__surface">
-        <div className="about-hero-visual__header">
-          <div>
-            <span className="about-eyebrow">AI Detection Active</span>
-            <h2>Infrastructure Intelligence Mesh</h2>
-          </div>
-          <div className="about-status-pill">
-            <span className="about-status-pill__dot" />
-            Live topology
-          </div>
-        </div>
-
-        <div className="about-hero-visual__body">
-          <div className="about-rack-stack">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <motion.div
-                key={`rack-${index}`}
-                initial={{ opacity: 0, x: 18 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.72, delay: 0.2 + index * 0.07, ease: cinematicEase }}
-                className="about-rack-unit"
-              >
-                <div className="about-rack-unit__lights">
-                  <span />
-                  <span />
-                </div>
-                <div className="about-rack-unit__copy">
-                  <strong>Compute Cluster {index + 1}</strong>
-                  <small>Inference routing · thermal aware · topology locked</small>
-                </div>
-                <div className="about-rack-unit__score">{96 + (index % 3)}%</div>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="about-hero-visual__cards">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.82, delay: 0.66, ease: cinematicEase }}
-              className="about-overlay-card"
-            >
-              <span className="about-eyebrow">Prediction layer</span>
-              <strong>Failure path isolated 41 minutes before escalation</strong>
-              <p>RackTrack fused power variance, airflow drift, and port instability into one intervention signal.</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.82, delay: 0.78, ease: cinematicEase }}
-              className="about-overlay-card about-overlay-card--compact"
-            >
-              <div className="about-mini-stat">
-                <span>Latency</span>
-                <strong>1.8ms</strong>
-              </div>
-              <div className="about-mini-stat">
-                <span>Thermal drift</span>
-                <strong>Normal</strong>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-
-        <svg className="about-hero-visual__paths" viewBox="0 0 700 520" fill="none" aria-hidden="true">
-          <path d="M80 418C166 346 238 304 334 278C432 250 520 186 618 94" />
-          <path d="M84 130C170 190 228 218 286 230C392 252 498 324 620 426" />
-          <path d="M118 268H604" />
-          <circle cx="80" cy="418" r="5" />
-          <circle cx="334" cy="278" r="6" />
-          <circle cx="618" cy="94" r="7" />
-          <circle cx="84" cy="130" r="5" />
-          <circle cx="620" cy="426" r="6" />
-        </svg>
-      </div>
-    </motion.div>
-  );
-}
-
 function ScanDemo({ reducedMotion }: { reducedMotion: boolean | null }) {
   return (
     <div className="about-demo-scan">
@@ -306,6 +213,8 @@ function ScanDemo({ reducedMotion }: { reducedMotion: boolean | null }) {
 }
 
 function DashboardPreview() {
+  const reducedMotion = useReducedMotion();
+
   return (
     <div className="about-dashboard-preview">
       <div className="about-dashboard-preview__main">
@@ -324,7 +233,26 @@ function DashboardPreview() {
               <span>98.7%</span>
             </div>
             <div className="about-line-chart">
-              <span />
+              <motion.svg viewBox="0 0 420 240" preserveAspectRatio="none" aria-hidden="true">
+                <motion.path
+                  d="M8 188 C58 164 92 182 132 128 C174 72 210 142 248 94 C294 36 330 80 412 24"
+                  fill="none"
+                  stroke="url(#aboutLineGradient)"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  initial={reducedMotion ? false : { pathLength: 0, opacity: 0 }}
+                  whileInView={reducedMotion ? undefined : { pathLength: 1, opacity: 1 }}
+                  viewport={viewport}
+                  transition={{ duration: 1.5, ease: cinematicEase }}
+                />
+                <defs>
+                  <linearGradient id="aboutLineGradient" x1="0" x2="1" y1="0" y2="0">
+                    <stop stopColor="#7adfff" />
+                    <stop offset="0.55" stopColor="#5fa8ff" />
+                    <stop offset="1" stopColor="#a278ff" />
+                  </linearGradient>
+                </defs>
+              </motion.svg>
             </div>
           </div>
           <div className="about-chart-card">
@@ -333,10 +261,16 @@ function DashboardPreview() {
               <span>12</span>
             </div>
             <div className="about-bar-chart">
-              <span />
-              <span />
-              <span />
-              <span />
+              {[58, 84, 44, 72].map((height, index) => (
+                <motion.span
+                  key={`dashboard-bar-${height}`}
+                  initial={reducedMotion ? false : { scaleY: 0, opacity: 0.28 }}
+                  whileInView={reducedMotion ? undefined : { scaleY: 1, opacity: 1 }}
+                  viewport={viewport}
+                  transition={{ duration: 0.82, delay: index * 0.08, ease: cinematicEase }}
+                  style={{ height: `${height}%` }}
+                />
+              ))}
             </div>
           </div>
           <div className="about-chart-card">
@@ -344,7 +278,27 @@ function DashboardPreview() {
               <strong>Power Risk</strong>
               <span>Low</span>
             </div>
-            <div className="about-donut-chart" />
+            <div className="about-donut-chart">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <defs>
+                  <linearGradient id="aboutDonutGradient" x1="0" x2="1" y1="0" y2="1">
+                    <stop stopColor="#7adfff" />
+                    <stop offset="1" stopColor="#5fa8ff" />
+                  </linearGradient>
+                </defs>
+                <circle className="about-donut-chart__track" cx="60" cy="60" r="43" />
+                <motion.circle
+                  className="about-donut-chart__value"
+                  cx="60"
+                  cy="60"
+                  r="43"
+                  initial={reducedMotion ? false : { pathLength: 0 }}
+                  whileInView={reducedMotion ? undefined : { pathLength: 0.68 }}
+                  viewport={viewport}
+                  transition={{ duration: 1.1, ease: cinematicEase }}
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -369,6 +323,8 @@ function DashboardPreview() {
 }
 
 function AnalyticsPreview() {
+  const reducedMotion = useReducedMotion();
+
   return (
     <div className="about-analytics-preview">
       <div className="about-analytics-preview__metrics">
@@ -387,12 +343,16 @@ function AnalyticsPreview() {
       </div>
       <div className="about-analytics-preview__surface">
         <div className="about-analytics-bars">
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
+          {[34, 62, 48, 88, 66, 94].map((height, index) => (
+            <motion.span
+              key={`analytics-bar-${height}`}
+              initial={reducedMotion ? false : { scaleY: 0, opacity: 0.28 }}
+              whileInView={reducedMotion ? undefined : { scaleY: 1, opacity: 1 }}
+              viewport={viewport}
+              transition={{ duration: 0.9, delay: index * 0.07, ease: cinematicEase }}
+              style={{ height: `${height}%` }}
+            />
+          ))}
         </div>
         <div className="about-analytics-recommendation">
           <Sparkles className="about-card-icon" />
@@ -406,32 +366,41 @@ function AnalyticsPreview() {
   );
 }
 
-function ProductImageShowcase() {
+function SignalBand() {
+  const reducedMotion = useReducedMotion();
+
   return (
-    <div className="about-image-showcase">
-      <div className="about-image-card about-image-card--hero">
-        <img src={datacenterBg} alt="Data center environment representing RackTrack deployment" />
-        <div className="about-image-card__overlay">
-          <span className="about-eyebrow">Environment</span>
-          <strong>Built for real-world rack aisles, live infrastructure, and operational pressure</strong>
-        </div>
-      </div>
-
-      <div className="about-image-card about-image-card--phone">
-        <img src={phoneScanBefore} alt="RackTrack mobile rack scanning interface" />
-        <div className="about-image-card__overlay">
-          <span className="about-eyebrow">Capture</span>
-          <strong>Live camera guidance for sharpness, lighting, and framing</strong>
-        </div>
-      </div>
-
-      <div className="about-image-card about-image-card--results">
-        <img src={portsScanOutput} alt="RackTrack scan results with detected ports and infrastructure details" />
-        <div className="about-image-card__overlay">
-          <span className="about-eyebrow">Results</span>
-          <strong>Devices, ports, cables, and availability detected automatically</strong>
-        </div>
-      </div>
+    <div className="about-signal-band">
+      <div className="about-signal-band__glow" />
+      {signalSteps.map(({ label, value, icon: Icon }, index) => (
+        <motion.article
+          key={label}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={viewport}
+          animate={reducedMotion ? undefined : { y: [0, -6, 0] }}
+          transition={
+            reducedMotion
+              ? { duration: 0.72, delay: index * 0.08, ease: cinematicEase }
+              : {
+                  y: {
+                    duration: 4 + index * 0.22,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: index * 0.18,
+                  },
+                  opacity: { duration: 0.72, delay: index * 0.08, ease: cinematicEase },
+                }
+          }
+          className="about-signal-card"
+        >
+          <div className="about-signal-card__icon">
+            <Icon className="about-card-icon" />
+          </div>
+          <strong>{value}</strong>
+          <span>{label}</span>
+        </motion.article>
+      ))}
     </div>
   );
 }
@@ -442,9 +411,9 @@ export default function AboutUsPage() {
 
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(32);
-  const lightX = useSpring(mouseX, { stiffness: 120, damping: 24, mass: 0.6 });
-  const lightY = useSpring(mouseY, { stiffness: 120, damping: 24, mass: 0.6 });
-  const spotlight = useMotionTemplate`radial-gradient(38rem circle at ${lightX}% ${lightY}%, rgba(122, 223, 255, 0.15), transparent 60%)`;
+  const lightX = useSpring(mouseX, { stiffness: 400, damping: 30, mass: 0.1 });
+  const lightY = useSpring(mouseY, { stiffness: 400, damping: 30, mass: 0.1 });
+  const spotlight = useMotionTemplate`radial-gradient(54rem circle at ${lightX}% ${lightY}%, rgba(122, 223, 255, 0.18), rgba(95, 168, 255, 0.08) 34%, transparent 68%)`;
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -454,18 +423,6 @@ export default function AboutUsPage() {
   const heroCopyY = useSpring(useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -28]), {
     stiffness: 100,
     damping: 26,
-  });
-  const heroVisualY = useSpring(useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -76]), {
-    stiffness: 100,
-    damping: 26,
-  });
-  const heroRotateX = useSpring(useTransform(lightY, [0, 100], [5, -5]), {
-    stiffness: 88,
-    damping: 22,
-  });
-  const heroRotateY = useSpring(useTransform(lightX, [0, 100], [-6, 6]), {
-    stiffness: 88,
-    damping: 22,
   });
 
   return (
@@ -494,33 +451,49 @@ export default function AboutUsPage() {
 
       <main className="about-shell">
         <section ref={heroRef} className="about-hero">
+          {/* Background Video */}
+          <video
+            className="about-hero__video"
+            autoPlay={true}
+            loop={true}
+            muted={true}
+            playsInline={true}
+          >
+            <source src="/media/AboutUsHero.mp4" type="video/mp4" />
+          </video>
+          {/* Dark Gradient Overlay for text contrast */}
+          <div className="about-hero__video-overlay" />
+
           <motion.div style={{ y: heroCopyY }} className="about-hero__copy">
             <motion.div initial="hidden" animate="visible" variants={stagger} className="about-hero__intro">
-              <motion.span variants={reveal} className="about-eyebrow">
-                AI Rack Intelligence for Data Center Teams
-              </motion.span>
-              <motion.h1 variants={reveal}>
-                Point your phone at a rack and instantly know everything inside it.
+              <motion.h1 variants={reveal} className="about-hero-title">
+                <span className="about-hero-title__line-1">Point your phone at a rack and</span>
+                <span className="about-hero-title__line-2">
+                  <span className="about-hero-title__accent">know what is</span>
+                  {' '}
+                  <span className="about-hero-title__accent about-hero-title__accent--secondary">inside in seconds.</span>
+                </span>
               </motion.h1>
-              <motion.p variants={reveal}>
-                RackTrack helps data center technicians scan racks with a mobile camera, identify every device, port, and cable with AI, build a full inventory in seconds, and sync the result back to operational systems.
+
+              <motion.p variants={reveal} className="about-hero-caption">
+                RackTrack turns one rack scan into device visibility, port context, and inventory data your team can use immediately.
               </motion.p>
 
               <motion.div variants={reveal} className="about-hero__actions">
                 <motion.a
-                  whileHover={{ y: -2, scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   href="/contact"
                   className="about-button about-button--primary"
                 >
                   Book a Strategic Demo
-                  <ArrowRight className="about-button__icon" />
+                  <ArrowRight size={18} className="about-button__icon" />
                 </motion.a>
                 <motion.a
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.99 }}
-                  transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   href="/solutions"
                   className="about-button about-button--ghost"
                 >
@@ -528,43 +501,46 @@ export default function AboutUsPage() {
                 </motion.a>
               </motion.div>
 
-              <motion.div variants={stagger} className="about-hero__metrics">
-                {heroMetrics.map((item) => (
-                  <MetricCard key={item.label} {...item} />
-                ))}
-              </motion.div>
             </motion.div>
           </motion.div>
+        </section>
 
-          <HeroVisual y={heroVisualY} rotateX={heroRotateX} rotateY={heroRotateY} reducedMotion={reducedMotion} />
+        <section className="about-metrics-section" aria-label="RackTrack platform metrics">
+          <LayoutGroup>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewport}
+              variants={stagger}
+              className="about-hero__metrics"
+            >
+              {heroMetrics.map((item) => (
+                <MetricCard key={item.label} {...item} />
+              ))}
+            </motion.div>
+          </LayoutGroup>
         </section>
 
         <ScrollScene className="about-story">
           <div className="about-story__copy">
             <span className="about-eyebrow">What RackTrack Does</span>
-            <h2>Rack scanning, inventory, topology, and CMDB sync in one AI workflow.</h2>
+            <h2>Rack scanning, inventory, and sync in one AI workflow.</h2>
             <p>
-              The product is built around a real technician workflow: capture a rack photo, let AI identify devices and ports, compare with live network data, and push validated updates into the asset system.
+              Capture the rack once, let AI identify the hardware, then push the verified result into your operational systems.
             </p>
           </div>
 
-          <motion.div variants={stagger} initial="hidden" whileInView="visible" viewport={viewport} className="about-story__stats">
-            {statCards.map(({ label, value, icon: Icon }) => (
-              <motion.article key={label} variants={reveal} className="about-stat-card">
-                <Icon className="about-card-icon" />
-                <strong>{value}</strong>
-                <span>{label}</span>
-              </motion.article>
-            ))}
+          <motion.div variants={reveal} className="about-story__stats">
+            <SignalBand />
           </motion.div>
         </ScrollScene>
 
         <ScrollScene className="about-visual-section about-visual-section--split">
           <motion.div variants={reveal} className="about-section-copy">
             <span className="about-eyebrow">AI Rack Scanning</span>
-            <h2>RackTrack reads the rack the way a technician sees it, only faster and with more context.</h2>
+            <h2>RackTrack reads the rack the way a technician does, only faster and with cleaner context.</h2>
             <p>
-              The app checks photo quality in real time, detects devices, ports, and cable colors automatically, reads labels with OCR, and turns one image into a structured rack inventory.
+              The app checks framing, detects devices and ports, reads labels, and builds a structured rack inventory from one capture.
             </p>
           </motion.div>
           <motion.div variants={reveal} className="about-visual-card about-visual-card--scan">
@@ -578,9 +554,9 @@ export default function AboutUsPage() {
         <ScrollScene className="about-dashboard-section">
           <motion.div variants={reveal} className="about-section-heading">
             <span className="about-eyebrow">Product Screens</span>
-            <h2>From live camera capture to scan results, the product is designed as an end-to-end operational surface.</h2>
+            <h2>From live camera capture to scan results, the product stays clear, fast, and operational.</h2>
             <p>
-              RackTrack combines guided mobile capture, device cards, port availability views, 2D and 3D topology, and actionable change workflows into one polished experience.
+              Guided capture, rack intelligence, topology, and reporting all stay inside one connected workflow.
             </p>
           </motion.div>
           <motion.div variants={reveal} className="about-dashboard-shell">
@@ -594,30 +570,25 @@ export default function AboutUsPage() {
           </motion.div>
           <motion.div variants={reveal} className="about-section-copy">
             <span className="about-eyebrow">Operational Intelligence</span>
-            <h2>RackTrack connects scan results to topology, incidents, firmware posture, and reporting.</h2>
+            <h2>RackTrack connects scan results to topology, incidents, and reporting.</h2>
             <p>
-              Teams can see which ports are in use, discover network neighbors, compare physical findings to ServiceNow CMDB data, flag changes, and export or share results across Slack, Teams, or email.
+              Teams can review port usage, compare physical findings to CMDB data, and share the result without manual rework.
             </p>
-          </motion.div>
-        </ScrollScene>
-
-        <ScrollScene className="about-visual-section about-visual-section--split">
-          <motion.div variants={reveal} className="about-section-copy">
-            <span className="about-eyebrow">Real App Experience</span>
-            <h2>Mobile capture, annotated results, and workflow-ready outputs make the product feel usable immediately.</h2>
-            <p>
-              The website should show that RackTrack is not just analytics. It is a field-ready app for scanning racks, reviewing detections, checking available ports, and driving asset updates with confidence.
-            </p>
-          </motion.div>
-          <motion.div variants={reveal} className="about-visual-card about-visual-card--images">
-            <ProductImageShowcase />
           </motion.div>
         </ScrollScene>
 
         <ScrollScene className="about-visual-section about-visual-section--reverse">
           <motion.div variants={reveal} className="about-visual-card about-visual-card--workflow-shot">
             <div className="about-workflow-shot">
-              <img src={workflowAfter} alt="RackTrack workflow visualization" />
+              <motion.div
+                className="about-workflow-shot__media"
+                initial={reducedMotion ? false : { opacity: 0, scale: 0.95, filter: 'blur(18px)' }}
+                whileInView={reducedMotion ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                viewport={viewport}
+                transition={{ duration: 1.05, ease: cinematicEase }}
+              >
+                <img src={workflowAfter} alt="RackTrack workflow visualization" />
+              </motion.div>
               <div className="about-image-card__overlay about-image-card__overlay--workflow">
                 <span className="about-eyebrow">Workflow</span>
                 <strong>Compare, approve, sync, and share the rack state across your operating stack</strong>
@@ -626,9 +597,9 @@ export default function AboutUsPage() {
           </motion.div>
           <motion.div variants={reveal} className="about-section-copy">
             <span className="about-eyebrow">Why It Matters</span>
-            <h2>RackTrack reduces manual rack audits and turns physical infrastructure into live operational data.</h2>
+            <h2>Less manual audit work. More usable rack data.</h2>
             <p>
-              Instead of relying on outdated spreadsheets or slow visual checks, teams get a camera-first workflow that maps what is physically present, validates it against network and asset systems, and makes that intelligence immediately useful.
+              RackTrack keeps physical rack data current, structured, and ready for the teams that operate it every day.
             </p>
           </motion.div>
         </ScrollScene>
@@ -639,7 +610,7 @@ export default function AboutUsPage() {
             <span className="about-eyebrow">The Next Move</span>
             <h2>Give your team a faster way to understand every rack they touch.</h2>
             <p>
-              RackTrack brings mobile scanning, AI recognition, topology context, and system sync into one workflow built for real data center operations.
+              RackTrack brings scanning, AI recognition, and system sync into one workflow built for real data center operations.
             </p>
             <div className="about-cta__actions">
               <motion.a

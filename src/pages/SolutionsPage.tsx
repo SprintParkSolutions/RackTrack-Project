@@ -3,15 +3,20 @@ import type { CSSProperties } from 'react'
 import './SolutionsPage.css'
 
 const solutionsImagePath = '/solutions%20page%20images'
-const beforeScanImage = `${solutionsImagePath}/phone-scan-before.jpg`
-const afterScanImage = `${solutionsImagePath}/ports-scan-output.jpg`
+const beforeScanImage = `${solutionsImagePath}/Before_scan.png`
+const afterScanImage = `${solutionsImagePath}/After_scan.png`
 const bgImage = `${solutionsImagePath}/datacenter-bg.jpg`
-const workflowBeforeImage = `${solutionsImagePath}/workflow-before.png`
-const workflowAfterImage = `${solutionsImagePath}/workflow-after.png`
+const workflowRackScanImage = `${solutionsImagePath}/Server_rack-scan.png`
+const workflowArRackImage = `${solutionsImagePath}/AR_Rack.png`
+const workflowAiDetectionImage = `${solutionsImagePath}/AI_Device_Detection.png`
+const workflowPortTrackingImage = `${solutionsImagePath}/Port_Tracking.png`
+const workflowNetworkTopologyImage = `${solutionsImagePath}/Network_Topology.png`
+const workflowAutomatedInventoryImage = `${solutionsImagePath}/Automated_Inventory.png`
+const workflowSecurityComplianceImage = `${solutionsImagePath}/Security_Compliance.png`
 const rackVideo = `${solutionsImagePath}/server_rack.mp4`
 
 const stats = [
-  { value: '10×', label: 'faster audits' },
+  { value: '10x', label: 'faster audits' },
   { value: '98%', label: 'scan accuracy' },
   { value: '0', label: 'manual entry' },
 ]
@@ -22,6 +27,8 @@ const detectedRows = [
   { label: 'PDU · 16A', top: '57%' },
   { label: 'SERVER · R650', top: '76%' },
 ]
+
+void detectedRows
 
 const principleCards = [
   {
@@ -35,7 +42,7 @@ const principleCards = [
     number: '02',
     title: 'Data fusion',
     description:
-      'Camera + switch telemetry + CMDB → one source of truth in seconds.',
+      'Camera + switch telemetry + CMDB into one source of truth in seconds.',
     icon: 'diamond',
   },
   {
@@ -77,7 +84,7 @@ const workflowCards = [
     title: 'AR Rack Scanning',
     description:
       'Open the mobile scanner, align the rack, and capture device positions with guided AR overlays.',
-    image: workflowBeforeImage,
+    image: workflowArRackImage,
   },
   {
     number: '02',
@@ -85,7 +92,7 @@ const workflowCards = [
     title: 'AI Device Detection',
     description:
       'Detect switches, servers, patch panels, labels, and rack units from the captured frame.',
-    image: afterScanImage,
+    image: workflowAiDetectionImage,
   },
   {
     number: '03',
@@ -93,7 +100,7 @@ const workflowCards = [
     title: 'Port Tracking',
     description:
       'Compare free, used, and reserved ports with live status mapped back to the rack image.',
-    image: workflowAfterImage,
+    image: workflowPortTrackingImage,
   },
   {
     number: '04',
@@ -101,7 +108,7 @@ const workflowCards = [
     title: 'Network Topology',
     description:
       'Build 2D and 3D topology views that connect physical rack layout to network paths.',
-    image: bgImage,
+    image: workflowNetworkTopologyImage,
   },
   {
     number: '05',
@@ -109,7 +116,7 @@ const workflowCards = [
     title: 'Automated Inventory',
     description:
       'Keep asset records, rack slots, device names, and ownership details current after each scan.',
-    image: beforeScanImage,
+    image: workflowAutomatedInventoryImage,
   },
   {
     number: '06',
@@ -117,7 +124,7 @@ const workflowCards = [
     title: 'Security & Compliance',
     description:
       'Surface firmware drift, missing records, and vulnerability alerts before audit day arrives.',
-    image: workflowAfterImage,
+    image: workflowSecurityComplianceImage,
   },
 ]
 
@@ -131,6 +138,10 @@ function easeInOutCubic(value: number) {
     : 1 - Math.pow(-2 * value + 2, 3) / 2
 }
 
+function fastStartScanEase(value: number) {
+  return 1 - Math.pow(1 - value, 2.25)
+}
+
 function ScanVisual({
   progress,
   onReset,
@@ -140,84 +151,187 @@ function ScanVisual({
 }) {
   const completed = progress > 0.98
 
-  const beforeOpacity = clamp(1 - progress * 1.25, 0, 1)
-  const afterOpacity = clamp((progress - 0.34) * 2.35, 0, 1)
-  const targetOpacity = clamp(1 - progress * 1.35, 0, 1)
-  const detectionOpacity = clamp((progress - 0.46) * 2.3, 0, 1)
-  const scanBeamOpacity = clamp(1 - progress * 0.7, 0, 1)
-  const orbitOpacity = clamp(0.25 + progress * 0.75, 0.25, 1)
-  const scanLineTop = `${clamp(progress * 100, 8, 92)}%`
+  const beforeOpacity = clamp(1 - progress * 1.35, 0, 1)
+  const afterOpacity = clamp((progress - 0.42) * 2.15, 0, 1)
+  const scanBeamOpacity = completed ? 0 : clamp(1 - progress * 0.08, 0.25, 1)
+  const networkOpacity = clamp(0.52 + progress * 0.48, 0.52, 1)
+  const scanLineTop = `${clamp(progress * 100, 7, 93)}%`
 
   const scanStyle = {
     '--scan-progress': progress,
     '--scan-line-top': scanLineTop,
     '--before-opacity': beforeOpacity,
     '--after-opacity': afterOpacity,
-    '--target-opacity': targetOpacity,
-    '--detection-opacity': detectionOpacity,
     '--scan-beam-opacity': scanBeamOpacity,
-    '--orbit-opacity': orbitOpacity,
+    '--network-opacity': networkOpacity,
   } as CSSProperties
 
   return (
     <div
-      className={`scan-stage ${completed ? 'is-complete' : ''}`}
+      className={`scan-stage hero-scan-stage ${completed ? 'is-complete' : ''}`}
       style={scanStyle}
     >
-      <div className="orbit-ring orbit-one" />
-      <div className="orbit-ring orbit-two" />
+      <div className="hero-network-3d" aria-hidden="true">
+        <svg
+          className="hero-wire-svg"
+          viewBox="0 0 720 660"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <linearGradient id="heroWireGradient" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="rgba(19, 245, 255, 0)" />
+              <stop offset="18%" stopColor="rgba(19, 245, 255, 0.42)" />
+              <stop offset="52%" stopColor="rgba(125, 211, 252, 0.92)" />
+              <stop offset="82%" stopColor="rgba(19, 245, 255, 0.46)" />
+              <stop offset="100%" stopColor="rgba(19, 245, 255, 0)" />
+            </linearGradient>
+
+            <filter id="heroWireGlow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="3.5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <path
+            className="hero-wire-path hero-wire-path-one"
+            d="M 20 120 C 130 40, 245 145, 355 92 S 570 38, 700 135"
+          />
+          <path
+            className="hero-wire-path hero-wire-path-two"
+            d="M 18 292 C 150 240, 230 326, 360 286 S 575 225, 704 304"
+          />
+          <path
+            className="hero-wire-path hero-wire-path-three"
+            d="M 28 520 C 150 430, 255 555, 370 492 S 570 440, 694 520"
+          />
+          <path
+            className="hero-wire-path hero-wire-path-four"
+            d="M 92 36 C 160 150, 125 270, 236 340 S 355 500, 280 630"
+          />
+          <path
+            className="hero-wire-path hero-wire-path-five"
+            d="M 632 42 C 560 160, 615 270, 502 350 S 390 508, 460 630"
+          />
+
+          <circle className="hero-wire-dot hero-wire-dot-one" r="4">
+            <animateMotion
+              dur="5.2s"
+              repeatCount="indefinite"
+              path="M 20 120 C 130 40, 245 145, 355 92 S 570 38, 700 135"
+            />
+          </circle>
+
+          <circle className="hero-wire-dot hero-wire-dot-two" r="4">
+            <animateMotion
+              dur="6.4s"
+              repeatCount="indefinite"
+              path="M 18 292 C 150 240, 230 326, 360 286 S 575 225, 704 304"
+            />
+          </circle>
+
+          <circle className="hero-wire-dot hero-wire-dot-three" r="4">
+            <animateMotion
+              dur="5.8s"
+              repeatCount="indefinite"
+              path="M 28 520 C 150 430, 255 555, 370 492 S 570 440, 694 520"
+            />
+          </circle>
+        </svg>
+
+        <span className="hero-network-grid hero-network-grid-one" />
+        <span className="hero-network-grid hero-network-grid-two" />
+
+        <span className="hero-network-orbit hero-network-orbit-one" />
+        <span className="hero-network-orbit hero-network-orbit-two" />
+        <span className="hero-network-orbit hero-network-orbit-three" />
+
+        <span className="hero-network-beam hero-network-beam-one" />
+        <span className="hero-network-beam hero-network-beam-two" />
+        <span className="hero-network-beam hero-network-beam-three" />
+
+        <span className="hero-network-node hero-network-node-one" />
+        <span className="hero-network-node hero-network-node-two" />
+        <span className="hero-network-node hero-network-node-three" />
+        <span className="hero-network-node hero-network-node-four" />
+        <span className="hero-network-node hero-network-node-five" />
+
+        <span className="hero-network-cube hero-network-cube-one">
+          <i />
+          <i />
+          <i />
+        </span>
+
+        <span className="hero-network-cube hero-network-cube-two">
+          <i />
+          <i />
+          <i />
+        </span>
+      </div>
 
       <article
-        className={`scan-card ${completed ? 'is-clickable' : ''}`}
+        className={`scan-card hero-scan-card ${completed ? 'is-clickable' : ''}`}
         onClick={completed ? onReset : undefined}
         title={completed ? 'Click to scan again' : undefined}
       >
-        <div className="scan-image-layer before-image">
-          <img src={beforeScanImage} alt="RackTrack before rack scan" />
+        <div className="hero-scan-image-layer hero-before-scan">
+          <img src={beforeScanImage} alt="RackTrack rack before scan" />
         </div>
 
-        <div className="scan-image-layer after-image">
-          <img src={afterScanImage} alt="RackTrack after rack scan output" />
+        <div className="hero-scan-image-layer hero-after-scan">
+          <img src={afterScanImage} alt="RackTrack rack after AI scan" />
         </div>
 
-        <div className="scan-dark-overlay" />
+        <div className="hero-scan-vignette" />
 
-        <div className="scan-top-meta">
+        <div className="scan-top-meta hero-scan-top-meta">
           <span className="scan-status-text">
-            {completed ? '• COMPLETE' : 'SCANNING…'}
+            {completed ? '• SCAN COMPLETE' : 'SCANNING RACK…'}
           </span>
-          <span>42U · 9 DEV</span>
+          <span>42U · 9 DEVICES</span>
         </div>
 
-        <div className="scan-line" />
-        <div className="scan-sweep" />
-        <div className="scan-glow" />
-
-        <div className="before-target target-one" />
-        <div className="before-target target-two" />
-        <div className="before-target target-three" />
-
-        <div className="after-detections">
-          {detectedRows.map((row) => (
-            <div
-              key={row.label}
-              className="detected-row"
-              style={{ top: row.top }}
-            >
-              <span>{row.label}</span>
+        {!completed && (
+          <>
+            <div className="hero-scan-lens">
+              <span />
+              <span />
+              <span />
+              <span />
             </div>
-          ))}
+
+            <div className="scan-line hero-main-scan-line" />
+            <div className="scan-sweep hero-main-scan-sweep" />
+            <div className="scan-glow hero-main-scan-glow" />
+          </>
+        )}
+
+        <div className="hero-scan-side-pill hero-pill-one">
+          <small>SWITCH</small>
+          <strong>24P</strong>
         </div>
 
-        <div className="detected-panel">
-          <p>Detected</p>
-          <h3>Cisco Nexus 9300</h3>
+        <div className="hero-scan-side-pill hero-pill-two">
+          <small>SERVER</small>
+          <strong>R740</strong>
+        </div>
+
+        <div className="hero-scan-side-pill hero-pill-three">
+          <small>PORTS</small>
+          <strong>ACTIVE</strong>
+        </div>
+
+        <div className="detected-panel hero-detected-panel">
+          <p>{completed ? 'Detected' : 'Analyzing'}</p>
+          <h3>{completed ? 'Rack inventory mapped' : 'Rack scan in progress'}</h3>
           <span>
             {completed
-              ? '✓ 24 / 48 ports · CMDB synced'
-              : 'Analyzing port layout…'}
+              ? '✓ Devices, ports, cables and labels recognized'
+              : 'Reading switches, ports, servers and cable paths…'}
           </span>
-          {!completed && <small>Scanning rack unit position…</small>}
+          {!completed && <small>Scanning rack unit positions…</small>}
         </div>
 
         {completed && <div className="rescan-hint">Click to scan again</div>}
@@ -384,12 +498,9 @@ function PrinciplesSection() {
         <p className="section-kicker">PRINCIPLES</p>
 
         <h2>
-          Built on three{' '}
-          <span>
-            non-
-            <br />
-            negotiables.
-          </span>
+          Built on three
+          <br />
+          <span>non-negotiables.</span>
         </h2>
       </div>
 
@@ -433,7 +544,7 @@ function RackTopologySection() {
 
         <p className="topology-description">
           RackTrack reads live rack footage to identify switches, patch panels,
-          servers, port activity, LEDs and cable routes — turning one cabinet video
+          servers, port activity, LEDs and cable routes, turning one cabinet video
           into a verified rack inventory.
         </p>
 
@@ -528,88 +639,139 @@ function RackTopologySection() {
   )
 }
 
-function WorkflowScanPanel({
+function WorkflowRackScanCenter({
   progress,
-  activeIndex,
+  scanDone,
   onReset,
 }: {
   progress: number
-  activeIndex: number
+  scanDone: boolean
   onReset: () => void
 }) {
-  const completed = progress > 0.98
-  const activeMoment = workflowCards[activeIndex]
-
-  const beforeOpacity = clamp(1 - progress * 1.2, 0, 1)
-  const afterOpacity = clamp((progress - 0.24) * 2.05, 0, 1)
-  const scanLineTop = `${clamp(progress * 100, 7, 92)}%`
+  const scanLineTop = `${clamp(progress * 100, 5, 95)}%`
 
   const scanStyle = {
-    '--workflow-progress': progress,
-    '--workflow-line-top': scanLineTop,
-    '--workflow-before-opacity': beforeOpacity,
-    '--workflow-after-opacity': afterOpacity,
+    '--workflow-scan-progress': progress,
+    '--workflow-scan-line-top': scanLineTop,
   } as CSSProperties
 
   return (
-    <article
-      className={`workflow-scan-panel ${completed ? 'is-complete' : ''}`}
-      style={scanStyle}
-      onClick={completed ? onReset : undefined}
-      title={completed ? 'Click to scan again' : undefined}
-    >
-      <div className="workflow-phone-frame">
-        <div className="workflow-scan-image workflow-before-image">
-          <img src={workflowBeforeImage} alt="RackTrack workflow before scan" />
+    <div className="workflow-rack-center-container" style={scanStyle}>
+      <button
+        className={`workflow-rack-frame ${scanDone ? 'is-complete' : ''}`}
+        type="button"
+        onClick={scanDone ? onReset : undefined}
+        title={scanDone ? 'Click to replay scan' : undefined}
+      >
+        <img
+          src={workflowRackScanImage}
+          alt="RackTrack workflow rack scan"
+          className="workflow-rack-image"
+        />
+
+        <div className="workflow-rack-overlay" />
+
+        <div className="workflow-rack-status">
+          <span>{scanDone ? 'SCAN COMPLETE' : 'SCANNING RACK'}</span>
+          <strong>{Math.round(progress * 100)}%</strong>
         </div>
 
-        <div className="workflow-scan-image workflow-after-image">
-          <img src={workflowAfterImage} alt="RackTrack workflow after scan" />
-        </div>
+        <div className="workflow-rack-scan-line" />
+        <div className="workflow-rack-scan-band" />
+        <div className="workflow-rack-glow" />
 
-        <div className="workflow-preview-overlay" />
+        <div className="workflow-rack-corner workflow-rack-corner-one" />
+        <div className="workflow-rack-corner workflow-rack-corner-two" />
 
-        <div className="workflow-device-tag workflow-tag-device">DEVICE</div>
-        <div className="workflow-device-tag workflow-tag-port">PORT</div>
-        <div className="workflow-device-tag workflow-tag-cable">CABLE</div>
-
-        <div className="workflow-scan-line" />
-        <div className="workflow-scan-band" />
-        <div className="workflow-scan-glow" />
-
-        <div className="workflow-corner corner-one" />
-        <div className="workflow-corner corner-two" />
-      </div>
-
-      <div className="workflow-scan-footer">
-        <div className="workflow-active-copy">
-          <span>ACTIVE MOMENT {activeMoment.number}</span>
-          <h3>{activeMoment.title}</h3>
-          <p>{activeMoment.description}</p>
-        </div>
-
-        <div className="workflow-dots">
-          {workflowCards.map((card, index) => (
-            <i
-              key={card.number}
-              className={index === activeIndex ? 'is-active' : ''}
-            />
-          ))}
-        </div>
-      </div>
-    </article>
+        {scanDone && <div className="workflow-rack-rescan">Click to replay scan</div>}
+      </button>
+    </div>
   )
 }
 
 function WorkflowSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
+
   const [progress, setProgress] = useState(0)
+  const [scanDone, setScanDone] = useState(false)
+  const [revealedCount, setRevealedCount] = useState(0)
+  const [activeRevealIndex, setActiveRevealIndex] = useState(-1)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [carouselIndex, setCarouselIndex] = useState(0)
 
   const hasStartedRef = useRef(false)
   const startTimeoutRef = useRef<number | null>(null)
   const frameRef = useRef<number | null>(null)
+  const revealTimersRef = useRef<number[]>([])
+
+  const workflowPositions = [
+    'left-top',
+    'left-mid',
+    'left-bottom',
+    'right-top',
+    'right-mid',
+    'right-bottom',
+  ]
+
+  const workflowConnectorPaths = [
+  {
+    id: 'left-top',
+    path: 'M 562 300 H 500 V 104 H 336',
+    nodes: [
+      [562, 300],
+      [500, 300],
+      [500, 104],
+      [336, 104],
+    ],
+  },
+  {
+    id: 'left-mid',
+    // Card 02: straight arrow from center rack to middle-left card
+    path: 'M 548 410 H 372',
+    nodes: [
+      [548, 410],
+      [372, 410],
+    ],
+  },
+  {
+    id: 'left-bottom',
+    path: 'M 562 520 H 500 V 720 H 336',
+    nodes: [
+      [562, 520],
+      [500, 520],
+      [500, 720],
+      [336, 720],
+    ],
+  },
+  {
+    id: 'right-top',
+    path: 'M 758 300 H 820 V 104 H 984',
+    nodes: [
+      [758, 300],
+      [820, 300],
+      [820, 104],
+      [984, 104],
+    ],
+  },
+  {
+    id: 'right-mid',
+    // Card 05: straight arrow from center rack to middle-right card
+    path: 'M 772 410 H 948',
+    nodes: [
+      [772, 410],
+      [948, 410],
+    ],
+  },
+  {
+    id: 'right-bottom',
+    path: 'M 758 520 H 820 V 720 H 984',
+    nodes: [
+      [758, 520],
+      [820, 520],
+      [820, 720],
+      [984, 720],
+    ],
+  },
+]
 
   const clearWorkflowTimers = useCallback(() => {
     if (startTimeoutRef.current !== null) {
@@ -621,6 +783,34 @@ function WorkflowSection() {
       window.cancelAnimationFrame(frameRef.current)
       frameRef.current = null
     }
+
+    revealTimersRef.current.forEach((timerId) => {
+      window.clearTimeout(timerId)
+    })
+
+    revealTimersRef.current = []
+  }, [])
+
+  const revealWorkflowCards = useCallback(() => {
+    setScanDone(true)
+    setRevealedCount(0)
+    setActiveRevealIndex(-1)
+    setHoveredIndex(null)
+
+    workflowCards.forEach((_, index) => {
+      const timerId = window.setTimeout(() => {
+        setRevealedCount(index + 1)
+        setActiveRevealIndex(index)
+      }, 420 + index * 540)
+
+      revealTimersRef.current.push(timerId)
+    })
+
+    const finishTimerId = window.setTimeout(() => {
+      setActiveRevealIndex(-1)
+    }, 420 + workflowCards.length * 540 + 1100)
+
+    revealTimersRef.current.push(finishTimerId)
   }, [])
 
   const startWorkflowScan = useCallback(() => {
@@ -629,7 +819,13 @@ function WorkflowSection() {
       frameRef.current = null
     }
 
-    const duration = 7000
+    setProgress(0)
+    setScanDone(false)
+    setRevealedCount(0)
+    setActiveRevealIndex(-1)
+    setHoveredIndex(null)
+
+    const duration = 4300
     const startTime = performance.now()
 
     const animate = (time: number) => {
@@ -641,24 +837,30 @@ function WorkflowSection() {
 
       if (rawProgress < 1) {
         frameRef.current = window.requestAnimationFrame(animate)
-      } else {
-        frameRef.current = null
-        setProgress(1)
+        return
       }
+
+      frameRef.current = null
+      setProgress(1)
+      revealWorkflowCards()
     }
 
     frameRef.current = window.requestAnimationFrame(animate)
-  }, [])
+  }, [revealWorkflowCards])
 
-  const resetWorkflowScan = useCallback(() => {
-    hasStartedRef.current = true
+  const replayWorkflowScan = useCallback(() => {
     clearWorkflowTimers()
+
     setProgress(0)
+    setScanDone(false)
+    setRevealedCount(0)
+    setActiveRevealIndex(-1)
+    setHoveredIndex(null)
 
     startTimeoutRef.current = window.setTimeout(() => {
       startTimeoutRef.current = null
       startWorkflowScan()
-    }, 1300)
+    }, 550)
   }, [clearWorkflowTimers, startWorkflowScan])
 
   useEffect(() => {
@@ -669,16 +871,15 @@ function WorkflowSection() {
 
       hasStartedRef.current = true
       clearWorkflowTimers()
-      setProgress(0)
 
       startTimeoutRef.current = window.setTimeout(() => {
         startTimeoutRef.current = null
         startWorkflowScan()
-      }, 250)
+      }, 450)
     }
 
     if (!section || !('IntersectionObserver' in window)) {
-      scheduleScan()
+      startTimeoutRef.current = window.setTimeout(scheduleScan, 300)
 
       return () => {
         clearWorkflowTimers()
@@ -692,8 +893,8 @@ function WorkflowSection() {
         }
       },
       {
-        rootMargin: '0px 0px -18% 0px',
-        threshold: 0.24,
+        rootMargin: '0px 0px -14% 0px',
+        threshold: 0.16,
       },
     )
 
@@ -705,19 +906,54 @@ function WorkflowSection() {
     }
   }, [clearWorkflowTimers, startWorkflowScan])
 
-  const activeIndex = hoveredIndex ?? carouselIndex
+  const renderWorkflowCard = (
+    card: (typeof workflowCards)[number],
+    index: number,
+  ) => {
+    const isVisible = index < revealedCount
+    const isAutoActive = activeRevealIndex === index
+    const isHovered = hoveredIndex === index
+    const position = workflowPositions[index]
 
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      if (hoveredIndex !== null) return
+    return (
+      <article
+        key={card.number}
+        className={`workflow-card-new workflow-orbit-card ${
+          isAutoActive ? 'is-auto-active' : ''
+        } ${isHovered ? 'is-hovered' : ''}`}
+        style={{ '--card-index': index } as CSSProperties}
+        data-visible={isVisible}
+        data-position={position}
+        onMouseEnter={() => {
+          if (isVisible) setHoveredIndex(index)
+        }}
+        onMouseLeave={() => setHoveredIndex(null)}
+        onFocus={() => {
+          if (isVisible) setHoveredIndex(index)
+        }}
+        tabIndex={isVisible ? 0 : -1}
+      >
+        <div className="workflow-card-new-surface">
+          <div className="workflow-card-image-container">
+            <img src={card.image} alt={card.title} />
+            <div className="workflow-card-image-overlay" />
+          </div>
 
-      setCarouselIndex((current) => (current + 1) % workflowCards.length)
-    }, 3800)
+          <div className="workflow-card-content-new">
+            <div className="workflow-card-header">
+              <span className="workflow-card-number">{card.number}</span>
+              <span className="workflow-card-badge">{card.badge}</span>
+            </div>
 
-    return () => {
-      window.clearInterval(intervalId)
-    }
-  }, [hoveredIndex])
+            <h3>{card.title}</h3>
+            <p>{card.description}</p>
+          </div>
+
+          <div className="workflow-card-scan-pulse" />
+        </div>
+      </article>
+    )
+  }
 
   return (
     <section ref={sectionRef} className="workflow-section" id="workflow">
@@ -726,25 +962,49 @@ function WorkflowSection() {
       <div className="workflow-bg-orbit workflow-bg-orbit-two" />
       <div className="workflow-bg-glow workflow-bg-glow-one" />
       <div className="workflow-bg-glow workflow-bg-glow-two" />
+
       <div className="workflow-ambient-3d" aria-hidden="true">
         <span className="workflow-ambient-plane workflow-ambient-plane-one" />
         <span className="workflow-ambient-plane workflow-ambient-plane-two" />
         <span className="workflow-ambient-plane workflow-ambient-plane-three" />
         <span className="workflow-ambient-plane workflow-ambient-plane-four" />
+
         <span className="workflow-ambient-cube workflow-ambient-cube-one" />
         <span className="workflow-ambient-cube workflow-ambient-cube-two" />
         <span className="workflow-ambient-cube workflow-ambient-cube-three" />
+
         <span className="workflow-ambient-thread workflow-ambient-thread-one" />
         <span className="workflow-ambient-thread workflow-ambient-thread-two" />
         <span className="workflow-ambient-thread workflow-ambient-thread-three" />
+
         <span className="workflow-ambient-orbit workflow-ambient-orbit-one" />
         <span className="workflow-ambient-orbit workflow-ambient-orbit-two" />
+
         <span className="workflow-ambient-rail workflow-ambient-rail-one" />
         <span className="workflow-ambient-rail workflow-ambient-rail-two" />
+
         <span className="workflow-ambient-node workflow-node-one" />
         <span className="workflow-ambient-node workflow-node-two" />
         <span className="workflow-ambient-node workflow-node-three" />
         <span className="workflow-ambient-node workflow-node-four" />
+
+        <span className="workflow-holo-stack workflow-holo-stack-one">
+          <i />
+          <i />
+          <i />
+          <i />
+        </span>
+
+        <span className="workflow-holo-stack workflow-holo-stack-two">
+          <i />
+          <i />
+          <i />
+          <i />
+        </span>
+
+        <span className="workflow-data-ribbon workflow-data-ribbon-one" />
+        <span className="workflow-data-ribbon workflow-data-ribbon-two" />
+        <span className="workflow-data-ribbon workflow-data-ribbon-three" />
       </div>
 
       <div className="workflow-header">
@@ -757,68 +1017,130 @@ function WorkflowSection() {
         </h2>
 
         <p>
-          Every screen of the RackTrack experience is visible upfront — tap any
-          moment to preview the scan output.
+          Every step of the RackTrack workflow is powered by one rack scan —
+          capture, detect, track, map, inventory, and secure.
         </p>
       </div>
 
-      <div className="workflow-layout">
-        <div className="workflow-sticky-preview">
-          <WorkflowScanPanel
-            progress={progress}
-            activeIndex={activeIndex}
-            onReset={resetWorkflowScan}
-          />
-        </div>
+      <div
+        className={`workflow-new-layout ${
+          scanDone ? 'has-cards' : 'is-scanning'
+        }`}
+      >
+        <div className="workflow-callout-map">
+          <div className="workflow-center-rack">
+            <WorkflowRackScanCenter
+              progress={progress}
+              scanDone={scanDone}
+              onReset={replayWorkflowScan}
+            />
+          </div>
 
-        <div
-          className="workflow-card-carousel"
-          onMouseLeave={() => setHoveredIndex(null)}
-        >
-          <div className="workflow-carousel-orbit" aria-hidden="true" />
-          <div className="workflow-carousel-stage">
-            {workflowCards.map((card, index) => (
-              <article
-                key={card.number}
-                className={`workflow-card ${
-                  index === activeIndex ? 'is-active' : ''
-                }`}
-                style={
-                  {
-                    '--card-offset': index - activeIndex,
-                    '--card-distance': Math.abs(index - activeIndex),
-                  } as CSSProperties
-                }
-                onMouseEnter={() => setHoveredIndex(index)}
-                onFocus={() => setHoveredIndex(index)}
-                onClick={() => setCarouselIndex(index)}
+          <svg
+            className={`workflow-connector-svg ${scanDone ? 'is-visible' : ''}`}
+            viewBox="0 0 1320 820"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient
+                id="workflowConnectorGradient"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="0"
               >
-                <img src={card.image} alt={card.title} />
+                <stop offset="0%" stopColor="rgba(19, 245, 255, 0.08)" />
+                <stop offset="45%" stopColor="rgba(19, 245, 255, 0.95)" />
+                <stop offset="100%" stopColor="rgba(125, 211, 252, 0.22)" />
+              </linearGradient>
 
-                <div className="workflow-card-shade" />
+              <filter
+                id="workflowConnectorGlow"
+                x="-60%"
+                y="-60%"
+                width="220%"
+                height="220%"
+              >
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
 
-                <div className="workflow-card-top">
-                  <span className="workflow-card-number">{card.number}</span>
-                  <span className="workflow-card-badge">{card.badge}</span>
-                </div>
+              <marker
+                id="workflowArrowHead"
+                markerWidth="10"
+                markerHeight="10"
+                refX="8"
+                refY="5"
+                orient="auto"
+                markerUnits="strokeWidth"
+              >
+                <path
+                  d="M 0 0 L 10 5 L 0 10 z"
+                  fill="rgba(19, 245, 255, 0.92)"
+                />
+              </marker>
+            </defs>
 
-                <div className="workflow-card-content">
-                  <div className="workflow-progress-track">
-                    <span
-                      style={{
-                        width: `${Math.max(
-                          28,
-                          ((index + 1) / workflowCards.length) * 100,
-                        )}%`,
-                      }}
+            {workflowConnectorPaths.map((connector, index) => {
+              const isVisible = index < revealedCount
+              const isActive = activeRevealIndex === index || hoveredIndex === index
+              const position = workflowPositions[index] ?? ''
+
+              return (
+                <g
+                  key={connector.id}
+                  data-position={position}
+                  className={`workflow-connector-group ${
+                    isVisible ? 'is-visible' : ''
+                  } ${isActive ? 'is-active' : ''}`}
+                  style={{ '--connector-index': index } as CSSProperties}
+                >
+                  <path
+                    id={`workflow-network-path-${index}`}
+                    className="workflow-connector-path workflow-connector-path-shadow"
+                    d={connector.path}
+                  />
+
+                  <path
+                    className="workflow-connector-path workflow-connector-path-main"
+                    d={connector.path}
+                    markerEnd="url(#workflowArrowHead)"
+                  />
+
+                  <path
+                    className="workflow-connector-path workflow-connector-path-dash"
+                    d={connector.path}
+                  />
+
+                  {connector.nodes.map((node, nodeIndex) => (
+                    <circle
+                      key={`${connector.id}-${nodeIndex}`}
+                      className="workflow-connector-node"
+                      cx={node[0]}
+                      cy={node[1]}
+                      r={nodeIndex === 0 ? 6 : 5}
                     />
-                  </div>
+                  ))}
 
-                  <h3>{card.title}</h3>
-                  <p>{card.description}</p>
-                </div>
-              </article>
-            ))}
+                  <circle className="workflow-connector-packet" r="4">
+                    <animateMotion
+                      dur="2.7s"
+                      begin={`${index * 0.16}s`}
+                      repeatCount="indefinite"
+                      path={connector.path}
+                    />
+                  </circle>
+                </g>
+              )
+            })}
+          </svg>
+
+          <div className="workflow-callout-layer">
+            {workflowCards.map((card, index) => renderWorkflowCard(card, index))}
           </div>
         </div>
       </div>
@@ -845,22 +1167,44 @@ export default function SolutionsPage() {
   }, [])
 
   const startAnimation = useCallback(() => {
-    const duration = 7000
+    if (frameRef.current !== null) {
+      window.cancelAnimationFrame(frameRef.current)
+      frameRef.current = null
+    }
+
+    if (startTimeoutRef.current !== null) {
+      window.clearTimeout(startTimeoutRef.current)
+      startTimeoutRef.current = null
+    }
+
+    /*
+      Infinite hero scan loop:
+      1. scanDuration  = scanning movement from top to bottom
+      2. holdDuration  = small pause on completed result
+      3. resetDuration = quick reset back to scan start
+    */
+    const scanDuration = 4200
+    const holdDuration = 950
+    const resetDuration = 300
+    const cycleDuration = scanDuration + holdDuration + resetDuration
+
     const startTime = performance.now()
 
     const animate = (time: number) => {
-      const elapsed = time - startTime
-      const rawProgress = clamp(elapsed / duration, 0, 1)
-      const easedProgress = easeInOutCubic(rawProgress)
+      const elapsed = (time - startTime) % cycleDuration
 
-      setProgress(easedProgress)
+      if (elapsed <= scanDuration) {
+        const rawProgress = clamp(elapsed / scanDuration, 0, 1)
+        const easedProgress = fastStartScanEase(rawProgress)
 
-      if (rawProgress < 1) {
-        frameRef.current = window.requestAnimationFrame(animate)
-      } else {
-        frameRef.current = null
+        setProgress(easedProgress)
+      } else if (elapsed <= scanDuration + holdDuration) {
         setProgress(1)
+      } else {
+        setProgress(0)
       }
+
+      frameRef.current = window.requestAnimationFrame(animate)
     }
 
     frameRef.current = window.requestAnimationFrame(animate)
@@ -894,20 +1238,20 @@ export default function SolutionsPage() {
 
         <div className="solutions-copy">
           <h1 className="hero-title">
-            <span className="title-line">One</span>
-            <span className="title-line">workflow.</span>
-            <span className="title-line title-gradient">Every rack</span>
-            <span className="title-line title-muted">in your fleet.</span>
+            <span className="title-line">One workflow.</span>
+            <span className="title-line title-gradient">
+              Every rack in your fleet.
+            </span>
           </h1>
 
           <p className="hero-description">
-            From a single shutter press to a synced CMDB record — RackTrack
-            collapses the entire rack-audit workflow into one mobile experience.
+            From one rack scan to a synced CMDB record, RackTrack turns audits
+            into one clear mobile workflow.
           </p>
 
           <div className="hero-actions">
             <a className="primary-action" href="#rack-3d">
-              Explore the 3D rack →
+              Explore the 3D rack {'->'}
             </a>
             <a className="secondary-action" href="#workflow">
               See the workflow

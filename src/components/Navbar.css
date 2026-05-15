@@ -27,7 +27,7 @@
   width: 100%;
   min-height: 72px;
   display: grid;
-  grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
+  grid-template-columns: minmax(210px, 1fr) auto minmax(170px, 1fr);
   align-items: center;
   gap: 20px;
   padding: 12px clamp(18px, 5vw, 72px);
@@ -46,46 +46,23 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 46px;
+  min-height: 48px;
   color: var(--rt-nav-text);
   text-decoration: none;
 }
 
-.rt-nav-mark {
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(145deg, rgba(0, 210, 255, 0.22), rgba(0, 153, 204, 0.08));
-  border: 1px solid rgba(0, 210, 255, 0.24);
-  box-shadow: 0 0 22px rgba(0, 210, 255, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.rt-nav-mark-core {
-  width: 10px;
-  height: 10px;
-  border-radius: 4px;
-  border: 2px solid var(--rt-nav-cyan);
-  box-shadow: 0 0 14px rgba(0, 210, 255, 0.74);
-}
-
-.rt-nav-wordmark {
-  display: inline-flex;
-  align-items: baseline;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.rt-nav-wordmark span:first-child {
-  color: var(--rt-nav-text);
-}
-
-.rt-nav-wordmark span:last-child {
-  color: var(--rt-nav-cyan);
+.rt-nav-logo-image {
+  display: block;
+  width: clamp(220px, 15vw, 270px);
+  height: auto;
+  max-height: 88px;
+  object-fit: contain;
+  object-position: center;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.16));
 }
 
 .rt-nav-links {
@@ -119,22 +96,6 @@
 .rt-nav-link-label {
   position: relative;
   display: inline-block;
-}
-
-.rt-nav-link-label-plain::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -6px;
-  height: 1px;
-  border-radius: 999px;
-  background: transparent;
-  transition: background 0.22s ease;
-}
-
-.rt-nav-link-active .rt-nav-link-label-plain::after {
-  background: rgba(0, 210, 255, 0.65);
 }
 
 .rt-nav-active-pill {
@@ -215,6 +176,7 @@
 }
 
 .rt-mobile-link {
+  position: relative;
   width: 100%;
   border-radius: 18px;
   padding: 16px 18px;
@@ -227,6 +189,10 @@
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  transition:
+    color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 .rt-mobile-link-active {
@@ -242,13 +208,27 @@
 
 @media (max-width: 920px) {
   :root {
-    --rt-nav-height: 68px;
+    --rt-nav-height: 74px;
   }
 
   .rt-nav {
     grid-template-columns: 1fr auto;
-    min-height: 68px;
-    padding: 10px clamp(16px, 5vw, 32px);
+    min-height: 74px;
+    padding: 10px clamp(16px, 5vw, 28px);
+    gap: 12px;
+  }
+
+  .rt-nav-logo {
+    min-height: 48px;
+  }
+
+  .rt-nav-logo-image {
+    width: clamp(176px, 28vw, 220px);
+    max-height: 54px;
+  }
+
+  .rt-nav-actions {
+    justify-self: end;
   }
 
   .rt-nav-links,
@@ -263,7 +243,7 @@
 
 @media (max-width: 520px) {
   :root {
-    --rt-nav-height: 62px;
+    --rt-nav-height: 70px;
   }
 
   .rt-nav-shell {
@@ -271,23 +251,23 @@
   }
 
   .rt-nav {
-    min-height: 62px;
+    min-height: 70px;
     border-radius: 0;
+    padding: 10px 14px;
   }
 
-  .rt-nav-mark {
-    width: 30px;
-    height: 30px;
-    border-radius: 10px;
+  .rt-nav-logo-image {
+    width: min(172px, 44vw);
+    max-height: 48px;
   }
 
-  .rt-nav-wordmark {
-    font-size: 0.66rem;
-    letter-spacing: 0.2em;
+  .rt-nav-menu-btn {
+    width: 40px;
+    height: 40px;
   }
 
   .rt-mobile-panel {
-    top: calc(var(--rt-nav-height, 62px) + 8px);
+    top: calc(var(--rt-nav-height, 70px) + 8px);
     left: 14px;
     right: 14px;
     border-radius: 22px;
