@@ -1,6 +1,7 @@
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SideSocialRail from './components/SideSocialRail'
+import ScrollToTop from './components/ScrollToTop'
 import HomePage from './pages/HomePage'
 import SolutionsPage from './pages/SolutionsPage'
 import AboutUsPage from './pages/AboutUsPage'
@@ -11,6 +12,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="app-shell">
+        <ScrollToTop />
         <Navbar />
         <SideSocialRail />
         <Routes>
