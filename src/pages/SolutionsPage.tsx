@@ -495,7 +495,7 @@ function WorkflowSection() {
   const [activeRevealIndex, setActiveRevealIndex] = useState(-1)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
-  const hasStartedRef = useRef(false)
+  const wasIntersectingRef = useRef(false)
   const startTimeoutRef = useRef<number | null>(null)
   const frameRef = useRef<number | null>(null)
   const revealTimersRef = useRef<number[]>([])
@@ -664,9 +664,6 @@ function WorkflowSection() {
     const section = sectionRef.current
 
     const scheduleScan = () => {
-      if (hasStartedRef.current) return
-
-      hasStartedRef.current = true
       clearWorkflowTimers()
 
       startTimeoutRef.current = window.setTimeout(() => {
@@ -685,7 +682,11 @@ function WorkflowSection() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        const hasJustEntered = entry.isIntersecting && !wasIntersectingRef.current
+
+        wasIntersectingRef.current = entry.isIntersecting
+
+        if (hasJustEntered) {
           scheduleScan()
         }
       },
