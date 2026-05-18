@@ -680,6 +680,7 @@ function ScanReportSection() {
   const scanRevealProgress = Math.max(0, Math.min(1, (progress - 0.24) / 0.08))
   const scanProgress = Math.max(0, Math.min(1, (progress - 0.26) / 0.48))
   const reportProgress = Math.max(0, Math.min(1, (progress - 0.78) / 0.18))
+  const scanSceneOpacity = Math.max(0, 1 - reportProgress * 2.4)
   const activeIndex = Math.min(
     SCAN_FLOW_ITEMS.length - 1,
     Math.floor(scanProgress * SCAN_FLOW_ITEMS.length),
@@ -743,8 +744,9 @@ function ScanReportSection() {
         <div
           className="home-scan-flow home-scan-flow-left"
           style={{
-            opacity: scanRevealProgress,
-            transform: `translate3d(0, ${24 - scanRevealProgress * 24}px, 0)`,
+            opacity: scanRevealProgress * scanSceneOpacity,
+            transform: `translate3d(0, ${24 - scanRevealProgress * 24 - reportProgress * 36}px, 0)`,
+            pointerEvents: reportProgress > 0.08 ? 'none' : 'auto',
           }}
         >
           {SCAN_FLOW_ITEMS.slice(0, 3).map((item, index) =>
@@ -755,8 +757,9 @@ function ScanReportSection() {
         <div
           className="home-scan-flow home-scan-flow-right"
           style={{
-            opacity: scanRevealProgress,
-            transform: `translate3d(0, ${24 - scanRevealProgress * 24}px, 0)`,
+            opacity: scanRevealProgress * scanSceneOpacity,
+            transform: `translate3d(0, ${24 - scanRevealProgress * 24 - reportProgress * 36}px, 0)`,
+            pointerEvents: reportProgress > 0.08 ? 'none' : 'auto',
           }}
         >
           {SCAN_FLOW_ITEMS.slice(3).map((item, index) =>
@@ -768,8 +771,8 @@ function ScanReportSection() {
           className="home-scan-core"
           aria-hidden="true"
           style={{
-            opacity: scanRevealProgress,
-            transform: `scale(${0.92 + scanRevealProgress * 0.08})`,
+            opacity: scanRevealProgress * scanSceneOpacity,
+            transform: `translate3d(0, ${reportProgress * -34}px, 0) scale(${0.92 + scanRevealProgress * 0.08 - reportProgress * 0.04})`,
           }}
         >
           <div className="home-scan-frame">
@@ -943,7 +946,7 @@ function RackTrackComparisonSection() {
                 </div>
                 <div className="home-product-frame">
                   <img
-                    src="/solutions page images/Server_rack-scan.png"
+                    src="/solutions page images/Server_rack-scan.jpg"
                     alt="RackTrack AI rack scan interface"
                   />
                   <div className="home-product-scan-box" />
