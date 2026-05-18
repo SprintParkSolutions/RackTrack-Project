@@ -1196,6 +1196,12 @@
 
 .home-scan-chip-right {
   transform: translate3d(54px, 0, 0) scale(0.96);
+  padding-right: clamp(44px, 5vw, 92px);
+}
+
+.home-scan-chip-right div {
+  justify-items: start;
+  text-align: left;
 }
 
 .home-scan-chip.is-visible {
@@ -1514,7 +1520,7 @@
 
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .home-comparison-section {
     min-height: auto;
   }
@@ -1549,12 +1555,29 @@
 
   .home-comparison-board {
     display: grid;
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
     max-height: none;
     overflow: visible;
+    gap: 0;
+    border-radius: 16px;
   }
 
   .home-comparison-panel {
+    min-height: auto;
     padding: 20px;
+    overflow: visible;
+  }
+
+  .home-comparison-panel-old,
+  .home-comparison-panel-new {
+    display: block;
+  }
+
+  .home-comparison-panel-old {
+    border-right: 0;
+    border-bottom: 1px solid rgba(0, 210, 255, 0.18);
   }
 
   .home-comparison-title {
@@ -1578,16 +1601,51 @@
     opacity: 1;
     transform: none;
     grid-template-columns: 48px 1fr;
+    align-items: start;
+  }
+
+  .home-comparison-row > div {
+    min-width: 0;
+  }
+
+  .home-comparison-row small {
+    max-width: none;
+  }
+
+  .home-comparison-old-grid,
+  .home-comparison-new-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    min-height: auto;
+    flex: none;
+  }
+
+  .home-comparison-list {
+    gap: 14px;
   }
 
   .home-comparison-old-visual {
-    inset: 0;
-    opacity: 0.22;
+    position: relative;
+    inset: auto;
+    opacity: 1;
+    min-height: 220px;
+    margin-top: 12px;
   }
 
   .home-comparison-warning,
   .home-comparison-cta {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    box-sizing: border-box;
     grid-template-columns: 1fr;
+    margin-top: 16px;
+  }
+
+  .home-comparison-warning {
+    gap: 12px;
+    padding: 16px;
   }
 
   .home-comparison-vs {
@@ -1595,11 +1653,13 @@
     left: auto;
     top: auto;
     transform: none;
-    margin: -20px auto;
+    margin: 12px auto;
+    z-index: 2;
   }
 
   .home-comparison-product {
     min-height: 300px;
+    margin-top: 12px;
   }
 
   .home-product-card {
@@ -1617,6 +1677,53 @@
     grid-template-columns: 1fr;
     gap: 12px;
     margin-top: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-comparison-sticky {
+    padding: 78px 18px 44px;
+  }
+
+  .home-comparison-header {
+    margin: 0 auto 22px;
+  }
+
+  .home-comparison-header h2 {
+    font-size: 1.18rem;
+  }
+
+  .home-comparison-panel {
+    padding: 20px;
+  }
+
+  .home-comparison-title h3 {
+    font-size: 1.02rem;
+  }
+
+  .home-comparison-title p {
+    font-size: 0.9rem;
+  }
+
+  .home-comparison-mark {
+    width: 50px;
+    height: 50px;
+  }
+
+  .home-comparison-product {
+    min-height: 300px;
+    margin-top: 12px;
+  }
+
+  .home-product-card {
+    right: 12px;
+    top: 18px;
+    width: 150px;
+  }
+
+  .home-product-top strong,
+  .home-product-top span {
+    font-size: 0.56rem;
   }
 
   .blue-topology-model {
@@ -1693,6 +1800,15 @@
   .home-report-header,
   .home-report-grid {
     grid-template-columns: 1fr;
+  }
+
+  .home-report-stage {
+    padding: 20px 16px;
+  }
+
+  .home-report-card {
+    min-height: 0;
+    padding: 18px 16px;
   }
 
 }
@@ -1996,15 +2112,36 @@
 }
 
 @media (max-width: 700px) {
+  .home-network-image-section {
+    height: auto;
+    min-height: auto;
+    padding-bottom: 28px;
+  }
+
+  .home-network-heading {
+    margin: 46px 16px 24px;
+    font-size: clamp(2.4rem, 11vw, 4rem);
+    line-height: 0.92;
+  }
+
+  .home-network-gif-stage {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: auto;
+    padding: 0 10px;
+  }
+
   .home-network-gif {
     width: 100%;
-    height: 62vh;
+    height: 52vh;
+    min-height: 320px;
   }
 
   .home-network-gif-text-mask {
-    left: 20px;
-    bottom: 19vh;
+    left: 18px;
+    bottom: 18px;
     width: 72vw;
-    height: 24vh;
+    height: 22vh;
   }
 }

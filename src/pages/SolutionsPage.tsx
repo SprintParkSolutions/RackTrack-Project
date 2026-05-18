@@ -4,14 +4,14 @@ import './SolutionsPage.css'
 
 const solutionsImagePath = '/solutions%20page%20images'
 const heroVideo = `${solutionsImagePath}/hero_video.mp4`
-const workflowRackScanImage = `${solutionsImagePath}/Server_rack-scan.png`
-const workflowArRackImage = `${solutionsImagePath}/AR_Rack.png`
-const workflowAiDetectionImage = `${solutionsImagePath}/AI_Device_Detection.png`
-const workflowPortTrackingImage = `${solutionsImagePath}/Port_Tracking.png`
-const workflowNetworkTopologyImage = `${solutionsImagePath}/Network_Topology.png`
-const workflowAutomatedInventoryImage = `${solutionsImagePath}/Automated_Inventory.png`
-const workflowSecurityComplianceImage = `${solutionsImagePath}/Security_Compliance.png`
-const rackVideo = `${solutionsImagePath}/server_rack.webm`
+const workflowRackScanImage = `${solutionsImagePath}/Server_rack-scan.jpg`
+const workflowArRackImage = `${solutionsImagePath}/AR_Rack.jpg`
+const workflowAiDetectionImage = `${solutionsImagePath}/AI_Device_Detection.jpg`
+const workflowPortTrackingImage = `${solutionsImagePath}/Port_Tracking.jpg`
+const workflowNetworkTopologyImage = `${solutionsImagePath}/Network_Topology.jpg`
+const workflowAutomatedInventoryImage = `${solutionsImagePath}/Automated_Inventory.jpg`
+const workflowSecurityComplianceImage = `${solutionsImagePath}/Security_Compliance.jpg`
+const rackVideo = `${solutionsImagePath}/server_rack.mp4`
 
 const stats = [
   { value: '10x', label: 'faster audits' },

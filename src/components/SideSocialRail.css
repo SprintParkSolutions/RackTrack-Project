@@ -101,6 +101,12 @@
   }
 }
 
+@media (max-width: 768px) {
+  .side-social-rail {
+    display: none;
+  }
+}
+
 @media (max-width: 520px) {
   .side-social-rail {
     right: 8px;
