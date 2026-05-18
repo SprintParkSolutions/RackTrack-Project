@@ -6,7 +6,7 @@
   --cyan: #00d2ff;
   --cyan-bright: #7dd3fc;
   --border: rgba(0, 210, 255, 0.16);
-  --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  --mono: var(--font-mono);
 }
 
 .app-shell {
@@ -26,34 +26,38 @@
 .app-eyebrow {
   display: inline-flex;
   color: var(--cyan);
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.28em;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 18px;
 }
 
 .app-section h1,
 .app-section h2 {
+  font-family: var(--font-heading);
   color: var(--text);
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   margin: 0;
 }
 
 .app-section h1 {
-  font-size: clamp(3.4rem, 8vw, 7.4rem);
+  font-size: var(--text-hero);
+  font-weight: 700;
 }
 
 .app-section h2 {
-  font-size: clamp(2.1rem, 4.6vw, 4.6rem);
+  font-size: var(--text-section-title);
+  font-weight: 700;
 }
 
 .app-section p {
+  font-family: var(--font-body);
   color: var(--muted);
-  font-size: clamp(1rem, 1.5vw, 1.16rem);
-  line-height: 1.85;
+  font-size: var(--text-body);
+  line-height: 1.7;
   margin: 22px 0 0;
 }
 
@@ -71,9 +75,10 @@
   border-radius: 999px;
   padding: 0 22px;
   text-decoration: none;
-  font-size: 0.74rem;
-  font-weight: 900;
-  letter-spacing: 0.14em;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -129,10 +134,11 @@
 }
 
 .app-footer p {
+  font-family: var(--font-body);
   color: var(--muted);
   margin: 0;
-  font-size: 0.96rem;
-  line-height: 1.55;
+  font-size: var(--text-body);
+  line-height: 1.65;
 }
 
 .app-footer nav {
@@ -159,10 +165,10 @@
 
 .app-footer-heading {
   color: rgba(220, 232, 255, 0.52);
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -176,10 +182,11 @@
 }
 
 .app-footer a {
+  font-family: var(--font-body);
   color: var(--muted);
   text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: var(--text-body);
+  font-weight: 500;
   transition: color 0.22s ease;
 }
 
@@ -192,8 +199,9 @@
   border-top: 1px solid rgba(0, 210, 255, 0.12);
   color: rgba(220, 232, 255, 0.5);
   text-align: center;
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  letter-spacing: 0.05em;
 }
 
 @media (max-width: 720px) {

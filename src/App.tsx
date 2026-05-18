@@ -1,6 +1,7 @@
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SideSocialRail from './components/SideSocialRail'
+import ScrollToTop from './components/ScrollToTop'
 import HomePage from './pages/HomePage'
 import SolutionsPage from './pages/SolutionsPage'
 import AboutUsPage from './pages/AboutUsPage'
@@ -11,6 +12,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="app-shell">
+        <ScrollToTop />
         <Navbar />
         <SideSocialRail />
         <Routes>
@@ -33,8 +35,8 @@ export default function App() {
             <div className="app-footer-columns">
               <nav className="app-footer-nav" aria-label="Footer navigation">
                 <span className="app-footer-heading">Explore</span>
-                <Link to="/solutions">Solutions</Link>
                 <Link to="/about-us">About Us</Link>
+                <Link to="/solutions">Solutions</Link>
                 <Link to="/contact-us">Contact Us</Link>
               </nav>
 

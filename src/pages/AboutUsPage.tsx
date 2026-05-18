@@ -10,7 +10,8 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
-import { ArrowRight, Cpu, Gauge, Network, Radar, Shield, Sparkles, Zap } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Cpu, Gauge, Network, Radar, Search, Shield, Sparkles, Zap } from 'lucide-react';
 
 import './AboutUsPage.css';
 
@@ -205,8 +206,11 @@ function ScrollScene({
 }
 
 export default function AboutUsPage() {
+  const navigate = useNavigate();
   const reducedMotion = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
+  const workflowShotRef = useRef<HTMLDivElement>(null);
+  const [isHoveringImage, setIsHoveringImage] = useState(false);
 
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(32);
@@ -223,6 +227,52 @@ export default function AboutUsPage() {
     stiffness: 100,
     damping: 26,
   });
+
+  const { scrollYProgress: workflowScrollYProgress } = useScroll({
+    target: workflowShotRef,
+    offset: ['start end', 'end start'],
+  });
+  const workflowParallaxY = useTransform(workflowScrollYProgress, [0, 1], [reducedMotion ? 0 : -24, reducedMotion ? 0 : 42]);
+  const workflowMouseX = useMotionValue(0);
+  const workflowMouseY = useMotionValue(0);
+  const workflowCursorRawX = useMotionValue(0);
+  const workflowCursorRawY = useMotionValue(0);
+  const workflowImageX = useSpring(useTransform(workflowMouseX, [-1, 1], [26, -26]), {
+    stiffness: 220,
+    damping: 24,
+    mass: 0.35,
+  });
+  const workflowHoverY = useSpring(useTransform(workflowMouseY, [-1, 1], [22, -22]), {
+    stiffness: 220,
+    damping: 24,
+    mass: 0.35,
+  });
+  const workflowImageY = useTransform(() => workflowParallaxY.get() + workflowHoverY.get());
+  const workflowCursorX = useSpring(workflowCursorRawX, { stiffness: 360, damping: 28, mass: 0.16 });
+  const workflowCursorY = useSpring(workflowCursorRawY, { stiffness: 360, damping: 28, mass: 0.16 });
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
+  const handleWorkflowMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const localX = event.clientX - bounds.left;
+    const localY = event.clientY - bounds.top;
+    const relativeX = ((localX / bounds.width) - 0.5) * 2;
+    const relativeY = ((localY / bounds.height) - 0.5) * 2;
+
+    workflowMouseX.set(relativeX);
+    workflowMouseY.set(relativeY);
+    workflowCursorRawX.set(localX);
+    workflowCursorRawY.set(localY);
+  };
+
+  const resetWorkflowHover = () => {
+    setIsHoveringImage(false);
+    workflowMouseX.set(0);
+    workflowMouseY.set(0);
+  };
 
   return (
     <div
@@ -277,16 +327,17 @@ export default function AboutUsPage() {
               </motion.p>
 
               <motion.div variants={reveal} className="about-hero__actions">
-                <motion.a
+                <motion.button
+                  type="button"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                  href="/contact"
+                  onClick={() => navigate('/contact-us', { state: { scrollTo: 'contact' } })}
                   className="about-button about-button--primary"
                 >
                   Book a Demo
                   <ArrowRight size={18} className="about-button__icon" />
-                </motion.a>
+                </motion.button>
                 <motion.a
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -394,7 +445,13 @@ export default function AboutUsPage() {
 
         <ScrollScene className="about-visual-section about-visual-section--reverse">
           <motion.div variants={reveal} className="about-visual-card about-visual-card--workflow-shot">
-            <div className="about-workflow-shot">
+            <div
+              ref={workflowShotRef}
+              className="about-workflow-shot"
+              onMouseEnter={() => setIsHoveringImage(true)}
+              onMouseLeave={resetWorkflowHover}
+              onMouseMove={handleWorkflowMouseMove}
+            >
               <motion.div
                 className="about-workflow-shot__media"
                 initial={reducedMotion ? false : { opacity: 0, scale: 0.95, filter: 'blur(18px)' }}
@@ -402,18 +459,47 @@ export default function AboutUsPage() {
                 viewport={viewport}
                 transition={{ duration: 1.05, ease: cinematicEase }}
               >
-                {/* Replace src with your generated image path */}
-                <img src="/media/server.png" alt="RackTrack workflow visualization" />
+                <motion.img
+                  src="/media/server.png"
+                  alt="RackTrack workflow visualization"
+                  style={{ x: workflowImageX, y: workflowImageY }}
+                  animate={{ scale: isHoveringImage ? 1.2 : 1.08 }}
+                  transition={{ type: 'spring', stiffness: 180, damping: 24, mass: 0.55 }}
+                />
                 
                 {/* NEW: Animation Overlays */}
                 <div className="about-workflow-shot__grid" />
                 <div className="about-workflow-shot__scanner" />
                 
               </motion.div>
-              <div className="about-image-card__overlay about-image-card__overlay--workflow">
-                <span className="about-eyebrow">Workflow</span>
-                <strong>Compare, approve, sync, and share the rack state across your operating stack</strong>
-              </div>
+              <AnimatePresence>
+                {!isHoveringImage && (
+                  <motion.div
+                    className="about-image-card__overlay about-image-card__overlay--workflow"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 30 }}
+                    transition={{ duration: 0.34, ease: cinematicEase }}
+                  >
+                    <span className="about-eyebrow">Workflow</span>
+                    <strong>Compare, approve, sync, and share the rack state across your operating stack</strong>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <AnimatePresence>
+                {isHoveringImage && (
+                  <motion.div
+                    className="custom-lens-cursor"
+                    style={{ left: workflowCursorX, top: workflowCursorY }}
+                    initial={{ opacity: 0, scale: 0.72 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.72 }}
+                    transition={{ duration: 0.2, ease: cinematicEase }}
+                  >
+                    <Search aria-hidden="true" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
           <motion.div variants={reveal} className="about-section-copy">
@@ -444,16 +530,17 @@ export default function AboutUsPage() {
               RackTrack brings scanning, AI recognition, and system sync into one workflow built for real data center operations.
             </p>
             <div className="about-cta__actions">
-              <motion.a
+              <motion.button
+                type="button"
                 whileHover={{ y: -2, scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                href="/contact"
+                onClick={() => navigate('/contact-us', { state: { scrollTo: 'contact' } })}
                 className="about-button about-button--primary"
               >
                 Book a Demo
                 <ArrowRight className="about-button__icon" />
-              </motion.a>
+              </motion.button>
               <motion.a
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.99 }}

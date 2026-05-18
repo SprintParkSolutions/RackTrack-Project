@@ -13,6 +13,7 @@ import {
   X,
   Zap,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import './HomePage.css'
 
 const HERO_FRAMES = 568
@@ -901,13 +902,17 @@ function RackTrackComparisonSection() {
               </div>
             </div>
 
-            <a href="/contact-us" className="home-comparison-cta">
+            <Link
+              to="/contact-us"
+              state={{ scrollTo: 'contact' }}
+              className="home-comparison-cta"
+            >
               <Rocket size={38} strokeWidth={2.2} />
               <span>
                 Scan. Search. Find.
                 <strong>Any Rack. Any Port. Instantly.</strong>
               </span>
-            </a>
+            </Link>
           </article>
         </div>
 
