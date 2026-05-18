@@ -1,5 +1,5 @@
-import { Suspense, lazy } from 'react'
-import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
+import { Suspense, lazy, useEffect } from 'react'
+import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SideSocialRail from './components/SideSocialRail'
 import ScrollToTop from './components/ScrollToTop'
@@ -10,10 +10,77 @@ const SolutionsPage = lazy(() => import('./pages/SolutionsPage'))
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
 const ContactUsPage = lazy(() => import('./pages/ContactUsPage'))
 
+const SEO_BY_PATH: Record<
+  string,
+  { title: string; description: string; canonicalPath: string }
+> = {
+  '/': {
+    title: 'RackTrack | Scan Any Rack. Find Any Port. Instantly.',
+    description:
+      'RackTrack turns physical layer infrastructure into live intelligence with AI-powered rack scans, port identification, cable mapping, and audit-ready reports.',
+    canonicalPath: '/',
+  },
+  '/about-us': {
+    title: 'About RackTrack | Physical Layer Intelligence',
+    description:
+      'Learn how RackTrack helps teams modernize rack audits, cable mapping, and infrastructure visibility with AI-powered physical layer intelligence.',
+    canonicalPath: '/about-us',
+  },
+  '/solutions': {
+    title: 'RackTrack Solutions | Rack Audits, Cable Mapping, Port Visibility',
+    description:
+      'Explore RackTrack solutions for rack inventory, switch recognition, cable tracing, free-port discovery, and audit-ready infrastructure reporting.',
+    canonicalPath: '/solutions',
+  },
+  '/contact-us': {
+    title: 'Contact RackTrack | Book a Demo',
+    description:
+      'Contact RackTrack to book a demo, discuss rollout planning, and explore AI-powered rack scanning, cable mapping, and audit workflows.',
+    canonicalPath: '/contact-us',
+  },
+}
+
+function AppSeo() {
+  const location = useLocation()
+
+  useEffect(() => {
+    const seo = SEO_BY_PATH[location.pathname] ?? SEO_BY_PATH['/']
+
+    document.title = seo.title
+
+    const setMeta = (name: string, content: string, attr: 'name' | 'property' = 'name') => {
+      let tag = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${name}"]`)
+      if (!tag) {
+        tag = document.createElement('meta')
+        tag.setAttribute(attr, name)
+        document.head.appendChild(tag)
+      }
+      tag.setAttribute('content', content)
+    }
+
+    let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', `https://racktrack.ai${seo.canonicalPath}`)
+
+    setMeta('description', seo.description)
+    setMeta('og:title', seo.title, 'property')
+    setMeta('og:description', seo.description, 'property')
+    setMeta('twitter:title', seo.title)
+    setMeta('twitter:description', seo.description)
+  }, [location.pathname])
+
+  return null
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <div className="app-shell">
+        <AppSeo />
         <ScrollToTop />
         <Navbar />
         <SideSocialRail />
