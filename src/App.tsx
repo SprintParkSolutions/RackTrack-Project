@@ -1,12 +1,14 @@
+import { Suspense, lazy } from 'react'
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SideSocialRail from './components/SideSocialRail'
 import ScrollToTop from './components/ScrollToTop'
 import HomePage from './pages/HomePage'
-import SolutionsPage from './pages/SolutionsPage'
-import AboutUsPage from './pages/AboutUsPage'
-import ContactUsPage from './pages/ContactUsPage'
 import './App.css'
+
+const SolutionsPage = lazy(() => import('./pages/SolutionsPage'))
+const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
+const ContactUsPage = lazy(() => import('./pages/ContactUsPage'))
 
 export default function App() {
   return (
@@ -15,15 +17,23 @@ export default function App() {
         <ScrollToTop />
         <Navbar />
         <SideSocialRail />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/solutions" element={<SolutionsPage />} />
-          <Route path="/about-us" element={<AboutUsPage />} />
-          <Route path="/contact-us" element={<ContactUsPage />} />
-          <Route path="/about" element={<Navigate to="/about-us" replace />} />
-          <Route path="/contact" element={<Navigate to="/contact-us" replace />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <Suspense
+          fallback={
+            <div className="app-route-loading" role="status" aria-live="polite">
+              Loading page...
+            </div>
+          }
+        >
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/solutions" element={<SolutionsPage />} />
+            <Route path="/about-us" element={<AboutUsPage />} />
+            <Route path="/contact-us" element={<ContactUsPage />} />
+            <Route path="/about" element={<Navigate to="/about-us" replace />} />
+            <Route path="/contact" element={<Navigate to="/contact-us" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
         <footer className="app-footer">
           <div className="app-footer-main">
             <div className="app-footer-brand">

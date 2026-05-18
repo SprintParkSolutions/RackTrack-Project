@@ -219,7 +219,7 @@ export default function ContactUsPage() {
 
           <div className="contact-render-scene">
             <img
-              src="/Images/racktrack-contact-hero.png"
+              src="/Images/racktrack-contact-hero.jpg"
               alt=""
               className="contact-render-image"
               draggable="false"

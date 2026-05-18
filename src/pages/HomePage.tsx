@@ -100,6 +100,7 @@ function useFrameScrubber({
   const cacheLimit = 18
 
   const [ready, setReady] = useState(false)
+  const [complete, setComplete] = useState(false)
   const [loadPct, setLoadPct] = useState(0)
 
   const trimCache = useCallback((protectedIndexes: number[]) => {
@@ -224,29 +225,84 @@ function useFrameScrubber({
   useEffect(() => {
     let active = true
 
+    const readResponseWithProgress = async (
+      response: Response,
+      onProgress: (ratio: number) => void,
+    ) => {
+      const contentLength = Number(response.headers.get('content-length') || 0)
+      const reader = response.body?.getReader()
+
+      if (!reader) {
+        const buffer = await response.arrayBuffer()
+        onProgress(1)
+        return buffer
+      }
+
+      let received = 0
+      const chunks: Uint8Array[] = []
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        if (!value) continue
+
+        chunks.push(value)
+        received += value.length
+
+        if (contentLength > 0) {
+          onProgress(Math.min(1, received / contentLength))
+        }
+      }
+
+      if (contentLength === 0) {
+        onProgress(1)
+      }
+
+      const merged = new Uint8Array(received)
+      let offset = 0
+      for (const chunk of chunks) {
+        merged.set(chunk, offset)
+        offset += chunk.length
+      }
+
+      return merged.buffer
+    }
+
     async function loadFrames() {
       try {
         const indexRes = await fetch(`/${folder}_index.json`)
-        const index: [number, number][] = await indexRes.json()
+        const indexBuffer = await readResponseWithProgress(indexRes, (ratio) => {
+          if (!active) return
+          setLoadPct(Math.max(4, Math.round(ratio * 24)))
+        })
+        const indexText = new TextDecoder().decode(indexBuffer)
+        const index: [number, number][] = JSON.parse(indexText)
         if (!active) return
         frameIndexRef.current = index
 
         setLoadPct(24)
 
         const binRes = await fetch(`/${folder}_data.bin`)
-        const buffer = await binRes.arrayBuffer()
+        const buffer = await readResponseWithProgress(binRes, (ratio) => {
+          if (!active) return
+          setLoadPct(Math.max(24, Math.round(24 + ratio * 68)))
+        })
         if (!active) return
         frameBufferRef.current = buffer
 
-        setLoadPct(62)
+        setLoadPct(92)
         currentFrameRef.current = 0
         await ensureFrameReady(0)
         if (!active) return
 
         setLoadPct(100)
+        setComplete(true)
         setReady(true)
       } catch (error) {
         console.error(`${folder} frame loading failed`, error)
+        if (!active) return
+        setLoadPct(100)
+        setComplete(true)
       }
     }
 
@@ -345,7 +401,7 @@ function useFrameScrubber({
     }
   }, [drawFrame, ensureFrameReady, primeNearbyFrames, ready, totalFrames, trackRef])
 
-  return { ready, loadPct }
+  return { ready, complete, loadPct }
 }
 
 type ScrollCanvasSectionProps = {
@@ -366,7 +422,7 @@ function ScrollCanvasSection({
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const trackRef = useRef<HTMLElement | null>(null)
 
-  const { ready, loadPct } = useFrameScrubber({
+  const { complete, loadPct } = useFrameScrubber({
     canvasRef,
     trackRef,
     totalFrames,
@@ -384,7 +440,7 @@ function ScrollCanvasSection({
         <canvas ref={canvasRef} className="home-frame-canvas" />
         <div className="home-vignette" />
 
-        {!ready && (
+        {!complete && (
           <div className="home-loading-overlay">
             <div className="home-loading-bar-track">
               <div
@@ -624,6 +680,7 @@ function ScanReportSection() {
   const scanRevealProgress = Math.max(0, Math.min(1, (progress - 0.24) / 0.08))
   const scanProgress = Math.max(0, Math.min(1, (progress - 0.26) / 0.48))
   const reportProgress = Math.max(0, Math.min(1, (progress - 0.78) / 0.18))
+  const scanSceneOpacity = Math.max(0, 1 - reportProgress * 2.4)
   const activeIndex = Math.min(
     SCAN_FLOW_ITEMS.length - 1,
     Math.floor(scanProgress * SCAN_FLOW_ITEMS.length),
@@ -687,8 +744,9 @@ function ScanReportSection() {
         <div
           className="home-scan-flow home-scan-flow-left"
           style={{
-            opacity: scanRevealProgress,
-            transform: `translate3d(0, ${24 - scanRevealProgress * 24}px, 0)`,
+            opacity: scanRevealProgress * scanSceneOpacity,
+            transform: `translate3d(0, ${24 - scanRevealProgress * 24 - reportProgress * 36}px, 0)`,
+            pointerEvents: reportProgress > 0.08 ? 'none' : 'auto',
           }}
         >
           {SCAN_FLOW_ITEMS.slice(0, 3).map((item, index) =>
@@ -699,8 +757,9 @@ function ScanReportSection() {
         <div
           className="home-scan-flow home-scan-flow-right"
           style={{
-            opacity: scanRevealProgress,
-            transform: `translate3d(0, ${24 - scanRevealProgress * 24}px, 0)`,
+            opacity: scanRevealProgress * scanSceneOpacity,
+            transform: `translate3d(0, ${24 - scanRevealProgress * 24 - reportProgress * 36}px, 0)`,
+            pointerEvents: reportProgress > 0.08 ? 'none' : 'auto',
           }}
         >
           {SCAN_FLOW_ITEMS.slice(3).map((item, index) =>
@@ -712,8 +771,8 @@ function ScanReportSection() {
           className="home-scan-core"
           aria-hidden="true"
           style={{
-            opacity: scanRevealProgress,
-            transform: `scale(${0.92 + scanRevealProgress * 0.08})`,
+            opacity: scanRevealProgress * scanSceneOpacity,
+            transform: `translate3d(0, ${reportProgress * -34}px, 0) scale(${0.92 + scanRevealProgress * 0.08 - reportProgress * 0.04})`,
           }}
         >
           <div className="home-scan-frame">
@@ -830,7 +889,7 @@ function RackTrackComparisonSection() {
               </div>
 
               <div className="home-comparison-old-visual" aria-hidden="true">
-                <img src="/solutions page images/Before_scan.png" alt="" />
+                <img src="/solutions page images/Before_scan.jpg" alt="" />
                 <span>Manual trace</span>
               </div>
             </div>
@@ -887,7 +946,7 @@ function RackTrackComparisonSection() {
                 </div>
                 <div className="home-product-frame">
                   <img
-                    src="/solutions page images/Server_rack-scan.png"
+                    src="/solutions page images/Server_rack-scan.jpg"
                     alt="RackTrack AI rack scan interface"
                   />
                   <div className="home-product-scan-box" />
