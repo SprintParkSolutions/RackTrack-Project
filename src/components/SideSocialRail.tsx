@@ -1,14 +1,6 @@
 import type { SVGProps } from 'react'
 import './SideSocialRail.css'
 
-function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
-      <path d="M12.04 2.5a9.45 9.45 0 0 0-8.16 14.2L2.5 21.5l4.94-1.3a9.47 9.47 0 1 0 4.6-17.7Zm0 17.07a7.86 7.86 0 0 1-4-1.08l-.28-.16-2.93.77.79-2.86-.18-.3a7.88 7.88 0 1 1 6.6 3.63Zm4.32-5.9c-.23-.12-1.36-.67-1.58-.74-.21-.08-.36-.12-.5.11-.15.22-.58.73-.72.89-.13.15-.26.18-.49.06-.23-.11-.95-.35-1.82-1.13-.67-.59-1.13-1.33-1.26-1.55-.13-.22-.01-.34.1-.45.1-.1.22-.27.33-.4.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.4-.06-.11-.5-1.22-.69-1.66-.18-.44-.37-.38-.5-.39l-.43-.01c-.15 0-.39.06-.6.28s-.79.77-.79 1.88.81 2.18.92 2.33c.11.15 1.58 2.41 3.83 3.39.54.23.96.37 1.29.47.54.17 1.03.14 1.42.09.43-.06 1.36-.56 1.55-1.1.19-.54.19-1 .14-1.1-.05-.09-.2-.15-.43-.26Z" />
-    </svg>
-  )
-}
-
 function LinkedInIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
@@ -34,12 +26,6 @@ function FacebookIcon(props: SVGProps<SVGSVGElement>) {
 }
 
 const socialItems = [
-  {
-    label: 'WhatsApp',
-    href: 'https://wa.me/18605669894',
-    className: 'side-social-rail-link-whatsapp',
-    icon: WhatsAppIcon,
-  },
   {
     label: 'LinkedIn',
     href: 'https://www.linkedin.com/company/racktrack/',

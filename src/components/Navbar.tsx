@@ -6,8 +6,8 @@ import './Navbar.css'
 
 const navItems = [
   { label: 'Home', path: '/' },
-  { label: 'Solutions', path: '/solutions' },
   { label: 'About Us', path: '/about-us' },
+  { label: 'Solutions', path: '/solutions' },
   { label: 'Contact Us', path: '/contact-us' },
 ]
 
@@ -17,7 +17,7 @@ export default function Navbar() {
 
   const goToContact = () => {
     setMenuOpen(false)
-    navigate('/contact-us')
+    navigate('/contact-us', { state: { scrollTo: 'contact' } })
   }
 
   return (
