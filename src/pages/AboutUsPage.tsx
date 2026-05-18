@@ -10,6 +10,7 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Cpu, Gauge, Network, Radar, Shield, Sparkles, Zap } from 'lucide-react';
 
 import './AboutUsPage.css';
@@ -205,6 +206,7 @@ function ScrollScene({
 }
 
 export default function AboutUsPage() {
+  const navigate = useNavigate();
   const reducedMotion = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
 
@@ -277,16 +279,17 @@ export default function AboutUsPage() {
               </motion.p>
 
               <motion.div variants={reveal} className="about-hero__actions">
-                <motion.a
+                <motion.button
+                  type="button"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                  href="/contact"
+                  onClick={() => navigate('/contact-us', { state: { scrollTo: 'contact' } })}
                   className="about-button about-button--primary"
                 >
                   Book a Demo
                   <ArrowRight size={18} className="about-button__icon" />
-                </motion.a>
+                </motion.button>
                 <motion.a
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -444,16 +447,17 @@ export default function AboutUsPage() {
               RackTrack brings scanning, AI recognition, and system sync into one workflow built for real data center operations.
             </p>
             <div className="about-cta__actions">
-              <motion.a
+              <motion.button
+                type="button"
                 whileHover={{ y: -2, scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                href="/contact"
+                onClick={() => navigate('/contact-us', { state: { scrollTo: 'contact' } })}
                 className="about-button about-button--primary"
               >
                 Book a Demo
                 <ArrowRight className="about-button__icon" />
-              </motion.a>
+              </motion.button>
               <motion.a
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.99 }}

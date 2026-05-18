@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import './ContactUsPage.css'
 import {
@@ -14,7 +14,7 @@ import {
   Rocket,
   X,
 } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   createRackTrackLead,
   type RackTrackLeadPayload,
@@ -46,11 +46,40 @@ function isValidEmail(email: string) {
 }
 
 export default function ContactUsPage() {
+  const location = useLocation()
   const navigate = useNavigate()
   const [formData, setFormData] = useState<RackTrackLeadPayload>(initialFormData)
   const [submitState, setSubmitState] = useState<SubmitState>('idle')
   const [formMessage, setFormMessage] = useState('')
   const [successModal, setSuccessModal] = useState<SuccessModalData | null>(null)
+
+  useEffect(() => {
+    const state = location.state as { scrollTo?: string } | null
+    const sectionId = state?.scrollTo || location.hash.slice(1)
+
+    if (!sectionId) {
+      return
+    }
+
+    const target = document.getElementById(sectionId)
+
+    if (!target) {
+      return
+    }
+
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }, [location])
+
+  const scrollToForm = () => {
+    const target = document.getElementById('contact')
+    if (!target) {
+      return
+    }
+
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -179,13 +208,9 @@ export default function ContactUsPage() {
           </p>
 
           <div className="hero-actions">
-            <a href="#contact" className="primary-btn">
-              Get a Demo <ArrowUpRight size={16} />
-            </a>
-
-            <a href="#contact" className="secondary-btn">
-              Contact Us
-            </a>
+            <button type="button" className="primary-btn" onClick={scrollToForm}>
+              Start a Conversation <ArrowUpRight size={16} />
+            </button>
           </div>
         </div>
 
@@ -204,7 +229,7 @@ export default function ContactUsPage() {
         </div>
       </section>
 
-      <section className="contact-info-section">
+      <section id="contact-info" className="contact-info-section">
         <div className="info-card">
           <MapPin />
           <span>Office Address</span>
