@@ -12,6 +12,8 @@ export type RackTrackLeadPayload = {
   rackCount: string
   requirement: string
   description: string
+  mobileCountry: string
+  mobileNumber: string
 }
 
 export type SalesforceMutationResponse = {
@@ -87,6 +89,8 @@ export async function createRackTrackLead(
         rackCount: payload.rackCount.trim(),
         requirement: payload.requirement.trim(),
         description: payload.description.trim(),
+        mobileCountry: payload.mobileCountry.trim(),
+        mobileNumber: payload.mobileNumber.trim(),
       }),
     })
 
