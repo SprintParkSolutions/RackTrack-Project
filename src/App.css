@@ -127,9 +127,10 @@
 .app-footer-logo-image {
   display: block;
   width: clamp(190px, 13vw, 250px);
-  height: auto;
+  height: 52px;
   max-height: 68px;
   object-fit: contain;
+  object-position: left center;
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.18));
 }
 
@@ -224,6 +225,7 @@
 
   .app-footer-logo-image {
     width: min(210px, 58vw);
+    height: 44px;
   }
 
   .app-footer nav {

@@ -103,18 +103,38 @@
 
 @media (max-width: 768px) {
   .side-social-rail {
-    display: none;
+    right: 10px;
+    bottom: 90px;
+  }
+
+  .side-social-rail-links {
+    gap: 10px;
+  }
+
+  .side-social-rail-link {
+    width: 40px;
+    height: 40px;
+  }
+
+  .side-social-rail-link svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
 @media (max-width: 520px) {
   .side-social-rail {
     right: 8px;
-    bottom: 92px;
+    bottom: 88px;
   }
 
   .side-social-rail-link {
-    width: 46px;
-    height: 46px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .side-social-rail-link svg {
+    width: 17px;
+    height: 17px;
   }
 }

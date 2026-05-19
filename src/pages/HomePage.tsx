@@ -561,6 +561,7 @@ function RackLabels() {
   )
 }
 
+
 const SCAN_FLOW_ITEMS = [
   { label: 'Capture', value: 'Video sweep', color: '#00d2ff' },
   { label: 'Identify', value: '14 rack units', color: '#7dd3fc' },
@@ -569,6 +570,7 @@ const SCAN_FLOW_ITEMS = [
   { label: 'Verify', value: 'Exceptions', color: '#fbbf24' },
   { label: 'Report', value: 'Audit pack', color: '#fb7185' },
 ]
+
 
 const REPORT_CARDS = [
   {
@@ -685,6 +687,7 @@ function ScanReportSection() {
     SCAN_FLOW_ITEMS.length - 1,
     Math.floor(scanProgress * SCAN_FLOW_ITEMS.length),
   )
+  const HUD_LABELS = ['Capturing', 'Identifying', 'Classifying', 'Mapping', 'Verifying', 'Reporting']
 
   const renderFlowItem = (
     item: { label: string; value: string; color: string },
@@ -776,10 +779,24 @@ function ScanReportSection() {
           }}
         >
           <div className="home-scan-frame">
+            <img
+              src="/Images/RackScan.jpg"
+              alt=""
+              className="home-scan-frame-img"
+              draggable="false"
+            />
+            <div className="home-scan-frame-overlay" />
+            <div className="home-scan-brackets" aria-hidden="true">
+              <span /><span /><span /><span />
+            </div>
             <span style={{ height: `${Math.max(12, scanProgress * 100)}%` }} />
             <div className="home-scan-beam" />
-            <strong>{SCAN_FLOW_ITEMS[activeIndex].label}</strong>
-            <small>{Math.round(scanProgress * 100)}%</small>
+            <div className="home-scan-hud" aria-hidden="true">
+              <span key={activeIndex} className="home-scan-hud-label">
+                {HUD_LABELS[activeIndex]}...
+              </span>
+              <strong className="home-scan-hud-pct">{Math.round(scanProgress * 100)}%</strong>
+            </div>
           </div>
         </div>
 
