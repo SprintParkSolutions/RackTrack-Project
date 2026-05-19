@@ -7,3 +7,6 @@
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]
 </IfModule>
+
+DirectoryIndex index.html
+ErrorDocument 404 /index.html
