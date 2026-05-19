@@ -350,6 +350,8 @@ export default function AboutUsPage() {
               </motion.div>
             </motion.div>
           </motion.div>
+
+          <div className="about-hero__visual" aria-hidden="true" />
         </section>
 
         <section className="about-metrics-section" aria-label="RackTrack platform metrics">
