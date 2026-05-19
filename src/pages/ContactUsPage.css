@@ -2395,6 +2395,43 @@
   gap: 16px;
 }
 
+.form-field {
+  display: grid;
+  gap: 10px;
+}
+
+.form-field-label {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  color: rgba(226, 242, 255, 0.82);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.required-asterisk {
+  color: #54d9ff;
+}
+
+.optional-label {
+  color: rgba(226, 242, 255, 0.58);
+  font-weight: 500;
+}
+
+.phone-input-group {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 12px;
+}
+
+.phone-input-group select {
+  min-width: 0;
+}
+
+.phone-input-group input {
+  min-width: 0;
+}
+
 .contact-form input,
 .contact-form select,
 .contact-form textarea {
