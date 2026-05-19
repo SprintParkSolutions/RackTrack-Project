@@ -353,6 +353,9 @@ function RackTopologySection() {
                 activeFeature === feature.id ? 'is-active' : ''
               }`}
               type="button"
+              aria-pressed={activeFeature === feature.id}
+              onPointerEnter={() => setActiveFeature(feature.id)}
+              onPointerDown={() => setActiveFeature(feature.id)}
               onMouseEnter={() => setActiveFeature(feature.id)}
               onFocus={() => setActiveFeature(feature.id)}
               onClick={() => setActiveFeature(feature.id)}

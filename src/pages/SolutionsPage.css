@@ -8163,3 +8163,303 @@
     content: none !important;
   }
 }
+
+/* =========================================================
+   MOBILE SOLUTIONS RESPONSIVE FIXES
+   Workflow cards expand only after scan, principles keep motion
+   ========================================================= */
+
+@media (max-width: 1180px) {
+  .workflow-callout-layer {
+    align-items: start;
+  }
+
+  .workflow-orbit-card[data-visible='false'] {
+    display: none !important;
+  }
+
+  .workflow-orbit-card[data-visible='true'] {
+    display: block !important;
+  }
+}
+
+/* =========================================================
+   MOBILE 3D TOPOLOGY INTERACTION FIX
+   Tap uses the same active highlight as desktop hover
+   ========================================================= */
+
+@media (max-width: 720px) {
+  .topology-feature {
+    min-height: 58px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .topology-feature:active .feature-dot,
+  .topology-feature:focus-visible .feature-dot,
+  .topology-feature[aria-pressed='true'] .feature-dot {
+    transform: translateY(-2px) scale(1.08);
+    border-color: rgba(0, 238, 255, 0.48);
+    background:
+      radial-gradient(circle, rgba(0, 238, 255, 0.26), rgba(8, 20, 32, 0.82));
+    box-shadow:
+      0 0 0 6px rgba(0, 238, 255, 0.07),
+      0 0 36px rgba(0, 238, 255, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .topology-feature:active .feature-dot i,
+  .topology-feature:focus-visible .feature-dot i,
+  .topology-feature[aria-pressed='true'] .feature-dot i {
+    transform: scale(1.45);
+    background: #20f7ff;
+    box-shadow:
+      0 0 20px rgba(32, 247, 255, 0.95),
+      0 0 46px rgba(32, 247, 255, 0.5);
+  }
+
+  .topology-feature:active strong,
+  .topology-feature:focus-visible strong,
+  .topology-feature[aria-pressed='true'] strong {
+    color: #ffffff;
+  }
+
+  .topology-feature:active small,
+  .topology-feature:focus-visible small,
+  .topology-feature[aria-pressed='true'] small {
+    color: rgba(224, 247, 255, 0.9);
+  }
+
+  .rack-floating-tag {
+    display: block;
+    min-width: 70px;
+    padding: 7px 9px;
+    border-radius: 14px;
+    opacity: 0.72;
+    transform: scale(0.86);
+    transform-origin: center;
+  }
+
+  .rack-floating-tag span {
+    font-size: 7px;
+  }
+
+  .rack-floating-tag strong {
+    font-size: 10px;
+  }
+
+  .rack-floating-tag-one {
+    left: 7%;
+    top: 25%;
+  }
+
+  .rack-floating-tag-two {
+    right: 6%;
+    top: 36%;
+  }
+
+  .rack-floating-tag-three {
+    right: 8%;
+    bottom: 24%;
+  }
+
+  .topology-stage.active-drill .rack-floating-tag-one,
+  .topology-stage.active-status .rack-floating-tag-three,
+  .topology-stage.active-pulse .rack-floating-tag-two,
+  .topology-stage.active-orbit .rack-floating-tag-one {
+    opacity: 1;
+    transform: scale(0.94);
+    border-color: rgba(0, 238, 255, 0.58);
+    box-shadow:
+      0 0 0 5px rgba(0, 238, 255, 0.05),
+      0 0 34px rgba(0, 238, 255, 0.28);
+  }
+}
+
+@media (max-width: 1100px) {
+  .principles-section {
+    min-height: 100vh;
+  }
+
+  .principles-header {
+    opacity: 0.68 !important;
+    transform: translateY(18px) !important;
+  }
+
+  .principles-section.is-split .principles-header {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .principles-card-stage {
+    position: relative;
+    display: block;
+    min-height: 770px;
+    perspective: 1200px;
+    transform-style: preserve-3d;
+  }
+
+  .principle-card,
+  .principles-section.is-stacked .principle-card,
+  .principles-section.is-split .principle-card,
+  .principles-section.is-split .principle-card-1:hover,
+  .principles-section.is-split .principle-card-2:hover,
+  .principles-section.is-split .principle-card-3:hover {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: min(100%, 520px);
+    min-height: 232px;
+    transform-style: preserve-3d;
+    transition:
+      transform 1.45s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.95s ease,
+      box-shadow 0.8s ease,
+      border-color 0.8s ease,
+      background 0.8s ease;
+  }
+
+  .principle-card-depth {
+    transform: translateZ(22px) !important;
+  }
+
+  .principles-section.is-stacked .principle-card-1 {
+    z-index: 3;
+    opacity: 1 !important;
+    transform:
+      translateX(-50%)
+      translateY(0)
+      translateZ(0)
+      scale(0.97)
+      rotateX(7deg)
+      rotateY(-7deg)
+      rotateZ(0deg) !important;
+  }
+
+  .principles-section.is-stacked .principle-card-2 {
+    z-index: 2;
+    opacity: 0.48 !important;
+    transform:
+      translateX(-50%)
+      translateY(18px)
+      translateZ(-34px)
+      scale(0.955)
+      rotateX(8deg)
+      rotateY(6deg)
+      rotateZ(2deg) !important;
+  }
+
+  .principles-section.is-stacked .principle-card-3 {
+    z-index: 1;
+    opacity: 0.3 !important;
+    transform:
+      translateX(-50%)
+      translateY(36px)
+      translateZ(-64px)
+      scale(0.94)
+      rotateX(10deg)
+      rotateY(-6deg)
+      rotateZ(-2deg) !important;
+  }
+
+  .principles-section.is-split .principle-card-1 {
+    z-index: 1;
+    transition-delay: 0s !important;
+    opacity: 1 !important;
+    transform:
+      translateX(-50%)
+      translateY(0)
+      translateZ(42px)
+      scale(1)
+      rotateX(2deg)
+      rotateY(4deg)
+      rotateZ(0deg) !important;
+  }
+
+  .principles-section.is-split .principle-card-2 {
+    z-index: 2;
+    transition-delay: 0.16s !important;
+    opacity: 1 !important;
+    transform:
+      translateX(-50%)
+      translateY(258px)
+      translateZ(72px)
+      scale(1)
+      rotateX(0deg)
+      rotateY(0deg)
+      rotateZ(0deg) !important;
+  }
+
+  .principles-section.is-split .principle-card-3 {
+    z-index: 3;
+    transition-delay: 0.32s !important;
+    opacity: 1 !important;
+    transform:
+      translateX(-50%)
+      translateY(516px)
+      translateZ(42px)
+      scale(1)
+      rotateX(2deg)
+      rotateY(-4deg)
+      rotateZ(0deg) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .workflow-new-layout {
+    margin-top: 42px;
+  }
+
+  .workflow-new-layout,
+  .workflow-new-layout.is-scanning {
+    min-height: 390px;
+  }
+
+  .workflow-new-layout.has-cards {
+    min-height: auto;
+  }
+
+  .workflow-new-layout.is-scanning .workflow-callout-map {
+    gap: 0;
+  }
+
+  .workflow-new-layout.is-scanning .workflow-callout-layer {
+    display: none;
+  }
+
+  .workflow-callout-layer {
+    gap: 14px;
+  }
+
+  .principles-card-stage {
+    min-height: 738px;
+  }
+
+  .principle-card,
+  .principles-section.is-stacked .principle-card,
+  .principles-section.is-split .principle-card {
+    min-height: 218px;
+  }
+
+  .principles-section.is-split .principle-card-2 {
+    transform:
+      translateX(-50%)
+      translateY(246px)
+      translateZ(72px)
+      scale(1)
+      rotateX(0deg)
+      rotateY(0deg)
+      rotateZ(0deg) !important;
+  }
+
+  .principles-section.is-split .principle-card-3 {
+    transform:
+      translateX(-50%)
+      translateY(492px)
+      translateZ(42px)
+      scale(1)
+      rotateX(2deg)
+      rotateY(-4deg)
+      rotateZ(0deg) !important;
+  }
+}
