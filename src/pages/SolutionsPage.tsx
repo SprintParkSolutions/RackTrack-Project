@@ -4,14 +4,14 @@ import './SolutionsPage.css'
 
 const solutionsImagePath = '/solutions%20page%20images'
 const heroVideo = `${solutionsImagePath}/hero_video.mp4`
-const workflowRackScanImage = `${solutionsImagePath}/Server_rack-scan.png`
-const workflowArRackImage = `${solutionsImagePath}/AR_Rack.png`
-const workflowAiDetectionImage = `${solutionsImagePath}/AI_Device_Detection.png`
-const workflowPortTrackingImage = `${solutionsImagePath}/Port_Tracking.png`
-const workflowNetworkTopologyImage = `${solutionsImagePath}/Network_Topology.png`
-const workflowAutomatedInventoryImage = `${solutionsImagePath}/Automated_Inventory.png`
-const workflowSecurityComplianceImage = `${solutionsImagePath}/Security_Compliance.png`
-const rackVideo = `${solutionsImagePath}/server_rack.webm`
+const workflowRackScanImage = `${solutionsImagePath}/Server_rack-scan.jpg`
+const workflowArRackImage = `${solutionsImagePath}/AR_Rack.jpg`
+const workflowAiDetectionImage = `${solutionsImagePath}/AI_Device_Detection.jpg`
+const workflowPortTrackingImage = `${solutionsImagePath}/Port_Tracking.jpg`
+const workflowNetworkTopologyImage = `${solutionsImagePath}/Network_Topology.jpg`
+const workflowAutomatedInventoryImage = `${solutionsImagePath}/Automated_Inventory.jpg`
+const workflowSecurityComplianceImage = `${solutionsImagePath}/Security_Compliance.jpg`
+const rackVideo = `${solutionsImagePath}/server_rack.mp4`
 
 const stats = [
   { value: '10x', label: 'faster audits' },
@@ -353,6 +353,9 @@ function RackTopologySection() {
                 activeFeature === feature.id ? 'is-active' : ''
               }`}
               type="button"
+              aria-pressed={activeFeature === feature.id}
+              onPointerEnter={() => setActiveFeature(feature.id)}
+              onPointerDown={() => setActiveFeature(feature.id)}
               onMouseEnter={() => setActiveFeature(feature.id)}
               onFocus={() => setActiveFeature(feature.id)}
               onClick={() => setActiveFeature(feature.id)}
@@ -495,7 +498,7 @@ function WorkflowSection() {
   const [activeRevealIndex, setActiveRevealIndex] = useState(-1)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
-  const hasStartedRef = useRef(false)
+  const wasIntersectingRef = useRef(false)
   const startTimeoutRef = useRef<number | null>(null)
   const frameRef = useRef<number | null>(null)
   const revealTimersRef = useRef<number[]>([])
@@ -664,9 +667,6 @@ function WorkflowSection() {
     const section = sectionRef.current
 
     const scheduleScan = () => {
-      if (hasStartedRef.current) return
-
-      hasStartedRef.current = true
       clearWorkflowTimers()
 
       startTimeoutRef.current = window.setTimeout(() => {
@@ -685,7 +685,11 @@ function WorkflowSection() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        const hasJustEntered = entry.isIntersecting && !wasIntersectingRef.current
+
+        wasIntersectingRef.current = entry.isIntersecting
+
+        if (hasJustEntered) {
           scheduleScan()
         }
       },
