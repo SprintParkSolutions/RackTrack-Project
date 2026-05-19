@@ -1145,20 +1145,22 @@ body::-webkit-scrollbar,
 
 @media (max-width: 960px) {
   .about-hero-title {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     font-size: clamp(2.5rem, 7vw, 3.5rem);
-    padding: 0 4vw;
+    padding: 0;
+    margin-top: clamp(36px, 8vh, 72px);
+    line-height: 1;
   }
   .about-hero-title__line-1 {
     align-self: flex-start;
     text-align: left;
-    max-width: 90%;
+    max-width: 100%;
   }
   .about-hero-title__line-2 {
-    align-self: flex-end;
-    text-align: right;
-    max-width: 90%;
+    align-self: flex-start;
+    text-align: left;
+    max-width: 100%;
   }
   .about-shell {
     padding-inline: 24px;
@@ -1166,7 +1168,17 @@ body::-webkit-scrollbar,
   .about-hero {
     height: auto;
     min-height: 620px;
-    padding: 108px 24px 70px;
+    padding: calc(var(--rt-nav-height, 74px) + 40px) 24px 64px;
+    justify-content: flex-end;
+  }
+  .about-hero__copy {
+    max-width: 100%;
+    justify-content: flex-end;
+  }
+  .about-hero-caption {
+    max-width: 34rem;
+    font-size: clamp(1rem, 2.25vw, 1.08rem);
+    line-height: 1.6;
   }
   .about-metrics-console {
     flex-direction: column;
@@ -1186,17 +1198,78 @@ body::-webkit-scrollbar,
   .about-shell {
     padding-inline: 14px;
   }
+  .about-hero {
+    min-height: 100svh;
+    padding: calc(var(--rt-nav-height, 70px) + 28px) 18px 42px;
+  }
+  .about-hero__copy,
+  .about-hero__intro {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .about-hero-title {
+    font-size: clamp(2.3rem, 10.4vw, 3.35rem);
+    margin-top: 0;
+    max-width: 11ch;
+    text-wrap: pretty;
+  }
+  .about-hero-caption {
+    margin-top: 16px;
+    max-width: 28ch;
+    font-size: 1rem;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
   .about-story__stats {
     grid-template-columns: 1fr;
   }
   .about-button {
     width: 100%;
+    min-height: 52px;
+    padding-inline: 20px;
   }
   .about-hero__actions,
   .about-cta__actions {
     flex-direction: column;
     align-items: stretch;
     width: 100%;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .about-metrics-section {
+    margin-top: 24px;
+  }
+  .about-metrics-console {
+    padding: 28px 20px;
+    border-radius: 28px;
+  }
+  .about-hero__metrics {
+    gap: 24px;
+  }
+  .about-metric-card {
+    width: min(72vw, 240px);
+    height: min(72vw, 240px);
+  }
+}
+
+@media (max-width: 420px) {
+  .about-shell {
+    padding-inline: 12px;
+  }
+  .about-hero {
+    padding: calc(var(--rt-nav-height, 70px) + 20px) 16px 36px;
+    min-height: auto;
+  }
+  .about-hero-title {
+    font-size: clamp(2.05rem, 10vw, 2.75rem);
+    max-width: 10ch;
+  }
+  .about-hero-caption {
+    max-width: 24ch;
+    font-size: 0.98rem;
+  }
+  .about-button {
+    font-size: 0.95rem;
   }
 }
 
