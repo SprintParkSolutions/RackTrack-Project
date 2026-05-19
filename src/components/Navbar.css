@@ -225,8 +225,8 @@
   }
 
   .rt-nav-logo-image {
-    width: clamp(176px, 28vw, 220px);
-    max-height: 54px;
+    width: clamp(132px, 24vw, 176px);
+    max-height: 40px;
   }
 
   .rt-nav-actions {
@@ -245,7 +245,7 @@
 
 @media (max-width: 520px) {
   :root {
-    --rt-nav-height: 70px;
+    --rt-nav-height: 64px;
   }
 
   .rt-nav-shell {
@@ -253,19 +253,19 @@
   }
 
   .rt-nav {
-    min-height: 70px;
+    min-height: 64px;
     border-radius: 0;
-    padding: 10px 14px;
+    padding: 8px 14px;
   }
 
   .rt-nav-logo-image {
-    width: min(172px, 44vw);
-    max-height: 48px;
+    width: min(112px, 30vw);
+    max-height: 26px;
   }
 
   .rt-nav-menu-btn {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
   }
 
   .rt-mobile-panel {
@@ -273,5 +273,16 @@
     left: 14px;
     right: 14px;
     border-radius: 22px;
+  }
+}
+
+@media (max-width: 380px) {
+  .rt-nav {
+    padding: 8px 12px;
+  }
+
+  .rt-nav-logo-image {
+    width: min(104px, 28vw);
+    max-height: 24px;
   }
 }
