@@ -1,122 +1,133 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { Suspense, lazy, useEffect } from 'react'
+import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import SideSocialRail from './components/SideSocialRail'
+import ScrollToTop from './components/ScrollToTop'
+import HomePage from './pages/HomePage'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const SolutionsPage = lazy(() => import('./pages/SolutionsPage'))
+const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
+const ContactUsPage = lazy(() => import('./pages/ContactUsPage'))
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+const SEO_BY_PATH: Record<
+  string,
+  { title: string; description: string; canonicalPath: string }
+> = {
+  '/': {
+    title: 'RackTrack | Scan Any Rack. Find Any Port. Instantly.',
+    description:
+      'RackTrack turns physical layer infrastructure into live intelligence with AI-powered rack scans, port identification, cable mapping, and audit-ready reports.',
+    canonicalPath: '/',
+  },
+  '/about-us': {
+    title: 'About RackTrack | Physical Layer Intelligence',
+    description:
+      'Learn how RackTrack helps teams modernize rack audits, cable mapping, and infrastructure visibility with AI-powered physical layer intelligence.',
+    canonicalPath: '/about-us',
+  },
+  '/solutions': {
+    title: 'RackTrack Solutions | Rack Audits, Cable Mapping, Port Visibility',
+    description:
+      'Explore RackTrack solutions for rack inventory, switch recognition, cable tracing, free-port discovery, and audit-ready infrastructure reporting.',
+    canonicalPath: '/solutions',
+  },
+  '/contact-us': {
+    title: 'Contact RackTrack | Book a Demo',
+    description:
+      'Contact RackTrack to book a demo, discuss rollout planning, and explore AI-powered rack scanning, cable mapping, and audit workflows.',
+    canonicalPath: '/contact-us',
+  },
 }
 
-export default App
+function AppSeo() {
+  const location = useLocation()
+
+  useEffect(() => {
+    const seo = SEO_BY_PATH[location.pathname] ?? SEO_BY_PATH['/']
+
+    document.title = seo.title
+
+    const setMeta = (name: string, content: string, attr: 'name' | 'property' = 'name') => {
+      let tag = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${name}"]`)
+      if (!tag) {
+        tag = document.createElement('meta')
+        tag.setAttribute(attr, name)
+        document.head.appendChild(tag)
+      }
+      tag.setAttribute('content', content)
+    }
+
+    let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', `https://racktrack.ai${seo.canonicalPath}`)
+
+    setMeta('description', seo.description)
+    setMeta('og:title', seo.title, 'property')
+    setMeta('og:description', seo.description, 'property')
+    setMeta('twitter:title', seo.title)
+    setMeta('twitter:description', seo.description)
+  }, [location.pathname])
+
+  return null
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <div className="app-shell">
+        <AppSeo />
+        <ScrollToTop />
+        <Navbar />
+        <SideSocialRail />
+        <Suspense
+          fallback={
+            <div className="app-route-loading" role="status" aria-live="polite">
+              Loading page...
+            </div>
+          }
+        >
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/solutions" element={<SolutionsPage />} />
+            <Route path="/about-us" element={<AboutUsPage />} />
+            <Route path="/contact-us" element={<ContactUsPage />} />
+            <Route path="/about" element={<Navigate to="/about-us" replace />} />
+            <Route path="/contact" element={<Navigate to="/contact-us" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
+        <footer className="app-footer">
+          <div className="app-footer-main">
+            <div className="app-footer-brand">
+              <Link to="/" className="app-footer-logo" aria-label="Go to RackTrack home">
+                <img src="/RackTrack_Logo.png" alt="RackTrack" className="app-footer-logo-image" />
+              </Link>
+              <p>A True Physical Layer Inteligence</p>
+            </div>
+            <div className="app-footer-columns">
+              <nav className="app-footer-nav" aria-label="Footer navigation">
+                <span className="app-footer-heading">Explore</span>
+                <Link to="/about-us">About Us</Link>
+                <Link to="/solutions">Solutions</Link>
+                <Link to="/contact-us">Contact Us</Link>
+              </nav>
+
+              <div className="app-footer-contact">
+                <span className="app-footer-heading">Contact</span>
+                <a href="mailto:info@racktrack.ai">info@racktrack.ai</a>
+                <a href="tel:+18605669894">+1 (860) 566 9894</a>
+                <p>85 Felt Rd, Suite #604, South Windsor, CT 06074</p>
+              </div>
+            </div>
+          </div>
+          <div className="app-footer-bottom">All rights reserved</div>
+        </footer>
+      </div>
+    </BrowserRouter>
+  )
+}
