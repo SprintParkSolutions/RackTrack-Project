@@ -8,7 +8,7 @@ import HomePage from './pages/HomePage'
 import './App.css'
 
 const SolutionsPage = lazy(() => import('./pages/SolutionsPage'))
-const ProductPage = lazy(() => import('./pages/ProductPage'))
+// const ProductPage = lazy(() => import('./pages/ProductPage'))
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
 const ContactUsPage = lazy(() => import('./pages/ContactUsPage'))
 
@@ -28,12 +28,12 @@ const SEO_BY_PATH: Record<
       'Learn how RackTrack helps teams modernize rack audits, cable mapping, and infrastructure visibility with AI-powered physical layer intelligence.',
     canonicalPath: '/about-us',
   },
-  '/product': {
-    title: 'RackTrack Product | Verified Physical Infrastructure Inventory',
-    description:
-      'See how RackTrack turns a smartphone video into verified physical infrastructure inventory for security, capacity, compliance, and operations.',
-    canonicalPath: '/product',
-  },
+  // '/product': {
+  //   title: 'RackTrack Product | Verified Physical Infrastructure Inventory',
+  //   description:
+  //     'See how RackTrack turns a smartphone video into verified physical infrastructure inventory for security, capacity, compliance, and operations.',
+  //   canonicalPath: '/product',
+  // },
   '/solutions': {
     title: 'RackTrack Solutions | Rack Audits, Cable Mapping, Port Visibility',
     description:
@@ -102,7 +102,7 @@ export default function App() {
         >
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/product" element={<ProductPage />} />
+            {/* <Route path="/product" element={<ProductPage />} /> */}
             <Route path="/solutions" element={<SolutionsPage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/contact-us" element={<ContactUsPage />} />
@@ -122,7 +122,7 @@ export default function App() {
             <div className="app-footer-columns">
               <nav className="app-footer-nav" aria-label="Footer navigation">
                 <span className="app-footer-heading">Explore</span>
-                <Link to="/product">Product</Link>
+                {/* <Link to="/product">Product</Link> */}
                 <Link to="/about-us">About Us</Link>
                 <Link to="/solutions">Solutions</Link>
                 <Link to="/contact-us">Contact Us</Link>
