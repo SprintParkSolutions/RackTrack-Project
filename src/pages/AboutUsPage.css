@@ -35,13 +35,18 @@ body::-webkit-scrollbar,
   --about-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@property --about-glass-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 /* ==========================================================================
    1. GLOBAL & BACKGROUND
    ========================================================================== */
 .about-page {
   position: relative;
-  overflow: clip;
-  overflow-x: hidden;
+  overflow-x: clip; /* clip (not hidden) so it never becomes a scroll container — sticky needs a scroll-container-free ancestor chain */
   width: 100%;
   max-width: 100%;
   color: var(--about-text);
@@ -257,7 +262,7 @@ body::-webkit-scrollbar,
 }
 
 /* ==========================================================================
-   2. LAYOUT WRAPPERS & HERO
+   2. LAYOUT WRAPPERS & STICKY HERO SCROLL
    ========================================================================== */
 .about-shell {
   position: relative;
@@ -272,104 +277,295 @@ body::-webkit-scrollbar,
   transform-origin: center top;
 }
 
-/* ==========================================================================
-   HERO SECTION - PERFECT 100VH FIT & BACKGROUND VIDEO
-   ========================================================================== */
-/* ==========================================================================
-   HERO SECTION - LEFT ALIGNED & UPSCALED
-   ========================================================================== */
+/* 1500px of pinned scroll runway + 100vh for the handoff-fade phase.
+   The sticky child releases naturally once those 1500px are consumed. */
 .about-hero {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 40px;
-  min-height: 100dvh;
-  padding: clamp(100px, 14vh, 140px) clamp(24px, 6vw, 72px) clamp(60px, 8vh, 100px);
-  box-sizing: border-box;
-  overflow: hidden;
+  height: calc(1500px + 100vh);
   width: 100vw;
   max-width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
 }
 
-/* --- Video Background Styling --- */
-.about-hero__video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: cover;
-  z-index: 0;
-  pointer-events: none; 
-  opacity: 0.8; 
-  background-color: rgba(255, 0, 0, 0.2); 
+/* Locks the hero contents to the screen until the 300vh scroll is complete */
+.about-hero__sticky-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* --- Video Overlay Blend --- */
-.about-hero__video-overlay {
+/* --- STRICT Z-INDEX LAYERING --- */
+
+/* Layer 1: Animated Grid (Behind Everything) */
+.about-hero__pattern-grid {
   position: absolute;
   inset: 0;
   z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--about-hero-grid-columns, 18), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--about-hero-grid-rows, 10), minmax(0, 1fr));
+  isolation: isolate;
   background:
-    linear-gradient(90deg, rgba(2, 6, 17, 0.88) 0%, rgba(2, 6, 17, 0.70) 45%, rgba(2, 6, 17, 0.18) 100%),
-    linear-gradient(180deg, rgba(2, 6, 17, 0.42) 0%, transparent 18%, transparent 72%, var(--about-bg) 100%);
+    linear-gradient(rgba(122, 223, 255, 0.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(122, 223, 255, 0.13) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(122, 223, 255, 0.08), transparent 58%);
+  background-size:
+    calc(100% / var(--about-hero-grid-columns, 18)) calc(100% / var(--about-hero-grid-rows, 10)),
+    calc(100% / var(--about-hero-grid-columns, 18)) calc(100% / var(--about-hero-grid-rows, 10)),
+    100% 100%;
+  mask-image: radial-gradient(ellipse at center, black 34%, rgba(0, 0, 0, 0.74) 62%, transparent 92%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 34%, rgba(0, 0, 0, 0.74) 62%, transparent 92%);
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.about-hero__pattern-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(163, 238, 255, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 168, 255, 0.18) 1px, transparent 1px);
+  background-size:
+    calc(100% / var(--about-hero-grid-columns, 18)) calc(100% / var(--about-hero-grid-rows, 10)),
+    calc(100% / var(--about-hero-grid-columns, 18)) calc(100% / var(--about-hero-grid-rows, 10));
+  opacity: 0.72;
+  filter: drop-shadow(0 0 8px rgba(122, 223, 255, 0.18));
   pointer-events: none;
 }
 
-.about-hero__visual {
-  position: relative;
-  z-index: 2;
+.about-hero__pattern-grid::after {
+  display: none;
 }
 
-.about-hero__copy {
+.about-hero__pattern-cell {
   position: relative;
+  z-index: 1;
+  box-shadow: inset 0 0 0 1px rgba(122, 223, 255, 0.045);
+  border-right: 1px solid rgba(122, 223, 255, 0.1);
+  border-bottom: 1px solid rgba(143, 108, 255, 0.08);
+  background: transparent;
+  opacity: 0.78;
+  transition:
+    border-color 0.32s ease-in-out,
+    box-shadow 0.32s ease-in-out,
+    background-color 0.32s ease-in-out,
+    opacity 0.32s ease-in-out;
+}
+
+.about-hero__pattern-cell.is-active {
+  border-color: rgba(190, 245, 255, 0.94);
+  background-color: rgba(122, 223, 255, 0.045);
+  box-shadow:
+    inset 0 0 0 1px rgba(143, 108, 255, 0.86),
+    inset 0 0 18px rgba(122, 223, 255, 0.28),
+    0 0 18px rgba(122, 223, 255, 0.68),
+    0 0 34px rgba(143, 108, 255, 0.42);
+  opacity: 1;
+}
+
+/* Layer 2: Clipped image window — single div using background-image.
+   clip-path: polygon() expands from center (0–600px scrollY).
+   backgroundSize shrinks 170% → 100% on this SAME element (0–900px scrollY).
+   Both props animate on one div = "scale separation": the window opens
+   outward while the image inside reverse-zooms inward for a depth illusion. */
+.about-hero__window {
+  position: absolute;
+  inset: 0;
   z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  /* Correct-cased path matching public/Images/AboutUsRack.png */
+  background-image: url('/Images/AboutUsRack.png');
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 170% auto; /* Framer Motion overrides this at runtime */
+  border-radius: 32px;
+  overflow: hidden;
+  /* CSS default matches scrollY=0 state so image is visible on first paint,
+     before Framer Motion's inline style takes over */
+  clip-path: polygon(25% 25%, 75% 25%, 75% 75%, 25% 75%);
+  filter: saturate(1.15) contrast(1.1) brightness(0.88);
+  transform-origin: 50% 50%;
+  will-change: clip-path, background-size;
+  pointer-events: none;
+}
+
+/* Layer 3: Edge vignette — transparent center so image shines through the window,
+   dark halo to isolate the clip against the page background */
+.about-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 50%, transparent 0%, rgba(2, 6, 17, 0.46) 72%, rgba(2, 6, 17, 0.78) 100%),
+    linear-gradient(180deg, rgba(2, 6, 17, 0.08), transparent 22%, transparent 72%, rgba(2, 6, 17, 0.24));
+  pointer-events: none;
+}
+
+/* Layer 4: Bottom gradient mask — blends the pinned scene into the next section
+   before the sticky container scrolls off screen */
+.about-hero__bottom-mask {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 384px;
+  background: linear-gradient(to bottom, transparent, var(--about-bg));
+  pointer-events: none;
+  z-index: 4;
+}
+
+.about-hero__metrics-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  align-content: center;
   justify-content: center;
-  min-width: 0;
+  width: 100%;
+  min-height: 100%;
+  padding: clamp(80px, 11vh, 128px) clamp(20px, 5vw, 70px);
+  pointer-events: none;
+  will-change: transform, opacity;
 }
 
-.about-hero__copy,
-.about-section-copy,
-.about-story__copy,
-.about-capabilities__copy {
-  min-width: 0;
+.about-hero__metrics-stage .about-hero__metrics {
+  margin: 0 auto;
+  align-items: center;
 }
 
-.about-hero__intro {
+/* Layer 5: Glassmorphic Box (styles driven dynamically via Framer Motion) */
+.about-hero__glass-box {
+  position: relative;
+  z-index: 5;
+  --about-glass-angle: 0deg;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Left aligned */
-  text-align: left; /* Left aligned */
+  align-items: center;
+  justify-content: center;
+  /* 50vw × 50vh matches clip-path polygon(25% 25%,75% 25%,75% 75%,25% 75%) on the
+     full-viewport window element — all three layers share the same bounding box. */
+  width: 50vw;
+  height: 50vh;
+  max-width: none;
+  min-height: auto;
+  aspect-ratio: auto;
+  margin: 0;
+  align-self: center;
+  justify-self: center;
+  padding: clamp(24px, 3vh, 42px) clamp(22px, 3vw, 44px);
+  border-radius: 32px;
+  text-align: center;
+  isolation: isolate;
+  overflow: hidden;
+  will-change: transform, opacity, background, backdrop-filter, border, box-shadow;
+}
+
+.about-hero__glass-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--about-glass-angle),
+    transparent 0deg,
+    rgba(122, 223, 255, 0.18) 38deg,
+    rgba(178, 255, 246, 0.98) 58deg,
+    rgba(95, 168, 255, 0.8) 84deg,
+    transparent 124deg,
+    transparent 178deg,
+    rgba(95, 168, 255, 0.16) 212deg,
+    rgba(122, 223, 255, 0.9) 236deg,
+    rgba(214, 255, 250, 0.96) 254deg,
+    transparent 296deg,
+    transparent 360deg
+  );
+  filter:
+    drop-shadow(0 0 7px rgba(122, 223, 255, 0.72))
+    drop-shadow(0 0 20px rgba(95, 168, 255, 0.34));
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: aboutGlassBiolumeSweep 8.5s linear infinite;
+}
+
+.about-hero__glass-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 8px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--about-glass-angle),
+    transparent 0deg,
+    rgba(122, 223, 255, 0.32) 58deg,
+    transparent 130deg,
+    transparent 196deg,
+    rgba(95, 168, 255, 0.3) 246deg,
+    transparent 320deg
+  );
+  filter: blur(14px);
+  opacity: 0.82;
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: aboutGlassBiolumeSweep 8.5s linear infinite;
+}
+
+/* --- TYPOGRAPHY & BUTTONS --- */
+.about-hero__intro {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center; 
   width: 100%;
+  max-width: min(100%, 760px);
+  gap: 0;
+  will-change: transform, opacity;
 }
 
 .about-hero-title {
   display: block;
   width: 100%;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-size: var(--text-hero);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.55rem, 4.35vw, 4.55rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
   font-weight: 700;
-  /* Pushed further down the page */
-  margin-top: 14vh; 
-  text-align: left; 
+  text-align: center; 
   text-wrap: balance;
 }
 
 .about-hero-title__line-1 {
   display: block; 
-  text-align: left;
   color: var(--about-text);
   white-space: normal; 
   overflow-wrap: break-word;
@@ -377,25 +573,19 @@ body::-webkit-scrollbar,
 
 .about-hero-title__line-2 {
   display: block; 
-  text-align: left; /* Force left alignment */
   white-space: normal; 
   overflow-wrap: break-word;
 }
 
-/* --- DYNAMIC SPACING FOR CAPTION & BUTTONS --- */
 .about-hero-caption {
-  max-width: 760px;
-  margin: clamp(12px, 1.5vh, 20px) 0 0 0;
+  max-width: 58ch;
+  margin: clamp(14px, 1.8vh, 22px) auto 0;
   font-family: var(--font-body);
-  font-size: var(--text-body);
+  font-size: clamp(0.98rem, 1.24vw, 1.18rem);
   color: var(--about-muted);
-  line-height: 1.7;
-  text-align: left;
+  line-height: 1.54;
+  text-align: center;
   text-wrap: balance;
-}
-
-.about-hero-title > span {
-  display: block;
 }
 
 .about-hero-title__accent {
@@ -409,28 +599,13 @@ body::-webkit-scrollbar,
   animation: aboutTitleShine 8s linear infinite;
 }
 
-.about-hero-title__accent--secondary {
-  background-position: 28% 50%;
-}
-
-/* --- BUTTONS --- */
 .about-hero__actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start; /* Left aligned */
+  justify-content: center; 
   align-items: center;
-  gap: 16px; 
-  margin-top: clamp(32px, 4.5vh, 48px); 
-  width: 100%;
-}
-
-.about-cta__actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Kept CTA actions centered */
-  align-items: center;
-  gap: 16px; 
-  margin-top: clamp(24px, 3.5vh, 40px); 
+  gap: clamp(10px, 1.4vw, 16px); 
+  margin-top: clamp(24px, 3.6vh, 40px); 
   width: 100%;
 }
 
@@ -490,171 +665,112 @@ body::-webkit-scrollbar,
 }
 
 /* ==========================================================================
-   3. METRICS CONSOLE & CIRCLES (RESTORED TO FLEX-ROW)
+   3. METRIC CARDS (INTERACTIVE GLASSMORPHISM)
    ========================================================================== */
 .about-metrics-section {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   width: 100%;
-  margin: clamp(34px, 5vw, 70px) auto clamp(50px, 7vw, 96px);
-  padding: 0 clamp(4px, 2vw, 18px);
+  /* Shifted up slightly; it will naturally scroll into view after the 300vh track is complete */
+  margin: clamp(-80px, -10vw, -120px) auto clamp(50px, 7vw, 96px); 
+  padding: 0 clamp(16px, 4vw, 40px);
 }
 
-.about-metrics-console {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 4vh auto 0;
-  width: fit-content;
-  padding: 56px 140px;
-  border-radius: 120px;
-  border: 1px solid rgba(122, 223, 255, 0.15);
-  background: linear-gradient(180deg, rgba(10, 18, 31, 0.6), rgba(6, 12, 22, 0.9));
-  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.05), 0 30px 60px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  transform: perspective(1000px) rotateX(2deg);
-}
-
-.about-metrics-cables {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.about-metrics-cable--body {
-  stroke: rgba(122, 223, 255, 0.15);
-  stroke-width: 4px;
-}
-
-.about-metrics-cable--current {
-  stroke: rgba(122, 223, 255, 0.9);
-  stroke-width: 4px;
-  filter: drop-shadow(0 0 8px rgba(122, 223, 255, 0.8));
-}
-
-/* CRITICAL FIX: Forces the circles side-by-side */
 .about-hero__metrics {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  gap: 140px;
-  margin-top: 0;
+  align-items: stretch;
+  gap: clamp(24px, 3vw, 40px);
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .about-metric-card {
-  width: clamp(190px, 22vw, 240px); 
-  height: clamp(190px, 22vw, 240px);
-  flex-shrink: 0;
-  border-radius: 50%;
-  display: block;
-  padding: 0;
-  background: rgba(4, 8, 18, 0.95); 
-  box-shadow:
-    0 18px 54px rgba(0, 0, 0, 0.42),
-    inset 0 18px 30px rgba(255, 255, 255, 0.025),
-    inset 0 -18px 30px rgba(0, 0, 0, 0.5),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  animation: aboutMetricFloat 6.4s ease-in-out infinite;
+  position: relative;
+  flex: 1;
+  min-width: 280px;
+  max-width: 360px;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.035)),
+    rgba(5, 10, 22, 0.58);
+  border: 1px solid rgba(210, 238, 255, 0.16);
+  box-shadow: 
+    0 24px 62px rgba(0, 0, 0, 0.46),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(122, 223, 255, 0.06);
+  overflow: hidden;
+  cursor: pointer;
+  backdrop-filter: blur(28px) saturate(1.28);
+  -webkit-backdrop-filter: blur(28px) saturate(1.28);
   transition:
-    transform 0.15s ease-out,
-    border-color 0.28s var(--about-ease),
-    box-shadow 0.28s var(--about-ease),
-    background-color 0.28s var(--about-ease);
-  overflow: hidden; /* CRITICAL: Keeps the spinning gradient inside the bounds */
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-  touch-action: manipulation;
+    border-color 0.34s var(--about-ease),
+    box-shadow 0.34s var(--about-ease),
+    background 0.34s var(--about-ease),
+    filter 0.34s var(--about-ease);
 }
 
-.about-metric-card:nth-child(2) {
-  animation-delay: -1.8s;
-}
-
-.about-metric-card:nth-child(3) {
-  animation-delay: -3.4s;
+.about-metric-card__glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: screen;
 }
 
 .about-metric-card:hover {
-  border-color: rgba(122, 223, 255, 0.38);
-  box-shadow:
-    0 28px 84px rgba(0, 0, 0, 0.38),
-    0 0 52px rgba(122, 223, 255, 0.22),
+  border-color: rgba(150, 222, 255, 0.42);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.045)),
+    rgba(7, 12, 28, 0.66);
+  box-shadow: 
+    0 32px 70px rgba(0, 0, 0, 0.56),
+    0 0 34px rgba(122, 223, 255, 0.22),
+    0 0 52px rgba(143, 108, 255, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    inset 0 -22px 42px rgba(122, 223, 255, 0.06);
-  animation-play-state: paused;
-}
-/* --- NEW: Spinning Glowing Outer Ring --- */
-.about-metric-card::after {
-  content: '';
-  position: absolute;
-  inset: -20px; /* Bleeds out slightly to ensure smooth corners while rotating */
-  border-radius: 50%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0%,
-    transparent 30%,
-    rgba(86, 230, 255, 0.8) 45%,
-    rgba(40, 100, 255, 1) 50%,
-    rgba(86, 230, 255, 0.8) 55%,
-    transparent 70%,
-    transparent 100%
-  );
-  animation: aboutMetricSpin 3.5s linear infinite;
-  z-index: 0;
-  pointer-events: none;
+    inset 0 -1px 0 rgba(122, 223, 255, 0.12);
+  filter: saturate(1.08);
 }
 
-/* Pauses the glowing ring when the user hovers over the card */
-.about-metric-card:hover::after {
-  animation-play-state: paused;
+.about-metric-card:hover .about-metric-card__glow {
+  opacity: 1;
 }
 
 .about-metric-card__inner {
-  position: absolute;
-  inset: 12px;
+  position: relative;
   z-index: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   text-align: center;
-  cursor: pointer;
-  background:
-    radial-gradient(circle at 34% 18%, rgba(255, 255, 255, 0.2), transparent 34%),
-    radial-gradient(circle at 50% 18%, rgba(122, 223, 255, 0.2), transparent 42%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.045)),
-    rgba(11, 18, 34, 0.82);
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -18px 34px rgba(0, 0, 0, 0.24);
-  backdrop-filter: blur(20px) saturate(1.25);
-  -webkit-backdrop-filter: blur(20px) saturate(1.25);
-  transition: transform 0.15s ease-out;
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-  touch-action: manipulation;
+  padding: 40px 32px;
+  min-height: 240px;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.34s var(--about-ease);
 }
 
-.about-metric-card:active .about-metric-card__inner {
-  transform: scale(0.98);
+.about-metric-card:hover .about-metric-card__inner {
+  transform: translateY(-2px);
 }
 
 .about-metric-card__counter {
   color: var(--about-text);
-  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
   font-weight: 700;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.6) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .about-metric-card__content {
@@ -663,55 +779,49 @@ body::-webkit-scrollbar,
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
-  padding: clamp(18px, 2vw, 26px);
 }
 
 .about-metric-card__header {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
 }
 
 .about-card-icon {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   color: var(--about-cyan);
 }
 
 .about-metric-card__header span {
   color: var(--about-cyan);
   font-family: var(--font-mono);
-  font-size: clamp(0.56rem, 0.7vw, 0.68rem);
-  letter-spacing: 0.11em;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  line-height: 1.2;
-  max-width: 15ch;
 }
 
 .about-metric-card strong {
-  position: relative;
-  z-index: 1;
   display: block;
-  letter-spacing: -0.05em;
+  font-size: clamp(1.8rem, 2vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #fff;
   line-height: 1.1;
-  margin-top: 10px;
-  font-size: clamp(1.55rem, 2.4vw, 2.2rem);
+  margin-bottom: 10px;
 }
 
 .about-metric-card p {
-  position: relative;
-  z-index: 1;
-  max-width: 17ch;
-  margin: 8px 0 0;
-  font-size: clamp(0.72rem, 0.85vw, 0.86rem);
-  line-height: 1.35;
   color: var(--about-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 24ch;
 }
 
 /* ==========================================================================
@@ -820,10 +930,6 @@ body::-webkit-scrollbar,
   touch-action: manipulation;
 }
 
-.about-workflow-card:active {
-  transform: scale(0.98);
-}
-
 .about-workflow-card:hover {
   border-color: rgba(122, 223, 255, 0.4);
   box-shadow: 
@@ -919,7 +1025,6 @@ body::-webkit-scrollbar,
   height: 100%;
   object-fit: cover;
   display: block;
-  /* Darkened slightly so the cyan laser pop perfectly */
   filter: saturate(1.1) contrast(1.1) brightness(0.85); 
 }
 
@@ -970,6 +1075,7 @@ body::-webkit-scrollbar,
   pointer-events: none;
   z-index: 1;
 }
+
 .about-workflow-shot__scanner {
   position: absolute;
   left: 0;
@@ -1119,6 +1225,7 @@ body::-webkit-scrollbar,
   100% { transform: rotate(-12deg) translateX(-2rem); }
 }
 
+
 @keyframes aboutBeam {
   0% { transform: translateX(-5%); }
   100% { transform: translateX(5%); }
@@ -1134,19 +1241,52 @@ body::-webkit-scrollbar,
   100% { background-position: 200% 50%; }
 }
 
-@keyframes aboutMetricFloat {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -12px, 0); }
+@keyframes aboutGlassBiolumeSweep {
+  0% {
+    --about-glass-angle: 0deg;
+    opacity: 0.72;
+  }
+  42% {
+    opacity: 1;
+  }
+  100% {
+    --about-glass-angle: 360deg;
+    opacity: 0.72;
+  }
+}
+
+@keyframes aboutHeroNeonGridBloom {
+  0% {
+    filter:
+      drop-shadow(0 0 6px rgba(122, 223, 255, 0.8))
+      drop-shadow(0 0 16px rgba(95, 168, 255, 0.44));
+  }
+  100% {
+    filter:
+      drop-shadow(0 0 12px rgba(163, 238, 255, 1))
+      drop-shadow(0 0 34px rgba(95, 168, 255, 0.72));
+  }
+}
+
+@keyframes aboutWorkflowScan {
+  0% { transform: translateY(0); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(650px); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .about-cta,
-  .about-cta__beam {
+  .about-cta__beam,
+  .about-hero__glass-box::before,
+  .about-hero__glass-box::after,
+  .about-hero__pattern-grid::after {
     animation: none;
   }
   .about-button,
   .about-visual-card,
-  .about-metric-card {
+  .about-metric-card,
+  .about-hero__pattern-cell {
     animation: none;
     transition: none;
   }
@@ -1164,12 +1304,6 @@ body::-webkit-scrollbar,
   .about-story__stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .about-metrics-console {
-    padding: 56px 80px;
-  }
-  .about-hero__metrics {
-    gap: 80px;
-  }
 }
 
 @media (max-width: 980px) {
@@ -1179,60 +1313,50 @@ body::-webkit-scrollbar,
     padding-inline: clamp(18px, 5vw, 24px);
   }
   .about-hero {
-    grid-template-columns: 1fr;
     height: auto;
     min-height: 100svh;
+  }
+  .about-hero__sticky-container {
+    position: relative;
+    height: 100svh;
     padding: calc(var(--rt-nav-height, 74px) + 36px) clamp(18px, 5vw, 24px) 56px;
   }
-  .about-hero__video-overlay {
-    background:
-      rgba(2, 6, 17, 0.74),
-      linear-gradient(180deg, rgba(2, 6, 17, 0.44) 0%, transparent 20%, transparent 72%, var(--about-bg) 100%);
+  /* Mobile fallback: skip clip-path animation, show full image statically */
+  .about-hero__window {
+    clip-path: none !important;
+    background-size: cover !important;
+    border-radius: 24px;
   }
-  .about-hero__visual { display: none; }
-  .about-hero__copy  { max-width: 100%; }
-  .about-hero__copy,
-  .about-hero__intro {
-    align-items: flex-start;
-    text-align: left;
+  .about-hero__glass-box {
+    width: min(94vw, 600px);
+    height: auto;
+    aspect-ratio: auto;
+    min-height: auto;
+    margin-top: 0;
+    padding: clamp(30px, 6vh, 48px) clamp(22px, 6vw, 36px);
+    border-radius: 24px;
+  }
+  .about-hero__bottom-mask {
+    height: 120px;
   }
   .about-hero-title {
-    display: block;
-    font-size: clamp(2.4rem, 5.8vw, 3.4rem);
-    line-height: 1.08;
+    font-size: clamp(2.35rem, 6.2vw, 3.35rem);
+    line-height: 1.06;
     margin-top: 0;
-    padding: 0;
-    max-width: none;
   }
   .about-hero-caption {
-    margin-top: 18px;
-    max-width: 46ch;
-    font-size: clamp(0.96rem, 2vw, 1.06rem);
-    line-height: 1.65;
-  }
-  .about-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    gap: 12px;
-    margin-top: 24px;
-  }
-  .about-button {
-    min-height: 48px;
-    padding-inline: 22px;
-  }
-  .about-metrics-console {
-    flex-direction: column;
-    width: 100%;
-    max-width: 100%;
-    padding: clamp(32px, 6vw, 40px);
-    border-radius: 40px;
+    margin-top: 16px;
+    font-size: clamp(0.96rem, 2vw, 1.08rem);
+    line-height: 1.56;
   }
   .about-hero__metrics {
     flex-direction: column;
-    gap: 40px;
+    align-items: center;
   }
-  .about-metrics-cables { display: none; }
+  .about-metric-card {
+    width: 100%;
+    max-width: 100%;
+  }
   .about-story {
     max-width: 100%;
     padding-inline: clamp(20px, 5vw, 36px);
@@ -1240,91 +1364,31 @@ body::-webkit-scrollbar,
   .about-story__stats {
     grid-template-columns: 1fr;
   }
-  .about-visual-section,
-  .about-visual-section--reverse,
-  .about-cta {
-    max-width: 100%;
-    overflow-x: hidden;
-  }
 }
 
 @media (max-width: 640px) {
   .about-shell {
     padding-inline: 20px;
   }
-  .about-hero {
-    padding: calc(var(--rt-nav-height, 70px) + 28px) 20px 48px;
-  }
   .about-hero-title {
-    font-size: clamp(2rem, 8.5vw, 2.8rem);
-    line-height: 1.1;
-  }
-  .about-hero-caption {
-    margin-top: 14px;
-    max-width: 38ch;
-    font-size: 0.97rem;
-    line-height: 1.6;
+    font-size: clamp(2rem, 8vw, 2.65rem);
   }
   .about-hero__actions {
     flex-direction: column;
     align-items: stretch;
-    width: 100%;
-    gap: 10px;
-    margin-top: 22px;
   }
   .about-button {
     width: 100%;
     min-height: 50px;
-    padding-inline: 18px;
   }
   .about-story__stats { grid-template-columns: 1fr; }
-  .about-metrics-section { margin-top: 24px; }
-  .about-metrics-console { padding: 28px 20px; border-radius: 28px; }
-  .about-hero__metrics { gap: 24px; }
-  .about-metric-card {
-    width: min(72vw, 240px);
-    height: min(72vw, 240px);
-  }
+  .about-metrics-section { margin-top: -60px; padding: 0 16px; }
 }
 
 @media (max-width: 420px) {
   .about-shell { padding-inline: 16px; }
-  .about-hero {
-    padding: calc(var(--rt-nav-height, 70px) + 20px) 16px 40px;
-  }
   .about-hero-title {
-    font-size: clamp(1.9rem, 9vw, 2.5rem);
+    font-size: clamp(2rem, 9vw, 2.5rem);
   }
-  .about-hero-caption {
-    font-size: 0.95rem;
-    max-width: 32ch;
-  }
-  .about-button { font-size: 0.94rem; }
-}
-
-@keyframes aboutMetricSpin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes aboutWorkflowScan {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    /* Pushes the laser all the way down the image */
-    transform: translateY(650px);
-    opacity: 0;
-  }
+  .about-metric-card__inner { padding: 32px 24px; }
 }
