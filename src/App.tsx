@@ -31,6 +31,9 @@ const UseCaseMigrationArticlePage = lazy(() =>
     default: module.UseCaseMigrationArticlePage,
   })),
 )
+const WhyRackTrackPage = lazy(() => import('./pages/WhyRackTrackPage'))
+const TrustSecurityPage = lazy(() => import('./pages/TrustSecurityPage'))
+const ResourcesPage = lazy(() => import('./pages/ResourcesPage'))
 // const ProductPage = lazy(() => import('./pages/ProductPage'))
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
 const ContactUsPage = lazy(() => import('./pages/ContactUsPage'))
@@ -104,6 +107,23 @@ const SEO_BY_PATH: Record<
     description:
       'Read how RackTrack helps M&A and migration teams turn unknown infrastructure into defensible plans.',
     canonicalPath: '/use-cases/ma-migration-teams',
+  '/why-racktrack': {
+    title: 'Why RackTrack | Infrastructure Truth Across Rack, Network, and Security',
+    description:
+      'See why RackTrack stands apart by sensing the rack, verifying against the network, and enriching with vendor and security data in one reconciled workflow.',
+    canonicalPath: '/why-racktrack',
+  },
+  '/trust-security': {
+    title: 'Trust & Security | RackTrack Enterprise Security and Deployment',
+    description:
+      'Review RackTrack security posture, data handling approach, and deployment options for enterprise and regulated environments.',
+    canonicalPath: '/trust-security',
+  },
+  '/resources': {
+    title: 'Resources | RackTrack Research, Tools & Thought Leadership',
+    description:
+      'ROI calculators, compliance mapping, integration references, and thought leadership for infrastructure teams evaluating physical layer intelligence.',
+    canonicalPath: '/resources',
   },
   '/contact-us': {
     title: 'Contact RackTrack | Book a Demo',
@@ -176,6 +196,9 @@ export default function App() {
             <Route path="/use-cases/compliance-audit-owners" element={<UseCaseComplianceArticlePage />} />
             <Route path="/use-cases/incident-responders-on-call" element={<UseCaseIncidentArticlePage />} />
             <Route path="/use-cases/ma-migration-teams" element={<UseCaseMigrationArticlePage />} />
+            <Route path="/why-racktrack" element={<WhyRackTrackPage />} />
+            <Route path="/trust-security" element={<TrustSecurityPage />} />
+            <Route path="/resources" element={<ResourcesPage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/contact-us" element={<ContactUsPage />} />
             <Route path="/about" element={<Navigate to="/about-us" replace />} />
@@ -195,9 +218,12 @@ export default function App() {
               <nav className="app-footer-nav" aria-label="Footer navigation">
                 <span className="app-footer-heading">Explore</span>
                 {/* <Link to="/product">Product</Link> */}
-                <Link to="/about-us">About Us</Link>
+                <Link to="/why-racktrack">Why RackTrack</Link>
                 <Link to="/solutions">Solutions</Link>
                 <Link to="/use-cases">Use Cases</Link>
+                <Link to="/trust-security">Trust & Security</Link>
+                <Link to="/resources">Resources</Link>
+                <Link to="/about-us">About Us</Link>
                 <Link to="/contact-us">Contact Us</Link>
               </nav>
 

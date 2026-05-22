@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
 import {
   AnimatePresence,
   motion,
+  type MotionStyle,
+  type Variants,
+  useAnimationControls,
   useInView,
-  useMotionValueEvent,
   useMotionTemplate,
   useMotionValue,
   useReducedMotion,
@@ -13,38 +14,34 @@ import {
   useTransform,
 } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Cpu, Gauge, Network, Radar, Search, Shield, Sparkles, Zap } from 'lucide-react';
+import {
+  ArrowRight,
+  Award,
+  BriefcaseBusiness,
+  Cpu,
+  Gauge,
+  GraduationCap,
+  Handshake,
+  Network,
+  Radar,
+  Search,
+  Shield,
+  Sparkles,
+  Users,
+  Zap,
+} from 'lucide-react';
 
 import './AboutUsPage.css';
 
-type IconType = React.ComponentType<{ className?: string }>;
+type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
 const cinematicEase = [0.22, 1, 0.36, 1] as const;
 const viewport = { once: true, amount: 0.24 };
-const heroGridColumns = 18;
-const heroGridRows = 10;
-const heroGridCells = Array.from({ length: heroGridColumns * heroGridRows }, (_, index) => index);
-
 const reveal = {
   hidden: { opacity: 0, y: 28 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.86, ease: cinematicEase },
-  },
-};
-
-const metricsStage = {
-  hidden: {
-    opacity: 0,
-    y: 92,
-    pointerEvents: 'none' as const,
-    transition: { duration: 0.36, ease: cinematicEase },
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    pointerEvents: 'auto' as const,
     transition: { duration: 0.86, ease: cinematicEase },
   },
 };
@@ -55,6 +52,16 @@ const metricsCardsGroup = {
     transition: {
       delayChildren: 0.12,
       staggerChildren: 0.14,
+    },
+  },
+};
+
+const mobileMetricsCardsGroup = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.08,
+      staggerChildren: 0.12,
     },
   },
 };
@@ -75,6 +82,20 @@ const metricCardEntrance = {
   },
 };
 
+const mobileMetricCardEntrance = {
+  hidden: {
+    opacity: 0,
+    y: 28,
+    scale: 0.98,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.56, ease: cinematicEase },
+  },
+};
+
 const heroMetrics = [
   { label: 'Rack scan accuracy', value: '99.2%', detail: 'AI device and port recognition', icon: Shield },
   { label: 'Inventory speed', value: 'Seconds', detail: 'from photo to full rack context', icon: Radar },
@@ -88,6 +109,113 @@ const signalSteps = [
   { label: 'Share', value: 'Audit report', icon: Sparkles },
 ];
 
+const founderNarrative: Array<{ label: string; body: React.ReactNode }> = [
+  {
+    label: 'The moment',
+    body: (
+      <>
+        RackTrack became obvious during a rack audit where the <strong>spreadsheet, switch labels, and live ports</strong> all told different stories. A team that should have been planning a change was crouched in front of cabinets, reading tiny labels, taking photos, and cross-checking ports by hand.
+      </>
+    ),
+  },
+  {
+    label: 'The reason',
+    body: (
+      <>
+        One missed cable could delay a migration or send someone back into the data hall after hours. The physical layer deserved the same confidence teams already expect from <strong>cloud dashboards and enterprise systems</strong>.
+      </>
+    ),
+  },
+  {
+    label: 'The team',
+    body: (
+      <>
+        Our founding team brings <strong>enterprise architecture leadership, Salesforce and MuleSoft integration depth, networking operations experience,</strong> and product design discipline from complex infrastructure environments.
+      </>
+    ),
+  },
+  {
+    label: 'The build',
+    body: (
+      <>
+        We are building a practical system of record for the rack: fast capture, AI-assisted verification, and clean sync into the tools operations, audit, and service teams already run.
+      </>
+    ),
+  },
+];
+
+const teamMembers = [
+  {
+    name: 'Co-Founder, Enterprise Architecture',
+    role: 'Founder',
+    credential: 'Enterprise architecture leadership across integration-heavy operating environments.',
+    icon: BriefcaseBusiness,
+  },
+  {
+    name: 'Co-Founder, Network Intelligence',
+    role: 'Founder',
+    credential: 'Networking expertise with hands-on physical infrastructure and port-level workflow depth.',
+    icon: Network,
+  },
+  {
+    name: 'Senior Architecture Advisors',
+    role: 'Advisors',
+    credential: 'Guidance from leaders with Salesforce, MuleSoft, CMDB, and enterprise platform experience.',
+    icon: Award,
+  },
+  {
+    name: 'Academic & Technical Fellows',
+    role: 'Advisors',
+    credential: 'Academic and fellowship credentials including IET Fellow and Senior IEEE Member experience.',
+    icon: GraduationCap,
+  },
+  {
+    name: 'Design Partners',
+    role: 'Partners',
+    credential: 'Infrastructure teams shaping scan flows, audit outputs, and operational handoffs.',
+    icon: Handshake,
+  },
+  {
+    name: 'Product & Engineering Hires',
+    role: 'Team',
+    credential: 'Specialists in applied AI, product design, and production-grade systems integration.',
+    icon: Users,
+  },
+];
+
+const investors: Array<{ name: string; logo?: string }> = [];
+
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(() => (
+    typeof window === 'undefined' ? false : window.matchMedia(query).matches
+  ));
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const mediaQueryList = window.matchMedia(query);
+    const updateMatches = () => setMatches(mediaQueryList.matches);
+
+    updateMatches();
+
+    if (mediaQueryList.addEventListener) {
+      mediaQueryList.addEventListener('change', updateMatches);
+    } else {
+      mediaQueryList.addListener(updateMatches);
+    }
+
+    return () => {
+      if (mediaQueryList.removeEventListener) {
+        mediaQueryList.removeEventListener('change', updateMatches);
+      } else {
+        mediaQueryList.removeListener(updateMatches);
+      }
+    };
+  }, [query]);
+
+  return matches;
+}
+
 function MetricCard({
   label,
   value,
@@ -95,6 +223,8 @@ function MetricCard({
   icon: Icon,
   index = 0,
   shouldLoad = true,
+  prefersLightMotion = false,
+  variants = metricCardEntrance,
 }: {
   label: string;
   value: string;
@@ -102,13 +232,17 @@ function MetricCard({
   icon: IconType;
   index?: number;
   shouldLoad?: boolean;
+  prefersLightMotion?: boolean;
+  variants?: Variants;
 }) {
   const ref = useRef<HTMLElement>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const clickSequenceRef = useRef(false);
   const isLoadingRef = useRef(false);
   const isInView = useInView(ref, { once: true });
   const [count, setCount] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const pressControls = useAnimationControls();
 
   // Mouse interactivity for hover glow
   const mouseX = useMotionValue(0);
@@ -148,17 +282,23 @@ function MetricCard({
     runLoadingSequence();
   }, [isLoaded, runLoadingSequence]);
 
-  const replayLoading = useCallback(() => {
+  const replayLoading = useCallback(async () => {
+    if (clickSequenceRef.current) return;
+    clickSequenceRef.current = true;
+
     if (animationFrameRef.current !== null) {
       window.cancelAnimationFrame(animationFrameRef.current);
       animationFrameRef.current = null;
     }
 
     isLoadingRef.current = false;
+    await pressControls.start({ scale: 0.96, transition: { duration: 0.08, ease: 'easeOut' } });
+    await pressControls.start({ scale: 1, transition: { duration: 0.18, ease: cinematicEase } });
     setIsLoaded(false);
     setCount(0);
     runLoadingSequence();
-  }, [runLoadingSequence]);
+    clickSequenceRef.current = false;
+  }, [pressControls, runLoadingSequence]);
 
   useEffect(() => {
     if (isInView && shouldLoad) {
@@ -178,11 +318,11 @@ function MetricCard({
   return (
     <motion.article
       ref={ref}
-      variants={metricCardEntrance}
+      variants={variants}
       custom={index}
       className="about-metric-card"
-      onMouseMove={handleMouseMove}
-      whileHover={{ y: -8, scale: 1.02 }}
+      onMouseMove={prefersLightMotion ? undefined : handleMouseMove}
+      whileHover={prefersLightMotion ? undefined : { y: -8, scale: 1.02 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     >
       <motion.div
@@ -191,8 +331,9 @@ function MetricCard({
           background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, rgba(122, 223, 255, 0.15), transparent 80%)`,
         }}
       />
-      <div
+      <motion.div
         className="about-metric-card__inner"
+        animate={pressControls}
         onClick={replayLoading}
         onKeyDown={(event) => {
           if (event.key === 'Enter' || event.key === ' ') {
@@ -209,7 +350,7 @@ function MetricCard({
               key="counter"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.08, filter: 'blur(8px)' }}
+              exit={prefersLightMotion ? { opacity: 0, scale: 1.04 } : { opacity: 0, scale: 1.08, filter: 'blur(8px)' }}
               transition={{ duration: 0.35, ease: cinematicEase }}
               className="about-metric-card__counter"
             >
@@ -218,8 +359,8 @@ function MetricCard({
           ) : (
             <motion.div
               key="content"
-              initial={{ opacity: 0, y: 16, filter: 'blur(10px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              initial={prefersLightMotion ? { opacity: 0, y: 14 } : { opacity: 0, y: 16, filter: 'blur(10px)' }}
+              animate={prefersLightMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.62, ease: cinematicEase }}
               className="about-metric-card__content"
             >
@@ -232,7 +373,7 @@ function MetricCard({
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
     </motion.article>
   );
 }
@@ -268,55 +409,123 @@ function ScrollScene({
   );
 }
 
+function TeamCard({
+  name,
+  role,
+  credential,
+  icon: Icon,
+}: {
+  name: string;
+  role: string;
+  credential: string;
+  icon: IconType;
+}) {
+  const handlePointerMove = (event: React.PointerEvent<HTMLElement>) => {
+    if (event.pointerType !== 'mouse') return;
+
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+    event.currentTarget.style.setProperty('--about-card-x', `${x}%`);
+    event.currentTarget.style.setProperty('--about-card-y', `${y}%`);
+  };
+
+  return (
+    <motion.article
+      className="about-team-card"
+      variants={reveal}
+      whileHover={{ y: -6, scale: 1.01 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+      onPointerMove={handlePointerMove}
+    >
+      <div className="about-team-card__icon">
+        <Icon aria-hidden="true" />
+      </div>
+      <div>
+        <span>{role}</span>
+        <h3>{name}</h3>
+        <p>{credential}</p>
+      </div>
+    </motion.article>
+  );
+}
+
+function FounderStorySection() {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const stepRefs = useRef<Array<HTMLSpanElement | null>>([]);
+
+  useEffect(() => {
+    const steps = stepRefs.current.filter(Boolean) as HTMLSpanElement[];
+    if (!steps.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const activeEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (!activeEntry) return;
+
+        const nextIndex = Number(activeEntry.target.getAttribute('data-story-index'));
+        if (!Number.isNaN(nextIndex)) {
+          setActiveIndex(nextIndex);
+        }
+      },
+      {
+        root: null,
+        rootMargin: '-46% 0px -46% 0px',
+        threshold: [0, 0.35, 0.7, 1],
+      },
+    );
+
+    steps.forEach((step) => observer.observe(step));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <ScrollScene className="about-founder-story">
+      <motion.aside className="about-founder-story__anchor" variants={reveal}>
+        <span className="about-founder-story__eyebrow">Founder Narrative</span>
+        <h2>
+          Why We Built <span className="about-founder-story__brand">RackTrack</span>
+        </h2>
+      </motion.aside>
+
+      <motion.div className="about-founder-story__narrative" variants={reveal}>
+        {founderNarrative.map((item, index) => (
+          <article
+            className={`about-founder-story__thought${activeIndex === index ? ' is-active' : ''}`}
+            key={item.label}
+          >
+            <h3>{item.label}</h3>
+            <div className="about-founder-story__body">
+              <p>{item.body}</p>
+            </div>
+          </article>
+        ))}
+      </motion.div>
+      <div className="about-founder-story__scroll-steps" aria-hidden="true">
+        {founderNarrative.map((item, index) => (
+          <span
+            ref={(node) => {
+              stepRefs.current[index] = node;
+            }}
+            className="about-founder-story__scroll-step"
+            data-story-index={index}
+            key={item.label}
+          />
+        ))}
+      </div>
+    </ScrollScene>
+  );
+}
+
 export default function AboutUsPage() {
   const navigate = useNavigate();
   const reducedMotion = useReducedMotion();
-  const [metricsShouldEnter, setMetricsShouldEnter] = useState(false);
-  const [activeGridCell, setActiveGridCell] = useState<number | null>(null);
-  
-  // ================================================================
-  // CINEMATIC HERO — ABSOLUTE-PIXEL SCRUBBED SCROLL (Lenis + FM)
-  // ================================================================
-  const { scrollY } = useScroll();
-
-  // 0–30% (0–450px): Glass card drifts up and dissolves
-  const cardOpacity = useTransform(scrollY, [0, 450], [1, 0]);
-  const cardY = useTransform(scrollY, [0, 450], [0, -80]);
-  const cardBlur = useTransform(scrollY, [0, 450], [16, 0]);
-  const glassBackdropFilter = useMotionTemplate`blur(${cardBlur}px) saturate(1.2)`;
-  const glassBgAlpha = useTransform(scrollY, [0, 450], [0.55, 0]);
-  const glassBackground = useMotionTemplate`rgba(8, 12, 22, ${glassBgAlpha})`;
-  const glassBorderAlpha = useTransform(scrollY, [0, 450], [0.08, 0]);
-  const glassBorder = useMotionTemplate`1px solid rgba(255, 255, 255, ${glassBorderAlpha})`;
-  const glassShadowAlpha1 = useTransform(scrollY, [0, 450], [0.6, 0]);
-  const glassShadowAlpha2 = useTransform(scrollY, [0, 450], [0.12, 0]);
-  const glassBoxShadow = useMotionTemplate`0 40px 100px rgba(0, 0, 0, ${glassShadowAlpha1}), inset 0 1px 0 rgba(255, 255, 255, ${glassShadowAlpha2})`;
-  // Card becomes non-interactive once invisible
-  const cardPointerEvents = useTransform(
-    cardOpacity,
-    (v: number): string => (v < 0.1 ? 'none' : 'auto'),
-  );
-  const gridOpacity = useTransform(scrollY, [0, 260, 600], [0.95, 0.58, 0]);
-
-  // 0–40% (0–600px): clip-path polygon expands from center rect → full viewport
-  // Two values drive the 4 polygon corners: clip1 = TL%, clip2 = BR%
-  const clip1 = useTransform(scrollY, [0, 600], [25, 0]);
-  const clip2 = useTransform(scrollY, [0, 600], [75, 100]);
-  const clipPath = useMotionTemplate`polygon(${clip1}% ${clip1}%, ${clip2}% ${clip1}%, ${clip2}% ${clip2}%, ${clip1}% ${clip2}%)`;
-
-  // 0–60% (0–900px): backgroundSize reverse-zoom on the window element
-  // Animating backgroundSize (NOT a transform) is the "scale separation" trick:
-  // the window expands outward while the image inside zooms inward simultaneously
-  const bgSizePct = useTransform(scrollY, [0, 900], [170, 100]);
-  const windowBackgroundSize = useMotionTemplate`${bgSizePct}% auto`;
-
-  // Graceful handoff: entire sticky scene fades as it scrolls off screen
-  const stickyOpacity = useTransform(scrollY, [1500, 2000], [1, 0]);
-
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    setMetricsShouldEnter(latest >= 450);
-  });
-
+  const isMobileViewport = useMediaQuery('(max-width: 768px)');
+  const prefersLightMotion = reducedMotion || isMobileViewport;
   // General Page Spotlight
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(32);
@@ -325,13 +534,21 @@ export default function AboutUsPage() {
   const spotlight = useMotionTemplate`radial-gradient(54rem circle at ${lightX}% ${lightY}%, rgba(122, 223, 255, 0.18), rgba(95, 168, 255, 0.08) 34%, transparent 68%)`;
 
   // Workflow Image Parallax
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: heroScrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start end', 'end start'],
+  });
+  const heroParallaxY = useTransform(heroScrollYProgress, [0, 1], [prefersLightMotion ? 0 : -90, prefersLightMotion ? 0 : 120]);
+  const heroImageY = useMotionTemplate`${heroParallaxY}px`;
+
   const workflowShotRef = useRef<HTMLDivElement>(null);
   const [isHoveringImage, setIsHoveringImage] = useState(false);
   const { scrollYProgress: workflowScrollYProgress } = useScroll({
     target: workflowShotRef,
     offset: ['start end', 'end start'],
   });
-  const workflowParallaxY = useTransform(workflowScrollYProgress, [0, 1], [reducedMotion ? 0 : -24, reducedMotion ? 0 : 42]);
+  const workflowParallaxY = useTransform(workflowScrollYProgress, [0, 1], [prefersLightMotion ? 0 : -24, prefersLightMotion ? 0 : 42]);
   const workflowMouseX = useMotionValue(0);
   const workflowMouseY = useMotionValue(0);
   const workflowCursorRawX = useMotionValue(0);
@@ -350,21 +567,8 @@ export default function AboutUsPage() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, []);
 
-  const handleHeroMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const localX = Math.min(Math.max(event.clientX - bounds.left, 0), bounds.width - 1);
-    const localY = Math.min(Math.max(event.clientY - bounds.top, 0), bounds.height - 1);
-    const column = Math.floor((localX / bounds.width) * heroGridColumns);
-    const row = Math.floor((localY / bounds.height) * heroGridRows);
-
-    setActiveGridCell(row * heroGridColumns + column);
-  };
-
-  const resetHeroGridCursor = () => {
-    setActiveGridCell(null);
-  };
-
   const handleWorkflowMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (prefersLightMotion) return;
     const bounds = event.currentTarget.getBoundingClientRect();
     const localX = event.clientX - bounds.left;
     const localY = event.clientY - bounds.top;
@@ -385,10 +589,10 @@ export default function AboutUsPage() {
   return (
     <div
       className="about-page"
-      onMouseMove={(event) => {
-        mouseX.set((event.clientX / window.innerWidth) * 100);
-        mouseY.set((event.clientY / window.innerHeight) * 100);
-      }}
+      onMouseMove={prefersLightMotion ? undefined : (event) => {
+          mouseX.set((event.clientX / window.innerWidth) * 100);
+          mouseY.set((event.clientY / window.innerHeight) * 100);
+        }}
     >
       <motion.div className="about-page__spotlight" style={{ backgroundImage: spotlight }} />
       
@@ -409,120 +613,47 @@ export default function AboutUsPage() {
       </div>
 
       <main className="about-shell">
-        {/* Scroll runway: 1500px pinned + 100vh for the handoff fade */}
-        <section className="about-hero">
-          {/* Sticky layer — stays locked to viewport until 1500px of scroll consumed */}
-          <motion.div
-            className="about-hero__sticky-container"
-            style={{ opacity: stickyOpacity }}
-            onMouseMove={handleHeroMouseMove}
-            onMouseLeave={resetHeroGridCursor}
-          >
+        <motion.section
+          ref={heroRef}
+          className="about-hero"
+          style={{ '--about-hero-image-y': heroImageY } as MotionStyle}
+        >
+          <div className="about-hero__content">
+            <motion.h1 variants={reveal} initial="hidden" animate="visible" className="about-hero-title">
+              <span className="about-hero-title__line-1">Scan the rack.</span>
+              <span className="about-hero-title__line-2">
+                <span className="about-hero-title__accent">Know the stack.</span>
+              </span>
+            </motion.h1>
 
-            {/* Layer 1: Background dot / grid pattern */}
-            <motion.div
-              className="about-hero__pattern-grid"
-              style={{
-                opacity: gridOpacity,
-                '--about-hero-grid-columns': heroGridColumns,
-                '--about-hero-grid-rows': heroGridRows,
-              } as unknown as CSSProperties}
-              aria-hidden="true"
-            >
-              {heroGridCells.map((cell) => (
-                <span
-                  key={cell}
-                  className={`about-hero__pattern-cell${activeGridCell === cell ? ' is-active' : ''}`}
-                />
-              ))}
+            <motion.p variants={reveal} initial="hidden" animate="visible" className="about-hero-caption">
+              RackTrack turns a quick phone sweep into verified devices, ports, topology, and inventory your team can trust.
+            </motion.p>
+
+            <motion.div variants={reveal} initial="hidden" animate="visible" className="about-hero__actions">
+              <motion.button
+                type="button"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                onClick={() => navigate('/contact-us', { state: { scrollTo: 'contact' } })}
+                className="about-button about-button--primary"
+              >
+                Book a Demo
+                <ArrowRight size={18} className="about-button__icon" />
+              </motion.button>
+              <motion.a
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                href="/solutions"
+                className="about-button about-button--ghost"
+              >
+                Explore Platform
+              </motion.a>
             </motion.div>
-
-            {/* Layer 2: Clipped image window (the SpaceX-style reveal)
-                - clip-path polygon() starts as center 50% rect, expands to 100% (0–600px)
-                - backgroundSize shrinks 170% → 100% on the SAME element (0–900px)
-                - Both on one div = "scale separation": window opens while image zooms out */}
-            <motion.div
-              className="about-hero__window"
-              style={{
-                clipPath,
-                backgroundSize: windowBackgroundSize,
-              }}
-            />
-
-            {/* Layer 3: Edge vignette — keeps periphery dark as window expands */}
-            <div className="about-hero__overlay" />
-
-            {/* Layer 4: Glassmorphic card
-                0–450px: y drifts -80px, opacity fades 1→0, blur collapses, border vanishes */}
-            <motion.div
-              className="about-hero__glass-box"
-              style={{
-                opacity: cardOpacity,
-                y: cardY,
-                background: glassBackground,
-                border: glassBorder,
-                boxShadow: glassBoxShadow,
-                backdropFilter: glassBackdropFilter,
-                WebkitBackdropFilter: glassBackdropFilter,
-                pointerEvents: cardPointerEvents as unknown as 'none' | 'auto',
-              }}
-            >
-              <div className="about-hero__intro">
-                <motion.h1 variants={reveal} initial="hidden" animate="visible" className="about-hero-title">
-                  <span className="about-hero-title__line-1">Scan the rack.</span>
-                  <span className="about-hero-title__line-2">
-                    <span className="about-hero-title__accent">Know the stack.</span>
-                  </span>
-                </motion.h1>
-
-                <motion.p variants={reveal} initial="hidden" animate="visible" className="about-hero-caption">
-                  RackTrack turns a quick phone sweep into verified devices, ports, topology, and inventory your team can trust.
-                </motion.p>
-
-                <motion.div variants={reveal} initial="hidden" animate="visible" className="about-hero__actions">
-                  <motion.button
-                    type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                    onClick={() => navigate('/contact-us', { state: { scrollTo: 'contact' } })}
-                    className="about-button about-button--primary"
-                  >
-                    Book a Demo
-                    <ArrowRight size={18} className="about-button__icon" />
-                  </motion.button>
-                  <motion.a
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                    href="/solutions"
-                    className="about-button about-button--ghost"
-                  >
-                    Explore Platform
-                  </motion.a>
-                </motion.div>
-              </div>
-            </motion.div>
-
-            {/* Bottom gradient mask — blends the sticky scene into the next section */}
-            <div className="about-hero__bottom-mask" />
-
-            <motion.div
-              className="about-hero__metrics-stage"
-              initial="hidden"
-              animate={metricsShouldEnter ? 'visible' : 'hidden'}
-              variants={metricsStage}
-              aria-label="RackTrack platform metrics"
-            >
-              <motion.div variants={metricsCardsGroup} className="about-hero__metrics">
-                {heroMetrics.map((item, index) => (
-                  <MetricCard key={item.label} index={index} shouldLoad={metricsShouldEnter} {...item} />
-                ))}
-              </motion.div>
-            </motion.div>
-
-          </motion.div>
-        </section>
+          </div>
+        </motion.section>
 
         {/* --- "WHAT RACKTRACK DOES" SECTION --- */}
         <ScrollScene className="about-story">
@@ -554,14 +685,16 @@ export default function AboutUsPage() {
           </motion.div>
         </ScrollScene>
 
+        <FounderStorySection />
+
         <ScrollScene className="about-visual-section about-visual-section--reverse">
           <motion.div variants={reveal} className="about-visual-card about-visual-card--workflow-shot">
             <div
               ref={workflowShotRef}
               className="about-workflow-shot"
-              onMouseEnter={() => setIsHoveringImage(true)}
-              onMouseLeave={resetWorkflowHover}
-              onMouseMove={handleWorkflowMouseMove}
+              onMouseEnter={prefersLightMotion ? undefined : () => setIsHoveringImage(true)}
+              onMouseLeave={prefersLightMotion ? undefined : resetWorkflowHover}
+              onMouseMove={prefersLightMotion ? undefined : handleWorkflowMouseMove}
             >
               <motion.div
                 className="about-workflow-shot__media"
@@ -579,7 +712,6 @@ export default function AboutUsPage() {
                 />
                 
                 {/* Animation Overlays */}
-                <div className="about-workflow-shot__grid" />
                 <div className="about-workflow-shot__scanner" />
                 
               </motion.div>
@@ -598,7 +730,7 @@ export default function AboutUsPage() {
                 )}
               </AnimatePresence>
               <AnimatePresence>
-                {isHoveringImage && (
+                {isHoveringImage && !prefersLightMotion && (
                   <motion.div
                     className="custom-lens-cursor"
                     style={{ left: workflowCursorX, top: workflowCursorY }}
@@ -621,6 +753,62 @@ export default function AboutUsPage() {
             </p>
           </motion.div>
         </ScrollScene>
+
+        <motion.div
+          className="about-hero__metrics"
+          variants={isMobileViewport ? mobileMetricsCardsGroup : metricsCardsGroup}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
+          aria-label="RackTrack platform metrics"
+        >
+          {heroMetrics.map((item, index) => (
+            <MetricCard
+              key={item.label}
+              index={index}
+              prefersLightMotion={prefersLightMotion}
+              variants={isMobileViewport ? mobileMetricCardEntrance : metricCardEntrance}
+              {...item}
+            />
+          ))}
+        </motion.div>
+
+        <ScrollScene className="about-team-section">
+          <div className="about-team-section__header">
+            <span className="about-eyebrow">Team</span>
+            <h2>Built by operators who understand both the rack and the systems around it.</h2>
+            <p>
+              RackTrack combines infrastructure operations, enterprise integration, and applied AI experience so scan output can become trusted operational data.
+            </p>
+          </div>
+          <motion.div
+            className="about-team-grid"
+            variants={metricsCardsGroup}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewport}
+          >
+            {teamMembers.map((member) => (
+              <TeamCard key={member.name} {...member} />
+            ))}
+          </motion.div>
+        </ScrollScene>
+
+        {investors.length > 0 && (
+          <ScrollScene className="about-backers-section">
+            <div className="about-backers-section__header">
+              <span className="about-eyebrow">Investors & Backers</span>
+              <h2>Backed by teams who understand infrastructure operations.</h2>
+            </div>
+            <div className="about-backers-grid">
+              {investors.map((investor) => (
+                <article className="about-backer-card" key={investor.name}>
+                  {investor.logo ? <img src={investor.logo} alt={`${investor.name} logo`} /> : <span>{investor.name}</span>}
+                </article>
+              ))}
+            </div>
+          </ScrollScene>
+        )}
 
         <ScrollScene className="about-cta">
           <video

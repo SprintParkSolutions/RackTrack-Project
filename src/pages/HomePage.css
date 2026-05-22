@@ -15,14 +15,7 @@
   overflow-x: hidden;
   background: #030916;
   color: var(--text);
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family: var(--font-body);
 }
 
 * {
@@ -171,6 +164,7 @@ button {
 .home-section-header span,
 .home-truth-copy span,
 .home-final-copy>span {
+  font-family: var(--font-mono);
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -182,6 +176,7 @@ button {
 }
 
 .home-hero-copy h1 {
+  font-family: var(--font-heading);
   max-width: 760px;
   margin: 20px 0 22px;
   font-size: clamp(2.9rem, 4.35vw, 4.95rem);
@@ -229,6 +224,7 @@ button {
 .home-section-header p,
 .home-truth-copy p,
 .home-final-copy p {
+  font-family: var(--font-body);
   max-width: 610px;
   color: var(--muted);
   font-size: clamp(0.98rem, 1.08vw, 1.08rem);
@@ -342,6 +338,8 @@ button {
   padding: clamp(82px, 9vw, 126px) 7vw;
   background: #030916;
   overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
 }
 
 .home-section::before {
@@ -378,11 +376,29 @@ button {
 .home-section-header h2,
 .home-truth-copy h2,
 .home-final-copy h2 {
+  font-family: var(--font-heading);
   margin: 14px 0 16px;
   font-size: clamp(2rem, 3.8vw, 4.1rem);
   line-height: 1.04;
   letter-spacing: -0.06em;
-  font-weight: 950;
+  font-weight: 800;
+}
+
+.home-problem-section .home-section-header h2 {
+  max-width: 1020px;
+  margin-inline: auto;
+  font-size: clamp(2.4rem, 4.9vw, 4.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.05em;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.home-problem-section .home-section-header p {
+  max-width: 760px;
+  margin-inline: auto;
+  font-size: clamp(1rem, 1.12vw, 1.16rem);
+  line-height: 1.68;
 }
 
 /* PROBLEM */
@@ -495,6 +511,7 @@ button {
 }
 
 .home-problem-card strong {
+  font-family: var(--font-heading);
   position: relative;
   z-index: 1;
   display: block;
@@ -511,11 +528,14 @@ button {
 }
 
 .home-problem-card h3 {
+  font-family: var(--font-heading);
   margin: 0 0 10px;
   font-size: 1rem;
+  font-weight: 700;
 }
 
 .home-problem-card p {
+  font-family: var(--font-body);
   margin: 0;
   color: var(--muted);
   font-size: 0.9rem;
@@ -543,16 +563,18 @@ button {
 .home-truth-canvas {
   position: relative;
   min-height: 470px;
-  overflow: visible;
-  will-change: transform;
-  animation: homeTruthFloat 7s ease-in-out infinite;
+  overflow: hidden;
+  border-radius: 18px;
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.32),
+    inset 0 0 0 1px rgba(103, 232, 249, 0.08);
 }
 
 .home-truth-img-wrap {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: inherit;
 }
 
 .home-truth-img-wrap::after {
@@ -562,13 +584,12 @@ button {
   z-index: 2;
   pointer-events: none;
   background:
-    linear-gradient(to right, #020713 0%, rgba(2, 7, 19, 0.92) 16%, rgba(2, 7, 19, 0.55) 34%, transparent 54%),
-    linear-gradient(to left, rgba(6, 20, 38, 0.6) 0%, transparent 28%),
-    linear-gradient(to bottom, rgba(2, 7, 19, 0.92) 0%, rgba(2, 7, 19, 0.35) 20%, transparent 36%),
-    linear-gradient(to top, rgba(2, 7, 19, 0.96) 0%, rgba(2, 7, 19, 0.55) 22%, transparent 40%);
+    linear-gradient(180deg, rgba(2, 7, 19, 0.18) 0%, rgba(2, 7, 19, 0.04) 30%, rgba(2, 7, 19, 0.26) 100%),
+    linear-gradient(90deg, rgba(2, 7, 19, 0.28) 0%, transparent 22%, transparent 78%, rgba(2, 7, 19, 0.22) 100%);
 }
 
-.home-truth-fallback {
+.home-truth-fallback,
+.home-truth-video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -578,167 +599,71 @@ button {
   z-index: 1;
 }
 
-.home-truth-scan-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  z-index: 3;
-  pointer-events: none;
-  will-change: transform, opacity;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(34, 211, 238, 0) 10%,
-    rgba(34, 211, 238, 0.85) 32%,
-    rgba(34, 211, 238, 1) 50%,
-    rgba(34, 211, 238, 0.85) 68%,
-    rgba(34, 211, 238, 0) 90%,
-    transparent 100%
-  );
-  box-shadow:
-    0 0 12px rgba(34, 211, 238, 0.7),
-    0 0 28px rgba(34, 211, 238, 0.35);
-  animation: homeTruthScan 3.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+.home-truth-video {
+  display: block;
+  border: 0;
+  background: #020713;
+  object-position: center;
 }
+
+.home-truth-play-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border: 0;
+  border-radius: 999px;
+  color: #f6f9ff;
+  background:
+    linear-gradient(180deg, rgba(9, 24, 45, 0.7), rgba(2, 10, 23, 0.84)),
+    radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.18), transparent 58%);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 24px 56px rgba(0, 0, 0, 0.44),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 0 0 1px rgba(34, 211, 238, 0.12);
+  cursor: pointer;
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.home-truth-play-btn:hover {
+  transform: translate(-50%, calc(-50% - 4px));
+  filter: brightness(1.05);
+  box-shadow:
+    0 24px 56px rgba(0, 0, 0, 0.44),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 0 0 1px rgba(34, 211, 238, 0.12),
+    0 0 28px rgba(34, 211, 238, 0.16);
+}
+
+.home-truth-play-icon {
+  width: 74px;
+  height: 74px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #67e8f9;
+  background:
+    linear-gradient(135deg, rgba(34, 211, 238, 0.28), rgba(79, 70, 229, 0.22));
+  box-shadow:
+    inset 0 0 0 1px rgba(103, 232, 249, 0.34),
+    0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
 
 /* Corner viewfinder brackets — sit inside the visible image zone */
-.home-truth-corner {
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  z-index: 5;
-  pointer-events: none;
-  animation: homeTruthCornerDraw 0.5s ease-out both;
-}
-
-.home-truth-corner-tl {
-  top: 15%;
-  left: 23%;
-  border-top: 2px solid rgba(34, 211, 238, 0.9);
-  border-left: 2px solid rgba(34, 211, 238, 0.9);
-  border-radius: 4px 0 0 0;
-  animation-delay: 0s;
-}
-
-.home-truth-corner-tr {
-  top: 10%;
-  right: 8%;
-  border-top: 2px solid rgba(34, 211, 238, 0.9);
-  border-right: 2px solid rgba(34, 211, 238, 0.9);
-  border-radius: 0 4px 0 0;
-  animation-delay: 0.12s;
-}
-
-.home-truth-corner-bl {
-  bottom: 14%;
-  left: 23%;
-  border-bottom: 2px solid rgba(34, 211, 238, 0.9);
-  border-left: 2px solid rgba(34, 211, 238, 0.9);
-  border-radius: 0 0 0 4px;
-  animation-delay: 0.24s;
-}
-
-.home-truth-corner-br {
-  bottom: 10%;
-  right: 8%;
-  border-bottom: 2px solid rgba(34, 211, 238, 0.9);
-  border-right: 2px solid rgba(34, 211, 238, 0.9);
-  border-radius: 0 0 4px 0;
-  animation-delay: 0.36s;
-}
 
 /* Floating stat badges */
-.home-truth-badge {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: rgba(3, 9, 22, 0.9);
-  border: 1px solid rgba(34, 211, 238, 0.28);
-  backdrop-filter: blur(8px);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.45),
-    0 0 16px rgba(34, 211, 238, 0.07);
-  z-index: 6;
-  pointer-events: none;
-  white-space: nowrap;
-  will-change: transform;
-}
-
-.home-truth-badge small {
-  display: block;
-  font-size: 0.62rem;
-  color: rgba(34, 211, 238, 0.72);
-  text-transform: uppercase;
-  letter-spacing: 0.13em;
-  line-height: 1;
-  margin-bottom: 3px;
-}
-
-.home-truth-badge strong {
-  display: block;
-  font-size: 0.78rem;
-  color: #f6f9ff;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.home-truth-badge-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #22d3ee;
-  flex-shrink: 0;
-  box-shadow: 0 0 8px rgba(34, 211, 238, 0.85);
-  animation: homeSignalPulse 2s ease-in-out infinite;
-}
-
-.home-truth-badge-inv {
-  top: 22%;
-  right: 14%;
-  animation: homeBadgeFloat 4s ease-in-out infinite;
-}
-
-.home-truth-badge-inv .home-truth-badge-dot {
-  animation-delay: 0s;
-}
-
-.home-truth-badge-topo {
-  top: 50%;
-  right: 10%;
-  animation: homeBadgeFloat 5s ease-in-out 0.6s infinite;
-}
-
-.home-truth-badge-topo .home-truth-badge-dot {
-  animation-delay: 0.7s;
-}
-
-.home-truth-badge-posture {
-  bottom: 18%;
-  left: 24%;
-  animation: homeBadgeFloat 4.5s ease-in-out 1.2s infinite;
-}
-
-.home-truth-badge-posture .home-truth-badge-dot {
-  animation-delay: 1.4s;
-}
-
-.home-truth-glow {
-  position: absolute;
-  bottom: -16px;
-  left: 20%;
-  right: 20%;
-  height: 60px;
-  background: radial-gradient(ellipse, rgba(34, 211, 238, 0.26) 0%, transparent 70%);
-  filter: blur(16px);
-  pointer-events: none;
-  z-index: 0;
-  animation: homeTruthGlowPulse 4s ease-in-out infinite;
-}
 
 .home-truth-note {
   position: relative;
@@ -1212,6 +1137,8 @@ button {
     radial-gradient(circle at 72% 40%, rgba(0, 210, 255, 0.16), transparent 32rem),
     radial-gradient(circle at 16% 82%, rgba(79, 70, 229, 0.16), transparent 28rem),
     linear-gradient(90deg, #030916 0%, #07182b 46%, #061427 72%, #030916 100%);
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
 }
 
 .home-final-orbit {
@@ -1833,6 +1760,11 @@ button {
 
   .home-truth-glow {
     animation: none;
+  }
+
+  .home-truth-play-btn {
+    min-width: min(230px, calc(100% - 36px));
+    padding: 16px 18px 14px;
   }
 
   .home-final-copy {
