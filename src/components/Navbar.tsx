@@ -8,6 +8,7 @@ const navItems = [
   { label: 'Home', path: '/' },
   { label: 'Why RackTrack', path: '/why-racktrack' },
   { label: 'Solutions', path: '/solutions' },
+  { label: 'Use Cases', path: '/use-cases' },
   { label: 'Trust & Security', path: '/trust-security' },
   { label: 'Resources', path: '/resources' },
   { label: 'About Us', path: '/about-us' },
