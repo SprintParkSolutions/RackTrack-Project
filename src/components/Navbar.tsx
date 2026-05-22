@@ -8,6 +8,7 @@ const navItems = [
   { label: 'Home', path: '/' },
   { label: 'About Us', path: '/about-us' },
   { label: 'Solutions', path: '/solutions' },
+  { label: 'Use Cases', path: '/use-cases' },
   { label: 'Contact Us', path: '/contact-us' },
 ]
 
