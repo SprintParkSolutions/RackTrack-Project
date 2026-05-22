@@ -6,8 +6,11 @@ import './Navbar.css'
 
 const navItems = [
   { label: 'Home', path: '/' },
-  { label: 'About Us', path: '/about-us' },
+  { label: 'Why RackTrack', path: '/why-racktrack' },
   { label: 'Solutions', path: '/solutions' },
+  { label: 'Trust & Security', path: '/trust-security' },
+  { label: 'Resources', path: '/resources' },
+  { label: 'About Us', path: '/about-us' },
   { label: 'Contact Us', path: '/contact-us' },
 ]
 
