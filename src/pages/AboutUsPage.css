@@ -422,44 +422,51 @@ body::-webkit-scrollbar,
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 48px;
-  padding: 0 28px;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  min-height: var(--button-min-height);
+  padding: 0 var(--button-padding-x);
+  border-radius: var(--button-radius);
+  font-size: var(--button-font-size);
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--button-letter-spacing);
+  text-transform: uppercase;
   text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    transform 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.26s ease,
+    border-color 0.26s ease,
+    background 0.26s ease,
+    color 0.26s ease;
   cursor: pointer;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   outline: none;
   touch-action: manipulation;
+  border: 1px solid transparent;
 }
 
 .about-button--primary {
-  background: var(--about-text, #ffffff);
-  color: var(--about-bg-deep, #020611);
-  border: 1px solid transparent;
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  box-shadow: var(--button-primary-shadow);
 }
 
 .about-button--primary:hover {
-  background: transparent;
-  color: var(--about-text, #ffffff);
-  border-color: var(--about-text, #ffffff);
-  box-shadow: 0 0 24px rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+  box-shadow: var(--button-primary-shadow-hover);
 }
 
 .about-button--ghost {
-  background: transparent;
-  color: var(--about-text, #ffffff);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--button-ghost-bg);
+  color: var(--button-ghost-text);
+  border-color: var(--button-ghost-border);
+  box-shadow: var(--button-ghost-shadow);
 }
 
 .about-button--ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 210, 255, 0.34);
+  box-shadow: var(--button-ghost-shadow-hover);
 }
 
 .about-button:hover .about-button__icon {
@@ -1764,4 +1771,15 @@ body::-webkit-scrollbar,
     font-size: clamp(2rem, 9vw, 2.5rem);
   }
   .about-metric-card__inner { padding: 0; }
+}
+
+/* Typography polish */
+.about-page :where(h1, h2, h3, h4) {
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.about-eyebrow,
+.about-founder-story__eyebrow {
+  line-height: 1.2;
 }
