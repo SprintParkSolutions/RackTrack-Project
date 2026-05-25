@@ -12,7 +12,6 @@ import {
   Clock,
   FileCheck,
   Network,
-  Pause,
   PlayCircle,
   Rocket,
   ShieldCheck,
@@ -117,32 +116,32 @@ const roles = [
   [
     "Infrastructure Leaders",
     "Track physical infrastructure truth with confidence.",
-    "/solutions page images/datacenter-bg.jpg",
+    "/home-role-images/role-infrastructure-leaders.webp",
   ],
   [
     "Network Architects",
     "Understand rack, port, and topology state faster.",
-    "/solutions page images/Network_Topology.jpg",
+    "/home-role-images/role-network-architects.webp",
   ],
   [
     "Security Teams",
     "Connect device posture to the physical asset.",
-    "/solutions page images/Security_Compliance.jpg",
+    "/home-role-images/role-security-teams.webp",
   ],
   [
     "Compliance Owners",
     "Reduce manual evidence collection and blind spots.",
-    "/solutions page images/Automated_Inventory.jpg",
+    "/home-role-images/role-compliance-owners.webp",
   ],
   [
     "Incident Responders",
     "Find the right device before time is lost.",
-    "/solutions page images/Server_rack-scan.jpg",
+    "/home-role-images/role-incident-responders.webp",
   ],
   [
     "M&A and Migration Teams",
     "Baseline unknown environments before change.",
-    "/solutions page images/Port_Tracking.jpg",
+    "/home-role-images/role-ma-migration-teams.webp",
   ],
 ] as const;
 
@@ -160,7 +159,6 @@ export default function HomePage() {
   const [shouldLoadHeroVideo, setShouldLoadHeroVideo] = useState(false);
   const [shouldLoadProofVideo, setShouldLoadProofVideo] = useState(false);
   const [shouldLoadTruthVideo] = useState(true);
-  const [isTruthVideoPlaying, setIsTruthVideoPlaying] = useState(false);
 
   useEffect(() => {
     const elements = Array.from(
@@ -190,22 +188,6 @@ export default function HomePage() {
       behavior: "smooth",
       block: "start",
     });
-  };
-
-  const handlePlayTruthVideo = () => {
-    const video = truthVideoRef.current;
-
-    if (!video) {
-      return;
-    }
-
-    if (video.paused) {
-      video.muted = false;
-      void video.play().catch(() => {});
-      return;
-    }
-
-    video.pause();
   };
 
   useEffect(() => {
@@ -418,11 +400,10 @@ export default function HomePage() {
                 ref={truthVideoRef}
                 className="home-truth-video"
                 loop
+                controls
                 playsInline
                 preload="metadata"
-                onPlay={() => setIsTruthVideoPlaying(true)}
-                onPause={() => setIsTruthVideoPlaying(false)}
-                onEnded={() => setIsTruthVideoPlaying(false)}
+                poster="/solutions page images/Server_rack-scan.jpg"
               >
                 {shouldLoadTruthVideo ? (
                   <>
@@ -438,24 +419,6 @@ export default function HomePage() {
                 ) : null}
               </video>
             </div>
-            <button
-              type="button"
-              className="home-truth-play-btn"
-              onClick={handlePlayTruthVideo}
-              aria-label={
-                isTruthVideoPlaying
-                  ? "Pause RackTrack tour video"
-                  : "Play RackTrack tour video"
-              }
-            >
-              <span className="home-truth-play-icon">
-                {isTruthVideoPlaying ? (
-                  <Pause size={28} />
-                ) : (
-                  <PlayCircle size={28} />
-                )}
-              </span>
-            </button>
           </div>
         </div>
 

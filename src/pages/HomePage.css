@@ -298,38 +298,55 @@ button {
 
 .home-primary-btn,
 .home-secondary-btn {
-  min-height: 52px;
-  padding: 0 23px;
-  border-radius: 999px;
+  min-height: var(--button-min-height);
+  padding: 0 var(--button-padding-x);
+  border-radius: var(--button-radius);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  border: 1px solid transparent;
   text-decoration: none;
-  font-size: 0.94rem;
-  font-weight: 900;
+  font-size: var(--button-font-size);
+  font-weight: 700;
+  letter-spacing: var(--button-letter-spacing);
+  text-transform: uppercase;
   transition:
     transform 0.28s ease,
     box-shadow 0.28s ease,
-    border-color 0.28s ease;
+    border-color 0.28s ease,
+    background 0.28s ease,
+    filter 0.28s ease;
 }
 
 .home-primary-btn {
-  color: #fff;
-  background: linear-gradient(135deg, #22d3ee, #4f46e5);
-  box-shadow: 0 24px 70px rgba(34, 211, 238, 0.34);
+  color: var(--button-primary-text);
+  background: var(--button-primary-bg);
+  box-shadow: var(--button-primary-shadow);
 }
 
 .home-secondary-btn {
-  color: #f2f8ff;
-  background: rgba(255, 255, 255, 0.085);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--button-ghost-text);
+  background: var(--button-ghost-bg);
+  border-color: var(--button-ghost-border);
+  box-shadow: var(--button-ghost-shadow);
   backdrop-filter: blur(18px);
 }
 
 .home-primary-btn:hover,
 .home-secondary-btn:hover {
   transform: translateY(-4px);
+}
+
+.home-primary-btn:hover {
+  box-shadow: var(--button-primary-shadow-hover);
+  filter: brightness(1.03);
+}
+
+.home-secondary-btn:hover {
+  border-color: rgba(0, 210, 255, 0.34);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: var(--button-ghost-shadow-hover);
 }
 
 /* SHARED */
@@ -1880,5 +1897,116 @@ button {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Typography polish */
+.home-page :where(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+.home-hero-copy h1,
+.home-section-header h2,
+.home-truth-copy h2,
+.home-final-copy h2 {
+  line-height: 1.12;
+  letter-spacing: -0.05em;
+}
+
+.home-problem-card strong,
+.home-proof-metrics strong {
+  line-height: 1.08;
+}
+
+.home-truth-controls {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(3, 12, 24, 0.84);
+  border: 1px solid rgba(103, 232, 249, 0.14);
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.home-truth-time {
+  color: rgba(226, 242, 255, 0.84);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.home-truth-progress {
+  width: 100%;
+  margin: 0;
+  accent-color: #67e8f9;
+  cursor: pointer;
+}
+
+.home-truth-progress::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(103, 232, 249, 0.9), rgba(103, 232, 249, 0.24));
+}
+
+.home-truth-progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border: 0;
+  border-radius: 50%;
+  background: #dffcff;
+  box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.24);
+}
+
+.home-truth-progress::-moz-range-track {
+  height: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(103, 232, 249, 0.9), rgba(103, 232, 249, 0.24));
+}
+
+.home-truth-progress::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 50%;
+  background: #dffcff;
+  box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.24);
+}
+
+@media (max-width: 860px) {
+  .home-truth-controls {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  .home-truth-controls {
+    grid-template-columns: 48px minmax(0, 1fr) 48px;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .home-truth-time {
+    font-size: 0.64rem;
+    letter-spacing: 0.05em;
   }
 }

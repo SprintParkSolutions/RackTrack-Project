@@ -893,17 +893,25 @@
 }
 
 .use-case-role-actions a:last-child {
-  padding: 12px 22px;
-  border: 1.5px solid rgba(103, 232, 249, 0.16);
-  border-radius: 8px;
-  background: rgba(6, 17, 31, 0.7);
-  transition: border-color 180ms ease, background 180ms ease;
+  min-height: var(--button-min-height);
+  padding: 0 var(--button-padding-x);
+  border: 1px solid var(--button-ghost-border);
+  border-radius: var(--button-radius);
+  background: var(--button-ghost-bg);
+  box-shadow: var(--button-ghost-shadow);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .use-case-role-actions a:last-child:hover,
 .use-case-role-actions a:last-child:focus-visible {
+  transform: translateY(-3px);
   border-color: rgba(0, 210, 255, 0.5);
   background: rgba(0, 210, 255, 0.08);
+  box-shadow: var(--button-ghost-shadow-hover);
 }
 
 .use-case-role-actions a:focus-visible,
@@ -1211,23 +1219,26 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 48px;
+  min-height: var(--button-min-height);
   margin-top: 28px;
-  padding: 0 22px;
-  color: #02101a;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #1de8f3, #00c4ef);
-  font-size: var(--text-small);
+  padding: 0 var(--button-padding-x);
+  color: var(--button-primary-text);
+  border: 1px solid transparent;
+  border-radius: var(--button-radius);
+  background: var(--button-primary-bg);
+  font-size: var(--button-font-size);
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--button-letter-spacing);
+  text-transform: uppercase;
   text-decoration: none;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
 }
 
 .use-case-article-final a:hover,
 .use-case-article-final a:focus-visible {
   transform: translateY(-3px);
-  box-shadow: 0 18px 44px rgba(0, 210, 255, 0.24);
+  box-shadow: var(--button-primary-shadow-hover);
+  filter: brightness(1.03);
   outline: none;
 }
 
@@ -1342,16 +1353,18 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  min-height: 56px;
-  padding: 0 30px;
-  color: #02101a;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #1de8f3, #00c4ef);
-  box-shadow: 0 18px 44px rgba(0, 210, 255, 0.22);
+  min-height: var(--button-min-height);
+  padding: 0 var(--button-padding-x);
+  color: var(--button-primary-text);
+  border: 1px solid transparent;
+  border-radius: var(--button-radius);
+  background: var(--button-primary-bg);
+  box-shadow: var(--button-primary-shadow);
   font-family: var(--font-body);
-  font-size: var(--text-small);
+  font-size: var(--button-font-size);
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--button-letter-spacing);
+  text-transform: uppercase;
   text-decoration: none;
   transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
 }
@@ -1360,7 +1373,7 @@
 .use-case-next-step-button:focus-visible {
   transform: translateY(-3px);
   filter: brightness(1.05);
-  box-shadow: 0 24px 58px rgba(0, 210, 255, 0.34);
+  box-shadow: var(--button-primary-shadow-hover);
   outline: none;
 }
 
@@ -1649,4 +1662,10 @@
   .use-case-role-card:target {
     transform: none;
   }
+}
+
+/* Typography polish */
+.use-case-page :where(h1, h2, h3) {
+  line-height: 1.12;
+  text-wrap: balance;
 }
