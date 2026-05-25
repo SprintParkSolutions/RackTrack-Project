@@ -1,81 +1,222 @@
-import { type CSSProperties, useEffect, useRef } from 'react'
+import { type CSSProperties, useEffect, useRef, useState } from 'react'
 import {
   ArrowRight,
+  BarChart3,
   Check,
+  Database,
+  FileText,
+  FileClock,
+  ScanSearch,
   ShieldCheck,
-  Split,
   Waypoints,
   Zap,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import './WhyRackTrackPage.css'
 
-const differentiators = [
+const heroSignals = [
+  'Data center inventory',
+  'Live network validation',
+  'Audit-ready evidence',
+] as const
+
+const pillars = [
   {
-    title: 'Sense the rack',
-    description:
-      'Capture what is physically present in the rack, not what a spreadsheet says should be there.',
-    icon: Split,
     num: '01',
+    title: 'Sense',
+    description:
+      'Computer vision captures device position, labels, ports, cable state, and visual evidence directly from the rack.',
+    visual: 'sense',
   },
   {
-    title: 'Verify against the network',
-    description:
-      'Confirm device identity and live state against the network so the result is operationally useful.',
-    icon: Waypoints,
     num: '02',
+    title: 'Verify',
+    description:
+      'Observed state is checked against live network identity and existing records so drift is exposed immediately.',
+    visual: 'verify',
   },
   {
-    title: 'Enrich with vendor and security data',
-    description:
-      'Add the context infrastructure teams need for support, compliance, lifecycle, and risk decisions.',
-    icon: ShieldCheck,
     num: '03',
+    title: 'Enrich',
+    description:
+      'RackTrack turns findings into exports, reports, and workflows each team can use without manual translation.',
+    visual: 'enrich',
   },
+] as const
+
+const featureCards = [
+  {
+    title: 'Audit-ready',
+    description: 'Defensible in any compliance review.',
+    icon: ShieldCheck,
+    tone: 'success',
+  },
+  {
+    title: 'Incident-speed',
+    description: 'Fast enough for a live outage.',
+    icon: Zap,
+    tone: 'warning',
+  },
+  {
+    title: 'Decision-grade',
+    description: 'Drives capacity and procurement.',
+    icon: BarChart3,
+    tone: 'teal',
+  },
+] as const
+
+const comparisonHeaders = [
+  'Physical Sensing',
+  'Network Identification',
+  'Enrich Data',
+  'Single Source of Truth',
 ] as const
 
 const comparisonRows = [
-  { category: 'RackTrack', values: ['Full', 'Full', 'Full'] as const, isRackTrack: true },
-  { category: 'DCIM platforms', values: ['Partial', 'Partial', 'Partial'] as const, isRackTrack: false },
-  { category: 'Network discovery tools', values: ['None', 'Full', 'Partial'] as const, isRackTrack: false },
-  { category: 'Manual rack audits', values: ['Partial', 'None', 'None'] as const, isRackTrack: false },
-] as const
-
-const comparisonColumns = [
-  'Sense the rack',
-  'Verify against the network',
-  'Enrich with vendor and security data',
-] as const
-
-const heroSignals = [
-  'Physical proof',
-  'Network validation',
-  'Security context',
-] as const
-
-const processSteps = [
   {
-    title: 'Capture',
-    detail: 'Rack video and imagery create a defensible physical baseline for every cabinet, device, and port.',
+    name: 'RackTrack',
+    featured: true,
+    cells: ['full', 'full', 'full', 'full'] as const,
   },
   {
-    title: 'Reconcile',
-    detail: 'RackTrack compares physical findings to live network identity so mismatches surface immediately.',
+    name: 'DCIM Platforms',
+    featured: false,
+    cells: ['partial', 'partial', 'none', 'none'] as const,
   },
   {
-    title: 'Operationalize',
-    detail: 'The reconciled output flows into security, lifecycle, support, and audit workflows with usable context.',
+    name: 'Network Discovery',
+    featured: false,
+    cells: ['full', 'partial', 'none', 'none'] as const,
+  },
+  {
+    name: 'Manual Rack Audits',
+    featured: false,
+    cells: ['full', 'none', 'none', 'none'] as const,
+  },
+  {
+    name: 'CMDB',
+    featured: false,
+    cells: ['none', 'none', 'full', 'none'] as const,
   },
 ] as const
 
-const evidenceStats = [
-  { value: '1 pass', label: 'from scan to reconciled output' },
-  { value: '3 layers', label: 'physical, network, and vendor context' },
-  { value: '0 guesswork', label: 'for teams that need evidence they can defend' },
+const toolHighlights = [
+  {
+    heading: 'Every asset record traceable to its source',
+    desc:
+      'Each inventory record is tied back to the physical rack signal or live network signal that produced it.',
+    tag: 'SOURCE-LINKED',
+    image: '/solutions page images/Automated_Inventory.jpg',
+    icon: ScanSearch,
+    imageAlt: 'Physical evidence and inventory records connected to source devices',
+  },
+  {
+    heading: 'Every device identification verified against the live network',
+    desc:
+      'Physical rack observations are cross-checked against live identity before a device is treated as verified.',
+    tag: 'NETWORK-VERIFIED',
+    image: '/solutions page images/Network_Topology.jpg',
+    icon: Waypoints,
+    imageAlt: 'Network topology and rack connectivity verification view',
+  },
+  {
+    heading: 'Every infrastructure change timestamped',
+    desc:
+      'State changes, arrivals, moves, and departures are captured with timing that operations and compliance teams can defend.',
+    tag: 'TIMESTAMPED',
+    image: '/resource-thought-images/blog-cmdb-drift.webp',
+    icon: FileClock,
+    imageAlt: 'Timeline and CMDB drift visualization for timestamped changes',
+  },
+  {
+    heading: 'Audit-ready data your compliance team can defend',
+    desc:
+      'Built for evidence requests, audit follow-up, security reviews, and operational decisions that need a trusted chain of proof.',
+    tag: 'AUDIT-READY',
+    image: '/solutions page images/Security_Compliance.jpg',
+    icon: Database,
+    imageAlt: 'Security and compliance evidence review interface',
+  },
 ] as const
+
+function ComparisonStatus({
+  status,
+  featured,
+}: {
+  status: (typeof comparisonRows)[number]['cells'][number]
+  featured: boolean
+}) {
+  if (status === 'full') {
+    return (
+      <span className={`why-matrix__status why-matrix__status--full${featured ? ' is-featured' : ''}`}>
+        <Check size={14} />
+      </span>
+    )
+  }
+
+  if (status === 'partial') {
+    return <span className="why-matrix__status why-matrix__status--partial">P</span>
+  }
+
+  return <span className="why-matrix__status why-matrix__status--none" />
+}
+
+function WhyPillarVisual({
+  visual,
+}: {
+  visual: (typeof pillars)[number]['visual']
+}) {
+  if (visual === 'sense') {
+    return (
+      <div className="why-flow__rack-visual">
+        <span className="why-flow__rack-face why-flow__rack-face--front">
+          {Array.from({ length: 7 }).map((_, index) => (
+            <i key={index} />
+          ))}
+        </span>
+        <span className="why-flow__rack-face why-flow__rack-face--side">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <i key={index} />
+          ))}
+        </span>
+        <span className="why-flow__rack-face why-flow__rack-face--top" />
+      </div>
+    )
+  }
+
+  if (visual === 'verify') {
+    return (
+      <div className="why-flow__network-visual">
+        <span className="why-flow__network-core" />
+        {Array.from({ length: 8 }).map((_, index) => (
+          <span key={index} className={`why-flow__network-node why-flow__network-node--${index + 1}`} />
+        ))}
+        <span className="why-flow__network-shield">
+          <ShieldCheck size={22} strokeWidth={2} />
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="why-flow__enrich-visual">
+      <span className="why-flow__enrich-diamond why-flow__enrich-diamond--violet">
+        <FileText size={24} strokeWidth={1.9} />
+      </span>
+      <span className="why-flow__enrich-diamond why-flow__enrich-diamond--cyan">
+        <BarChart3 size={24} strokeWidth={1.9} />
+      </span>
+      <span className="why-flow__enrich-diamond why-flow__enrich-diamond--violet">
+        <ShieldCheck size={24} strokeWidth={1.9} />
+      </span>
+    </div>
+  )
+}
 
 export default function WhyRackTrackPage() {
   const pageRef = useRef<HTMLElement>(null)
+  const [activeTrustCard, setActiveTrustCard] = useState<string | null>(null)
+  const [isTouchFlipMode, setIsTouchFlipMode] = useState(false)
 
   useEffect(() => {
     const els = pageRef.current?.querySelectorAll('.reveal-on-scroll') ?? []
@@ -93,6 +234,26 @@ export default function WhyRackTrackPage() {
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
   }, [])
+
+  useEffect(() => {
+    const media = window.matchMedia('(hover: none), (pointer: coarse)')
+    const syncMode = () => {
+      const isTouch = media.matches
+      setIsTouchFlipMode(isTouch)
+      if (!isTouch) {
+        setActiveTrustCard(null)
+      }
+    }
+
+    syncMode()
+    media.addEventListener('change', syncMode)
+    return () => media.removeEventListener('change', syncMode)
+  }, [])
+
+  const toggleTrustCard = (heading: string) => {
+    if (!isTouchFlipMode) return
+    setActiveTrustCard((current) => (current === heading ? null : heading))
+  }
 
   return (
     <main className="why-page" ref={pageRef}>
@@ -130,13 +291,13 @@ export default function WhyRackTrackPage() {
           <div className="why-hero__content">
             <span className="app-eyebrow">Why RackTrack</span>
             <h1>
-              <span className="why-h1-line">Rack truth.</span>
-              <span className="why-h1-line">Network truth.</span>
-              <span className="why-h1-line why-h1-grad">One reconciled view.</span>
+              <span className="why-h1-line">See what&apos;s in the rack.</span>
+              <span className="why-h1-line">Verify what&apos;s on the network.</span>
+              <span className="why-h1-line why-h1-grad">Trust one source of truth.</span>
             </h1>
             <p>
-              RackTrack connects what is in the rack, what is live on the network, and what
-              matters for operations.
+              RackTrack unifies physical discovery, live network validation, and evidence-ready
+              reporting in one platform.
             </p>
 
             <div className="why-hero__actions">
@@ -158,208 +319,226 @@ export default function WhyRackTrackPage() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="why-hero__visual" aria-hidden="true">
-            <div className="why-hero__backplate" />
-            <div className="why-hero__frame">
-              <img
-                src="/solutions page images/Network_Topology.jpg"
-                alt=""
-                loading="eager"
-                decoding="async"
-              />
-              <div className="why-hero__frame-overlay" />
-              <div className="why-hero__scanline" />
-            </div>
-            <div className="why-hero__micro-chip">
-              <span />
-              <span />
-              <span />
-            </div>
-
-            <div className="why-hero__grid-card">
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
-            </div>
+      <section className="app-section why-flow reveal-on-scroll">
+        <div className="why-flow__frame">
+          <div className="why-flow__intro">
+            <span className="app-eyebrow">Why RackTrack</span>
+            <h2>
+              Three things every tool does.
+              <span className="why-flow__title-accent"> Only one does all three.</span>
+            </h2>
+            <p>
+              Existing tools sense the rack. Or they read from the network. Or they track vendor
+              and security data. RackTrack does all three in the same pass and reconciles them,
+              which is why the output is trustworthy enough to defend in an audit, fast enough to
+              use in an incident, and complete enough to drive capacity and procurement decisions.
+            </p>
           </div>
-        </div>
-      </section>
 
-      <section className="app-section why-differentiator reveal-on-scroll">
-        <div className="app-section-heading">
-          <span className="app-eyebrow">The Differentiator</span>
-          <h2>The real gap is not visibility. It is reconciliation.</h2>
-          <p>
-            Teams already have fragments of the truth. What they usually do not have is one
-            trusted system that ties those fragments together cleanly enough to support action.
-          </p>
-        </div>
-
-        <div className="why-pillars">
-          {differentiators.map(({ title, description, icon: Icon, num }, index) => (
-            <article
-              key={title}
-              className="why-pillar-card"
-              style={{ '--ci': index } as CSSProperties}
-            >
-              <div className="why-pillar-icon">
-                <span className="why-pillar-icon-ring" />
-                <Icon size={22} strokeWidth={1.8} />
-              </div>
-              <span className="why-pillar-num">{num}</span>
-              <h3>{title}</h3>
-              <p>{description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="app-section why-process reveal-on-scroll">
-        <div className="why-process__intro">
-          <span className="app-eyebrow">How It Works</span>
-          <h2>RackTrack turns raw discovery into operational truth.</h2>
-          <p>
-            The platform is designed as a chain of evidence, not just a chain of screens.
-            Every step strengthens confidence before the result reaches engineering,
-            compliance, or security workflows.
-          </p>
-        </div>
-
-        <div className="why-process__rail">
-          {processSteps.map((step, index) => (
-            <article
-              key={step.title}
-              className="why-process__step"
-              style={{ '--ci': index } as CSSProperties}
-            >
-              <span className="why-process__index">0{index + 1}</span>
-              <h3>{step.title}</h3>
-              <p>{step.detail}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="app-section why-comparison reveal-on-scroll">
-        <div className="app-section-heading">
-          <span className="app-eyebrow">Category Comparison</span>
-          <h2>RackTrack is built across all three layers.</h2>
-          <p>
-            This is a category view, not a named competitor matrix. It highlights why teams
-            often end up stitching multiple products and manual processes together.
-          </p>
-        </div>
-
-        <div className="why-table-wrap">
-          <div className="why-table" role="table" aria-label="RackTrack category comparison">
-            <div className="why-table__header" role="row">
-              <div className="why-table__cell why-table__cell--label" role="columnheader">
-                Category
-              </div>
-              {comparisonColumns.map((column) => (
-                <div key={column} className="why-table__cell" role="columnheader">
-                  {column}
-                </div>
-              ))}
-            </div>
-
-            {comparisonRows.map((row) => (
-              <div
-                key={row.category}
-                className={`why-table__row${row.isRackTrack ? ' why-table__row--featured' : ''}`}
-                role="row"
+          <div className="why-flow__pillars">
+            {pillars.map(({ num, title, description, visual }, index) => (
+              <article
+                key={title}
+                className="why-flow__pillar-card"
+                style={{ '--ci': index } as CSSProperties}
               >
-                <div className="why-table__cell why-table__cell--label" role="cell">
-                  {row.category}
-                </div>
-                {row.values.map((value, index) => (
-                  <div
-                    key={`${row.category}-${comparisonColumns[index]}`}
-                    className="why-table__cell"
-                    role="cell"
-                  >
-                    {value === 'Full' ? (
-                      <span className="why-table__status why-table__status--full">
-                        <Check size={14} />
-                        Full
-                      </span>
-                    ) : value === 'Partial' ? (
-                      <span className="why-table__status why-table__status--partial">Partial</span>
-                    ) : (
-                      <span className="why-table__status why-table__status--none">None</span>
-                    )}
+                <div className="why-flow__pillar-layout">
+                  <div className="why-flow__pillar-copy">
+                    <span className="why-flow__pillar-num">{num}</span>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
                   </div>
-                ))}
+                  <div className="why-flow__pillar-visual" aria-hidden="true">
+                    <WhyPillarVisual visual={visual} />
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="why-flow__connectors" aria-hidden="true">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="why-flow__connector">
+                <span />
               </div>
+            ))}
+          </div>
+
+          <div className="why-flow__features">
+            {featureCards.map(({ title, description, icon: Icon, tone }, index) => (
+              <article
+                key={title}
+                className={`why-flow__feature-card why-flow__feature-card--${tone}`}
+                style={{ '--ci': index + 3 } as CSSProperties}
+              >
+                <div className="why-flow__feature-icon">
+                  <Icon size={26} strokeWidth={1.8} />
+                </div>
+                <div className="why-flow__feature-copy">
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="app-section why-evidence reveal-on-scroll">
-        <div className="why-evidence__layout">
-          <div className="why-evidence__panel">
-            <div className="why-evidence__badge">
-              <ShieldCheck size={18} />
-              <span>Evidence-Grade</span>
-            </div>
+      <section className="app-section why-matrix reveal-on-scroll">
+        <div className="why-matrix__hero">
+          <img
+            src="/solutions page images/WhyRackTrackMatrixHero-v2.png"
+            alt=""
+            aria-hidden="true"
+            className="why-matrix__hero-image"
+          />
+          <div className="why-matrix__hero-overlay" />
+          <h2 className="why-comparison-headline">
+            <span className="why-headline-white">Most tools report what they</span>
+            <br />
+            <span className="why-headline-gradient">find. RackTrack knows</span>
+            <br />
+            <span className="why-headline-gradient">what&apos;s actually there.</span>
+          </h2>
+        </div>
 
-            <h2>Built for the teams who have to defend the answer.</h2>
-            <p>
-              Every inventory claim becomes more useful when the team behind it can explain where
-              it came from, what confirmed it, and when it changed. RackTrack is designed for that
-              standard.
-            </p>
+        <div className="why-matrix__panel">
+          <div className="why-matrix__grid why-matrix__grid--head">
+            <div className="why-matrix__cell why-matrix__cell--label" />
+            {comparisonHeaders.map((header) => (
+              <div key={header} className="why-matrix__cell why-matrix__cell--head">
+                {header}
+              </div>
+            ))}
+          </div>
 
-            <div className="why-evidence__stats">
-              {evidenceStats.map((stat) => (
-                <div key={stat.label} className="why-evidence__stat">
-                  <strong>{stat.value}</strong>
-                  <span>{stat.label}</span>
+          {comparisonRows.map((row, rowIndex) => (
+            <div
+              key={row.name}
+              className={`why-matrix__grid why-matrix__row${row.featured ? ' is-featured' : ''}`}
+              style={{ '--ci': rowIndex } as CSSProperties}
+            >
+              <div className="why-matrix__cell why-matrix__cell--label">
+                <span className={`why-matrix__row-dot${row.featured ? ' is-featured' : ''}`} />
+                <span>{row.name}</span>
+              </div>
+              {row.cells.map((cell, index) => (
+                <div key={`${row.name}-${comparisonHeaders[index]}`} className="why-matrix__cell">
+                  <ComparisonStatus status={cell} featured={row.featured} />
                 </div>
               ))}
             </div>
+          ))}
 
-            <div className="why-evidence__quote">
-              <Zap size={18} />
-              <p>
-                Infrastructure, security, and audit teams do not need another dashboard.
-                They need output they can operationalize with confidence.
-              </p>
+          <div className="why-matrix__stats">
+            <div className="why-matrix__stat">
+              <span>Full Coverage</span>
+              <strong>4 / 4</strong>
             </div>
+            <div className="why-matrix__stat">
+              <span>Competitors Avg</span>
+              <strong>1.3 / 4</strong>
+            </div>
+            <div className="why-matrix__stat why-matrix__stat--legend">
+              <span>Legend</span>
+              <div className="why-matrix__legend">
+                <div>
+                  <ComparisonStatus status="full" featured={false} />
+                  <small>Full support</small>
+                </div>
+                <div>
+                  <ComparisonStatus status="partial" featured={false} />
+                  <small>Partial support</small>
+                </div>
+                <div>
+                  <ComparisonStatus status="none" featured={false} />
+                  <small>Not available</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <Link
-              to="/contact-us"
-              state={{ scrollTo: 'contact' }}
-              className="app-primary-btn why-evidence__cta"
+      <section className="app-section why-trust reveal-on-scroll">
+        <div className="why-trust__intro">
+          <span className="app-eyebrow">Evidence & Trust</span>
+          <h2>
+            Evidence your
+            <span className="why-trust__title-accent"> infrastructure, security,</span>
+            <br />
+            <span className="why-trust__title-accent">and compliance teams can trust.</span>
+          </h2>
+          <p>
+            RackTrack creates traceable asset inventory, network-verified device identification,
+            and timestamped infrastructure change history. Security teams, compliance owners, and
+            operations engineers get audit-ready evidence they can validate, export, and defend.
+          </p>
+        </div>
+        <div className="why-trust__cards">
+          {toolHighlights.map(({ heading, desc, tag, image, icon: Icon, imageAlt }, index) => (
+            <article
+              key={heading}
+              className={`why-trust__card${activeTrustCard === heading ? ' is-flipped' : ''}`}
+              style={{ '--ci': index } as CSSProperties}
+              onClick={() => toggleTrustCard(heading)}
+              onKeyDown={(event) => {
+                if (!isTouchFlipMode) return
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  toggleTrustCard(heading)
+                }
+              }}
+              tabIndex={isTouchFlipMode ? 0 : -1}
+              aria-label={isTouchFlipMode ? `${heading} card. Tap to flip.` : undefined}
             >
-              Talk to RackTrack
-              <ArrowRight size={18} />
-            </Link>
-          </div>
+              <div className="why-trust__flip">
+                <div className="why-trust__face why-trust__face--front">
+                  <div className="why-trust__media">
+                    <img src={image} alt={imageAlt} loading="lazy" decoding="async" />
+                    <button
+                      type="button"
+                      className="why-trust__media-icon"
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        toggleTrustCard(heading)
+                      }}
+                      aria-label={activeTrustCard === heading ? `Show front of ${heading}` : `Flip ${heading} card`}
+                    >
+                      <Icon size={24} strokeWidth={1.8} />
+                    </button>
+                  </div>
+                  <div className="why-trust__card-copy">
+                    <span className="why-trust__tag">{tag}</span>
+                    <h3>{heading}</h3>
+                  </div>
+                </div>
 
-          <div className="why-evidence__media">
-            <img
-              src="/solutions page images/Security_Compliance.jpg"
-              alt="Security and compliance operations view"
-              loading="lazy"
-              decoding="async"
-            />
-            <div className="why-evidence__overlay-card">
-              <span>Trusted output</span>
-              <strong>Physical proof + live verification + decision context</strong>
-            </div>
-          </div>
+                <div className="why-trust__face why-trust__face--back">
+                  <span className="why-trust__tag">{tag}</span>
+                  <div className="why-trust__back-icon">
+                    <Icon size={26} strokeWidth={1.9} />
+                  </div>
+                  <h3>{heading}</h3>
+                  <p>{desc}</p>
+                  <button
+                    type="button"
+                    className="why-trust__flip-back"
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      toggleTrustCard(heading)
+                    }}
+                    aria-label={`Return to front of ${heading}`}
+                  >
+                    Back to image
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
     </main>
