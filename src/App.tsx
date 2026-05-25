@@ -4,10 +4,38 @@ import { ReactLenis } from 'lenis/react'
 import Navbar from './components/Navbar'
 import SideSocialRail from './components/SideSocialRail'
 import ScrollToTop from './components/ScrollToTop'
+import { getResourcePostBySlug } from './data/resourcePosts'
 import HomePage from './pages/HomePage'
 import './App.css'
 
 const SolutionsPage = lazy(() => import('./pages/SolutionsPage'))
+const UseCasePage = lazy(() => import('./pages/UseCasePage'))
+const UseCaseArticlePage = lazy(() => import('./pages/UseCaseArticlePage'))
+const UseCaseNetworkArticlePage = lazy(() => import('./pages/UseCaseNetworkArticlePage'))
+const UseCaseSecurityArticlePage = lazy(() =>
+  import('./pages/UseCaseAdditionalArticlePages').then((module) => ({
+    default: module.UseCaseSecurityArticlePage,
+  })),
+)
+const UseCaseComplianceArticlePage = lazy(() =>
+  import('./pages/UseCaseAdditionalArticlePages').then((module) => ({
+    default: module.UseCaseComplianceArticlePage,
+  })),
+)
+const UseCaseIncidentArticlePage = lazy(() =>
+  import('./pages/UseCaseAdditionalArticlePages').then((module) => ({
+    default: module.UseCaseIncidentArticlePage,
+  })),
+)
+const UseCaseMigrationArticlePage = lazy(() =>
+  import('./pages/UseCaseAdditionalArticlePages').then((module) => ({
+    default: module.UseCaseMigrationArticlePage,
+  })),
+)
+const WhyRackTrackPage = lazy(() => import('./pages/WhyRackTrackPage'))
+const TrustSecurityPage = lazy(() => import('./pages/TrustSecurityPage'))
+const ResourcesPage = lazy(() => import('./pages/ResourcesPage'))
+const ResourceArticlePage = lazy(() => import('./pages/ResourceArticlePage'))
 // const ProductPage = lazy(() => import('./pages/ProductPage'))
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
 const ContactUsPage = lazy(() => import('./pages/ContactUsPage'))
@@ -40,6 +68,66 @@ const SEO_BY_PATH: Record<
       'Explore RackTrack solutions for rack inventory, switch recognition, cable tracing, free-port discovery, and audit-ready infrastructure reporting.',
     canonicalPath: '/solutions',
   },
+  '/use-cases': {
+    title: 'RackTrack Use Cases | One Source of Truth for Every Role',
+    description:
+      'See how RackTrack gives infrastructure, network, security, compliance, incident, and M&A teams one verified source of physical infrastructure truth.',
+    canonicalPath: '/use-cases',
+  },
+  '/use-cases/infrastructure-data-center-leaders': {
+    title: 'Infrastructure & Data Center Leaders | RackTrack Use Case',
+    description:
+      'Read how RackTrack helps infrastructure and data center leaders create one source of truth for every site, row, and rack.',
+    canonicalPath: '/use-cases/infrastructure-data-center-leaders',
+  },
+  '/use-cases/network-architects-engineers': {
+    title: 'Network Architects & Engineers | RackTrack Use Case',
+    description:
+      'Read how RackTrack helps network architects and engineers verify port-level topology against physical rack reality.',
+    canonicalPath: '/use-cases/network-architects-engineers',
+  },
+  '/use-cases/security-vulnerability-teams': {
+    title: 'Security & Vulnerability Teams | RackTrack Use Case',
+    description:
+      'Read how RackTrack helps security and vulnerability teams start from complete physical rack inventory.',
+    canonicalPath: '/use-cases/security-vulnerability-teams',
+  },
+  '/use-cases/compliance-audit-owners': {
+    title: 'Compliance & Audit Owners | RackTrack Use Case',
+    description:
+      'Read how RackTrack helps compliance teams generate continuous rack-level audit evidence.',
+    canonicalPath: '/use-cases/compliance-audit-owners',
+  },
+  '/use-cases/incident-responders-on-call': {
+    title: 'Incident Responders & On-Call | RackTrack Use Case',
+    description:
+      'Read how RackTrack helps incident responders find devices, ports, and rack locations faster.',
+    canonicalPath: '/use-cases/incident-responders-on-call',
+  },
+  '/use-cases/ma-migration-teams': {
+    title: 'M&A & Migration Teams | RackTrack Use Case',
+    description:
+      'Read how RackTrack helps M&A and migration teams turn unknown infrastructure into defensible plans.',
+    canonicalPath: '/use-cases/ma-migration-teams',
+  },
+  '/why-racktrack': {
+    title: 'Why RackTrack | Infrastructure Truth Across Rack, Network, and Security',
+    description:
+      'See why RackTrack stands apart by sensing the rack, verifying against the network, and enriching with vendor and security data in one reconciled workflow.',
+    canonicalPath: '/why-racktrack',
+  },
+  '/trust-security': {
+    title: 'Trust & Security | RackTrack Enterprise Security and Deployment',
+    description:
+      'Review RackTrack security posture, data handling approach, and deployment options for enterprise and regulated environments.',
+    canonicalPath: '/trust-security',
+  },
+  '/resources': {
+    title: 'Resources | RackTrack Blog and Infrastructure Insights',
+    description:
+      'Browse RackTrack blog content on CMDB drift, rack audits, infrastructure security, audit readiness, and physical layer intelligence.',
+    canonicalPath: '/resources',
+  },
   '/contact-us': {
     title: 'Contact RackTrack | Book a Demo',
     description:
@@ -52,7 +140,18 @@ function AppSeo() {
   const location = useLocation()
 
   useEffect(() => {
-    const seo = SEO_BY_PATH[location.pathname] ?? SEO_BY_PATH['/']
+    const resourceSlugMatch = location.pathname.match(/^\/resources\/([^/]+)$/)
+    const resourcePost = resourceSlugMatch
+      ? getResourcePostBySlug(resourceSlugMatch[1])
+      : undefined
+
+    const seo = resourcePost
+      ? {
+          title: `${resourcePost.title} | RackTrack Resources`,
+          description: resourcePost.excerpt,
+          canonicalPath: `/resources/${resourcePost.slug}`,
+        }
+      : (SEO_BY_PATH[location.pathname] ?? SEO_BY_PATH['/'])
 
     document.title = seo.title
 
@@ -104,6 +203,17 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             {/* <Route path="/product" element={<ProductPage />} /> */}
             <Route path="/solutions" element={<SolutionsPage />} />
+            <Route path="/use-cases" element={<UseCasePage />} />
+            <Route path="/use-cases/infrastructure-data-center-leaders" element={<UseCaseArticlePage />} />
+            <Route path="/use-cases/network-architects-engineers" element={<UseCaseNetworkArticlePage />} />
+            <Route path="/use-cases/security-vulnerability-teams" element={<UseCaseSecurityArticlePage />} />
+            <Route path="/use-cases/compliance-audit-owners" element={<UseCaseComplianceArticlePage />} />
+            <Route path="/use-cases/incident-responders-on-call" element={<UseCaseIncidentArticlePage />} />
+            <Route path="/use-cases/ma-migration-teams" element={<UseCaseMigrationArticlePage />} />
+            <Route path="/why-racktrack" element={<WhyRackTrackPage />} />
+            <Route path="/trust-security" element={<TrustSecurityPage />} />
+            <Route path="/resources" element={<ResourcesPage />} />
+            <Route path="/resources/:slug" element={<ResourceArticlePage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/contact-us" element={<ContactUsPage />} />
             <Route path="/about" element={<Navigate to="/about-us" replace />} />
@@ -123,8 +233,12 @@ export default function App() {
               <nav className="app-footer-nav" aria-label="Footer navigation">
                 <span className="app-footer-heading">Explore</span>
                 {/* <Link to="/product">Product</Link> */}
-                <Link to="/about-us">About Us</Link>
+                <Link to="/why-racktrack">Why RackTrack</Link>
                 <Link to="/solutions">Solutions</Link>
+                <Link to="/use-cases">Use Cases</Link>
+                <Link to="/trust-security">Trust & Security</Link>
+                <Link to="/resources">Resources</Link>
+                <Link to="/about-us">About Us</Link>
                 <Link to="/contact-us">Contact Us</Link>
               </nav>
 
