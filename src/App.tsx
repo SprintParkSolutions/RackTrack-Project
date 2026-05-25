@@ -4,6 +4,7 @@ import { ReactLenis } from 'lenis/react'
 import Navbar from './components/Navbar'
 import SideSocialRail from './components/SideSocialRail'
 import ScrollToTop from './components/ScrollToTop'
+import { getResourcePostBySlug } from './data/resourcePosts'
 import HomePage from './pages/HomePage'
 import './App.css'
 
@@ -34,6 +35,7 @@ const UseCaseMigrationArticlePage = lazy(() =>
 const WhyRackTrackPage = lazy(() => import('./pages/WhyRackTrackPage'))
 const TrustSecurityPage = lazy(() => import('./pages/TrustSecurityPage'))
 const ResourcesPage = lazy(() => import('./pages/ResourcesPage'))
+const ResourceArticlePage = lazy(() => import('./pages/ResourceArticlePage'))
 // const ProductPage = lazy(() => import('./pages/ProductPage'))
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
 const ContactUsPage = lazy(() => import('./pages/ContactUsPage'))
@@ -107,6 +109,7 @@ const SEO_BY_PATH: Record<
     description:
       'Read how RackTrack helps M&A and migration teams turn unknown infrastructure into defensible plans.',
     canonicalPath: '/use-cases/ma-migration-teams',
+  },
   '/why-racktrack': {
     title: 'Why RackTrack | Infrastructure Truth Across Rack, Network, and Security',
     description:
@@ -120,9 +123,9 @@ const SEO_BY_PATH: Record<
     canonicalPath: '/trust-security',
   },
   '/resources': {
-    title: 'Resources | RackTrack Research, Tools & Thought Leadership',
+    title: 'Resources | RackTrack Blog and Infrastructure Insights',
     description:
-      'ROI calculators, compliance mapping, integration references, and thought leadership for infrastructure teams evaluating physical layer intelligence.',
+      'Browse RackTrack blog content on CMDB drift, rack audits, infrastructure security, audit readiness, and physical layer intelligence.',
     canonicalPath: '/resources',
   },
   '/contact-us': {
@@ -137,7 +140,18 @@ function AppSeo() {
   const location = useLocation()
 
   useEffect(() => {
-    const seo = SEO_BY_PATH[location.pathname] ?? SEO_BY_PATH['/']
+    const resourceSlugMatch = location.pathname.match(/^\/resources\/([^/]+)$/)
+    const resourcePost = resourceSlugMatch
+      ? getResourcePostBySlug(resourceSlugMatch[1])
+      : undefined
+
+    const seo = resourcePost
+      ? {
+          title: `${resourcePost.title} | RackTrack Resources`,
+          description: resourcePost.excerpt,
+          canonicalPath: `/resources/${resourcePost.slug}`,
+        }
+      : (SEO_BY_PATH[location.pathname] ?? SEO_BY_PATH['/'])
 
     document.title = seo.title
 
@@ -199,6 +213,7 @@ export default function App() {
             <Route path="/why-racktrack" element={<WhyRackTrackPage />} />
             <Route path="/trust-security" element={<TrustSecurityPage />} />
             <Route path="/resources" element={<ResourcesPage />} />
+            <Route path="/resources/:slug" element={<ResourceArticlePage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/contact-us" element={<ContactUsPage />} />
             <Route path="/about" element={<Navigate to="/about-us" replace />} />

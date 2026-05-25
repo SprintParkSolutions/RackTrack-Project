@@ -497,36 +497,51 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 56px;
-  padding: 0 28px;
-  border-radius: 15px;
-  font-family: var(--font-heading);
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  min-height: var(--button-min-height);
+  padding: 0 var(--button-padding-x);
+  border: 1px solid transparent;
+  border-radius: var(--button-radius);
+  font-family: var(--font-body);
+  font-size: var(--button-font-size);
+  font-weight: 600;
+  letter-spacing: var(--button-letter-spacing);
+  text-transform: uppercase;
+  text-decoration: none;
   transition:
     transform 0.25s ease,
     border-color 0.25s ease,
     background 0.25s ease,
-    box-shadow 0.25s ease;
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
 }
 
 .primary-action {
-  background: linear-gradient(135deg, #23f3ff, #04c9d5);
-  color: #021016;
-  box-shadow: 0 20px 60px rgba(0, 230, 255, 0.24);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  box-shadow: var(--button-primary-shadow);
 }
 
 .secondary-action {
-  color: #eef7ff;
-  background: rgba(7, 18, 29, 0.74);
-  border: 1px solid rgba(221, 242, 255, 0.16);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  color: var(--button-ghost-text);
+  background: var(--button-ghost-bg);
+  border-color: var(--button-ghost-border);
+  box-shadow: var(--button-ghost-shadow);
 }
 
 .primary-action:hover,
 .secondary-action:hover {
   transform: translateY(-3px);
+}
+
+.primary-action:hover {
+  box-shadow: var(--button-primary-shadow-hover);
+  filter: brightness(1.03);
+}
+
+.secondary-action:hover {
+  border-color: rgba(0, 210, 255, 0.34);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: var(--button-ghost-shadow-hover);
 }
 
 .hero-stats {
@@ -9635,4 +9650,19 @@
     grid-template-columns: 1fr !important;
     gap: 16px !important;
   }
+}
+
+/* Typography polish */
+.solutions-page :where(h1, h2, h3, h4) {
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.hero-title {
+  text-rendering: optimizeLegibility;
+}
+
+.detected-row span,
+.workflow-card-badge {
+  white-space: normal;
 }
