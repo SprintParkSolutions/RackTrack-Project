@@ -1,10 +1,13 @@
 import './UseCasePage.css'
 import { useEffect } from 'react'
+import type { MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { useLenis } from 'lenis/react'
 import {
   BellRing,
   Building2,
   CheckCircle2,
+  ChevronRight,
   FileCheck2,
   GitBranch,
   Network,
@@ -142,6 +145,8 @@ const fullCaseRoutes = [
 ]
 
 export default function UseCasePage() {
+  const lenis = useLenis()
+
   useEffect(() => {
     const cards = Array.from(document.querySelectorAll<HTMLElement>('.use-case-role-card'))
 
@@ -171,6 +176,25 @@ export default function UseCasePage() {
     return () => observer.disconnect()
   }, [])
 
+  const handleRoleNavClick = (event: MouseEvent<HTMLAnchorElement>, roleId: string) => {
+    event.preventDefault()
+
+    const target = document.getElementById(roleId)
+
+    if (!target) {
+      return
+    }
+
+    window.history.replaceState(null, '', `#${roleId}`)
+
+    if (lenis) {
+      lenis.scrollTo(target, { offset: -112 })
+      return
+    }
+
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <main className="use-case-page">
       <section className="use-case-hero">
@@ -196,11 +220,26 @@ export default function UseCasePage() {
 
           <div className="use-case-role-tabs" aria-label="Use case roles">
             <span className="use-case-role-indicator" aria-hidden="true" />
-            {roleCards.map((role) => (
-              <a href={`#${role.id}`} key={role.id}>
-                {role.navLabel}
-              </a>
-            ))}
+            {roleCards.map((role) => {
+              const Icon = role.icon
+
+              return (
+                <a
+                  href={`#${role.id}`}
+                  key={role.id}
+                  onClick={(event) => handleRoleNavClick(event, role.id)}
+                >
+                  <Icon className="use-case-role-tab-icon" aria-hidden="true" size={24} strokeWidth={1.9} />
+                  <span>{role.navLabel}</span>
+                  <ChevronRight
+                    className="use-case-role-tab-arrow"
+                    aria-hidden="true"
+                    size={20}
+                    strokeWidth={2.2}
+                  />
+                </a>
+              )
+            })}
           </div>
 
           <div className="use-case-hero-stats">
