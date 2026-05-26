@@ -261,13 +261,13 @@ export default function UseCasePage() {
           <span className="use-case-eyebrow">Use Cases</span>
 
           <h1>
-            <span>Six roles. One</span>
-            <strong>source of truth.</strong>
+            <span>Built for every</span>
+            <strong>infrastructure moment.</strong>
           </h1>
 
           <p>
-            How RackTrack lands for the people who own the rack, framed in the
-            language they already use in the room.
+            RackTrack empowers data center teams with AI-powered rack intelligence to streamline operations, 
+            reduce risk, and maintain a single source of truth.
           </p>
 
           <div className="use-case-hero-stats">
