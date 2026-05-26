@@ -21,9 +21,34 @@ import {
 } from '../services/salesforceApi'
 
 const faqs = [
-  ['Can we scan existing racks?', 'Yes, RackTrack identifies racks, switches, ports, and cables.'],
-  ['Can we request a demo?', 'Yes, submit the form and our team will schedule a walkthrough.'],
-  ['Is it useful for audits?', 'Yes, it helps maintain rack and port inventory visibility.'],
+  [
+    'Can RackTrack scan existing racks and live environments?',
+    'Yes. RackTrack is designed to work with real-world rack environments so teams can document devices, ports, cabling, and physical layout without starting from scratch.',
+  ],
+  [
+    'Can we request a live demo tailored to our environment?',
+    'Yes. Share your current challenges, rack count, or rollout goals in the form and our team can schedule a walkthrough focused on your environment and workflows.',
+  ],
+  [
+    'What information should we prepare before contacting your team?',
+    'Helpful details include your number of racks or sites, audit or migration goals, current inventory process, and any CMDB, DCIM, or network visibility gaps you want to solve.',
+  ],
+  [
+    'Is RackTrack useful for audits, compliance, and evidence collection?',
+    'Yes. RackTrack helps teams maintain trustworthy infrastructure records that support audit readiness, operational reviews, and validation of what is actually installed in the rack.',
+  ],
+  [
+    'Can RackTrack support multi-site data centers or colocation environments?',
+    'Yes. RackTrack can support teams that manage infrastructure across multiple rooms, buildings, or sites and need a more consistent way to capture and verify rack-level inventory.',
+  ],
+  [
+    'How does RackTrack fit with our existing tools and workflows?',
+    'RackTrack is built to complement existing operational processes by improving physical visibility and helping teams reconcile rack reality with the systems they already depend on.',
+  ],
+  [
+    'Do you offer help with pilots, rollout planning, or next steps?',
+    'Yes. Our team can help you evaluate fit, define a pilot scope, and plan the next steps for deployment, internal alignment, and broader rollout.',
+  ],
 ] as const
 
 type SubmitState = 'idle' | 'sending' | 'sent' | 'error'
@@ -39,6 +64,8 @@ const initialFormData: RackTrackLeadPayload = {
   rackCount: '',
   requirement: '',
   description: '',
+  mobileCountry: '+1',
+  mobileNumber: '',
 }
 
 function isValidEmail(email: string) {
@@ -98,24 +125,26 @@ export default function ContactUsPage() {
   }
 
   const validateForm = () => {
+    const missingFields: string[] = []
+
     if (!formData.fullName.trim()) {
-      return 'Full Name is required.'
+      missingFields.push('Full Name')
     }
 
     if (!formData.email.trim()) {
-      return 'Email Address is required.'
+      missingFields.push('Email Address')
     }
 
-    if (!isValidEmail(formData.email)) {
+    if (formData.email.trim() && !isValidEmail(formData.email)) {
       return 'Please enter a valid email address.'
     }
 
-    if (!formData.requirement.trim()) {
-      return 'Please select what you are trying to improve.'
+    if (!formData.mobileNumber.trim()) {
+      missingFields.push('Mobile Number')
     }
 
-    if (!formData.description.trim()) {
-      return 'Please tell us about your rack, audit, or workflow requirement.'
+    if (missingFields.length > 0) {
+      return `Please complete the required field${missingFields.length > 1 ? 's' : ''}: ${missingFields.join(', ')}.`
     }
 
     return null
@@ -219,12 +248,25 @@ export default function ContactUsPage() {
 
           <div className="contact-render-scene">
             <img
-              src="/Images/racktrack-contact-hero.png"
+              src="/Images/racktrack-contact-hero-v4.webp"
               alt=""
               className="contact-render-image"
               draggable="false"
             />
-
+            <div className="contact-rack-dots">
+              <span className="contact-rack-dot contact-rack-dot--1" />
+              <span className="contact-rack-dot contact-rack-dot--2" />
+              <span className="contact-rack-dot contact-rack-dot--3" />
+              <span className="contact-rack-dot contact-rack-dot--4" />
+              <span className="contact-rack-dot contact-rack-dot--5" />
+              <span className="contact-rack-dot contact-rack-dot--6" />
+              <span className="contact-rack-dot contact-rack-dot--7" />
+              <span className="contact-rack-dot contact-rack-dot--8" />
+              <span className="contact-rack-dot contact-rack-dot--9" />
+              <span className="contact-rack-dot contact-rack-dot--10" />
+              <span className="contact-rack-dot contact-rack-dot--11" />
+              <span className="contact-rack-dot contact-rack-dot--12" />
+            </div>
           </div>
         </div>
       </section>
@@ -272,66 +314,88 @@ export default function ContactUsPage() {
           </p>
 
           <div className="form-row">
-            <input
-              type="text"
-              name="fullName"
-              placeholder="Full Name"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+            <label className="form-field">
+              <span className="form-field-label">
+                Full Name <span aria-hidden="true" className="required-asterisk">*</span>
+              </span>
+              <input
+                type="text"
+                name="fullName"
+                placeholder="Enter your full name"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label className="form-field">
+              <span className="form-field-label">
+                Email Address <span aria-hidden="true" className="required-asterisk">*</span>
+              </span>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email address"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </label>
           </div>
 
           <div className="form-row">
-            <input
-              type="text"
-              name="companyName"
-              placeholder="Company Name"
-              value={formData.companyName}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="rackCount"
-              placeholder="Rack Count or Site Size"
-              value={formData.rackCount}
-              onChange={handleChange}
-            />
+            <label className="form-field">
+              <span className="form-field-label">
+                Company Name <span className="optional-label">(Optional)</span>
+              </span>
+              <input
+                type="text"
+                name="companyName"
+                placeholder="Enter your company name"
+                value={formData.companyName}
+                onChange={handleChange}
+              />
+            </label>
+            <label className="form-field">
+              <span className="form-field-label">
+                Mobile Number <span aria-hidden="true" className="required-asterisk">*</span>
+              </span>
+              <div className="phone-input-group">
+                <select
+                  name="mobileCountry"
+                  value={formData.mobileCountry}
+                  onChange={handleChange}
+                  aria-label="Country code"
+                  required
+                >
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+91">🇮🇳 +91</option>
+                  <option value="+61">🇦🇺 +61</option>
+                  <option value="+49">🇩🇪 +49</option>
+                </select>
+                <input
+                  type="tel"
+                  name="mobileNumber"
+                  placeholder="Enter your mobile number"
+                  value={formData.mobileNumber}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </label>
           </div>
 
-          <select
-            name="requirement"
-            required
-            value={formData.requirement}
-            onChange={handleChange}
-            draggable="false"
-          >
-            <option value="" disabled>
-              What are you trying to improve?
-            </option>
-            <option value="AR Rack Scanning">AR Rack Scanning</option>
-            <option value="AI Device Detection">AI Device Detection</option>
-            <option value="Port Tracking">Port Tracking</option>
-            <option value="Network Topology">Network Topology</option>
-            <option value="Automated Inventory">Automated Inventory</option>
-            <option value="Security & Compliance">Security & Compliance</option>
-          </select>
-
-          <textarea
-            name="description"
-            placeholder="Tell us about your racks, switches, ports, or audit requirement."
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
+          <label className="form-field">
+            <span className="form-field-label">
+              Requirement <span className="optional-label">(Optional)</span>
+            </span>
+            <textarea
+              name="requirement"
+              placeholder="Enter your requirement or notes"
+              value={formData.requirement}
+              onChange={handleChange}
+            />
+          </label>
 
           <button
             type="submit"
