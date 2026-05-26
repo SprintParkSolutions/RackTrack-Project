@@ -1,5 +1,7 @@
 import "./HomePage.css";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { Environment, OrbitControls, useGLTF } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
 import { Link } from "react-router-dom";
 import {
   Activity,
@@ -151,12 +153,28 @@ const heroSignals = [
   "Topology trusted",
 ] as const;
 
+const heroRackModelUrl = "/models/data_center_server_rack-compressed.glb";
+
+function HomeHeroRackModel() {
+  const { scene } = useGLTF(heroRackModelUrl);
+
+  return (
+    <group
+      position={[0, -2.05, 0]}
+      rotation={[0.03, -0.24, 0]}
+      scale={1.62}
+    >
+      <primitive object={scene} />
+    </group>
+  );
+}
+
+useGLTF.preload(heroRackModelUrl);
+
 export default function HomePage() {
-  const heroVideoRef = useRef<HTMLVideoElement | null>(null);
   const proofVideoRef = useRef<HTMLVideoElement | null>(null);
   const truthVideoRef = useRef<HTMLVideoElement | null>(null);
   const truthSectionRef = useRef<HTMLElement | null>(null);
-  const [shouldLoadHeroVideo, setShouldLoadHeroVideo] = useState(false);
   const [shouldLoadProofVideo, setShouldLoadProofVideo] = useState(false);
   const [shouldLoadTruthVideo] = useState(true);
 
@@ -191,39 +209,6 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    const scheduleIdleLoad = (callback: () => void) => {
-      if ("requestIdleCallback" in window) {
-        const id = window.requestIdleCallback(callback, { timeout: 1200 });
-
-        return () => window.cancelIdleCallback(id);
-      }
-
-      const id = globalThis.setTimeout(callback, 900);
-
-      return () => globalThis.clearTimeout(id);
-    };
-
-    const scheduleVideoLoad = () => setShouldLoadHeroVideo(true);
-
-    if (document.readyState === "complete") {
-      return scheduleIdleLoad(scheduleVideoLoad);
-    }
-
-    let cleanup = () => {};
-
-    const handleWindowLoad = () => {
-      cleanup = scheduleIdleLoad(scheduleVideoLoad);
-    };
-
-    window.addEventListener("load", handleWindowLoad, { once: true });
-
-    return () => {
-      window.removeEventListener("load", handleWindowLoad);
-      cleanup();
-    };
-  }, [shouldLoadHeroVideo]);
-
-  useEffect(() => {
     const video = proofVideoRef.current;
 
     if (!video) {
@@ -247,27 +232,6 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const video = heroVideoRef.current;
-
-    if (!video || !shouldLoadHeroVideo) {
-      return;
-    }
-
-    const tryPlay = () => {
-      void video.play().catch(() => {});
-    };
-
-    tryPlay();
-    video.addEventListener("canplay", tryPlay);
-    video.addEventListener("loadeddata", tryPlay);
-
-    return () => {
-      video.removeEventListener("canplay", tryPlay);
-      video.removeEventListener("loadeddata", tryPlay);
-    };
-  }, []);
-
   return (
     <main className="home-page">
       <section className="home-hero-section">
@@ -283,34 +247,36 @@ export default function HomePage() {
 
         <div
           id="home-tour"
-          className="home-hero-bg-video-layer"
-          aria-hidden="true"
+          className="home-hero-model-layer"
         >
-          <video
-            ref={heroVideoRef}
-            className="home-hero-bg-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            disablePictureInPicture
-            preload="metadata"
-            poster="/solutions page images/Server_rack-scan.jpg"
+          <Canvas
+            className="home-hero-model-canvas"
+            aria-label="Interactive 3D server rack model. Drag to rotate."
+            camera={{ position: [0.15, 0.55, 7.35], fov: 34 }}
+            dpr={[1, 1.8]}
+            gl={{ antialias: true, alpha: true }}
           >
-            {shouldLoadHeroVideo ? (
-              <>
-                <source
-                  src="/solutions page images/server_rack.mp4"
-                  type="video/mp4"
-                />
-                <source
-                  src="/solutions page images/server_rack.mp4"
-                  type="video/mp4"
-                />
-              </>
-            ) : null}
-          </video>
-          <div className="home-hero-video-fade" />
+            <ambientLight intensity={0.72} />
+            <directionalLight position={[3, 5, 4]} intensity={2.2} />
+            <pointLight position={[-2, 1, 3]} intensity={0.95} color="#67e8f9" />
+            <pointLight position={[2.5, 2.5, -1]} intensity={1.2} color="#8fa7ff" />
+            <Suspense fallback={null}>
+              <HomeHeroRackModel />
+              <Environment preset="city" />
+              <OrbitControls
+                autoRotate
+                autoRotateSpeed={0.45}
+                enableDamping
+                enablePan={false}
+                enableZoom={false}
+                minPolarAngle={Math.PI * 0.34}
+                maxPolarAngle={Math.PI * 0.68}
+                target={[0, 0, 0]}
+              />
+            </Suspense>
+          </Canvas>
+          <div className="home-hero-model-glow" />
+          <div className="home-hero-model-fade" />
           <div className="home-hero-scan-sweep" />
         </div>
 
@@ -530,7 +496,6 @@ export default function HomePage() {
                 ) : null}
               </video>
 
-              <div className="home-proof-scan-box" />
               <div className="home-proof-hud">
                 <small>Output Ready</small>
                 <strong>Rack verified</strong>
