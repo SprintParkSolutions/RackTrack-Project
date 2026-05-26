@@ -1,18 +1,21 @@
 import './UseCasePage.css'
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { useLenis } from 'lenis/react'
 import {
   BellRing,
   Building2,
   CheckCircle2,
+  ChartNoAxesColumnIncreasing,
   ChevronRight,
   FileCheck2,
   GitBranch,
+  Infinity as InfinityIcon,
   Network,
   Sparkles,
   ShieldCheck,
+  Target,
+  TimerReset,
   TriangleAlert,
 } from 'lucide-react'
 
@@ -135,6 +138,65 @@ const heroStats = [
   { value: '99.6%', label: 'Fabric to floor agreement' },
 ]
 
+const impactCards = [
+  {
+    value: '99%+',
+    label: 'Inventory Accuracy',
+    icon: Target,
+    tone: 'cyan',
+    visual: (
+      <div className="use-case-impact-gauge" aria-hidden="true">
+        <span>99%</span>
+        <small>accuracy rate</small>
+      </div>
+    ),
+    detail: 'Verified rack, device, and port data replaces stale audit assumptions.',
+  },
+  {
+    value: '5-15 Min',
+    label: 'From Rack Scan to Insights',
+    icon: TimerReset,
+    tone: 'violet',
+    visual: (
+      <div className="use-case-impact-timeline" aria-hidden="true">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+      </div>
+    ),
+    detail: 'Teams move from capture to useful operational context in minutes.',
+  },
+  {
+    value: '90%+',
+    label: 'Reduction in Manual Effort',
+    icon: ChartNoAxesColumnIncreasing,
+    tone: 'blue',
+    visual: (
+      <div className="use-case-impact-bars" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+        <span />
+      </div>
+    ),
+    detail: 'Manual reconciliation, spreadsheet cleanup, and evidence prep shrink dramatically.',
+  },
+  {
+    value: 'Continuous',
+    label: 'Physical-to-Logical Reconciliation',
+    icon: InfinityIcon,
+    tone: 'green',
+    visual: (
+      <div className="use-case-impact-reconcile" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+    ),
+    detail: 'Physical inventory and network truth stay aligned across changes.',
+  },
+]
+
 const fullCaseRoutes = [
   '/use-cases/infrastructure-data-center-leaders',
   '/use-cases/network-architects-engineers',
@@ -145,7 +207,11 @@ const fullCaseRoutes = [
 ]
 
 export default function UseCasePage() {
-  const lenis = useLenis()
+  const [selectedRoleId, setSelectedRoleId] = useState(roleCards[0].id)
+  const filteredRoleCards = useMemo(
+    () => roleCards.filter((role) => role.id === selectedRoleId),
+    [selectedRoleId],
+  )
 
   useEffect(() => {
     const cards = Array.from(document.querySelectorAll<HTMLElement>('.use-case-role-card'))
@@ -174,25 +240,11 @@ export default function UseCasePage() {
     cards.forEach((card) => observer.observe(card))
 
     return () => observer.disconnect()
-  }, [])
+  }, [selectedRoleId])
 
   const handleRoleNavClick = (event: MouseEvent<HTMLAnchorElement>, roleId: string) => {
     event.preventDefault()
-
-    const target = document.getElementById(roleId)
-
-    if (!target) {
-      return
-    }
-
-    window.history.replaceState(null, '', `#${roleId}`)
-
-    if (lenis) {
-      lenis.scrollTo(target, { offset: -112 })
-      return
-    }
-
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setSelectedRoleId(roleId)
   }
 
   return (
@@ -218,30 +270,6 @@ export default function UseCasePage() {
             language they already use in the room.
           </p>
 
-          <div className="use-case-role-tabs" aria-label="Use case roles">
-            <span className="use-case-role-indicator" aria-hidden="true" />
-            {roleCards.map((role) => {
-              const Icon = role.icon
-
-              return (
-                <a
-                  href={`#${role.id}`}
-                  key={role.id}
-                  onClick={(event) => handleRoleNavClick(event, role.id)}
-                >
-                  <Icon className="use-case-role-tab-icon" aria-hidden="true" size={24} strokeWidth={1.9} />
-                  <span>{role.navLabel}</span>
-                  <ChevronRight
-                    className="use-case-role-tab-arrow"
-                    aria-hidden="true"
-                    size={20}
-                    strokeWidth={2.2}
-                  />
-                </a>
-              )
-            })}
-          </div>
-
           <div className="use-case-hero-stats">
             {heroStats.map((stat) => (
               <div className="use-case-stat" key={stat.label}>
@@ -250,6 +278,40 @@ export default function UseCasePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="use-case-impact-section" aria-labelledby="use-case-impact-title">
+        <div className="use-case-impact-header">
+          <span>Impact that matters</span>
+          <h2 id="use-case-impact-title">Real Results. Measurable Impact.</h2>
+          <p>RackTrack delivers accuracy, speed, and clarity at every layer.</p>
+        </div>
+
+        <div className="use-case-impact-grid">
+          {impactCards.map((impact) => {
+            const Icon = impact.icon
+
+            return (
+              <article className={`use-case-impact-card use-case-impact-card-${impact.tone}`} key={impact.label} tabIndex={0}>
+                <div className="use-case-impact-card-inner">
+                  <div className="use-case-impact-card-front">
+                    <Icon className="use-case-impact-icon" aria-hidden="true" size={48} strokeWidth={1.9} />
+                    <strong>{impact.value}</strong>
+                    <h3>{impact.label}</h3>
+                    {impact.visual}
+                    <span className="use-case-impact-hint">Hover to flip</span>
+                  </div>
+
+                  <div className="use-case-impact-card-back">
+                    <Icon aria-hidden="true" size={34} strokeWidth={1.9} />
+                    <h3>{impact.label}</h3>
+                    <p>{impact.detail}</p>
+                  </div>
+                </div>
+              </article>
+            )
+          })}
         </div>
       </section>
 
@@ -265,9 +327,35 @@ export default function UseCasePage() {
           </p>
         </div>
 
-        <div className="use-case-role-card-list">
-          {roleCards.map((role, index) => {
+        <div className="use-case-role-tabs use-case-role-filter-tabs" aria-label="Filter use cases by role">
+          <span className="use-case-role-indicator" aria-hidden="true" />
+          {roleCards.map((role) => {
             const Icon = role.icon
+
+            return (
+              <a
+                href={`#${role.id}`}
+                key={role.id}
+                onClick={(event) => handleRoleNavClick(event, role.id)}
+                aria-current={role.id === selectedRoleId ? 'true' : undefined}
+              >
+                <Icon className="use-case-role-tab-icon" aria-hidden="true" size={24} strokeWidth={1.9} />
+                <span>{role.navLabel}</span>
+                <ChevronRight
+                  className="use-case-role-tab-arrow"
+                  aria-hidden="true"
+                  size={20}
+                  strokeWidth={2.2}
+                />
+              </a>
+            )
+          })}
+        </div>
+
+        <div className="use-case-role-card-list">
+          {filteredRoleCards.map((role) => {
+            const Icon = role.icon
+            const routeIndex = roleCards.findIndex((roleCard) => roleCard.id === role.id)
 
             return (
               <article className="use-case-role-card" id={role.id} key={role.id}>
@@ -309,7 +397,7 @@ export default function UseCasePage() {
                   </ul>
 
                   <div className="use-case-role-actions">
-                    <Link to={fullCaseRoutes[index]}>Read the full case</Link>
+                    <Link to={fullCaseRoutes[routeIndex]}>Read the full case</Link>
                     <a href="/contact-us">Talk to our team</a>
                   </div>
                 </div>
