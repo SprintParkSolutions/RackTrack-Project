@@ -268,25 +268,11 @@ export default function ContactUsPage() {
 
           <div className="contact-render-scene">
             <img
-              src="/Images/racktrack-contact-hero-v4.webp"
+              src="/Images/racktrack-contact-hero.jpg"
               alt=""
               className="contact-render-image"
               draggable="false"
             />
-            <div className="contact-rack-dots">
-              <span className="contact-rack-dot contact-rack-dot--1" />
-              <span className="contact-rack-dot contact-rack-dot--2" />
-              <span className="contact-rack-dot contact-rack-dot--3" />
-              <span className="contact-rack-dot contact-rack-dot--4" />
-              <span className="contact-rack-dot contact-rack-dot--5" />
-              <span className="contact-rack-dot contact-rack-dot--6" />
-              <span className="contact-rack-dot contact-rack-dot--7" />
-              <span className="contact-rack-dot contact-rack-dot--8" />
-              <span className="contact-rack-dot contact-rack-dot--9" />
-              <span className="contact-rack-dot contact-rack-dot--10" />
-              <span className="contact-rack-dot contact-rack-dot--11" />
-              <span className="contact-rack-dot contact-rack-dot--12" />
-            </div>
           </div>
         </div>
       </section>
