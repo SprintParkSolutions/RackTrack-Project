@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   motion,
-  type MotionStyle,
   type Variants,
   useAnimationControls,
   useInView,
@@ -13,21 +12,14 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import {
-  ArrowRight,
-  Award,
-  BriefcaseBusiness,
   Cpu,
   Gauge,
-  GraduationCap,
-  Handshake,
   Network,
   Radar,
   Search,
   Shield,
   Sparkles,
-  Users,
   Zap,
 } from 'lucide-react';
 
@@ -109,6 +101,7 @@ const signalSteps = [
   { label: 'Share', value: 'Audit report', icon: Sparkles },
 ];
 
+
 const founderNarrative: Array<{ label: string; body: React.ReactNode }> = [
   {
     label: 'The moment',
@@ -141,45 +134,6 @@ const founderNarrative: Array<{ label: string; body: React.ReactNode }> = [
         We are building a practical system of record for the rack: fast capture, AI-assisted verification, and clean sync into the tools operations, audit, and service teams already run.
       </>
     ),
-  },
-];
-
-const teamMembers = [
-  {
-    name: 'Co-Founder, Enterprise Architecture',
-    role: 'Founder',
-    credential: 'Enterprise architecture leadership across integration-heavy operating environments.',
-    icon: BriefcaseBusiness,
-  },
-  {
-    name: 'Co-Founder, Network Intelligence',
-    role: 'Founder',
-    credential: 'Networking expertise with hands-on physical infrastructure and port-level workflow depth.',
-    icon: Network,
-  },
-  {
-    name: 'Senior Architecture Advisors',
-    role: 'Advisors',
-    credential: 'Guidance from leaders with Salesforce, MuleSoft, CMDB, and enterprise platform experience.',
-    icon: Award,
-  },
-  {
-    name: 'Academic & Technical Fellows',
-    role: 'Advisors',
-    credential: 'Academic and fellowship credentials including IET Fellow and Senior IEEE Member experience.',
-    icon: GraduationCap,
-  },
-  {
-    name: 'Design Partners',
-    role: 'Partners',
-    credential: 'Infrastructure teams shaping scan flows, audit outputs, and operational handoffs.',
-    icon: Handshake,
-  },
-  {
-    name: 'Product & Engineering Hires',
-    role: 'Team',
-    credential: 'Specialists in applied AI, product design, and production-grade systems integration.',
-    icon: Users,
   },
 ];
 
@@ -409,46 +363,8 @@ function ScrollScene({
   );
 }
 
-function TeamCard({
-  name,
-  role,
-  credential,
-  icon: Icon,
-}: {
-  name: string;
-  role: string;
-  credential: string;
-  icon: IconType;
-}) {
-  const handlePointerMove = (event: React.PointerEvent<HTMLElement>) => {
-    if (event.pointerType !== 'mouse') return;
 
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
-    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
-    event.currentTarget.style.setProperty('--about-card-x', `${x}%`);
-    event.currentTarget.style.setProperty('--about-card-y', `${y}%`);
-  };
 
-  return (
-    <motion.article
-      className="about-team-card"
-      variants={reveal}
-      whileHover={{ y: -6, scale: 1.01 }}
-      transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-      onPointerMove={handlePointerMove}
-    >
-      <div className="about-team-card__icon">
-        <Icon aria-hidden="true" />
-      </div>
-      <div>
-        <span>{role}</span>
-        <h3>{name}</h3>
-        <p>{credential}</p>
-      </div>
-    </motion.article>
-  );
-}
 
 function FounderStorySection() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -522,7 +438,6 @@ function FounderStorySection() {
 }
 
 export default function AboutUsPage() {
-  const navigate = useNavigate();
   const reducedMotion = useReducedMotion();
   const isMobileViewport = useMediaQuery('(max-width: 768px)');
   const prefersLightMotion = reducedMotion || isMobileViewport;
@@ -533,14 +448,6 @@ export default function AboutUsPage() {
   const lightY = useSpring(mouseY, { stiffness: 400, damping: 30, mass: 0.1 });
   const spotlight = useMotionTemplate`radial-gradient(54rem circle at ${lightX}% ${lightY}%, rgba(122, 223, 255, 0.18), rgba(95, 168, 255, 0.08) 34%, transparent 68%)`;
 
-  // Workflow Image Parallax
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress: heroScrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start end', 'end start'],
-  });
-  const heroParallaxY = useTransform(heroScrollYProgress, [0, 1], [prefersLightMotion ? 0 : -90, prefersLightMotion ? 0 : 120]);
-  const heroImageY = useMotionTemplate`${heroParallaxY}px`;
 
   const workflowShotRef = useRef<HTMLDivElement>(null);
   const [isHoveringImage, setIsHoveringImage] = useState(false);
@@ -614,45 +521,59 @@ export default function AboutUsPage() {
 
       <main className="about-shell">
         <motion.section
-          ref={heroRef}
           className="about-hero"
-          style={{ '--about-hero-image-y': heroImageY } as MotionStyle}
         >
           <div className="about-hero__content">
-            <motion.h1 variants={reveal} initial="hidden" animate="visible" className="about-hero-title">
-              <span className="about-hero-title__line-1">Scan the rack.</span>
-              <span className="about-hero-title__line-2">
-                <span className="about-hero-title__accent">Know the stack.</span>
-              </span>
+            <motion.span
+              variants={reveal}
+              initial="hidden"
+              animate="visible"
+              className="about-founder-story__eyebrow"
+            >
+              Our Story
+            </motion.span>
+
+            <motion.h1
+              variants={reveal}
+              initial="hidden"
+              animate="visible"
+              className="about-hero__story-title"
+            >
+              Why we built{' '}
+              <span className="about-founder-story__brand">RackTrack</span>
             </motion.h1>
 
-            <motion.p variants={reveal} initial="hidden" animate="visible" className="about-hero-caption">
-              RackTrack turns a quick phone sweep into verified devices, ports, topology, and inventory your team can trust.
-            </motion.p>
+            <motion.blockquote
+              variants={reveal}
+              initial="hidden"
+              animate="visible"
+              className="about-hero__quote"
+            >
+              Every system above the rack assumed the rack matched the record. No system could prove it.
+            </motion.blockquote>
 
-            <motion.div variants={reveal} initial="hidden" animate="visible" className="about-hero__actions">
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                onClick={() => navigate('/contact-us', { state: { scrollTo: 'contact' } })}
-                className="about-button about-button--primary"
-              >
-                Book a Demo
-                <ArrowRight size={18} className="about-button__icon" />
-              </motion.button>
-              <motion.a
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                href="/solutions"
-                className="about-button about-button--ghost"
-              >
-                Explore Platform
-              </motion.a>
-            </motion.div>
+            <motion.p
+              variants={reveal}
+              initial="hidden"
+              animate="visible"
+              className="about-hero-caption"
+            >
+              Two decades of running enterprise infrastructure — and one problem that never went away. We stopped waiting for someone else to solve it.
+            </motion.p>
           </div>
+
+          <motion.div
+            className="about-hero__images"
+            variants={reveal}
+            initial="hidden"
+            animate="visible"
+          >
+            <img
+              src="/Images/AboutUs_hero.png"
+              alt="RackTrack infrastructure"
+              className="about-hero__img"
+            />
+          </motion.div>
         </motion.section>
 
         {/* --- "WHAT RACKTRACK DOES" SECTION --- */}
@@ -773,28 +694,7 @@ export default function AboutUsPage() {
           ))}
         </motion.div>
 
-        <ScrollScene className="about-team-section">
-          <div className="about-team-section__header">
-            <span className="about-eyebrow">Team</span>
-            <h2>Built by operators who understand both the rack and the systems around it.</h2>
-            <p>
-              RackTrack combines infrastructure operations, enterprise integration, and applied AI experience so scan output can become trusted operational data.
-            </p>
-          </div>
-          <motion.div
-            className="about-team-grid"
-            variants={metricsCardsGroup}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewport}
-          >
-            {teamMembers.map((member) => (
-              <TeamCard key={member.name} {...member} />
-            ))}
-          </motion.div>
-        </ScrollScene>
-
-        {investors.length > 0 && (
+{investors.length > 0 && (
           <ScrollScene className="about-backers-section">
             <div className="about-backers-section__header">
               <span className="about-eyebrow">Investors & Backers</span>
@@ -811,45 +711,15 @@ export default function AboutUsPage() {
         )}
 
         <ScrollScene className="about-cta">
-          <video
-            className="about-cta__video"
-            autoPlay
-            loop
-            muted
-            playsInline
-            aria-hidden="true"
-          >
-            <source src="/media/background1.mp4" type="video/mp4" />
-          </video>
           <div className="about-cta__beam" />
           <div className="about-cta__content">
-            <span className="about-eyebrow">The Next Move</span>
-            <h2>Give your team a faster way to understand every rack they touch.</h2>
+            <span className="about-eyebrow">Our mission</span>
+            <h2>Build the Physical Intelligence Layer
+for the modern data center.</h2>
             <p>
-              RackTrack brings scanning, AI recognition, and system sync into one workflow built for real data center operations.
+              Not an audit tool. Not a DCIM replacement.
+The truth layer underneath both.
             </p>
-            <div className="about-cta__actions">
-              <motion.button
-                type="button"
-                whileHover={{ y: -2, scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                onClick={() => navigate('/contact-us', { state: { scrollTo: 'contact' } })}
-                className="about-button about-button--primary"
-              >
-                Book a Demo
-                <ArrowRight className="about-button__icon" />
-              </motion.button>
-              <motion.a
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                href="/solutions"
-                className="about-button about-button--ghost"
-              >
-                View Use Cases
-              </motion.a>
-            </div>
           </div>
         </ScrollScene>
       </main>
