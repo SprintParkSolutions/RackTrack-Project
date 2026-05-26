@@ -94,76 +94,52 @@ button {
   animation: homeSlowSpin 34s linear infinite;
 }
 
-/* Hero art layer constrained to the right half. */
-.home-hero-model-layer {
+/* Hero art — constrained to right half so video plays visibly on the right */
+.home-hero-bg-video-layer {
   position: absolute;
   z-index: 1;
-  top: 8%;
-  right: 3%;
-  bottom: 5%;
-  left: 51%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 46%;
   pointer-events: none;
   overflow: hidden;
 }
 
-.home-hero-model-layer::before {
+.home-hero-bg-video-layer::before {
   content: "";
   position: absolute;
-  inset: 8% 0;
+  inset: 10% 2%;
   z-index: 0;
   background:
-    radial-gradient(circle at 56% 45%, rgba(0, 210, 255, 0.34), transparent 30rem),
-    radial-gradient(circle at 54% 58%, rgba(125, 130, 255, 0.18), transparent 35rem);
+    radial-gradient(circle at 54% 48%, rgba(0, 210, 255, 0.28), transparent 31rem),
+    radial-gradient(circle at 56% 54%, rgba(79, 70, 229, 0.16), transparent 36rem);
   filter: blur(74px);
-  opacity: 0.88;
+  opacity: 0.82;
 }
 
-.home-hero-model-canvas {
+.home-hero-bg-video {
   position: absolute;
   inset: 0;
-  z-index: 2;
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-  opacity: 0.96;
-  pointer-events: auto;
-  touch-action: none;
-  cursor: grab;
-  filter:
-    brightness(1.08)
-    contrast(1.08)
-    saturate(1.08)
-    drop-shadow(0 0 34px rgba(103, 232, 249, 0.16));
-}
-
-.home-hero-model-canvas canvas {
-  display: block;
-}
-
-.home-hero-model-canvas:active {
-  cursor: grabbing;
-}
-
-.home-hero-model-glow {
-  position: absolute;
-  inset: 14% 5% 10% 20%;
   z-index: 1;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(103, 232, 249, 0.16), transparent 52%),
-    radial-gradient(circle at 54% 48%, rgba(125, 130, 255, 0.14), transparent 64%);
-  filter: blur(28px);
-  animation: homeHeroModelGlow 4.8s ease-in-out infinite alternate;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0.74;
+  filter: brightness(0.72) contrast(1.14) saturate(1.1);
 }
 
-.home-hero-model-fade {
+/* Left-edge fade blends video into the copy area; top/bottom fades frame the video */
+.home-hero-video-fade {
   position: absolute;
   inset: -2px;
   z-index: 3;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(7, 24, 43, 1) 0%, rgba(7, 24, 43, 0.92) 10%, rgba(7, 24, 43, 0.5) 27%, rgba(7, 24, 43, 0.14) 46%, transparent 63%, rgba(3, 9, 22, 0.05) 82%, rgba(3, 9, 22, 0.34) 96%, rgba(3, 9, 22, 0.54) 100%),
-    linear-gradient(180deg, rgba(3, 9, 22, 0.58) 0%, rgba(3, 9, 22, 0.08) 18%, rgba(3, 9, 22, 0.08) 80%, rgba(3, 9, 22, 0.58) 100%);
+    linear-gradient(90deg, rgba(7, 24, 43, 1) 0%, rgba(7, 24, 43, 0.9) 10%, rgba(7, 24, 43, 0.44) 28%, rgba(7, 24, 43, 0.08) 48%, transparent 64%, rgba(3, 9, 22, 0.04) 82%, rgba(3, 9, 22, 0.3) 96%, rgba(3, 9, 22, 0.48) 100%),
+    linear-gradient(180deg, rgba(3, 9, 22, 0.56) 0%, rgba(3, 9, 22, 0.08) 18%, rgba(3, 9, 22, 0.08) 80%, rgba(3, 9, 22, 0.56) 100%);
 }
 
 .home-hero-copy {
@@ -957,6 +933,20 @@ button {
   animation: homeProofScan 3s linear infinite;
 }
 
+.home-proof-scan-box {
+  position: absolute;
+  z-index: 4;
+  left: 14%;
+  top: 22%;
+  width: 34%;
+  height: 44%;
+  border: 2px solid var(--cyan);
+  box-shadow:
+    0 0 26px rgba(0, 210, 255, 0.38),
+    inset 0 0 24px rgba(0, 210, 255, 0.15);
+  animation: homeProductScan 2.8s ease-in-out infinite;
+}
+
 .home-proof-hud {
   position: absolute;
   z-index: 4;
@@ -1343,18 +1333,6 @@ button {
   }
 }
 
-@keyframes homeHeroModelGlow {
-  from {
-    opacity: 0.52;
-    transform: scale(0.96);
-  }
-
-  to {
-    opacity: 0.92;
-    transform: scale(1.06);
-  }
-}
-
 @keyframes homeSweepDrift {
   0% {
     transform: translate3d(0, -28%, 0);
@@ -1589,7 +1567,7 @@ button {
     max-width: 720px;
   }
 
-  .home-hero-model-layer,
+  .home-hero-bg-video-layer,
   .home-final-bg-art {
     top: 42%;
     right: -2%;
@@ -1658,30 +1636,17 @@ button {
 
   .home-hero-actions {
     flex-direction: column;
-    width: 100%;
-    max-width: 100%;
   }
 
   .home-primary-btn,
   .home-secondary-btn {
     width: 100%;
-    max-width: 100%;
-    min-width: 0;
   }
 
   .home-hero-copy {
     order: 1;
     width: 100%;
     max-width: 100%;
-  }
-
-  .home-hero-copy .home-eyebrow {
-    display: block;
-    max-width: min(100%, 22rem);
-    font-size: clamp(0.62rem, 2.4vw, 0.74rem);
-    letter-spacing: 0.14em;
-    line-height: 1.5;
-    overflow-wrap: anywhere;
   }
 
   .home-hero-signal-rail {
@@ -1699,8 +1664,8 @@ button {
     margin-top: -2px;
   }
 
-  /* Model stays as a full-section background on mobile. */
-  .home-hero-model-layer {
+  /* Video stays as full-section background on mobile — not a separate block */
+  .home-hero-bg-video-layer {
     position: absolute;
     inset: 0;
     left: 0;
@@ -1712,21 +1677,15 @@ button {
     animation: none;
   }
 
-  .home-hero-model-canvas {
+  .home-hero-bg-video {
     display: block;
-    inset: 18% -48% -8% -45%;
-    width: 190% !important;
-    height: 90% !important;
-    opacity: 0.5;
+    opacity: 0.55;
+    object-position: center center;
+    transform: none;
     animation: none;
   }
 
-  .home-hero-model-glow {
-    inset: 42% 5% 4%;
-    opacity: 0.6;
-  }
-
-  .home-hero-model-fade {
+  .home-hero-video-fade {
     background:
       linear-gradient(180deg,
         rgba(3, 9, 22, 0.82) 0%,
@@ -1865,11 +1824,9 @@ button {
     min-height: 250px;
   }
 
-  .home-hero-model-canvas {
-    inset: 26% -72% -8% -68%;
-    width: 238% !important;
-    height: 82% !important;
-    opacity: 0.42;
+  .home-hero-bg-video {
+    object-position: center center;
+    transform: none;
   }
 
   .home-hero-copy p,
