@@ -604,10 +604,7 @@
 
 .use-case-impact-header h2 {
   margin: 28px 0 16px;
-  color: transparent;
-  background: linear-gradient(90deg, #a8fbff 0%, #00d2ff 46%, #7488ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
+  color: #ffffff;
   font-size: clamp(3rem, 5.2vw, 5.4rem);
   font-weight: 800;
   line-height: 0.96;
