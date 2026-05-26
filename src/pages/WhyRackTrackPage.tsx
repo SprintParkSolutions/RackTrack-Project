@@ -873,10 +873,9 @@ export default function WhyRackTrackPage() {
               <span className="why-flow__title-accent"> Only one does all three.</span>
             </h2>
             <p>
-              Existing tools sense the rack. Or they read from the network. Or they track vendor
-              and security data. RackTrack does all three in the same pass and reconciles them,
-              which is why the output is trustworthy enough to defend in an audit, fast enough to
-              use in an incident, and complete enough to drive capacity and procurement decisions.
+              Most tools do one piece well. RackTrack combines rack sensing, network validation,
+              and infrastructure context in one pass, so teams get inventory they can trust for
+              audits, incidents, and planning.
             </p>
           </div>
 
