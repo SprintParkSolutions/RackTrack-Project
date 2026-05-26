@@ -938,7 +938,7 @@
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.2;
-  color: #61e6ff;
+  color: #ffffff;
 }
 
 .trust-security-card p,
@@ -1016,7 +1016,7 @@
 }
 
 .trust-data__title-accent {
-  color: #61e6ff;
+  color: #ffffff;
 }
 
 .trust-data__copy p {
@@ -1091,7 +1091,7 @@
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  color: #61e6ff;
+  color: #ffffff;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.07em;
@@ -1289,7 +1289,7 @@
 .trust-data__step h3 {
   min-height: 0;
   margin: 0 0 0.55rem;
-  color: #61e6ff;
+  color: #ffffff;
   font-size: 0.94rem;
   font-weight: 800;
 }

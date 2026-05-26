@@ -318,16 +318,14 @@ export default function HomePage() {
           <span className="home-eyebrow">AI-Powered Physical Intelligence for Modern Data Centers</span>
           <h1>
             <span className="home-hero-line home-hero-line-one">
-              Point your phone at the rack.
+              Scan the rack.
             </span>
             <em className="home-hero-line home-hero-line-three">
-              Get instant visibility you can trust.
+              See every connection.
             </em>
           </h1>
           <p className="home-hero-copy-text">
-            RackTrack transforms manual rack audits into intelligent, real-time 
-            infrastructure discovery. Scan server racks with your phone to 
-            automatically identify devices, ports, cables, serial numbers, and network connections all powered by AI.
+            Point your phone at any server rack and RackTrack AI instantly maps every device, port, cable, and network connection.
           </p>
 
           <div className="home-hero-signal-rail" aria-hidden="true">

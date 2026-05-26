@@ -188,8 +188,16 @@
 .contact-form h2 span,
 .faq-panel h2 span {
   display: block;
-  color: #54d9ff;
   font-style: normal;
+}
+
+.hero-content h1 span {
+  color: #54d9ff;
+}
+
+.contact-form h2 span,
+.faq-panel h2 span {
+  color: #ffffff;
 }
 
 .hero-content p,
@@ -998,28 +1006,52 @@
   object-position: center right;
   user-select: none;
   filter: saturate(1.08) contrast(1.04);
-  animation: renderSceneSlide 9s ease-in-out infinite;
 }
 
-@keyframes renderSceneSlide {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-
-  50% {
-    transform: translateX(-14px);
-  }
+.contact-rack-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
 }
 
-@keyframes renderSceneSlideMobile {
+.contact-rack-dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: #3f8cff;
+  box-shadow:
+    0 0 8px rgba(63, 140, 255, 0.9),
+    0 0 18px rgba(0, 146, 255, 0.42);
+  opacity: 0.1;
+  animation: contactRackDotBlink 2.9s steps(1, end) infinite;
+}
+
+.contact-rack-dot--1 { left: 50.2%; top: 42.5%; animation-delay: 0.1s; }
+.contact-rack-dot--2 { left: 52.1%; top: 56.2%; animation-delay: 1.1s; }
+.contact-rack-dot--3 { left: 58.1%; top: 43.8%; animation-delay: 0.5s; }
+.contact-rack-dot--4 { left: 59.8%; top: 58.5%; animation-delay: 1.8s; }
+.contact-rack-dot--5 { left: 66.9%; top: 40.8%; animation-delay: 0.9s; }
+.contact-rack-dot--6 { left: 68.6%; top: 54.3%; animation-delay: 2.1s; }
+.contact-rack-dot--7 { left: 76.8%; top: 46.2%; animation-delay: 0.3s; }
+.contact-rack-dot--8 { left: 78.2%; top: 60.4%; animation-delay: 1.5s; }
+.contact-rack-dot--9 { left: 83.7%; top: 39.7%; animation-delay: 2.3s; }
+.contact-rack-dot--10 { left: 85%; top: 51.8%; animation-delay: 0.7s; }
+.contact-rack-dot--11 { left: 86.3%; top: 66.1%; animation-delay: 1.9s; }
+.contact-rack-dot--12 { left: 71.4%; top: 64.6%; animation-delay: 1.3s; }
+
+@keyframes contactRackDotBlink {
   0%,
   100% {
-    transform: translateX(0);
+    opacity: 0.08;
+    transform: scale(0.9);
   }
 
-  50% {
-    transform: translateX(-7px);
+  40%,
+  60% {
+    opacity: 0.92;
+    transform: scale(1.22);
   }
 }
 
@@ -2725,8 +2757,11 @@
     margin-top: 0;
   }
 
-  .contact-render-image {
-    animation-name: renderSceneSlideMobile;
+  .contact-rack-dot--9,
+  .contact-rack-dot--10,
+  .contact-rack-dot--11,
+  .contact-rack-dot--12 {
+    display: none;
   }
 }
 
@@ -2742,6 +2777,13 @@
     height: 320px;
     right: -18%;
     filter: blur(48px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-glow,
+  .contact-rack-dot {
+    animation: none !important;
   }
 }
 
