@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -7,6 +7,7 @@ import './ResourcesPage.css'
 
 const featuredPost = resourcePosts[0]
 const latestPosts = resourcePosts.slice(1)
+const articleFilters = ['All', ...new Set(resourcePosts.map((post) => post.category))] as const
 
 const editorialPillars = [
   {
@@ -29,6 +30,15 @@ const editorialPillars = [
 export default function ResourcesPage() {
   const pageRef = useRef<HTMLElement>(null)
   const navigate = useNavigate()
+  const [activeFilter, setActiveFilter] = useState<(typeof articleFilters)[number]>('All')
+
+  const filteredPosts = useMemo(
+    () =>
+      activeFilter === 'All'
+        ? latestPosts
+        : latestPosts.filter((post) => post.category === activeFilter),
+    [activeFilter]
+  )
 
   const openArticle = (slug: string) => {
     navigate(`/resources/${slug}`)
@@ -134,15 +144,35 @@ export default function ResourcesPage() {
         </div>
 
         <div className="res-blog-toolbar" aria-label="Article library summary">
-          <p>
-            Explore posts on CMDB drift, rack inventory accuracy, audit evidence,
-            data center security, and infrastructure planning.
-          </p>
-          <span className="res-blog-count">{latestPosts.length + 1} published articles</span>
+          <div className="res-blog-controls">
+            <p>
+              Explore posts on CMDB drift, rack inventory accuracy, audit evidence,
+              data center security, and infrastructure planning.
+            </p>
+
+            <div className="res-blog-filters" role="tablist" aria-label="Filter articles by category">
+              {articleFilters.map((filter) => (
+                <button
+                  key={filter}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeFilter === filter}
+                  className={`res-blog-filter${activeFilter === filter ? ' is-active' : ''}`}
+                  onClick={() => setActiveFilter(filter)}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <span className="res-blog-count">
+            {filteredPosts.length} {filteredPosts.length === 1 ? 'article' : 'articles'} shown
+          </span>
         </div>
 
         <div className="res-blog-grid">
-          {latestPosts.map((post, index) => (
+          {filteredPosts.map((post, index) => (
             <article
               key={post.id}
               className="res-blog-card"
