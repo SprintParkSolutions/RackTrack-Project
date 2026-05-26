@@ -1753,19 +1753,16 @@
   max-width: 920px;
   color: #f3f8ff;
   font-family: var(--font-heading);
-  font-size: clamp(48px, 4.8vw, 82px);
-  line-height: 1.08;
-  letter-spacing: -0.055em;
-  font-weight: 900;
+  font-size: var(--text-section-title);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 700;
 }
 
 .principles-header h2 span {
   display: inline;
   padding-bottom: 0.1em;
-  background: linear-gradient(92deg, #17f4ff 5%, #67bdff 43%, #f0f4ff 88%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #ffffff;
 }
 
 .principles-card-stage {
@@ -2167,10 +2164,10 @@
   margin: 0 0 20px;
   color: #f2f7ff;
   font-family: var(--font-heading);
-  font-size: 26px;
+  font-size: clamp(20px, 1.45vw, 26px);
   line-height: 1;
   letter-spacing: -0.035em;
-  font-weight: 850;
+  font-weight: 800;
   transform: translateZ(38px);
 }
 
@@ -2734,7 +2731,7 @@
   }
 
   .principle-card h3 {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .principle-card p {
@@ -2859,10 +2856,7 @@
 
 .topology-copy h2 span,
 .topology-copy h2 strong {
-  background: linear-gradient(92deg, #20f0ff 0%, #6cbfff 45%, #f0f4ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #ffffff;
 }
 
 .topology-copy h2 strong {
@@ -2937,10 +2931,10 @@
   display: block;
   color: #f7fbff;
   font-family: var(--font-heading);
-  font-size: 21px;
+  font-size: clamp(18px, 1.45vw, 22px);
   line-height: 1;
   letter-spacing: -0.02em;
-  font-weight: 850;
+  font-weight: 800;
   transition: color 0.3s ease;
 }
 
@@ -3934,10 +3928,7 @@
 }
 
 .workflow-header h2 span {
-  background: linear-gradient(92deg, #18f4ff 4%, #65bdff 45%, #f0f4ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #ffffff;
 }
 
 .workflow-header p:last-child {
@@ -5291,8 +5282,8 @@
   margin: 0;
   color: #f2f7ff;
   font-family: var(--font-heading);
-  font-size: 18px;
-  font-weight: 850;
+  font-size: clamp(18px, 1.45vw, 22px);
+  font-weight: 800;
   line-height: 1.12;
   letter-spacing: -0.03em;
 }

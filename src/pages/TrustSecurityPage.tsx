@@ -362,8 +362,7 @@ export default function TrustSecurityPage() {
             <span className="app-eyebrow">Trust & Security</span>
             <h1>
               <span className="trust-h1-line">Clear controls.</span>
-              <span className="trust-h1-line">Clear boundaries.</span>
-              <span className="trust-h1-line trust-h1-grad">Built for enterprise review.</span>
+              <span className="trust-h1-line trust-h1-grad">Clear boundaries.</span>
             </h1>
             <p>
               RackTrack is designed to fit how security and infrastructure teams assess platforms.

@@ -21,9 +21,34 @@ import {
 } from '../services/salesforceApi'
 
 const faqs = [
-  ['Can we scan existing racks?', 'Yes, RackTrack identifies racks, switches, ports, and cables.'],
-  ['Can we request a demo?', 'Yes, submit the form and our team will schedule a walkthrough.'],
-  ['Is it useful for audits?', 'Yes, it helps maintain rack and port inventory visibility.'],
+  [
+    'Can RackTrack scan existing racks and live environments?',
+    'Yes. RackTrack is designed to work with real-world rack environments so teams can document devices, ports, cabling, and physical layout without starting from scratch.',
+  ],
+  [
+    'Can we request a live demo tailored to our environment?',
+    'Yes. Share your current challenges, rack count, or rollout goals in the form and our team can schedule a walkthrough focused on your environment and workflows.',
+  ],
+  [
+    'What information should we prepare before contacting your team?',
+    'Helpful details include your number of racks or sites, audit or migration goals, current inventory process, and any CMDB, DCIM, or network visibility gaps you want to solve.',
+  ],
+  [
+    'Is RackTrack useful for audits, compliance, and evidence collection?',
+    'Yes. RackTrack helps teams maintain trustworthy infrastructure records that support audit readiness, operational reviews, and validation of what is actually installed in the rack.',
+  ],
+  [
+    'Can RackTrack support multi-site data centers or colocation environments?',
+    'Yes. RackTrack can support teams that manage infrastructure across multiple rooms, buildings, or sites and need a more consistent way to capture and verify rack-level inventory.',
+  ],
+  [
+    'How does RackTrack fit with our existing tools and workflows?',
+    'RackTrack is built to complement existing operational processes by improving physical visibility and helping teams reconcile rack reality with the systems they already depend on.',
+  ],
+  [
+    'Do you offer help with pilots, rollout planning, or next steps?',
+    'Yes. Our team can help you evaluate fit, define a pilot scope, and plan the next steps for deployment, internal alignment, and broader rollout.',
+  ],
 ] as const
 
 type SubmitState = 'idle' | 'sending' | 'sent' | 'error'
@@ -223,12 +248,25 @@ export default function ContactUsPage() {
 
           <div className="contact-render-scene">
             <img
-              src="/Images/racktrack-contact-hero.jpg"
+              src="/Images/racktrack-contact-hero-v4.webp"
               alt=""
               className="contact-render-image"
               draggable="false"
             />
-
+            <div className="contact-rack-dots">
+              <span className="contact-rack-dot contact-rack-dot--1" />
+              <span className="contact-rack-dot contact-rack-dot--2" />
+              <span className="contact-rack-dot contact-rack-dot--3" />
+              <span className="contact-rack-dot contact-rack-dot--4" />
+              <span className="contact-rack-dot contact-rack-dot--5" />
+              <span className="contact-rack-dot contact-rack-dot--6" />
+              <span className="contact-rack-dot contact-rack-dot--7" />
+              <span className="contact-rack-dot contact-rack-dot--8" />
+              <span className="contact-rack-dot contact-rack-dot--9" />
+              <span className="contact-rack-dot contact-rack-dot--10" />
+              <span className="contact-rack-dot contact-rack-dot--11" />
+              <span className="contact-rack-dot contact-rack-dot--12" />
+            </div>
           </div>
         </div>
       </section>
