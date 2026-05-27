@@ -1,4 +1,4 @@
-import "./HomePage.css";
+﻿import "./HomePage.css";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -24,25 +24,25 @@ import {
 const capabilities = [
   [
     "Autonomous Asset Identification",
-    "Computer vision identifies every device, port, label, and rack unit position — a continuously reconciled digital record from a single phone sweep.",
+    "Computer vision identifies every device, port, label, and rack unit position - a continuously reconciled digital record from a single phone sweep.",
     "/solutions page images/Automated_Inventory.jpg",
     Box,
   ],
   [
     "Connectivity Intelligence",
-    "Port-level mapping of active connections, unused interfaces, cable types, and physical paths — verified against live network telemetry.",
+    "Port-level mapping of active connections, unused interfaces, cable types, and physical paths - verified against live network telemetry.",
     "/solutions page images/Port_Tracking.jpg",
     Cable,
   ],
   [
     "Visual Rack Intelligence",
-    "A continuously reconciled digital twin of your physical rack — topology, device posture, and connectivity — synced to your systems of record.",
+    "A continuously reconciled digital twin of your physical rack - topology, device posture, and connectivity - synced to your systems of record.",
     "/solutions page images/Network_Topology.jpg",
     Network,
   ],
   [
     "Posture & Vulnerability Intelligence",
-    "Device-level firmware state, vulnerability exposure, and infrastructure posture surfaced per asset — not per fleet average.",
+    "Device-level firmware state, vulnerability exposure, and infrastructure posture surfaced per asset - not per fleet average.",
     "/solutions page images/Security_Compliance.jpg",
     ShieldCheck,
   ],
@@ -54,7 +54,7 @@ const capabilities = [
   ],
   [
     "Capacity Intelligence",
-    "Rack utilization, available slots, and power state mapped to current physical reality — not the last scheduled audit.",
+    "Rack utilization, available slots, and power state mapped to current physical reality - not the last scheduled audit.",
     "/solutions page images/AR_Rack.jpg",
     BarChart3,
   ],
@@ -66,22 +66,22 @@ const capabilities = [
   ],
   [
     "Compliance Evidence Automation",
-    "Continuously generated audit artifacts mapped to SOC 2, ISO 27001, HIPAA, and PCI-DSS Requirement 9 — ready before the auditor arrives.",
+    "Continuously generated audit artifacts mapped to SOC 2, ISO 27001, HIPAA, and PCI-DSS Requirement 9 - ready before the auditor arrives.",
     "/solutions page images/datacenter-bg.jpg",
     FileCheck,
   ],
 ] as const;
 
 const problemStats = [
-  ["40-60%", "CMDB drift", "Physical reality and records do not match."],
+  ["40-60%", "Truth decay", "Physical reality and records do not match."],
   [
     "~30%",
-    "Outage root cause",
+    "Untraceable failures",
     "Outages linked to inventory and config drift.",
   ],
-  ["15-20%", "Ghost assets", "Assets still drawing power and license cost."],
-  ["3-6 weeks", "Evidence prep", "Manual compliance work per cycle."],
-  ["20-40 min", "Incident delay", "Time lost confirming rack truth."],
+  ["15-20%", "Unaccounted footprint", "Assets still drawing power and license cost."],
+  ["3-6 weeks", "Audit exposure", "Manual compliance work per cycle."],
+  ["20-40 min", "Response latency", "Time lost confirming rack truth."],
 ] as const;
 
 const oldWay = [
@@ -396,7 +396,7 @@ export default function HomePage() {
           </h1>
           <p className="home-hero-copy-text">
             RackTrack transforms rack images and network signals into verified
-            infrastructure intelligence — helping teams understand every device,
+            infrastructure intelligence - helping teams understand every device,
             port, cable, and physical-to-logical relationship across the rack
             environment. Built on patent-pending innovations for automated
             network cable mapping.
@@ -447,7 +447,7 @@ export default function HomePage() {
           <p>
             Every infrastructure record drifts. Every CMDB lies. Every DCIM has
             blind spots. RackTrack delivers continuous reconciliation between
-            the physical world and your operational systems — autonomous,
+            the physical world and your operational systems - autonomous,
             verifiable, defensible.
           </p>
         </div>
@@ -521,13 +521,13 @@ export default function HomePage() {
         <div className="home-truth-copy">
           <span>What RackTrack Is</span>
           <h2>
-            Physical Infrastructure Intelligence — continuously reconciled
+            Physical Infrastructure Intelligence - continuously reconciled
             across your entire footprint.
           </h2>
           <p>
             RackTrack combines computer vision, network telemetry, vendor data,
             and security intelligence into a single platform. One phone sweep
-            produces a verified infrastructure digital twin — inventory,
+            produces a verified infrastructure digital twin - inventory,
             topology, port state, and firmware posture synced to your
             operational stack.
           </p>
@@ -735,3 +735,6 @@ export default function HomePage() {
     </main>
   );
 }
+
+
+

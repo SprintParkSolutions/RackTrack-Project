@@ -1,4 +1,4 @@
-import { type CSSProperties, useEffect, useRef } from 'react'
+﻿import { type CSSProperties, useEffect, useRef } from 'react'
 import { ArrowRight, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import './TrustSecurityPage.css'
@@ -365,7 +365,7 @@ export default function TrustSecurityPage() {
               <span className="trust-h1-line trust-h1-grad">Audit-ready by default.</span>
             </h1>
             <p>
-              RackTrack is designed to meet how enterprise security, compliance, and infrastructure teams assess platforms — with clear data ownership, flexible deployment, and patent-pending intelligence architecture.
+              RackTrack is designed to meet how enterprise security, compliance, and infrastructure teams assess platforms - with clear data ownership, flexible deployment, and defensible patent-pending innovation.
             </p>
 
             <div className="trust-hero__actions">
@@ -525,9 +525,9 @@ export default function TrustSecurityPage() {
       <section className="app-section trust-innovation reveal-on-scroll">
         <div className="app-section-heading">
           <span className="app-eyebrow">Defensible Innovation</span>
-          <h2>Built on patent-pending intelligence architecture.</h2>
+          <h2>Built on Defensible Innovation</h2>
           <p>
-            RackTrack's platform is supported by pending patent filings covering automated network cable mapping and infrastructure intelligence workflows — the foundation of a multi-year technical moat.
+            RackTrack's platform is supported by pending patent filings covering automated network cable mapping and infrastructure intelligence workflows - the foundation of a multi-year technical moat.
           </p>
         </div>
 
@@ -563,3 +563,7 @@ export default function TrustSecurityPage() {
     </main>
   )
 }
+
+
+
+
