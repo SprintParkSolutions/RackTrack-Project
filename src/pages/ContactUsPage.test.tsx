@@ -10,7 +10,7 @@ vi.mock('../services/salesforceApi', () => ({
 
 describe('ContactUsPage', () => {
   const getHeroCta = () => {
-    const heroSection = document.querySelector('.contact-hero')
+    const heroSection = document.querySelector<HTMLElement>('.contact-hero')
 
     if (!heroSection) {
       throw new Error('Contact hero section not found')
