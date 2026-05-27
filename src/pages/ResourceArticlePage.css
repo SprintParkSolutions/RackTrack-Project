@@ -95,8 +95,7 @@
   border-radius: 32px;
   border: 1px solid rgba(97, 230, 255, 0.14);
   box-shadow:
-    0 28px 70px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 28px 70px rgba(0, 0, 0, 0.28);
 }
 
 .resource-article-hero__media img {

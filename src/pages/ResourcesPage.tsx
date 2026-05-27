@@ -11,17 +11,17 @@ const articleFilters = ['All', ...new Set(resourcePosts.map((post) => post.categ
 
 const editorialPillars = [
   {
-    title: 'Operations clarity',
+    title: 'Operational Intelligence',
     description:
       'How teams reduce inventory drift, audit delays, and rack-level uncertainty.',
   },
   {
-    title: 'Security visibility',
+    title: 'Posture & Compliance Intelligence',
     description:
       'Why physical presence still matters in infrastructure security programs.',
   },
   {
-    title: 'Infrastructure planning',
+    title: 'Infrastructure Strategy',
     description:
       'What accurate rack data changes for upgrades, migrations, and budgeting.',
   },
