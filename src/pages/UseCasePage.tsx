@@ -24,7 +24,7 @@ const useCaseHeroImage = '/use-case-images/use-case-hero.png'
 const roleCards = [
   {
     id: 'infra-leaders',
-    navLabel: 'Infra Leaders',
+    navLabel: 'Infrastructure Executives',
     number: '01',
     icon: Building2,
     title: 'Infrastructure & Data Center Leaders',
@@ -42,7 +42,7 @@ const roleCards = [
   },
   {
     id: 'network',
-    navLabel: 'Network',
+    navLabel: 'Network Arch.',
     number: '02',
     icon: Network,
     title: 'Network Architects & Engineers',
@@ -60,7 +60,7 @@ const roleCards = [
   },
   {
     id: 'security',
-    navLabel: 'Security',
+    navLabel: 'Security & Risk',
     number: '03',
     icon: ShieldCheck,
     title: 'Security & Vulnerability Teams',
@@ -78,7 +78,7 @@ const roleCards = [
   },
   {
     id: 'compliance',
-    navLabel: 'Compliance',
+    navLabel: 'Audit & Gov.',
     number: '04',
     icon: FileCheck2,
     title: 'Compliance & Audit Owners',
@@ -96,7 +96,7 @@ const roleCards = [
   },
   {
     id: 'incident',
-    navLabel: 'Incident',
+    navLabel: 'Operational Resilience',
     number: '05',
     icon: BellRing,
     title: 'Incident Responders & On-Call',
@@ -114,7 +114,7 @@ const roleCards = [
   },
   {
     id: 'ma',
-    navLabel: 'M&A',
+    navLabel: 'Transformation',
     number: '06',
     icon: GitBranch,
     title: 'M&A & Migration Teams',
@@ -133,15 +133,15 @@ const roleCards = [
 ]
 
 const heroStats = [
-  { value: '6', label: 'Roles, one platform' },
-  { value: '<10 days', label: 'Time to defensible inventory' },
-  { value: '99.6%', label: 'Fabric to floor agreement' },
+  { value: '6', label: 'Operational disciplines unified' },
+  { value: '<10 days', label: 'Time to continuous truth' },
+  { value: '99.6%', label: 'Physical-logical convergence' },
 ]
 
 const impactCards = [
   {
     value: '99%+',
-    label: 'Inventory Accuracy',
+    label: 'State Fidelity',
     icon: Target,
     tone: 'cyan',
     visual: (
@@ -154,7 +154,7 @@ const impactCards = [
   },
   {
     value: '5-15 Min',
-    label: 'From Rack Scan to Insights',
+    label: 'Rack Capture to Operational Insight',
     icon: TimerReset,
     tone: 'violet',
     visual: (
@@ -168,7 +168,7 @@ const impactCards = [
   },
   {
     value: '90%+',
-    label: 'Reduction in Manual Effort',
+    label: 'Manual Operations Eliminated',
     icon: ChartNoAxesColumnIncreasing,
     tone: 'blue',
     visual: (
@@ -183,7 +183,7 @@ const impactCards = [
   },
   {
     value: 'Continuous',
-    label: 'Physical-to-Logical Reconciliation',
+    label: 'Continuous Reconciliation',
     icon: InfinityIcon,
     tone: 'green',
     visual: (
@@ -261,8 +261,8 @@ export default function UseCasePage() {
           <span className="use-case-eyebrow">Use Cases</span>
 
           <h1>
-            <span>Built for every</span>
-            <strong>infrastructure moment.</strong>
+            <span>Operational outcomes across</span>
+            <strong>the infrastructure lifecycle.</strong>
           </h1>
 
           <p>
@@ -293,7 +293,11 @@ export default function UseCasePage() {
             const Icon = impact.icon
 
             return (
-              <article className={`use-case-impact-card use-case-impact-card-${impact.tone}`} key={impact.label} tabIndex={0}>
+              <article
+                className={`use-case-impact-card use-case-impact-card-${impact.tone}${impact.value.length > 8 ? ' use-case-impact-card-long-value' : ''}`}
+                key={impact.label}
+                tabIndex={0}
+              >
                 <div className="use-case-impact-card-inner">
                   <div className="use-case-impact-card-front">
                     <Icon className="use-case-impact-icon" aria-hidden="true" size={48} strokeWidth={1.9} />

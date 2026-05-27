@@ -45,9 +45,9 @@ const SEO_BY_PATH: Record<
   { title: string; description: string; canonicalPath: string }
 > = {
   '/': {
-    title: 'RackTrack | Scan Any Rack. Find Any Port. Instantly.',
+    title: 'RackTrack | The Infrastructure Digital Twin Platform',
     description:
-      'RackTrack turns physical layer infrastructure into live intelligence with AI-powered rack scans, port identification, cable mapping, and audit-ready reports.',
+      'RackTrack is the Infrastructure Digital Twin Platform — continuous physical infrastructure intelligence for rack inventory, topology reconciliation, port mapping, and audit-ready reporting.',
     canonicalPath: '/',
   },
   '/about-us': {
@@ -63,9 +63,9 @@ const SEO_BY_PATH: Record<
   //   canonicalPath: '/product',
   // },
   '/solutions': {
-    title: 'RackTrack Solutions | Rack Audits, Cable Mapping, Port Visibility',
+    title: 'RackTrack Platform | Infrastructure Intelligence Capabilities',
     description:
-      'Explore RackTrack solutions for rack inventory, switch recognition, cable tracing, free-port discovery, and audit-ready infrastructure reporting.',
+      'Explore RackTrack platform capabilities: Visual Rack Intelligence, Connectivity Intelligence, Infrastructure Digital Twin, Security Posture Intelligence, and Continuous Reconciliation.',
     canonicalPath: '/solutions',
   },
   '/use-cases': {
@@ -123,9 +123,9 @@ const SEO_BY_PATH: Record<
     canonicalPath: '/trust-security',
   },
   '/resources': {
-    title: 'Resources | RackTrack Blog and Infrastructure Insights',
+    title: 'Infrastructure Intelligence | Research, Frameworks & Insights',
     description:
-      'Browse RackTrack blog content on CMDB drift, rack audits, infrastructure security, audit readiness, and physical layer intelligence.',
+      'Browse RackTrack research, frameworks, and insights on CMDB drift, infrastructure digital twins, topology reconciliation, audit readiness, and physical infrastructure intelligence.',
     canonicalPath: '/resources',
   },
   '/contact-us': {
@@ -227,7 +227,7 @@ export default function App() {
               <Link to="/" className="app-footer-logo" aria-label="Go to RackTrack home">
                 <img src="/RackTrack_Logo.png" alt="RackTrack" className="app-footer-logo-image" />
               </Link>
-              <p>A True Physical Layer Inteligence</p>
+              <p>Physical Infrastructure Intelligence for Data Centers</p>
             </div>
             <div className="app-footer-columns">
               <nav className="app-footer-nav" aria-label="Footer navigation">
@@ -250,7 +250,7 @@ export default function App() {
               </div>
             </div>
           </div>
-          <div className="app-footer-bottom">All rights reserved</div>
+          <div className="app-footer-bottom">© 2026 RackTrack Inc. · Physical Infrastructure Intelligence for Data Centers · Patent Pending</div>
         </footer>
       </div>
       </ReactLenis>
