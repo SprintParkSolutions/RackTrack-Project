@@ -562,9 +562,9 @@ button {
 /* TRUTH */
 .home-truth-section {
   display: grid;
-  grid-template-columns: minmax(340px, 0.95fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(520px, 1.18fr) minmax(0, 0.82fr);
   align-items: center;
-  gap: clamp(44px, 6vw, 90px);
+  gap: clamp(30px, 4vw, 64px);
   background:
     radial-gradient(circle at 22% 42%, rgba(34, 211, 238, 0.13), transparent 30rem),
     linear-gradient(180deg, #020713, #061426, #020713);
@@ -579,9 +579,9 @@ button {
 /* Truth — transparent canvas, image fades into bg */
 .home-truth-canvas {
   position: relative;
-  min-height: 470px;
+  min-height: 620px;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: 24px;
   box-shadow:
     0 28px 90px rgba(0, 0, 0, 0.32),
     inset 0 0 0 1px rgba(103, 232, 249, 0.08);
@@ -589,7 +589,7 @@ button {
 
 .home-truth-img-wrap {
   position: absolute;
-  inset: 0;
+  inset: 32px 28px 36px;
   overflow: hidden;
   border-radius: inherit;
 }
@@ -621,6 +621,7 @@ button {
   border: 0;
   background: #020713;
   object-position: center;
+  border-radius: 20px;
 }
 
 .home-truth-play-btn {
@@ -630,10 +631,12 @@ button {
   transform: translate(-50%, -50%);
   z-index: 4;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 96px;
-  height: 96px;
+  gap: 12px;
+  min-width: 154px;
+  padding: 18px 24px 20px;
   border: 0;
   border-radius: 999px;
   color: #f6f9ff;
@@ -675,6 +678,14 @@ button {
   box-shadow:
     inset 0 0 0 1px rgba(103, 232, 249, 0.34),
     0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.home-truth-play-label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(246, 249, 255, 0.94);
 }
 
 
@@ -1753,6 +1764,10 @@ button {
     will-change: auto;
   }
 
+  .home-truth-img-wrap {
+    inset: 20px 18px 24px;
+  }
+
   .home-truth-badge {
     display: none;
   }
@@ -1821,6 +1836,10 @@ button {
 
   .home-truth-canvas {
     min-height: 250px;
+  }
+
+  .home-truth-img-wrap {
+    inset: 14px 12px 18px;
   }
 
   .home-hero-bg-video {

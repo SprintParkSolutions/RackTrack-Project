@@ -158,7 +158,10 @@ export default function HomePage() {
   const truthSectionRef = useRef<HTMLElement | null>(null);
   const [shouldLoadHeroVideo, setShouldLoadHeroVideo] = useState(false);
   const [shouldLoadProofVideo, setShouldLoadProofVideo] = useState(false);
-  const [shouldLoadTruthVideo] = useState(true);
+  const [shouldLoadTruthVideo, setShouldLoadTruthVideo] = useState(false);
+  const [shouldAutoplayTruthVideo, setShouldAutoplayTruthVideo] = useState(false);
+  const [hasTruthVideoStarted, setHasTruthVideoStarted] = useState(false);
+  const [isTruthVideoPlaying, setIsTruthVideoPlaying] = useState(false);
  
   useEffect(() => {
     const elements = Array.from(
@@ -188,6 +191,18 @@ export default function HomePage() {
       behavior: "smooth",
       block: "start",
     });
+  };
+
+  const handleTruthVideoPlay = () => {
+    setShouldLoadTruthVideo(true);
+    setShouldAutoplayTruthVideo(true);
+    setHasTruthVideoStarted(true);
+  };
+
+  const resetTruthVideoPlayback = () => {
+    setShouldAutoplayTruthVideo(false);
+    setHasTruthVideoStarted(false);
+    setIsTruthVideoPlaying(false);
   };
  
   useEffect(() => {
@@ -266,7 +281,56 @@ export default function HomePage() {
       video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("loadeddata", tryPlay);
     };
+  }, [shouldLoadHeroVideo]);
+
+  useEffect(() => {
+    const section = truthSectionRef.current;
+
+    if (!section) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+
+        if (entry?.isIntersecting) {
+          setShouldLoadTruthVideo(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "280px 0px" },
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!shouldAutoplayTruthVideo || !shouldLoadTruthVideo) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      const video = truthVideoRef.current;
+
+      if (!video) {
+        return;
+      }
+
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {
+          setShouldAutoplayTruthVideo(false);
+          setHasTruthVideoStarted(false);
+          setIsTruthVideoPlaying(false);
+        });
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [shouldAutoplayTruthVideo, shouldLoadTruthVideo]);
  
   return (
     <main className="home-page">
@@ -393,23 +457,44 @@ export default function HomePage() {
         <div className="home-truth-visual">
           <div className="home-truth-canvas">
             <div className="home-truth-img-wrap">
+              {!isTruthVideoPlaying ? (
+                <button
+                  type="button"
+                  className="home-truth-play-btn"
+                  onClick={handleTruthVideoPlay}
+                  aria-label="Play RackTrack video"
+                >
+                  <span className="home-truth-play-icon">
+                    <PlayCircle size={32} />
+                  </span>
+                  <span className="home-truth-play-label">Play video</span>
+                </button>
+              ) : null}
               <video
                 ref={truthVideoRef}
                 className="home-truth-video"
-                loop
-                controls
+                controls={hasTruthVideoStarted}
                 playsInline
-                preload="metadata"
-                poster="/solutions page images/Server_rack-scan.jpg"
+                preload="none"
+                poster="/RackTrack-poster.jpg"
+                onPlay={() => {
+                  setShouldAutoplayTruthVideo(false);
+                  setHasTruthVideoStarted(true);
+                  setIsTruthVideoPlaying(true);
+                }}
+                onPause={() => setIsTruthVideoPlaying(false)}
+                onEnded={() => {
+                  const video = truthVideoRef.current;
+                  if (video) {
+                    video.currentTime = 0;
+                  }
+                  resetTruthVideoPlayback();
+                }}
               >
                 {shouldLoadTruthVideo ? (
                   <>
                     <source
-                      src="/solutions page images/server_rack.mp4"
-                      type="video/mp4"
-                    />
-                    <source
-                      src="/solutions page images/server_rack.mp4"
+                      src="/RackTrack-web.mp4"
                       type="video/mp4"
                     />
                   </>
