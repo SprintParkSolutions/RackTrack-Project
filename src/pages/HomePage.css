@@ -952,8 +952,7 @@ button {
   width: 34%;
   height: 44%;
   border: 2px solid var(--cyan);
-  box-shadow:
-    0 0 26px rgba(0, 210, 255, 0.38)
+  box-shadow: 0 0 26px rgba(0, 210, 255, 0.38);
   animation: homeProductScan 2.8s ease-in-out infinite;
 }
 
