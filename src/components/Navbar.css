@@ -215,7 +215,46 @@
   margin-top: 8px;
 }
 
-@media (max-width: 920px) {
+@media (max-width: 1180px) {
+  .rt-nav {
+    grid-template-columns: minmax(160px, 0.9fr) auto auto;
+    gap: 12px;
+    padding: 10px clamp(14px, 3vw, 28px);
+  }
+
+  .rt-nav-logo {
+    margin-left: -4px;
+  }
+
+  .rt-nav-logo-image {
+    width: clamp(148px, 16vw, 198px);
+    height: 40px;
+    max-height: 40px;
+  }
+
+  .rt-nav-links {
+    gap: 2px;
+  }
+
+  .rt-nav-link {
+    padding: 10px 10px;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+  }
+
+  .rt-nav-actions {
+    gap: 8px;
+  }
+
+  .rt-nav-cta {
+    min-height: 42px;
+    padding: 0 16px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (max-width: 1080px) {
   :root {
     --rt-nav-height: 74px;
   }

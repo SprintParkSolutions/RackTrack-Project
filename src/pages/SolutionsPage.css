@@ -1,4 +1,4 @@
-.solutions-page {
+﻿.solutions-page {
   --solutions-navy: #050d1a;
   --solutions-navy-mid: #081428;
   --solutions-cyan: #00d2ff;
@@ -346,8 +346,7 @@
   opacity: 0.42;
   transform: rotateX(70deg) rotateZ(-7deg);
   box-shadow:
-    0 0 70px rgba(0, 238, 255, 0.1),
-    inset 0 0 60px rgba(0, 238, 255, 0.05);
+    0 0 70px rgba(0, 238, 255, 0.1);
   animation: heroBackdropPlaneDrift 18s ease-in-out infinite alternate;
 }
 
@@ -365,8 +364,7 @@
     radial-gradient(circle at 50% 0%, rgba(125, 211, 252, 0.24), transparent 44%),
     rgba(5, 18, 31, 0.5);
   box-shadow:
-    0 0 18px rgba(19, 245, 255, 0.16),
-    inset 0 0 16px rgba(19, 245, 255, 0.06);
+    0 0 18px rgba(19, 245, 255, 0.16);
   opacity: 0.66;
   transform:
     translate(-50%, -50%)
@@ -485,6 +483,17 @@
   text-shadow: 0 8px 38px rgba(0, 0, 0, 0.45);
 }
 
+.hero-patent-sublabel {
+  max-width: 480px;
+  color: rgba(180, 210, 255, 0.6);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
+
 .hero-actions {
   display: flex;
   align-items: center;
@@ -559,9 +568,8 @@
   background: rgba(7, 17, 29, 0.7);
   border: 1px solid rgba(219, 242, 255, 0.11);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.045),
     0 18px 60px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(8px);
 }
 
 .stat-card strong {
@@ -741,8 +749,7 @@
     radial-gradient(ellipse at center, rgba(0, 210, 255, 0.05), transparent 62%),
     rgba(5, 13, 26, 0.025);
   box-shadow:
-    0 0 42px rgba(0, 210, 255, 0.07),
-    inset 0 0 32px rgba(0, 210, 255, 0.05);
+    0 0 42px rgba(0, 210, 255, 0.07);
 }
 
 .scan-depth-plane-one {
@@ -986,8 +993,7 @@
   height: 58px;
   border: 2px solid rgba(33, 255, 247, 0.88);
   box-shadow:
-    0 0 28px rgba(33, 255, 247, 0.5),
-    inset 0 0 22px rgba(33, 255, 247, 0.16);
+    0 0 28px rgba(33, 255, 247, 0.5);
   opacity: var(--target-opacity);
   animation: scanTargetPulse 3.4s ease-in-out infinite;
 }
@@ -1038,8 +1044,7 @@
   border-radius: 10px;
   background: rgba(0, 255, 255, 0.035);
   box-shadow:
-    0 0 34px rgba(0, 239, 255, 0.28),
-    inset 0 0 24px rgba(0, 239, 255, 0.1);
+    0 0 34px rgba(0, 239, 255, 0.28);
   transform: translateX(calc((1 - var(--scan-progress)) * 42px));
   transition: transform 0.14s linear;
 }
@@ -1069,11 +1074,10 @@
   border-radius: 16px;
   background: rgba(7, 17, 29, 0.93);
   border: 1px solid rgba(219, 242, 255, 0.09);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(8px);
   box-shadow:
     0 24px 70px rgba(0, 0, 0, 0.34),
-    0 0 46px rgba(0, 210, 255, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 0 46px rgba(0, 210, 255, 0.12);
 }
 
 .detected-panel p {
@@ -1230,8 +1234,7 @@
   border: 1px solid rgba(0, 238, 255, 0.24);
   border-radius: 999px;
   box-shadow:
-    0 0 42px rgba(0, 238, 255, 0.14),
-    inset 0 0 42px rgba(0, 238, 255, 0.08);
+    0 0 42px rgba(0, 238, 255, 0.14);
   transform-style: preserve-3d;
 }
 
@@ -1312,8 +1315,7 @@
     linear-gradient(180deg, rgba(0, 238, 255, 0.055), transparent),
     rgba(4, 14, 24, 0.18);
   box-shadow:
-    0 0 54px rgba(0, 238, 255, 0.18),
-    inset 0 0 32px rgba(0, 238, 255, 0.08);
+    0 0 54px rgba(0, 238, 255, 0.18);
   transform-style: preserve-3d;
 }
 
@@ -1454,8 +1456,7 @@
     rgba(5, 14, 24, 0.28);
   box-shadow:
     0 24px 90px rgba(0, 0, 0, 0.28),
-    0 0 46px rgba(0, 238, 255, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 0 46px rgba(0, 238, 255, 0.14);
   backdrop-filter: blur(9px);
   transform-style: preserve-3d;
 }
@@ -1675,8 +1676,7 @@
   border-color: rgba(0, 238, 255, 0.52) !important;
   box-shadow:
     0 38px 110px rgba(0, 0, 0, 0.44),
-    0 0 88px rgba(0, 238, 255, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    0 0 88px rgba(0, 238, 255, 0.22) !important;
   transform: translateY(-14px) scale(1.035) !important;
   z-index: 10;
   filter: none !important;
@@ -1787,9 +1787,8 @@
   border: 1px solid rgba(214, 238, 255, 0.1);
   box-shadow:
     0 28px 90px rgba(0, 0, 0, 0.3),
-    0 0 34px rgba(0, 238, 255, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.045);
-  backdrop-filter: blur(18px);
+    0 0 34px rgba(0, 238, 255, 0.04);
+  backdrop-filter: blur(8px);
   transform-style: preserve-3d;
   will-change: transform, opacity;
   transition:
@@ -1900,8 +1899,7 @@
   opacity: 1;
   box-shadow:
     0 34px 110px rgba(0, 0, 0, 0.36),
-    0 0 68px rgba(0, 238, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.055);
+    0 0 68px rgba(0, 238, 255, 0.1);
 }
 
 .principles-section.is-split .principle-card::before {
@@ -1990,8 +1988,7 @@
   border-color: rgba(0, 238, 255, 0.28);
   box-shadow:
     0 38px 120px rgba(0, 0, 0, 0.42),
-    0 0 78px rgba(0, 238, 255, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 0 78px rgba(0, 238, 255, 0.18);
 }
 
 .principle-card:hover::before {
@@ -2904,7 +2901,6 @@
   background: rgba(9, 19, 31, 0.72);
   border: 1px solid rgba(218, 240, 255, 0.09);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 14px 44px rgba(0, 0, 0, 0.2);
   transition:
     border-color 0.3s ease,
@@ -2957,8 +2953,7 @@
     radial-gradient(circle, rgba(0, 238, 255, 0.24), rgba(8, 20, 32, 0.8));
   box-shadow:
     0 0 0 6px rgba(0, 238, 255, 0.06),
-    0 0 35px rgba(0, 238, 255, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 0 35px rgba(0, 238, 255, 0.24);
 }
 
 .topology-feature:hover .feature-dot i,
@@ -3049,8 +3044,7 @@
   border: 1px solid rgba(0, 238, 255, 0.14);
   border-radius: 999px;
   box-shadow:
-    0 0 36px rgba(0, 238, 255, 0.1),
-    inset 0 0 26px rgba(0, 238, 255, 0.05);
+    0 0 36px rgba(0, 238, 255, 0.1);
   transform: translate(-50%, -50%) rotateX(72deg);
   will-change: transform;
 }
@@ -3498,8 +3492,7 @@
   border-radius: 999px;
   pointer-events: none;
   box-shadow:
-    0 0 42px rgba(0, 238, 255, 0.08),
-    inset 0 0 34px rgba(0, 238, 255, 0.05);
+    0 0 42px rgba(0, 238, 255, 0.08);
 }
 
 .workflow-bg-orbit-one {
@@ -3569,8 +3562,7 @@
     rgba(4, 15, 25, 0.1);
   background-size: 34px 34px;
   box-shadow:
-    0 0 54px rgba(0, 238, 255, 0.09),
-    inset 0 0 40px rgba(0, 238, 255, 0.04);
+    0 0 54px rgba(0, 238, 255, 0.09);
   opacity: 0.38;
   will-change: transform;
   transform-style: preserve-3d;
@@ -3624,8 +3616,7 @@
     linear-gradient(135deg, rgba(0, 238, 255, 0.08), rgba(0, 115, 190, 0.06)),
     rgba(4, 15, 25, 0.16);
   box-shadow:
-    0 0 44px rgba(0, 238, 255, 0.12),
-    inset 0 0 30px rgba(0, 238, 255, 0.05);
+    0 0 44px rgba(0, 238, 255, 0.12);
   opacity: 0.42;
   will-change: transform;
   transform-style: preserve-3d;
@@ -3723,8 +3714,7 @@
   border: 1px solid rgba(0, 238, 255, 0.13);
   border-radius: 999px;
   box-shadow:
-    0 0 40px rgba(0, 238, 255, 0.08),
-    inset 0 0 28px rgba(125, 211, 252, 0.06);
+    0 0 40px rgba(0, 238, 255, 0.08);
 }
 
 .workflow-ambient-orbit-one {
@@ -3818,8 +3808,7 @@
     radial-gradient(circle at 50% 18%, rgba(0, 238, 255, 0.12), transparent 36%),
     rgba(4, 15, 25, 0.08);
   box-shadow:
-    0 0 46px rgba(0, 238, 255, 0.08),
-    inset 0 0 34px rgba(0, 238, 255, 0.05);
+    0 0 46px rgba(0, 238, 255, 0.08);
   opacity: 0.44;
 }
 
@@ -3965,8 +3954,7 @@
     linear-gradient(145deg, rgba(12, 25, 37, 0.82), rgba(5, 13, 22, 0.9));
   border: 1px solid rgba(220, 244, 255, 0.09);
   box-shadow:
-    0 38px 120px rgba(0, 0, 0, 0.38),
-    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+    0 38px 120px rgba(0, 0, 0, 0.38);
   overflow: hidden;
   transform-style: preserve-3d;
   animation: workflowPreviewFloat 8s ease-in-out infinite;
@@ -4015,8 +4003,8 @@
   background: #020910;
   border: 1px solid rgba(0, 238, 255, 0.18);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.055),
     0 26px 80px rgba(0, 0, 0, 0.34),
+    
     0 0 52px rgba(0, 210, 255, 0.12);
   transform: translateZ(36px);
 }
@@ -4280,8 +4268,7 @@
     linear-gradient(145deg, rgba(6, 17, 29, 0.76), rgba(5, 13, 22, 0.9));
   border: 1px solid rgba(220, 244, 255, 0.1);
   box-shadow:
-    0 22px 66px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+    0 22px 66px rgba(0, 0, 0, 0.22);
   cursor: pointer;
   isolation: isolate;
   transform:
@@ -4345,8 +4332,7 @@
   border-color: rgba(0, 238, 255, 0.42);
   box-shadow:
     0 32px 94px rgba(0, 0, 0, 0.36),
-    0 0 62px rgba(0, 238, 255, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 0 62px rgba(0, 238, 255, 0.12);
 }
 
 .workflow-card:hover::before,
@@ -4795,8 +4781,7 @@
     rgba(5, 13, 22, 0.78);
   box-shadow:
     0 46px 140px rgba(0, 0, 0, 0.48),
-    0 0 86px rgba(0, 238, 255, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 0 86px rgba(0, 238, 255, 0.14);
   transform-style: preserve-3d;
   transition:
     height 1.05s cubic-bezier(0.16, 1, 0.3, 1),
@@ -4815,8 +4800,7 @@
   border-color: rgba(0, 238, 255, 0.5);
   box-shadow:
     0 42px 130px rgba(0, 0, 0, 0.52),
-    0 0 125px rgba(0, 238, 255, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.11);
+    0 0 125px rgba(0, 238, 255, 0.22);
 }
 
 .workflow-rack-image {
@@ -4854,7 +4838,7 @@
   border-radius: 999px;
   background: rgba(3, 14, 23, 0.72);
   border: 1px solid rgba(0, 238, 255, 0.24);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
 }
 
 .workflow-rack-status span {
@@ -5144,8 +5128,7 @@
   box-shadow:
     0 28px 82px rgba(0, 0, 0, 0.42),
     0 0 74px rgba(0, 238, 255, 0.24),
-    0 0 0 1px rgba(19, 245, 255, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 0 0 1px rgba(19, 245, 255, 0.2);
   transform-style: preserve-3d;
   transition:
     transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
@@ -5189,8 +5172,7 @@
   box-shadow:
     0 36px 106px rgba(0, 0, 0, 0.46),
     0 0 132px rgba(0, 238, 255, 0.44),
-    0 0 0 1px rgba(19, 245, 255, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    0 0 0 1px rgba(19, 245, 255, 0.34);
   filter: saturate(1.1);
   transform:
     perspective(1400px)
@@ -5548,8 +5530,7 @@
   border-color: rgba(0, 238, 255, 0.18);
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.36),
-    0 0 28px rgba(0, 238, 255, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 0 28px rgba(0, 238, 255, 0.06);
 }
 
 .workflow-grid-card.is-hovered .workflow-card-new-surface {
@@ -5558,8 +5539,7 @@
   box-shadow:
     0 36px 106px rgba(0, 0, 0, 0.46),
     0 0 132px rgba(0, 238, 255, 0.44),
-    0 0 0 1px rgba(19, 245, 255, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    0 0 0 1px rgba(19, 245, 255, 0.34);
   filter: saturate(1.1);
   transform:
     perspective(1400px)
@@ -5669,8 +5649,7 @@
     linear-gradient(90deg, rgba(0, 238, 255, 0.12) 1px, transparent 1px);
   background-size: 42px 42px;
   box-shadow:
-    0 0 46px rgba(0, 238, 255, 0.12),
-    inset 0 0 36px rgba(0, 238, 255, 0.05);
+    0 0 46px rgba(0, 238, 255, 0.12);
   opacity: 0.3;
 }
 
@@ -5698,8 +5677,7 @@
   border-radius: 999px;
   border: 1px solid rgba(0, 238, 255, 0.18);
   box-shadow:
-    0 0 34px rgba(0, 238, 255, 0.1),
-    inset 0 0 26px rgba(0, 238, 255, 0.05);
+    0 0 34px rgba(0, 238, 255, 0.1);
 }
 
 .hero-network-orbit-one {
@@ -5824,8 +5802,7 @@
     radial-gradient(circle at 70% 10%, rgba(0, 238, 255, 0.13), transparent 44%),
     rgba(5, 18, 31, 0.18);
   box-shadow:
-    0 0 48px rgba(0, 238, 255, 0.1),
-    inset 0 0 28px rgba(0, 238, 255, 0.04);
+    0 0 48px rgba(0, 238, 255, 0.1);
   opacity: 0.42;
   transform-style: preserve-3d;
 }
@@ -5875,9 +5852,8 @@
   border: 1px solid rgba(0, 238, 255, 0.24);
   box-shadow:
     0 44px 140px rgba(0, 0, 0, 0.48),
-    0 0 90px rgba(0, 238, 255, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(14px);
+    0 0 90px rgba(0, 238, 255, 0.16);
+  backdrop-filter: blur(8px);
   transform:
     rotateY(calc(-5deg + var(--scan-progress) * 3deg))
     rotateX(calc(2deg - var(--scan-progress) * 1deg))
@@ -6027,7 +6003,7 @@
   box-shadow:
     0 18px 42px rgba(0, 0, 0, 0.3),
     0 0 28px rgba(0, 238, 255, 0.12);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
   opacity: var(--after-opacity);
   transform: translateY(calc((1 - var(--scan-progress)) * 12px));
 }
@@ -6382,22 +6358,19 @@
   opacity: 0.42;
   border-color: rgba(0, 238, 255, 0.24);
   box-shadow:
-    0 0 68px rgba(0, 238, 255, 0.18),
-    inset 0 0 52px rgba(0, 238, 255, 0.08);
+    0 0 68px rgba(0, 238, 255, 0.18);
 }
 
 .hero-network-orbit {
   border-color: rgba(0, 238, 255, 0.26);
   box-shadow:
-    0 0 46px rgba(0, 238, 255, 0.16),
-    inset 0 0 34px rgba(0, 238, 255, 0.08);
+    0 0 46px rgba(0, 238, 255, 0.16);
 }
 
 .hero-scan-card {
   box-shadow:
     0 44px 140px rgba(0, 0, 0, 0.48),
-    0 0 116px rgba(0, 238, 255, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    0 0 116px rgba(0, 238, 255, 0.22);
 }
 
 .hero-main-scan-line {
@@ -6942,8 +6915,7 @@
     );
   border: 1px solid rgba(0, 238, 255, 0.035);
   box-shadow:
-    0 34px 100px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    0 34px 100px rgba(0, 0, 0, 0.28);
   pointer-events: none;
 }
 
@@ -7048,8 +7020,7 @@
   z-index: 10 !important;
   box-shadow:
     0 44px 140px rgba(0, 0, 0, 0.58),
-    0 0 70px rgba(0, 238, 255, 0.13),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07) !important;
+    0 0 70px rgba(0, 238, 255, 0.13) !important;
 }
 
 /* Clean transition animation for background */
@@ -8102,8 +8073,7 @@
     );
   border: 1px solid rgba(0, 238, 255, 0.035);
   box-shadow:
-    0 34px 100px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    0 34px 100px rgba(0, 0, 0, 0.28);
   pointer-events: none;
 }
 
@@ -8517,8 +8487,7 @@
       radial-gradient(circle, rgba(0, 238, 255, 0.26), rgba(8, 20, 32, 0.82));
     box-shadow:
       0 0 0 6px rgba(0, 238, 255, 0.07),
-      0 0 36px rgba(0, 238, 255, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      0 0 36px rgba(0, 238, 255, 0.28);
   }
 
   .topology-feature:active .feature-dot i,
@@ -8961,8 +8930,7 @@
   box-shadow:
     0 42px 130px rgba(0, 0, 0, 0.48),
     0 0 106px rgba(0, 238, 255, 0.28),
-    0 0 0 1px rgba(125, 211, 252, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    0 0 0 1px rgba(125, 211, 252, 0.24) !important;
   transform:
     translateX(-50%)
     translateY(-10px)
@@ -9239,8 +9207,7 @@
   box-shadow:
     0 42px 130px rgba(0, 0, 0, 0.48),
     0 0 106px rgba(0, 238, 255, 0.28),
-    0 0 0 1px rgba(125, 211, 252, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    0 0 0 1px rgba(125, 211, 252, 0.24) !important;
   transform:
     translateX(-50%)
     translateY(-10px)
@@ -9270,8 +9237,7 @@
   border-color: rgba(0, 238, 255, 0.16);
   box-shadow:
     0 28px 90px rgba(0, 0, 0, 0.34),
-    0 0 42px rgba(0, 238, 255, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+    0 0 42px rgba(0, 238, 255, 0.08) !important;
 }
 
 .solutions-page .principles-section[class*='principle-active-'] .principle-card[data-position='left'] {
@@ -9477,8 +9443,7 @@
   border-radius: 20px !important;
   background: linear-gradient(135deg, rgba(8, 18, 30, 0.98), rgba(5, 12, 22, 0.98)) !important;
   box-shadow:
-    0 18px 60px rgba(0, 0, 0, 0.32),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+    0 18px 60px rgba(0, 0, 0, 0.32) !important;
   transition:
     opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
@@ -9578,8 +9543,7 @@
     0 40px 120px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(0, 238, 255, 0.35),
     0 0 60px rgba(0, 238, 255, 0.3),
-    0 0 120px rgba(0, 238, 255, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    0 0 120px rgba(0, 238, 255, 0.14) !important;
   transform: translateY(-12px) scale(1.038) !important;
   filter: saturate(1.15) !important;
   transition-delay: 0s !important;

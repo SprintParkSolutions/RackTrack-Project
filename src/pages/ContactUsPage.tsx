@@ -246,14 +246,12 @@ export default function ContactUsPage() {
       <section className="contact-hero">
         <div className="hero-content">
           <h1>
-            Talk to
-            <span> RackTrack.</span>
+            Engage the
+            <span> platform team.</span>
           </h1>
 
           <p>
-            Partner with RackTrack to simplify data center operations and accelerate
-            decision-making. From real-time visibility to smarter workflows, we deliver
-            the insights you need to build, manage, and scale with confidence.
+            Whether you're evaluating the platform, scoping a deployment, or designing a continuous reconciliation strategy across your fleet — our team is ready.
           </p>
 
           <div className="hero-actions">
@@ -268,25 +266,11 @@ export default function ContactUsPage() {
 
           <div className="contact-render-scene">
             <img
-              src="/Images/racktrack-contact-hero-v4.webp"
+              src="/Images/racktrack-contact-hero.jpg"
               alt=""
               className="contact-render-image"
               draggable="false"
             />
-            <div className="contact-rack-dots">
-              <span className="contact-rack-dot contact-rack-dot--1" />
-              <span className="contact-rack-dot contact-rack-dot--2" />
-              <span className="contact-rack-dot contact-rack-dot--3" />
-              <span className="contact-rack-dot contact-rack-dot--4" />
-              <span className="contact-rack-dot contact-rack-dot--5" />
-              <span className="contact-rack-dot contact-rack-dot--6" />
-              <span className="contact-rack-dot contact-rack-dot--7" />
-              <span className="contact-rack-dot contact-rack-dot--8" />
-              <span className="contact-rack-dot contact-rack-dot--9" />
-              <span className="contact-rack-dot contact-rack-dot--10" />
-              <span className="contact-rack-dot contact-rack-dot--11" />
-              <span className="contact-rack-dot contact-rack-dot--12" />
-            </div>
           </div>
         </div>
       </section>
@@ -324,13 +308,12 @@ export default function ContactUsPage() {
       <section id="contact" className="contact-main-section">
         <form className="contact-form" onSubmit={handleSubmit} noValidate>
           <h2>
-            Start your
-            <span> conversation.</span>
+            Tell us about your
+            <span> infrastructure.</span>
           </h2>
 
           <p className="contact-form-intro">
-            Tell us what you need and the RackTrack team will get back to you with the
-            right next step.
+            Tell us about your infrastructure footprint and the RackTrack team will scope a guided demo against your environment.
           </p>
 
           <div className="form-row">

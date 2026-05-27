@@ -35,21 +35,21 @@ void detectedRows
 const principleCards = [
   {
     number: '01',
-    title: 'Vision-first',
+    title: 'Perceive',
     description:
-      'Camera is the input. Everything starts with a single photo of the rack.',
+      'Computer vision is the input. Everything starts with a phone sweep of the physical rack.',
   },
   {
     number: '02',
-    title: 'Data fusion',
+    title: 'Reconcile',
     description:
-      'Camera + switch telemetry + CMDB into one source of truth in seconds.',
+      'Camera + switch telemetry + CMDB reconciled into one verified source of infrastructure truth.',
   },
   {
     number: '03',
-    title: 'Floor-ready',
+    title: 'Operationalize',
     description:
-      'Mobile-first, dark-default, designed for noisy data center aisles.',
+      'Mobile-first, dark-default, designed for live data center environments and enterprise workflows.',
   },
 ]
 
@@ -79,50 +79,50 @@ const topologyFeatures = [
 const workflowCards = [
   {
     number: '01',
-    badge: 'AR SCAN',
-    title: 'AR Rack Scanning',
+    badge: 'PERCEIVE',
+    title: 'Visual Rack Intelligence',
     description:
-      'Open the mobile scanner, align the rack, and capture device positions with guided AR overlays.',
+      'Open the mobile scanner, sweep the rack, and capture every device position and port state with guided AR overlays.',
     image: workflowArRackImage,
   },
   {
     number: '02',
-    badge: 'AI DETECT',
-    title: 'AI Device Detection',
+    badge: 'COGNIZE',
+    title: 'Autonomous Asset Identification',
     description:
-      'Detect switches, servers, patch panels, labels, and rack units from the captured frame.',
+      'AI identifies switches, servers, patch panels, labels, and rack units — building a structured device inventory from the captured frame.',
     image: workflowAiDetectionImage,
   },
   {
     number: '03',
-    badge: 'PORTS',
-    title: 'Port Tracking',
+    badge: 'CONNECT',
+    title: 'Connectivity Intelligence',
     description:
-      'Compare free, used, and reserved ports with live status mapped back to the rack image.',
+      'Port-level mapping of active, unused, and reserved connections — live status reconciled against physical rack evidence.',
     image: workflowPortTrackingImage,
   },
   {
     number: '04',
-    badge: 'TOPOLOGY',
-    title: 'Network Topology',
+    badge: 'TWIN',
+    title: 'Topology Intelligence',
     description:
-      'Build 2D and 3D topology views that connect physical rack layout to network paths.',
+      'A continuously reconciled 2D and 3D digital twin that connects physical rack layout to verified network topology.',
     image: workflowNetworkTopologyImage,
   },
   {
     number: '05',
-    badge: 'INVENTORY',
-    title: 'Automated Inventory',
+    badge: 'RECONCILE',
+    title: 'Continuous Reconciliation',
     description:
-      'Keep asset records, rack slots, device names, and ownership details current after each scan.',
+      'Asset records, rack slots, device names, and ownership details stay current — reconciled against CMDB and DCIM after every sweep.',
     image: workflowAutomatedInventoryImage,
   },
   {
     number: '06',
-    badge: 'SECURITY',
-    title: 'Security & Compliance',
+    badge: 'POSTURE',
+    title: 'Posture Intelligence',
     description:
-      'Surface firmware drift, missing records, and vulnerability alerts before audit day arrives.',
+      'Device-level firmware posture, missing records, and vulnerability exposure surfaced continuously — not just on audit day.',
     image: workflowSecurityComplianceImage,
   },
 ]
@@ -215,15 +215,15 @@ function RackTopologySection() {
         <p className="topology-kicker">3D TOPOLOGY</p>
 
         <h2>
-          A rack you can <span>scan,</span>
+          A rack you can <span>perceive,</span>
           <br />
-          <strong>trace & verify.</strong>
+          <strong>reconcile & operationalize.</strong>
         </h2>
 
         <p className="topology-description">
-          RackTrack reads live rack footage to identify switches, patch panels,
-          servers, port activity, LEDs and cable routes, turning one cabinet video
-          into a verified rack inventory.
+          RackTrack reads live rack footage to build a continuously reconciled digital twin — switches, patch panels,
+          servers, port activity, LED state, and cable routes — turning one cabinet sweep
+          into verified infrastructure intelligence.
         </p>
 
         <div className="topology-feature-list">
@@ -402,14 +402,14 @@ function WorkflowSection() {
         <p className="workflow-kicker">WORKFLOW</p>
 
         <h2>
-          Six moments.
+          One platform.
           <br />
-          <span>One scan.</span>
+          <span>Six intelligence surfaces.</span>
         </h2>
 
         <p>
-          Every step of the RackTrack workflow is powered by one rack scan —
-          capture, detect, track, map, inventory, and secure.
+          Every intelligence surface in RackTrack is powered by one continuous workflow —
+          perceive, cognize, connect, twin, reconcile, and secure.
         </p>
       </div>
 
@@ -467,15 +467,18 @@ export default function SolutionsPage() {
 
         <div className="solutions-copy">
           <h1 className="hero-title">
-            <span className="title-line">One workflow.</span>
+            <span className="title-line">One platform.</span>
             <span className="title-line title-gradient">
-              Every rack in your fleet.
+              Infrastructure intelligence for every rack.
             </span>
           </h1>
 
           <p className="hero-description">
-            From one rack scan to a synced CMDB record, RackTrack turns audits
-            into one clear mobile workflow.
+            From physical perception to continuous reconciliation, RackTrack turns rack data into verified infrastructure intelligence — synced to every system your teams already use.
+          </p>
+
+          <p className="hero-patent-sublabel">
+            Built on patent-pending innovations for automated network cable mapping.
           </p>
 
           <div className="hero-actions">

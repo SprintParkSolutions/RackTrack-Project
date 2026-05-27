@@ -95,10 +95,10 @@ const heroMetrics = [
 ];
 
 const signalSteps = [
-  { label: 'Capture', value: 'Phone-guided', icon: Cpu },
-  { label: 'Detect', value: 'Ports and devices', icon: Gauge },
-  { label: 'Sync', value: 'CMDB ready', icon: Network },
-  { label: 'Share', value: 'Audit report', icon: Sparkles },
+  { label: 'Capture', value: 'Phone-guided rack sensing', icon: Cpu },
+  { label: 'Validate', value: 'Physical-to-network truth', icon: Gauge },
+  { label: 'Reconcile', value: 'Structured intelligence', icon: Network },
+  { label: 'Operationalize', value: 'Audit-ready artifacts', icon: Sparkles },
 ];
 
 
@@ -131,7 +131,7 @@ const founderNarrative: Array<{ label: string; body: React.ReactNode }> = [
     label: 'The build',
     body: (
       <>
-        We are building a practical system of record for the rack: fast capture, AI-assisted verification, and clean sync into the tools operations, audit, and service teams already run.
+        RackTrack is built on patent-pending innovations for <strong>automated network cable mapping, visual rack intelligence, and physical infrastructure reconciliation</strong>. The architecture came out of eighteen months of engineering work, and is now the subject of a pending US utility patent application.
       </>
     ),
   },
@@ -236,6 +236,19 @@ function MetricCard({
     runLoadingSequence();
   }, [isLoaded, runLoadingSequence]);
 
+  useEffect(() => {
+    if (!prefersLightMotion) return;
+
+    if (animationFrameRef.current !== null) {
+      window.cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    isLoadingRef.current = false;
+    setCount(100);
+    setIsLoaded(true);
+  }, [prefersLightMotion]);
+
   const replayLoading = useCallback(async () => {
     if (clickSequenceRef.current) return;
     clickSequenceRef.current = true;
@@ -255,10 +268,12 @@ function MetricCard({
   }, [pressControls, runLoadingSequence]);
 
   useEffect(() => {
+    if (prefersLightMotion) return;
+
     if (isInView && shouldLoad) {
       startLoading();
     }
-  }, [isInView, shouldLoad, startLoading]);
+  }, [isInView, shouldLoad, startLoading, prefersLightMotion]);
 
   useEffect(
     () => () => {
@@ -268,6 +283,28 @@ function MetricCard({
     },
     [],
   );
+
+  if (prefersLightMotion) {
+    return (
+      <motion.article
+        ref={ref}
+        variants={variants}
+        custom={index}
+        className="about-metric-card"
+      >
+        <div className="about-metric-card__inner about-metric-card__inner--static">
+          <div className="about-metric-card__content about-metric-card__content--static">
+            <div className="about-metric-card__header">
+              <Icon className="about-card-icon" />
+              <span>{label}</span>
+            </div>
+            <strong>{value}</strong>
+            <p>{detail}</p>
+          </div>
+        </div>
+      </motion.article>
+    );
+  }
 
   return (
     <motion.article
@@ -288,15 +325,16 @@ function MetricCard({
       <motion.div
         className="about-metric-card__inner"
         animate={pressControls}
-        onClick={replayLoading}
+        onClick={prefersLightMotion ? undefined : replayLoading}
         onKeyDown={(event) => {
+          if (prefersLightMotion) return;
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
             replayLoading();
           }
         }}
-        role="button"
-        tabIndex={0}
+        role={prefersLightMotion ? undefined : 'button'}
+        tabIndex={prefersLightMotion ? -1 : 0}
       >
         <AnimatePresence mode="wait">
           {!isLoaded ? (
@@ -367,10 +405,16 @@ function ScrollScene({
 
 
 function FounderStorySection() {
+  const isMobileViewport = useMediaQuery('(max-width: 768px)');
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const stepRefs = useRef<Array<HTMLSpanElement | null>>([]);
 
   useEffect(() => {
+    if (isMobileViewport) {
+      setActiveIndex(0);
+      return undefined;
+    }
+
     const steps = stepRefs.current.filter(Boolean) as HTMLSpanElement[];
     if (!steps.length) return undefined;
 
@@ -397,21 +441,21 @@ function FounderStorySection() {
     steps.forEach((step) => observer.observe(step));
 
     return () => observer.disconnect();
-  }, []);
+  }, [isMobileViewport]);
 
   return (
     <ScrollScene className="about-founder-story">
       <motion.aside className="about-founder-story__anchor" variants={reveal}>
         <span className="about-founder-story__eyebrow">Founder Narrative</span>
-        <h2>
-          Why We Built <span className="about-founder-story__brand">RackTrack</span>
-        </h2>
+        <p className="about-founder-story__intro">
+          The story behind <span className="about-founder-story__brand">RackTrack</span>.
+        </p>
       </motion.aside>
 
       <motion.div className="about-founder-story__narrative" variants={reveal}>
         {founderNarrative.map((item, index) => (
           <article
-            className={`about-founder-story__thought${activeIndex === index ? ' is-active' : ''}`}
+            className={`about-founder-story__thought${isMobileViewport || activeIndex === index ? ' is-active' : ''}`}
             key={item.label}
           >
             <h3>{item.label}</h3>
@@ -421,18 +465,20 @@ function FounderStorySection() {
           </article>
         ))}
       </motion.div>
-      <div className="about-founder-story__scroll-steps" aria-hidden="true">
-        {founderNarrative.map((item, index) => (
-          <span
-            ref={(node) => {
-              stepRefs.current[index] = node;
-            }}
-            className="about-founder-story__scroll-step"
-            data-story-index={index}
-            key={item.label}
-          />
-        ))}
-      </div>
+      {!isMobileViewport && (
+        <div className="about-founder-story__scroll-steps" aria-hidden="true">
+          {founderNarrative.map((item, index) => (
+            <span
+              ref={(node) => {
+                stepRefs.current[index] = node;
+              }}
+              className="about-founder-story__scroll-step"
+              data-story-index={index}
+              key={item.label}
+            />
+          ))}
+        </div>
+      )}
     </ScrollScene>
   );
 }
@@ -580,9 +626,9 @@ export default function AboutUsPage() {
         <ScrollScene className="about-story">
           <div className="about-story__copy">
             <span className="about-eyebrow">What RackTrack Does</span>
-            <h2>Rack scanning, inventory, and sync in one AI workflow.</h2>
+            <h2>Physical infrastructure intelligence — perceived, reconciled, and operationalized.</h2>
             <p>
-              Capture the rack once, let AI identify the hardware, then push the verified result into your operational systems.
+              One phone sweep produces a continuously reconciled digital twin of your physical rack — inventory, topology, port state, and firmware posture synced to every system your teams already run.
             </p>
           </div>
 
@@ -714,11 +760,21 @@ export default function AboutUsPage() {
           <div className="about-cta__beam" />
           <div className="about-cta__content">
             <span className="about-eyebrow">Our mission</span>
-            <h2>Build the Physical Intelligence Layer
-for the modern data center.</h2>
+            <h2>Build the Infrastructure Digital Twin Platform for the modern data center.</h2>
+            <p className="about-cta__lead">
+              The continuously reconciled intelligence layer underneath audit workflows, DCIM systems, and real-world rack operations.
+            </p>
+            <div className="about-cta__signals" aria-label="Mission highlights">
+              <span>Not an audit tool</span>
+              <span>Not a DCIM replacement</span>
+              <span>Patent pending platform</span>
+            </div>
+            <p className="about-cta__meta">
+              Built to make physical infrastructure legible, trusted, and operational at enterprise scale. US Application 19/219,347.
+            </p>
             <p>
               Not an audit tool. Not a DCIM replacement.
-The truth layer underneath both.
+              The continuously reconciled intelligence layer underneath both. Patent Pending — US Application 19/219,347.
             </p>
           </div>
         </ScrollScene>
