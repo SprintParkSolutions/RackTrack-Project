@@ -21,9 +21,54 @@ import {
 } from '../services/salesforceApi'
 
 const faqs = [
-  ['Can we scan existing racks?', 'Yes, RackTrack identifies racks, switches, ports, and cables.'],
-  ['Can we request a demo?', 'Yes, submit the form and our team will schedule a walkthrough.'],
-  ['Is it useful for audits?', 'Yes, it helps maintain rack and port inventory visibility.'],
+  [
+    'Can RackTrack scan existing racks without downtime?',
+    'Yes. RackTrack uses a smartphone video sweep to capture rack state without agents, downtime, or disruption to production infrastructure.',
+  ],
+  [
+    'What kind of infrastructure can RackTrack identify?',
+    'RackTrack supports a broad and continuously expanding range of enterprise networking and data center infrastructure devices.',
+  ],
+  [
+    'How does RackTrack verify inventory accuracy?',
+    'RackTrack reconciles physical scan data against live infrastructure signals to maintain continuously verified inventory and topology records.',
+  ],
+  [
+    'Does RackTrack replace our CMDB or DCIM?',
+    'No. RackTrack acts as the physical intelligence layer underneath existing CMDB, DCIM, and ITSM platforms — helping reconcile what systems report against what is physically present in the rack.',
+  ],
+  [
+    'Is RackTrack useful for compliance and audit preparation?',
+    'Yes. RackTrack helps generate continuously updated inventory, topology, and infrastructure evidence that supports audit readiness and operational reviews.',
+  ],
+  [
+    'Can RackTrack help during incidents and outages?',
+    'Yes. RackTrack helps teams quickly identify devices, ports, and cable relationships so responders spend less time validating rack state during critical incidents.',
+  ],
+  [
+    'Does RackTrack support security and vulnerability workflows?',
+    'Yes. RackTrack provides device-level firmware and infrastructure posture visibility to help security teams identify operational and compliance risks faster.',
+  ],
+  [
+    'How long does a baseline assessment take?',
+    'Typically about twenty minutes for a single rack or row. The assessment compares your existing records against observed physical and network state.',
+  ],
+  [
+    'Can we request a demo before committing?',
+    'Yes. You can schedule a guided walkthrough against your own environment to see how RackTrack performs on real infrastructure.',
+  ],
+  [
+    'Does RackTrack work with existing enterprise tools?',
+    'Yes. RackTrack is designed to integrate with existing infrastructure, inventory, compliance, and operational workflows.',
+  ],
+  [
+    'Where can RackTrack be deployed?',
+    'RackTrack supports cloud-hosted, private cloud, on-premise, and air-gapped deployment models for regulated or restricted environments.',
+  ],
+  [
+    'Who uses RackTrack?',
+    'RackTrack is built for infrastructure leaders, network engineering teams, security operations, compliance owners, incident responders, and data center operators.',
+  ],
 ] as const
 
 type SubmitState = 'idle' | 'sending' | 'sent' | 'error'
@@ -228,7 +273,6 @@ export default function ContactUsPage() {
               className="contact-render-image"
               draggable="false"
             />
-
           </div>
         </div>
       </section>

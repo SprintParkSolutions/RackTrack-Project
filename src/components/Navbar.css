@@ -117,26 +117,36 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 46px;
-  padding: 0 20px 0 22px;
-  border: 0;
-  border-radius: 999px;
-  color: #03101f;
-  background: linear-gradient(135deg, #7dd3fc 0%, #00d2ff 44%, #0099cc 100%);
-  box-shadow: 0 0 24px rgba(0, 210, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  min-height: var(--button-min-height);
+  padding: 0 var(--button-padding-x);
+  border: 1px solid transparent;
+  border-radius: var(--button-radius);
+  color: var(--button-primary-text);
+  background: var(--button-primary-bg);
+  box-shadow: var(--button-primary-shadow);
   cursor: pointer;
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: var(--button-font-size);
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--button-letter-spacing);
   text-transform: uppercase;
   white-space: nowrap;
+  transition:
+    transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.26s ease,
+    filter 0.26s ease;
 }
 
 .rt-nav-cta svg {
   width: 15px;
   height: 15px;
   stroke-width: 2.4;
+}
+
+.rt-nav-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--button-primary-shadow-hover);
+  filter: brightness(1.03);
 }
 
 .rt-nav-menu-btn {
