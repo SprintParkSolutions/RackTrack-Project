@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+﻿import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -67,16 +67,15 @@ export default function ResourcesPage() {
         <div className="res-hero__grid" aria-hidden="true" />
 
         <div className="res-hero__content">
-          <span className="app-eyebrow">Resources</span>
+          <span className="app-eyebrow">Intelligence</span>
           <h1>
-            <span className="res-h1-line">RackTrack insights for</span>
-            <span className="res-h1-line">infrastructure teams that</span>
-            <span className="res-h1-line res-h1-grad">need better physical truth.</span>
+            <span className="res-h1-line">Research, frameworks,</span>
+            <span className="res-h1-line">and insights for teams</span>
+            <span className="res-h1-line res-h1-grad">responsible for infrastructure truth.</span>
           </h1>
           <p>
-            Resources is now a focused editorial library. Explore practical blog
-            content on rack inventory, audit readiness, infrastructure security,
-            and physical layer intelligence.
+            Explore insight-driven content on CMDB drift, topology debt, audit readiness,
+            infrastructure security, and physical infrastructure intelligence.
           </p>
 
           <div className="res-hero-pills" aria-label="Editorial focus">
@@ -136,7 +135,7 @@ export default function ResourcesPage() {
       <section className="app-section res-blog reveal-on-scroll">
         <div className="app-section-heading">
           <span className="app-eyebrow">All Articles</span>
-          <h2>Browse the RackTrack blog library.</h2>
+          <h2>Browse the RackTrack intelligence library.</h2>
           <p>
             Search-friendly, practical articles for infrastructure, operations,
             compliance, and security teams evaluating physical layer intelligence.
@@ -222,3 +221,5 @@ export default function ResourcesPage() {
     </main>
   )
 }
+
+

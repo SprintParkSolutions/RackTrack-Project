@@ -1,4 +1,4 @@
-import './UseCasePage.css'
+﻿import './UseCasePage.css'
 import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -166,7 +166,7 @@ export default function UseCaseArticlePage() {
               better, and scale with confidence.
             </p>
             <Link to="/contact-us">
-              Talk to our team
+              Request platform brief
               <ArrowRight aria-hidden="true" size={18} />
             </Link>
           </div>
@@ -180,3 +180,5 @@ export default function UseCaseArticlePage() {
     </main>
   )
 }
+
+

@@ -1,4 +1,4 @@
-import React, { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
+﻿import React, { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
 import {
   ArrowRight,
@@ -30,14 +30,14 @@ const pillars = [
     title: 'Reconcile',
     patent: 'patent-pending cable-to-port mapping',
     description:
-      'Visual observations are validated against live switch data — CDP, LLDP, and neighbor information — to produce a single verified state.',
+      'Visual observations are validated against live switch data - CDP, LLDP, and neighbor information - to produce a single verified state.',
   },
   {
     num: '03',
     title: 'Cognize',
     patent: 'patent-pending infrastructure reconciliation methods',
     description:
-      'Every change, drift, and dependency is reconciled across scans — surfaced to the operational systems that need it, when they need it.',
+      'Every change, drift, and dependency is reconciled across scans - surfaced to the operational systems that need it, when they need it.',
   },
 ] as const
 
@@ -133,7 +133,7 @@ function ComparisonStatus({
   return <span className="why-matrix__status why-matrix__status--none" />
 }
 
-/* ─── Canvas Illustrations ─── */
+/* Canvas Illustrations */
 
 const RackIllustration = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -448,7 +448,7 @@ const LayersIllustration = () => {
   return <canvas ref={canvasRef} style={{ width: '145px', height: '200px', flexShrink: 0 }} />
 }
 
-/* ─── Feature Card Icons ─── */
+/* Feature Card Icons */
 
 const FeatShield = () => (
   <svg width="44" height="44" viewBox="0 0 44 44" fill="none" style={{ filter: 'drop-shadow(0 0 10px rgba(34,197,94,0.6))' }}>
@@ -474,7 +474,7 @@ const FeatChart = () => (
   </svg>
 )
 
-/* ─── Layout Helpers ─── */
+/* Layout Helpers */
 
 function Connector() {
   return (
@@ -516,7 +516,7 @@ function GlowCard({ children, style, className }: { children: React.ReactNode; s
   )
 }
 
-/* ─── Animated canvas overlay for first carousel card ─── */
+/* Animated canvas overlay for first carousel card */
 function SourceImageAnimated({ src, alt }: { src: string; alt: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -616,7 +616,7 @@ function SourceImageAnimated({ src, alt }: { src: string; alt: string }) {
   )
 }
 
-/* ─── Horizontal scroll carousel ─── */
+/* Horizontal scroll carousel */
 type CarouselItem = {
   heading: string
   desc: string
@@ -852,7 +852,7 @@ export default function WhyRackTrackPage() {
               <span className="why-h1-line why-h1-grad">infrastructure intelligence.</span>
             </h1>
             <p>
-              RackTrack doesn't audit. It perceives, reconciles, and reasons about your physical infrastructure — continuously.
+              RackTrack doesn't audit. It perceives, reconciles, and reasons about your physical infrastructure - continuously.
             </p>
 
             <div className="why-hero__actions">
@@ -886,8 +886,8 @@ export default function WhyRackTrackPage() {
               <span className="why-flow__title-accent"> One reconciled platform.</span>
             </h2>
             <p>
-              Most tools do one piece well. RackTrack combines physical perception, continuous reconciliation,
-              and infrastructure cognition in one workflow — so every team gets inventory they can trust for
+              Most tools do one piece well. RackTrack combines visual rack intelligence, cable-to-port mapping,
+              and infrastructure reconciliation in one workflow - so every team gets inventory they can trust for
               audits, incidents, capacity planning, and compliance.
             </p>
           </div>
@@ -1038,7 +1038,7 @@ export default function WhyRackTrackPage() {
             <span className="why-trust__title-accent"> every team can trust.</span>
           </h2>
           <p>
-            RackTrack produces traceable, network-verified, and timestamped infrastructure records —
+            RackTrack produces traceable, network-verified, and timestamped infrastructure records  - 
             the kind of evidence security, compliance, and operations teams can export, defend, and act on.
           </p>
         </div>
@@ -1050,3 +1050,7 @@ export default function WhyRackTrackPage() {
     </main>
   )
 }
+
+
+
+

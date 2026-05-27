@@ -1,4 +1,4 @@
-import './UseCasePage.css'
+﻿import './UseCasePage.css'
 import { useEffect, useMemo, useState } from 'react'
 import type { MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
@@ -266,8 +266,7 @@ export default function UseCasePage() {
           </h1>
 
           <p>
-            RackTrack empowers data center teams with AI-powered rack intelligence to streamline operations, 
-            reduce risk, and maintain a single source of truth.
+            RackTrack connects rack reality, network validation, and continuous reconciliation so teams can move from physical evidence to operational outcomes faster.
           </p>
 
           <div className="use-case-hero-stats">
@@ -284,8 +283,8 @@ export default function UseCasePage() {
       <section className="use-case-impact-section" aria-labelledby="use-case-impact-title">
         <div className="use-case-impact-header">
           <span>Impact that matters</span>
-          <h2 id="use-case-impact-title">Real Results. Measurable Impact.</h2>
-          <p>RackTrack delivers accuracy, speed, and clarity at every layer.</p>
+          <h2 id="use-case-impact-title">Operational outcomes, measured against physical truth.</h2>
+          <p>RackTrack turns verified rack evidence into faster decisions, stronger controls, and less manual reconciliation work.</p>
         </div>
 
         <div className="use-case-impact-grid">
@@ -327,7 +326,7 @@ export default function UseCasePage() {
           </h2>
           <p>
             Each role lives with a specific failure mode of the current stack.
-            Each one gets a specific surface.
+            Each one gets a specific intelligence surface.
           </p>
         </div>
 
@@ -402,7 +401,7 @@ export default function UseCasePage() {
 
                   <div className="use-case-role-actions">
                     <Link to={fullCaseRoutes[routeIndex]}>Read the full case</Link>
-                    <a href="/contact-us">Talk to our team</a>
+                    <a href="/contact-us">Request platform brief</a>
                   </div>
                 </div>
 
@@ -430,7 +429,7 @@ export default function UseCasePage() {
             stakeholder needs, in the language of the role you actually work in.
           </p>
           <Link to="/contact-us" className="use-case-next-step-button">
-            Talk to our team
+            Request platform brief
             <span aria-hidden="true">-&gt;</span>
           </Link>
         </div>
@@ -438,3 +437,5 @@ export default function UseCasePage() {
     </main>
   )
 }
+
+
