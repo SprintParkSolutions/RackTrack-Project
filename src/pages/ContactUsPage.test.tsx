@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -9,6 +9,18 @@ vi.mock('../services/salesforceApi', () => ({
 }))
 
 describe('ContactUsPage', () => {
+  const getHeroCta = () => {
+    const heroSection = document.querySelector('.contact-hero')
+
+    if (!heroSection) {
+      throw new Error('Contact hero section not found')
+    }
+
+    return within(heroSection).getByRole('button', {
+      name: /request platform brief/i,
+    })
+  }
+
   beforeEach(() => {
     Element.prototype.scrollIntoView = vi.fn()
     window.requestAnimationFrame = vi.fn((callback: FrameRequestCallback) => {
@@ -24,11 +36,7 @@ describe('ContactUsPage', () => {
       </MemoryRouter>,
     )
 
-    expect(
-      screen.getByRole('button', {
-        name: /start a conversation/i,
-      }),
-    ).toBeInTheDocument()
+    expect(getHeroCta()).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /contact us/i })).not.toBeInTheDocument()
   })
 
@@ -41,11 +49,7 @@ describe('ContactUsPage', () => {
       </MemoryRouter>,
     )
 
-    await user.click(
-      screen.getByRole('button', {
-        name: /start a conversation/i,
-      }),
-    )
+    await user.click(getHeroCta())
 
     expect(Element.prototype.scrollIntoView).toHaveBeenCalled()
   })
