@@ -1,4 +1,4 @@
-/* Final RackTrack Home Page
+﻿/* Final RackTrack Home Page
    Fix applied:
    - Hero video uses the SAME full-section background theme, not a separate rectangular area.
    - Baseline image is also a background art layer, blended into same section theme.
@@ -330,7 +330,7 @@ button {
   background: var(--button-ghost-bg);
   border-color: var(--button-ghost-border);
   box-shadow: var(--button-ghost-shadow);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(8px);
 }
 
 .home-primary-btn:hover,
@@ -451,7 +451,7 @@ button {
     radial-gradient(circle at 30% 0%, rgba(34, 211, 238, 0.12), transparent 15rem),
     rgba(255, 255, 255, 0.055);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(8px);
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.28);
 }
 
@@ -640,7 +640,7 @@ button {
   background:
     linear-gradient(180deg, rgba(9, 24, 45, 0.7), rgba(2, 10, 23, 0.84)),
     radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.18), transparent 58%);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(8px);
   box-shadow:
     0 24px 56px rgba(0, 0, 0, 0.44),
     inset 0 0 0 1px rgba(255, 255, 255, 0.03),
@@ -942,8 +942,7 @@ button {
   height: 44%;
   border: 2px solid var(--cyan);
   box-shadow:
-    0 0 26px rgba(0, 210, 255, 0.38),
-    inset 0 0 24px rgba(0, 210, 255, 0.15);
+    0 0 26px rgba(0, 210, 255, 0.38)
   animation: homeProductScan 2.8s ease-in-out infinite;
 }
 
@@ -1121,7 +1120,7 @@ button {
   border-radius: 20px;
   background: rgba(3, 14, 30, 0.78);
   border: 1px solid rgba(125, 211, 252, 0.24);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(8px);
 }
 
 .home-role-glass svg {
@@ -1932,10 +1931,9 @@ button {
   border-radius: 16px;
   background: rgba(3, 12, 24, 0.84);
   border: 1px solid rgba(103, 232, 249, 0.14);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(8px);
   box-shadow:
-    0 18px 34px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    0 18px 34px rgba(0, 0, 0, 0.28);
 }
 
 .home-truth-time {

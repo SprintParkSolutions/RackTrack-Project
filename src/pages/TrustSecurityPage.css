@@ -1,4 +1,4 @@
-.trust-page {
+﻿.trust-page {
   position: relative;
   color: var(--text);
   overflow: hidden;
@@ -100,8 +100,7 @@
   border-radius: 50%;
   border: 1px solid rgba(0, 210, 255, 0.2);
   box-shadow:
-    0 0 30px rgba(0, 210, 255, 0.08),
-    inset 0 0 30px rgba(0, 210, 255, 0.04);
+    0 0 30px rgba(0, 210, 255, 0.08)
 }
 
 .trs-orbit-1 {
@@ -499,10 +498,9 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 999px;
   background: rgba(7, 18, 34, 0.52);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(8px);
   box-shadow:
-    0 18px 40px rgba(0, 0, 0, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 18px 40px rgba(0, 0, 0, 0.16);
 }
 
 .trust-hero__principle span:last-child {
@@ -534,10 +532,9 @@
   z-index: 2;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(5, 16, 30, 0.8);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(8px);
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 20px 50px rgba(0, 0, 0, 0.24);
 }
 
 .trust-hero__assurance {
@@ -722,9 +719,8 @@
   border-radius: 12px;
   background:
     linear-gradient(145deg, rgba(0, 209, 255, 0.11), rgba(8, 13, 34, 0.84) 46%, rgba(139, 92, 246, 0.16));
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(8px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 18px 40px rgba(0, 0, 0, 0.22);
   overflow: hidden;
   transition:
@@ -802,8 +798,7 @@
   border-color: rgba(97, 230, 255, 0.28);
   box-shadow:
     0 32px 72px rgba(0, 0, 0, 0.28),
-    0 0 64px rgba(0, 210, 255, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    0 0 64px rgba(0, 210, 255, 0.14);
 }
 
 .trust-security-card:hover::before,
@@ -835,10 +830,12 @@
     radial-gradient(circle at 28% 18%, rgba(255, 255, 255, 0.22), transparent 32%),
     linear-gradient(145deg, rgba(13, 45, 92, 0.62), rgba(2, 12, 33, 0.9));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
     inset 0 -18px 36px rgba(0, 8, 28, 0.72),
+    
     0 0 0 1px rgba(0, 209, 255, 0.08),
+    
     0 0 28px rgba(0, 209, 255, 0.28),
+    
     0 18px 42px rgba(0, 0, 0, 0.38);
   isolation: isolate;
 }
@@ -1043,8 +1040,7 @@
   font-size: 0.78rem;
   line-height: 1.35;
   box-shadow:
-    0 18px 40px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 18px 40px rgba(0, 0, 0, 0.12);
 }
 
 .trust-data__flow {
@@ -1058,8 +1054,8 @@
     radial-gradient(circle at 84% 86%, rgba(113, 76, 255, 0.08), transparent 28%),
     linear-gradient(145deg, rgba(0, 209, 255, 0.08), rgba(7, 13, 31, 0.92) 48%, rgba(78, 57, 145, 0.16));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 0 0 1px rgba(0, 209, 255, 0.06),
+    
     0 18px 40px rgba(0, 0, 0, 0.22);
 }
 
@@ -1089,8 +1085,7 @@
   border-radius: 10px;
   background: linear-gradient(180deg, rgba(2, 10, 23, 0.96), rgba(4, 14, 30, 0.92));
   box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 8px 24px rgba(0, 0, 0, 0.2);
   color: #ffffff;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1160,9 +1155,10 @@
     radial-gradient(circle at 50% 40%, rgba(103, 243, 255, 0.22), transparent 44%),
     linear-gradient(145deg, rgba(11, 39, 86, 0.62), rgba(2, 11, 30, 0.92));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
     inset 0 -20px 32px rgba(0, 4, 20, 0.62),
+    
     0 0 24px rgba(0, 209, 255, 0.2),
+    
     0 18px 30px rgba(0, 0, 0, 0.28);
   isolation: isolate;
 }
@@ -1338,7 +1334,6 @@
   background:
     linear-gradient(145deg, rgba(0, 209, 255, 0.06), rgba(6, 11, 29, 0.86) 46%, rgba(85, 68, 150, 0.14));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
     0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
@@ -1649,10 +1644,9 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 26px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.022));
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(8px);
   box-shadow:
-    0 16px 44px rgba(0, 0, 0, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 16px 44px rgba(0, 0, 0, 0.14);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2099,4 +2093,70 @@
 .trust-page :where(h1, h2, h3) {
   line-height: 1.12;
   text-wrap: balance;
+}
+
+/* ─── Built on Defensible Innovation ─── */
+.trust-innovation {
+  padding-block: clamp(4rem, 8vw, 8rem);
+}
+
+.trust-innovation__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+}
+
+.trust-innovation__card {
+  position: relative;
+  padding: 2rem 1.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(97, 230, 255, 0.2);
+  background: rgba(7, 17, 38, 0.8);
+  backdrop-filter: blur(8px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.trust-innovation__card:hover {
+  border-color: rgba(97, 230, 255, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 210, 255, 0.12);
+  transform: translateY(-4px);
+}
+
+.trust-innovation__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(97, 230, 255, 0.35);
+  background: rgba(0, 210, 255, 0.08);
+  color: #61e6ff;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.trust-innovation__card h3 {
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  font-weight: 600;
+  color: rgba(226, 238, 255, 0.96);
+  margin-bottom: 0.75rem;
+}
+
+.trust-innovation__card p {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: rgba(186, 204, 230, 0.76);
+  margin-bottom: 1.25rem;
+}
+
+.trust-innovation__ref {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(97, 230, 255, 0.55);
+  letter-spacing: 0.06em;
 }

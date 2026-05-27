@@ -20,21 +20,24 @@ const heroSignals = [
 const pillars = [
   {
     num: '01',
-    title: 'Sense',
+    title: 'Perceive',
+    patent: 'patent-pending visual rack intelligence',
     description:
-      'Computer vision captures device position, labels, ports, cable state, and visual evidence from the rack.',
+      'Visual rack capture identifies every device, port, label, and cable in the rack environment. The infrastructure becomes machine-readable.',
   },
   {
     num: '02',
-    title: 'Verify',
+    title: 'Reconcile',
+    patent: 'patent-pending cable-to-port mapping',
     description:
-      'Observed state is checked against existing CMDB, DCIM, network, and audit records to expose drift.',
+      'Visual observations are validated against live switch data — CDP, LLDP, and neighbor information — to produce a single verified state.',
   },
   {
     num: '03',
-    title: 'Enrich',
+    title: 'Cognize',
+    patent: 'patent-pending infrastructure reconciliation methods',
     description:
-      'RackTrack turns findings into exports, reports, and workflows each team can use immediately.',
+      'Every change, drift, and dependency is reconciled across scans — surfaced to the operational systems that need it, when they need it.',
   },
 ] as const
 
@@ -105,30 +108,6 @@ const toolHighlights = [
     image: '/WhyRackTrack/Audit_Ready.webp',
     icon: Database,
     imageAlt: 'Security and compliance evidence review interface',
-  },
-] as const
-
-const trustPillars = [
-  {
-    Icon: ScanSearch,
-    badge: 'SOURCE-LINKED',
-    title: 'Every record traceable',
-    desc: 'Each asset entry is tied back to the physical rack or live network signal that produced it.',
-    accent: '#4F8EF7',
-  },
-  {
-    Icon: Waypoints,
-    badge: 'NETWORK-VERIFIED',
-    title: 'Every identity confirmed',
-    desc: 'Rack observations are cross-checked against live network identity before a device is trusted.',
-    accent: '#1ad1d7',
-  },
-  {
-    Icon: FileClock,
-    badge: 'TIMESTAMPED',
-    title: 'Every change recorded',
-    desc: 'Arrivals, moves, and departures are captured with timing your compliance team can defend.',
-    accent: '#60f7cf',
   },
 ] as const
 
@@ -651,12 +630,21 @@ function ToolHighlightCarousel({ items }: { items: readonly CarouselItem[] }) {
   const targetRef   = useRef<HTMLDivElement>(null)
   const viewportRef = useRef<HTMLDivElement>(null)
   const trackRef    = useRef<HTMLDivElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ['start start', 'end end'],
   })
   const [maxTranslate, setMaxTranslate] = useState(0)
   const [activeIndex, setActiveIndex]   = useState(0)
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 768px)')
+    const sync = () => setIsMobile(media.matches)
+    sync()
+    media.addEventListener('change', sync)
+    return () => media.removeEventListener('change', sync)
+  }, [])
 
   useEffect(() => {
     const measure = () => {
@@ -673,9 +661,35 @@ function ToolHighlightCarousel({ items }: { items: readonly CarouselItem[] }) {
   const x = useTransform(scrollYProgress, [0, 1], [0, -maxTranslate])
 
   useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+    if (isMobile) return
     const clamped = Math.max(0, Math.min(1, latest))
     setActiveIndex(Math.round(clamped * (items.length - 1)))
   })
+
+  if (isMobile) {
+    return (
+      <div className="tool-highlight-mobile-list">
+        {items.map((item, i) => (
+          <article key={i} className="tool-highlight-mobile-card">
+            <div className="tool-highlight-inner">
+              <div className="tool-highlight-content">
+                <div className="tool-highlight-icon"><item.icon size={22} /></div>
+                <div className="tool-highlight-tag">{item.tag}</div>
+                <h3 className="tool-highlight-heading">{item.heading}</h3>
+                <p className="tool-highlight-desc">{item.desc}</p>
+              </div>
+              <div className="tool-highlight-media">
+                {i === 0
+                  ? <SourceImageAnimated src={item.image} alt={item.imageAlt} />
+                  : <img src={item.image} alt={item.imageAlt} className="tool-highlight-image" />
+                }
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div
@@ -834,12 +848,11 @@ export default function WhyRackTrackPage() {
           <div className="why-hero__content">
             <span className="app-eyebrow">Why RackTrack</span>
             <h1>
-              <span className="why-h1-line">See every device.</span>
-              <span className="why-h1-line why-h1-grad">Validate every link.</span>
+              <span className="why-h1-line">Three layers of</span>
+              <span className="why-h1-line why-h1-grad">infrastructure intelligence.</span>
             </h1>
             <p>
-              RackTrack unifies physical discovery, live network validation, and evidence-ready
-              reporting in one platform.
+              RackTrack doesn't audit. It perceives, reconciles, and reasons about your physical infrastructure — continuously.
             </p>
 
             <div className="why-hero__actions">
@@ -869,13 +882,13 @@ export default function WhyRackTrackPage() {
           <div className="why-flow__intro">
             <span className="app-eyebrow">Why RackTrack</span>
             <h2>
-              Three things every tool does.
-              <span className="why-flow__title-accent"> Only one does all three.</span>
+              Three intelligence layers.
+              <span className="why-flow__title-accent"> One reconciled platform.</span>
             </h2>
             <p>
-              Most tools do one piece well. RackTrack combines rack sensing, network validation,
-              and infrastructure context in one pass, so teams get inventory they can trust for
-              audits, incidents, and planning.
+              Most tools do one piece well. RackTrack combines physical perception, continuous reconciliation,
+              and infrastructure cognition in one workflow — so every team gets inventory they can trust for
+              audits, incidents, capacity planning, and compliance.
             </p>
           </div>
 
@@ -887,6 +900,9 @@ export default function WhyRackTrackPage() {
                   <div className="why-pillar-copy">
                     <div className="why-pillar-number">{p.num}</div>
                     <h3 className="why-pillar-title">{p.title}</h3>
+                    {'patent' in p && p.patent && (
+                      <span className="why-pillar-patent">{p.patent}</span>
+                    )}
                     <p className="why-pillar-desc">{p.description}</p>
                   </div>
                   <div className="why-pillar-visual">
@@ -1027,23 +1043,10 @@ export default function WhyRackTrackPage() {
           </p>
         </div>
 
-        <div className="why-trust__pillar-row">
-          {trustPillars.map((p) => (
-            <div
-              key={p.badge}
-              className="why-trust__pillar"
-              style={{ '--trust-accent': p.accent } as CSSProperties}
-            >
-              <div className="why-trust__pillar-icon"><p.Icon size={20} /></div>
-              <div className="why-trust__pillar-badge">{p.badge}</div>
-              <h3>{p.title}</h3>
-              <p>{p.desc}</p>
-            </div>
-          ))}
+        <div className="why-trust__carousel">
+          <ToolHighlightCarousel items={toolHighlights} />
         </div>
       </section>
-
-      <ToolHighlightCarousel items={toolHighlights} />
     </main>
   )
 }
