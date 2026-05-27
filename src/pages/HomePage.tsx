@@ -20,7 +20,7 @@ import {
   XCircle,
   Zap,
 } from "lucide-react";
- 
+
 const capabilities = [
   [
     "Autonomous Asset Identification",
@@ -71,7 +71,7 @@ const capabilities = [
     FileCheck,
   ],
 ] as const;
- 
+
 const problemStats = [
   ["40-60%", "CMDB drift", "Physical reality and records do not match."],
   [
@@ -83,9 +83,13 @@ const problemStats = [
   ["3-6 weeks", "Evidence prep", "Manual compliance work per cycle."],
   ["20-40 min", "Incident delay", "Time lost confirming rack truth."],
 ] as const;
- 
+
 const oldWay = [
-  ["Manual infrastructure checks", "Teams walk the rack to confirm what exists.", Clock],
+  [
+    "Manual infrastructure checks",
+    "Teams walk the rack to confirm what exists.",
+    Clock,
+  ],
   [
     "Tool disagreement",
     "CMDB, DCIM, and asset registers drift apart.",
@@ -97,7 +101,7 @@ const oldWay = [
     XCircle,
   ],
 ] as const;
- 
+
 const rackTrackWay = [
   [
     "Phone sweep",
@@ -111,7 +115,7 @@ const rackTrackWay = [
   ],
   ["Operational confidence", "Teams act from current rack evidence.", Zap],
 ] as const;
- 
+
 const roles = [
   [
     "For Infrastructure Executives",
@@ -144,13 +148,13 @@ const roles = [
     "/home-role-images/role-ma-migration-teams.webp",
   ],
 ] as const;
- 
+
 const heroSignals = [
   "Infrastructure digitized",
   "Connectivity intelligence",
   "Source of truth, continuously",
 ] as const;
- 
+
 export default function HomePage() {
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
   const proofVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -158,13 +162,17 @@ export default function HomePage() {
   const truthSectionRef = useRef<HTMLElement | null>(null);
   const [shouldLoadHeroVideo, setShouldLoadHeroVideo] = useState(false);
   const [shouldLoadProofVideo, setShouldLoadProofVideo] = useState(false);
-  const [shouldLoadTruthVideo] = useState(true);
- 
+  const [shouldLoadTruthVideo, setShouldLoadTruthVideo] = useState(false);
+  const [shouldAutoplayTruthVideo, setShouldAutoplayTruthVideo] =
+    useState(false);
+  const [hasTruthVideoStarted, setHasTruthVideoStarted] = useState(false);
+  const [isTruthVideoPlaying, setIsTruthVideoPlaying] = useState(false);
+
   useEffect(() => {
     const elements = Array.from(
       document.querySelectorAll<HTMLElement>(".home-animate-in"),
     );
- 
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -176,12 +184,12 @@ export default function HomePage() {
       },
       { threshold: 0.16, rootMargin: "0px 0px -8% 0px" },
     );
- 
+
     elements.forEach((element) => observer.observe(element));
- 
+
     return () => observer.disconnect();
   }, []);
- 
+
   const handleWatchTour = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     truthSectionRef.current?.scrollIntoView({
@@ -189,51 +197,63 @@ export default function HomePage() {
       block: "start",
     });
   };
- 
+
+  const handleTruthVideoPlay = () => {
+    setShouldLoadTruthVideo(true);
+    setShouldAutoplayTruthVideo(true);
+    setHasTruthVideoStarted(true);
+  };
+
+  const resetTruthVideoPlayback = () => {
+    setShouldAutoplayTruthVideo(false);
+    setHasTruthVideoStarted(false);
+    setIsTruthVideoPlaying(false);
+  };
+
   useEffect(() => {
     const scheduleIdleLoad = (callback: () => void) => {
       if ("requestIdleCallback" in window) {
         const id = window.requestIdleCallback(callback, { timeout: 1200 });
- 
+
         return () => window.cancelIdleCallback(id);
       }
- 
+
       const id = globalThis.setTimeout(callback, 900);
- 
+
       return () => globalThis.clearTimeout(id);
     };
- 
+
     const scheduleVideoLoad = () => setShouldLoadHeroVideo(true);
- 
+
     if (document.readyState === "complete") {
       return scheduleIdleLoad(scheduleVideoLoad);
     }
- 
+
     let cleanup = () => {};
- 
+
     const handleWindowLoad = () => {
       cleanup = scheduleIdleLoad(scheduleVideoLoad);
     };
- 
+
     window.addEventListener("load", handleWindowLoad, { once: true });
- 
+
     return () => {
       window.removeEventListener("load", handleWindowLoad);
       cleanup();
     };
   }, [shouldLoadHeroVideo]);
- 
+
   useEffect(() => {
     const video = proofVideoRef.current;
- 
+
     if (!video) {
       return;
     }
- 
+
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
- 
+
         if (entry?.isIntersecting) {
           setShouldLoadProofVideo(true);
           observer.disconnect();
@@ -241,33 +261,82 @@ export default function HomePage() {
       },
       { rootMargin: "280px 0px" },
     );
- 
+
     observer.observe(video);
- 
+
     return () => observer.disconnect();
   }, []);
- 
+
   useEffect(() => {
     const video = heroVideoRef.current;
- 
+
     if (!video || !shouldLoadHeroVideo) {
       return;
     }
- 
+
     const tryPlay = () => {
       void video.play().catch(() => {});
     };
- 
+
     tryPlay();
     video.addEventListener("canplay", tryPlay);
     video.addEventListener("loadeddata", tryPlay);
- 
+
     return () => {
       video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("loadeddata", tryPlay);
     };
+  }, [shouldLoadHeroVideo]);
+
+  useEffect(() => {
+    const section = truthSectionRef.current;
+
+    if (!section) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+
+        if (entry?.isIntersecting) {
+          setShouldLoadTruthVideo(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "280px 0px" },
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
   }, []);
- 
+
+  useEffect(() => {
+    if (!shouldAutoplayTruthVideo || !shouldLoadTruthVideo) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      const video = truthVideoRef.current;
+
+      if (!video) {
+        return;
+      }
+
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {
+          setShouldAutoplayTruthVideo(false);
+          setHasTruthVideoStarted(false);
+          setIsTruthVideoPlaying(false);
+        });
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [shouldAutoplayTruthVideo, shouldLoadTruthVideo]);
+
   return (
     <main className="home-page">
       <section className="home-hero-section">
@@ -280,7 +349,7 @@ export default function HomePage() {
           className="home-hero-ambient-orb home-hero-ambient-orb-two"
           aria-hidden="true"
         />
- 
+
         <div
           id="home-tour"
           className="home-hero-bg-video-layer"
@@ -312,9 +381,11 @@ export default function HomePage() {
           <div className="home-hero-video-fade" />
           <div className="home-hero-scan-sweep" />
         </div>
- 
+
         <div className="home-hero-copy home-animate-in is-visible">
-          <span className="home-eyebrow">THE PHYSICAL INFRASTRUCTURE INTELLIGENCE PLATFORM</span>
+          <span className="home-eyebrow">
+            THE PHYSICAL INFRASTRUCTURE INTELLIGENCE PLATFORM
+          </span>
           <h1>
             <span className="home-hero-line home-hero-line-one">
               Your infrastructure,
@@ -324,9 +395,13 @@ export default function HomePage() {
             </em>
           </h1>
           <p className="home-hero-copy-text">
-            RackTrack transforms rack images and network signals into verified infrastructure intelligence — helping teams understand every device, port, cable, and physical-to-logical relationship across the rack environment. Built on patent-pending innovations for automated network cable mapping.
+            RackTrack transforms rack images and network signals into verified
+            infrastructure intelligence — helping teams understand every device,
+            port, cable, and physical-to-logical relationship across the rack
+            environment. Built on patent-pending innovations for automated
+            network cable mapping.
           </p>
- 
+
           <div className="home-hero-signal-rail" aria-hidden="true">
             {heroSignals.map((signal, index) => (
               <div
@@ -340,7 +415,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
- 
+
           <div className="home-hero-actions home-hero-actions-animated">
             <Link
               to="/contact-us"
@@ -361,16 +436,22 @@ export default function HomePage() {
           </div>
         </div>
       </section>
- 
+
       <section className="home-section home-problem-section home-animate-in">
         <div className="home-section-header">
           <span>Problem</span>
-          <h2>Your CMDB is outdated. Your DCIM is incomplete. RackTrack is the intelligence layer that closes the gap.</h2>
+          <h2>
+            Your CMDB is outdated. Your DCIM is incomplete. RackTrack is the
+            intelligence layer that closes the gap.
+          </h2>
           <p>
-            Every infrastructure record drifts. Every CMDB lies. Every DCIM has blind spots. RackTrack delivers continuous reconciliation between the physical world and your operational systems — autonomous, verifiable, defensible.
+            Every infrastructure record drifts. Every CMDB lies. Every DCIM has
+            blind spots. RackTrack delivers continuous reconciliation between
+            the physical world and your operational systems — autonomous,
+            verifiable, defensible.
           </p>
         </div>
- 
+
         <div className="home-problem-timeline">
           {problemStats.map(([value, label, text], index) => (
             <article className="home-problem-card" key={label}>
@@ -384,7 +465,7 @@ export default function HomePage() {
           ))}
         </div>
       </section>
- 
+
       <section
         id="home-truth"
         ref={truthSectionRef}
@@ -393,53 +474,78 @@ export default function HomePage() {
         <div className="home-truth-visual">
           <div className="home-truth-canvas">
             <div className="home-truth-img-wrap">
+              {!isTruthVideoPlaying ? (
+                <button
+                  type="button"
+                  className="home-truth-play-btn"
+                  onClick={handleTruthVideoPlay}
+                  aria-label="Play RackTrack video"
+                >
+                  <span className="home-truth-play-icon">
+                    <PlayCircle size={32} />
+                  </span>
+                  <span className="home-truth-play-label">Play video</span>
+                </button>
+              ) : null}
               <video
                 ref={truthVideoRef}
                 className="home-truth-video"
-                loop
-                controls
+                controls={hasTruthVideoStarted}
                 playsInline
-                preload="metadata"
-                poster="/solutions page images/Server_rack-scan.jpg"
+                preload="none"
+                poster="/RackTrack-poster.jpg"
+                onPlay={() => {
+                  setShouldAutoplayTruthVideo(false);
+                  setHasTruthVideoStarted(true);
+                  setIsTruthVideoPlaying(true);
+                }}
+                onPause={() => setIsTruthVideoPlaying(false)}
+                onEnded={() => {
+                  const video = truthVideoRef.current;
+                  if (video) {
+                    video.currentTime = 0;
+                  }
+                  resetTruthVideoPlayback();
+                }}
               >
                 {shouldLoadTruthVideo ? (
                   <>
-                    <source
-                      src="/solutions page images/server_rack.mp4"
-                      type="video/mp4"
-                    />
-                    <source
-                      src="/solutions page images/server_rack.mp4"
-                      type="video/mp4"
-                    />
+                    <source src="/RackTrack-web.mp4" type="video/mp4" />
                   </>
                 ) : null}
               </video>
             </div>
           </div>
         </div>
- 
+
         <div className="home-truth-copy">
           <span>What RackTrack Is</span>
-          <h2>Physical Infrastructure Intelligence — continuously reconciled across your entire footprint.</h2>
+          <h2>
+            Physical Infrastructure Intelligence — continuously reconciled
+            across your entire footprint.
+          </h2>
           <p>
-            RackTrack combines computer vision, network telemetry, vendor data, and security intelligence into a single platform.
-            One phone sweep produces a verified infrastructure digital twin — inventory, topology, port state, and firmware posture synced to your operational stack.
+            RackTrack combines computer vision, network telemetry, vendor data,
+            and security intelligence into a single platform. One phone sweep
+            produces a verified infrastructure digital twin — inventory,
+            topology, port state, and firmware posture synced to your
+            operational stack.
           </p>
 
           <div className="home-truth-note">
             From physical rack perception to continuous reconciliation,
-            RackTrack gives every team one verified source of infrastructure truth.
+            RackTrack gives every team one verified source of infrastructure
+            truth.
           </div>
         </div>
       </section>
- 
+
       <section className="home-section home-capabilities-section home-animate-in">
         <div className="home-section-header">
           <span>Capabilities</span>
           <h2>One platform. Every infrastructure outcome.</h2>
         </div>
- 
+
         <div className="home-capability-image-grid">
           {capabilities.map(([title, text, image, Icon]) => (
             <article className="home-capability-image-card" key={title}>
@@ -456,13 +562,15 @@ export default function HomePage() {
           ))}
         </div>
       </section>
- 
+
       <section className="home-section home-proof-section home-animate-in">
         <div className="home-section-header">
           <span>Proof</span>
-          <h2>From manual rack audits to AI-powered infrastructure validation.</h2>
+          <h2>
+            From manual rack audits to AI-powered infrastructure validation.
+          </h2>
         </div>
- 
+
         <div className="home-proof-compare">
           <article className="home-proof-panel">
             <div className="home-proof-title">
@@ -472,7 +580,7 @@ export default function HomePage() {
                 <p>Manual. Slow. Error-prone.</p>
               </div>
             </div>
- 
+
             <div className="home-proof-image home-proof-image-old">
               <img
                 src="/solutions page images/Before_scan.jpg"
@@ -480,7 +588,7 @@ export default function HomePage() {
                 loading="lazy"
               />
             </div>
- 
+
             <div className="home-proof-list">
               {oldWay.map(([title, text, Icon]) => (
                 <div key={title}>
@@ -493,9 +601,9 @@ export default function HomePage() {
               ))}
             </div>
           </article>
- 
+
           <div className="home-proof-vs">VS</div>
- 
+
           <article className="home-proof-panel home-proof-panel-active">
             <div className="home-proof-title">
               <CheckCircle2 size={28} />
@@ -504,7 +612,7 @@ export default function HomePage() {
                 <p>Automated. Fast. Verified.</p>
               </div>
             </div>
- 
+
             <div className="home-proof-image home-proof-image-new">
               <video
                 ref={proofVideoRef}
@@ -528,14 +636,14 @@ export default function HomePage() {
                   </>
                 ) : null}
               </video>
- 
+
               <div className="home-proof-hud">
                 <small>Output Ready</small>
                 <strong>Rack verified</strong>
                 <span>Inventory - Ports - Evidence</span>
               </div>
             </div>
- 
+
             <div className="home-proof-list">
               {rackTrackWay.map(([title, text, Icon]) => (
                 <div key={title}>
@@ -549,20 +657,20 @@ export default function HomePage() {
             </div>
           </article>
         </div>
- 
+
         <div className="home-proof-metrics">
           <article>
             <small>Time to characterize a rack</small>
             <strong>2-5 days</strong>
             <p>Manual process without RackTrack</p>
           </article>
- 
+
           <article className="active">
             <small>With RackTrack</small>
             <strong>Minutes</strong>
             <p>From a smartphone video sweep</p>
           </article>
- 
+
           <article>
             <small>Modeled annual value</small>
             <strong>$1M-$2.5M</strong>
@@ -570,13 +678,13 @@ export default function HomePage() {
           </article>
         </div>
       </section>
- 
+
       <section className="home-section home-roles-section home-animate-in">
         <div className="home-section-header">
           <span>Who It's For</span>
           <h2>Built for teams responsible for infrastructure truth.</h2>
         </div>
- 
+
         <div className="home-role-strip">
           {roles.map(([title, text, image]) => (
             <article className="home-role-card" key={title}>
@@ -590,10 +698,10 @@ export default function HomePage() {
           ))}
         </div>
       </section>
- 
+
       <section className="home-final-cta home-animate-in">
         <div className="home-final-orbit" />
- 
+
         <div className="home-final-bg-art" aria-hidden="true">
           <img
             src="/Images/racktrack-home-truth-generated.png"
@@ -602,7 +710,7 @@ export default function HomePage() {
           />
           <div className="home-final-bg-fade" />
         </div>
- 
+
         <div className="home-final-copy">
           <span>See RackTrack In Action</span>
           <h2>
@@ -611,7 +719,8 @@ export default function HomePage() {
           </h2>
           <p>
             Start with a guided assessment on a single rack or row. In minutes,
-            see your physical infrastructure reconciled against CMDB and network records.
+            see your physical infrastructure reconciled against CMDB and network
+            records.
           </p>
 
           <Link

@@ -979,6 +979,10 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 24px 14px 24px 20px;
 }
 
 .contact-render-scene::before {
@@ -992,10 +996,11 @@
 }
 
 .contact-render-image {
-  position: absolute;
-  inset: 0;
+  position: relative;
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   object-position: right center;
   user-select: none;
@@ -2428,7 +2433,7 @@
   display: grid;
   grid-template-columns: 1fr 0.9fr;
   gap: 28px;
-  align-items: stretch;
+  align-items: start;
 }
 
 .contact-form,
@@ -2598,7 +2603,7 @@
   }
 
   .contact-stage {
-    height: 620px;
+    height: 500px;
   }
 
   .contact-hub {
@@ -2623,11 +2628,13 @@
 
   .contact-hero {
     min-height: 100svh;
-    padding: 98px 20px 48px;
-    gap: 18px;
+    padding: 72px 24px 100px;
+    align-items: center;
+    gap: 20px;
   }
 
   .hero-content {
+    order: 1;
     z-index: 3;
   }
 
@@ -2701,31 +2708,40 @@
   }
 
   .contact-stage {
-    height: 220px;
+    order: 2;
+    height: auto;
   }
 
   .contact-stage-showcase {
     position: absolute;
     inset: 0;
     width: auto;
+    height: auto;
     margin-top: 0;
     border-radius: 0;
+    overflow: hidden;
     background: transparent;
-    border: none;
+    border: 0;
     box-shadow: none;
   }
 
   .contact-render-scene::before {
     background:
-      linear-gradient(180deg, rgba(2, 7, 19, 0.55) 0%, rgba(2, 7, 19, 0.1) 40%, rgba(2, 7, 19, 0.55) 100%),
-      linear-gradient(90deg, rgba(2, 7, 19, 0.88) 0%, rgba(2, 7, 19, 0.3) 40%, rgba(2, 7, 19, 0.0) 100%);
+      linear-gradient(180deg, rgba(2, 7, 19, 0.97) 0%, rgba(2, 7, 19, 0.88) 44%, rgba(2, 7, 19, 0.32) 64%, rgba(2, 7, 19, 0.0) 84%);
+  }
+
+  .contact-render-scene {
+    position: absolute;
+    height: 100%;
+    padding: 0;
+    justify-content: center;
   }
 
   .contact-render-image {
     object-fit: cover;
-    object-position: 72% center;
-    transform-origin: 72% center;
-    animation-duration: 12s;
+    object-position: 65% center;
+    transform-origin: center;
+    animation: contactHeroFloat 10s ease-in-out infinite;
   }
 
   .contact-visual {
@@ -2779,6 +2795,10 @@
     right: 22px;
     top: 166px;
   }
+
+  .hero-actions {
+    margin-top: 22px;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -2798,6 +2818,20 @@
 }
 
 @media (max-width: 520px) {
+  .contact-hero {
+    padding: 68px 20px 90px;
+    gap: 18px;
+  }
+
+  .contact-stage {
+    height: auto;
+  }
+
+  .hero-content h1 {
+    margin: 4px 0 14px;
+    font-size: clamp(2.45rem, 10.5vw, 3.1rem);
+  }
+
   .hero-actions .primary-btn,
   .hero-actions .secondary-btn {
     width: 100%;
@@ -2807,8 +2841,14 @@
   .contact-stage-showcase .contact-glow {
     width: 420px;
     height: 320px;
-    right: -18%;
+    right: 50%;
+    transform: translateX(50%);
     filter: blur(48px);
+  }
+
+  .contact-render-scene {
+    padding: 0;
+    justify-content: center;
   }
 }
 
