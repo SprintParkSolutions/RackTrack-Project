@@ -1,7 +1,6 @@
 ﻿import "./HomePage.css";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import * as THREE from "three";
 import {
   Activity,
   AlertTriangle,
@@ -156,184 +155,18 @@ const heroSignals = [
   "Source of truth, continuously",
 ] as const;
 
-const HERO_RACK_MODEL_URL = "/models/data_center_server_rack-compressed.glb";
-
-const isPrerenderBrowser = () =>
-  typeof navigator !== "undefined" &&
-  /HeadlessChrome|Prerender/i.test(navigator.userAgent);
-
-function HeroRackModel({
-  cameraRef,
-  controlsRef,
-}: {
-  cameraRef: RefObject<THREE.PerspectiveCamera | null>;
-  controlsRef: RefObject<ComponentRef<typeof OrbitControls> | null>;
-}) {
-  const { scene } = useGLTF(HERO_RACK_MODEL_URL);
-  const groupRef = useRef<THREE.Group>(null);
-  const size = useThree((state) => state.size);
-  const invalidate = useThree((state) => state.invalidate);
-
-  useLayoutEffect(() => {
-    const group = groupRef.current;
-    const perspectiveCamera = cameraRef.current;
-
-    if (!group || !perspectiveCamera || !perspectiveCamera.isPerspectiveCamera) {
-      return;
-    }
-
-    const box = new THREE.Box3().setFromObject(group);
-    const center = box.getCenter(new THREE.Vector3());
-    const sphere = box.getBoundingSphere(new THREE.Sphere());
-    const radius = Math.max(sphere.radius, 1);
-    const aspect = size.width / Math.max(size.height, 1);
-    const verticalFov = THREE.MathUtils.degToRad(perspectiveCamera.fov);
-    const horizontalFov = 2 * Math.atan(Math.tan(verticalFov / 2) * aspect);
-    const fitFov = Math.min(verticalFov, horizontalFov);
-    const fitOffset = aspect < 0.9 ? 1.62 : 1.42;
-    const distance = (radius * fitOffset) / Math.sin(fitFov / 2);
-
-    group.position.sub(center);
-    perspectiveCamera.position.set(radius * 0.42, radius * 0.16, distance);
-    perspectiveCamera.near = Math.max(distance / 120, 0.01);
-    perspectiveCamera.far = distance * 120;
-    perspectiveCamera.lookAt(0, 0, 0);
-    perspectiveCamera.updateProjectionMatrix();
-
-    if (controlsRef.current) {
-      controlsRef.current.target.set(0, 0, 0);
-      controlsRef.current.minDistance = distance * 0.62;
-      controlsRef.current.maxDistance = distance * 1.62;
-      controlsRef.current.update();
-    }
-
-    invalidate();
-  }, [cameraRef, controlsRef, invalidate, scene, size.height, size.width]);
-
-  useEffect(() => {
-    scene.traverse((object) => {
-      if (object instanceof THREE.Mesh) {
-        object.castShadow = true;
-        object.receiveShadow = true;
-
-        const materials = Array.isArray(object.material)
-          ? object.material
-          : [object.material];
-
-        const highlightedMaterials = materials.map((material) => {
-          const highlightedMaterial = material.clone();
-
-          if (
-            highlightedMaterial instanceof THREE.MeshStandardMaterial ||
-            highlightedMaterial instanceof THREE.MeshPhysicalMaterial
-          ) {
-            highlightedMaterial.color.lerp(new THREE.Color("#b8d9e8"), 0.38);
-            highlightedMaterial.emissive = new THREE.Color("#103848");
-            highlightedMaterial.emissiveIntensity = 0.18;
-            highlightedMaterial.metalness = Math.min(
-              highlightedMaterial.metalness + 0.12,
-              0.78,
-            );
-            highlightedMaterial.roughness = Math.max(
-              highlightedMaterial.roughness - 0.2,
-              0.34,
-            );
-          }
-
-          return highlightedMaterial;
-        });
-
-        object.material = Array.isArray(object.material)
-          ? highlightedMaterials
-          : highlightedMaterials[0];
-      }
-    });
-  }, [scene]);
-
-  return (
-    <group ref={groupRef} rotation={[-0.04, -0.36, 0]}>
-      <primitive object={scene} />
-    </group>
-  );
-}
-
-function HeroRackLoading() {
-  return (
-    <Html center wrapperClass="home-hero-rack-loader-wrapper">
-      <div className="home-hero-rack-loader">
-        <span className="home-hero-rack-loader-ring" aria-hidden="true" />
-        <span>3D Loading</span>
-      </div>
-    </Html>
-  );
-}
-
-function HeroRackScene() {
-  const cameraRef = useRef<THREE.PerspectiveCamera>(null);
-  const controlsRef = useRef<ComponentRef<typeof OrbitControls>>(null);
-
-  return (
-    <>
-      <PerspectiveCamera
-        ref={cameraRef}
-        makeDefault
-        fov={34}
-        position={[0, 0, 8]}
-      />
-      <ambientLight intensity={2.35} />
-      <hemisphereLight
-        args={["#ffffff", "#0a2238", 2.5]}
-        position={[0, 3, 0]}
-      />
-      <directionalLight
-        color="#ffffff"
-        intensity={4.4}
-        position={[4, 7, 6]}
-        castShadow
-      />
-      <directionalLight color="#9feaff" intensity={2.8} position={[-5, 2, 4]} />
-      <directionalLight color="#6e7dff" intensity={1.8} position={[5, -1, -4]} />
-      <pointLight
-        color="#67e8f9"
-        intensity={8.5}
-        position={[-3.5, 0.8, 4]}
-      />
-      <pointLight
-        color="#9ba8ff"
-        intensity={4.8}
-        position={[3, -1.5, 2.5]}
-      />
-      <Suspense fallback={<HeroRackLoading />}>
-        <HeroRackModel cameraRef={cameraRef} controlsRef={controlsRef} />
-      </Suspense>
-      <OrbitControls
-        ref={controlsRef}
-        autoRotate
-        autoRotateSpeed={0.55}
-        dampingFactor={0.08}
-        enableDamping
-        enablePan={false}
-        enableZoom
-        maxPolarAngle={Math.PI * 0.82}
-        minPolarAngle={Math.PI * 0.18}
-        rotateSpeed={0.68}
-        zoomSpeed={0.65}
-      />
-    </>
-  );
-}
-
 export default function HomePage() {
+  const heroVideoRef = useRef<HTMLVideoElement | null>(null);
   const proofVideoRef = useRef<HTMLVideoElement | null>(null);
   const truthVideoRef = useRef<HTMLVideoElement | null>(null);
   const truthSectionRef = useRef<HTMLElement | null>(null);
+  const [shouldLoadHeroVideo, setShouldLoadHeroVideo] = useState(false);
   const [shouldLoadProofVideo, setShouldLoadProofVideo] = useState(false);
   const [shouldLoadTruthVideo, setShouldLoadTruthVideo] = useState(false);
   const [shouldAutoplayTruthVideo, setShouldAutoplayTruthVideo] =
     useState(false);
   const [hasTruthVideoStarted, setHasTruthVideoStarted] = useState(false);
   const [isTruthVideoPlaying, setIsTruthVideoPlaying] = useState(false);
-  const shouldRenderHeroRackModel = !isPrerenderBrowser();
 
   useEffect(() => {
     const elements = Array.from(
@@ -378,6 +211,39 @@ export default function HomePage() {
   };
 
   useEffect(() => {
+    const scheduleIdleLoad = (callback: () => void) => {
+      if ("requestIdleCallback" in window) {
+        const id = window.requestIdleCallback(callback, { timeout: 1200 });
+
+        return () => window.cancelIdleCallback(id);
+      }
+
+      const id = globalThis.setTimeout(callback, 900);
+
+      return () => globalThis.clearTimeout(id);
+    };
+
+    const scheduleVideoLoad = () => setShouldLoadHeroVideo(true);
+
+    if (document.readyState === "complete") {
+      return scheduleIdleLoad(scheduleVideoLoad);
+    }
+
+    let cleanup = () => {};
+
+    const handleWindowLoad = () => {
+      cleanup = scheduleIdleLoad(scheduleVideoLoad);
+    };
+
+    window.addEventListener("load", handleWindowLoad, { once: true });
+
+    return () => {
+      window.removeEventListener("load", handleWindowLoad);
+      cleanup();
+    };
+  }, [shouldLoadHeroVideo]);
+
+  useEffect(() => {
     const video = proofVideoRef.current;
 
     if (!video) {
@@ -400,6 +266,27 @@ export default function HomePage() {
 
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+
+    if (!video || !shouldLoadHeroVideo) {
+      return;
+    }
+
+    const tryPlay = () => {
+      void video.play().catch(() => {});
+    };
+
+    tryPlay();
+    video.addEventListener("canplay", tryPlay);
+    video.addEventListener("loadeddata", tryPlay);
+
+    return () => {
+      video.removeEventListener("canplay", tryPlay);
+      video.removeEventListener("loadeddata", tryPlay);
+    };
+  }, [shouldLoadHeroVideo]);
 
   useEffect(() => {
     const section = truthSectionRef.current;
@@ -468,28 +355,29 @@ export default function HomePage() {
           className="home-hero-bg-video-layer"
           aria-hidden="true"
         >
-          <div className="home-hero-rack-stage">
-            {shouldRenderHeroRackModel ? (
-              <Canvas
-                className="home-hero-rack-canvas"
-                dpr={[1, 1.75]}
-                gl={{
-                  alpha: true,
-                  antialias: true,
-                  powerPreference: "high-performance",
-                }}
-                shadows
-              >
-                <HeroRackScene />
-              </Canvas>
-            ) : (
-              <img
-                className="home-hero-rack-fallback"
-                src="/solutions page images/Server_rack-scan.jpg"
-                alt=""
+          {shouldLoadHeroVideo ? (
+            <video
+              ref={heroVideoRef}
+              className="home-hero-bg-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              disablePictureInPicture
+              preload="metadata"
+            >
+              <source
+                src="/solutions page images/server_rack.mp4"
+                type="video/mp4"
               />
-            )}
-          </div>
+            </video>
+          ) : (
+            <img
+              className="home-hero-bg-video"
+              src="/solutions page images/Server_rack-scan.jpg"
+              alt=""
+            />
+          )}
           <div className="home-hero-video-fade" />
           <div className="home-hero-scan-sweep" />
         </div>
@@ -847,6 +735,5 @@ export default function HomePage() {
     </main>
   );
 }
-
 
 
