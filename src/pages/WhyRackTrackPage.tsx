@@ -731,6 +731,8 @@ function ToolHighlightCarousel({ items }: { items: readonly CarouselItem[] }) {
 
 export default function WhyRackTrackPage() {
   const pageRef = useRef<HTMLElement>(null)
+  const matrixPanelRef = useRef<HTMLDivElement>(null)
+  const [matrixScrollProgress, setMatrixScrollProgress] = useState(0)
 
   const rackDots = useMemo(() => [
     { top: '18%', left: '6%',  color: '#4F8EF7' },
@@ -801,6 +803,25 @@ export default function WhyRackTrackPage() {
 
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
+  }, [])
+
+
+  useEffect(() => {
+    const panel = matrixPanelRef.current
+    if (!panel) return
+
+    const update = () => {
+      const max = panel.scrollWidth - panel.clientWidth
+      setMatrixScrollProgress(max > 0 ? panel.scrollLeft / max : 0)
+    }
+
+    update()
+    panel.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
+    return () => {
+      panel.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+    }
   }, [])
 
   const getIllustration = (index: number) => {
@@ -972,7 +993,7 @@ export default function WhyRackTrackPage() {
           </h2>
         </div>
 
-        <div className="why-matrix__panel">
+        <div className="why-matrix__panel" ref={matrixPanelRef}>
           <div className="why-matrix__grid why-matrix__grid--head">
             <div className="why-matrix__cell why-matrix__cell--label" />
             {comparisonHeaders.map((header) => (
@@ -1027,6 +1048,14 @@ export default function WhyRackTrackPage() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div
+          className="why-matrix__scrollbar"
+          style={{ '--matrix-scroll-progress': matrixScrollProgress } as CSSProperties}
+          aria-hidden="true"
+        >
+          <span />
         </div>
       </section>
 
