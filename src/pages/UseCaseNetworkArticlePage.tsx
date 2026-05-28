@@ -164,7 +164,7 @@ export default function UseCaseNetworkArticlePage() {
               changes, and a network environment that can be trusted from
               diagram to rack.
             </p>
-            <Link to="/contact-us">
+            <Link to="/contact-us" state={{ scrollTo: 'contact' }}>
               Request platform brief
               <ArrowRight aria-hidden="true" size={18} />
             </Link>

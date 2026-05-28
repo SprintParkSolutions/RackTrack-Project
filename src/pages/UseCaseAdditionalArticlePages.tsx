@@ -98,7 +98,7 @@ function UseCaseArticleTemplate({ article }: { article: ArticleConfig }) {
             <span>Final Message</span>
             <h2>{article.finalTitle}</h2>
             <p>{article.finalBody}</p>
-            <Link to="/contact-us">
+            <Link to="/contact-us" state={{ scrollTo: 'contact' }}>
               Request platform brief
               <ArrowRight aria-hidden="true" size={18} />
             </Link>
