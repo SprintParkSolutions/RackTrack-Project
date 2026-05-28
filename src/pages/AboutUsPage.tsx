@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+﻿import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   motion,
@@ -89,9 +89,9 @@ const mobileMetricCardEntrance = {
 };
 
 const heroMetrics = [
-  { label: 'Rack scan accuracy', value: '99.2%', detail: 'AI device and port recognition', icon: Shield },
-  { label: 'Inventory speed', value: 'Seconds', detail: 'from photo to full rack context', icon: Radar },
-  { label: 'Ops time saved', value: '34%', detail: 'less manual discovery and triage', icon: Zap },
+  { label: 'Truth fidelity', value: '99.2%', detail: 'Verified device and port recognition', icon: Shield },
+  { label: 'Time to verified state', value: 'Minutes', detail: 'from rack capture to operational context', icon: Radar },
+  { label: 'Manual operations reduced', value: '34%', detail: 'less manual discovery and triage', icon: Zap },
 ];
 
 const signalSteps = [
@@ -604,7 +604,7 @@ export default function AboutUsPage() {
               animate="visible"
               className="about-hero-caption"
             >
-              Two decades of running enterprise infrastructure — and one problem that never went away. We stopped waiting for someone else to solve it.
+              Two decades of running enterprise infrastructure - and one problem that never went away. We stopped waiting for someone else to solve it.
             </motion.p>
           </div>
 
@@ -626,9 +626,9 @@ export default function AboutUsPage() {
         <ScrollScene className="about-story">
           <div className="about-story__copy">
             <span className="about-eyebrow">What RackTrack Does</span>
-            <h2>Physical infrastructure intelligence — perceived, reconciled, and operationalized.</h2>
+            <h2>Physical infrastructure intelligence - captured, validated, reconciled, and operationalized.</h2>
             <p>
-              One phone sweep produces a continuously reconciled digital twin of your physical rack — inventory, topology, port state, and firmware posture synced to every system your teams already run.
+              One phone sweep produces a continuously reconciled digital twin of your physical rack - inventory, topology, port state, and firmware posture synced to every system your teams already run.
             </p>
           </div>
 
@@ -760,9 +760,9 @@ export default function AboutUsPage() {
           <div className="about-cta__beam" />
           <div className="about-cta__content">
             <span className="about-eyebrow">Our mission</span>
-            <h2>Build the Infrastructure Digital Twin Platform for the modern data center.</h2>
+            <h2>Build the Physical Infrastructure Intelligence Platform for data centers.</h2>
             <p className="about-cta__lead">
-              The continuously reconciled intelligence layer underneath audit workflows, DCIM systems, and real-world rack operations.
+              Not an audit tool. Not a DCIM replacement. The intelligence layer underneath both.
             </p>
             <div className="about-cta__signals" aria-label="Mission highlights">
               <span>Not an audit tool</span>
@@ -774,7 +774,7 @@ export default function AboutUsPage() {
             </p>
             <p>
               Not an audit tool. Not a DCIM replacement.
-              The continuously reconciled intelligence layer underneath both. Patent Pending — US Application 19/219,347.
+              The intelligence layer underneath both. Patent Pending - US Application 19/219,347.
             </p>
           </div>
         </ScrollScene>
@@ -782,3 +782,7 @@ export default function AboutUsPage() {
     </div>
   );
 }
+
+
+
+

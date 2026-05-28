@@ -2381,3 +2381,42 @@
   line-height: 1.12;
   text-wrap: balance;
 }
+
+/* Keep the By Role tab icons from being squeezed or clipped on desktop widths. */
+.use-case-role-filter-tabs {
+  width: min(100%, 1320px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.use-case-role-filter-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.use-case-role-filter-tabs a {
+  flex: 1 0 168px;
+  overflow: visible;
+}
+
+.use-case-role-filter-tabs .use-case-role-tab-icon {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+}
+
+.use-case-role-filter-tabs .use-case-role-tab-arrow {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+}
+
+@media (max-width: 900px) {
+  .use-case-role-filter-tabs {
+    overflow: hidden;
+  }
+
+  .use-case-role-filter-tabs a {
+    flex: 1 1 30%;
+  }
+}
