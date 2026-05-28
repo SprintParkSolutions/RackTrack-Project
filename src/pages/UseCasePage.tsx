@@ -1,7 +1,7 @@
 ﻿import './UseCasePage.css'
 import { useEffect, useMemo, useState } from 'react'
 import type { MouseEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
   BellRing,
   Building2,
@@ -207,7 +207,9 @@ const fullCaseRoutes = [
 ]
 
 export default function UseCasePage() {
+  const location = useLocation()
   const [selectedRoleId, setSelectedRoleId] = useState(roleCards[0].id)
+  const [flippedImpactIndex, setFlippedImpactIndex] = useState<number | null>(null)
   const filteredRoleCards = useMemo(
     () => roleCards.filter((role) => role.id === selectedRoleId),
     [selectedRoleId],
@@ -242,9 +244,39 @@ export default function UseCasePage() {
     return () => observer.disconnect()
   }, [selectedRoleId])
 
+  useEffect(() => {
+    const roleIdFromHash = location.hash.slice(1)
+
+    if (!roleCards.some((role) => role.id === roleIdFromHash)) {
+      return
+    }
+
+    setSelectedRoleId(roleIdFromHash)
+
+    const scrollToSelectedRole = () => {
+      document.getElementById(roleIdFromHash)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+
+    const timeoutId = window.setTimeout(scrollToSelectedRole, 80)
+    const frameId = window.requestAnimationFrame(scrollToSelectedRole)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+      window.cancelAnimationFrame(frameId)
+    }
+  }, [location.hash])
+
   const handleRoleNavClick = (event: MouseEvent<HTMLAnchorElement>, roleId: string) => {
     event.preventDefault()
     setSelectedRoleId(roleId)
+    event.currentTarget.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    })
   }
 
   return (
@@ -288,13 +320,26 @@ export default function UseCasePage() {
         </div>
 
         <div className="use-case-impact-grid">
-          {impactCards.map((impact) => {
+          {impactCards.map((impact, index) => {
             const Icon = impact.icon
 
             return (
               <article
-                className={`use-case-impact-card use-case-impact-card-${impact.tone}${impact.value.length > 8 ? ' use-case-impact-card-long-value' : ''}`}
+                className={`use-case-impact-card use-case-impact-card-${impact.tone}${impact.value.length > 8 ? ' use-case-impact-card-long-value' : ''}${flippedImpactIndex === index ? ' is-flipped' : ''}`}
                 key={impact.label}
+                onClick={() =>
+                  setFlippedImpactIndex((currentIndex) =>
+                    currentIndex === index ? null : index,
+                  )
+                }
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    setFlippedImpactIndex((currentIndex) =>
+                      currentIndex === index ? null : index,
+                    )
+                  }
+                }}
                 tabIndex={0}
               >
                 <div className="use-case-impact-card-inner">
@@ -304,12 +349,16 @@ export default function UseCasePage() {
                     <h3>{impact.label}</h3>
                     {impact.visual}
                     <span className="use-case-impact-hint">Hover to flip</span>
+                    <span className="use-case-impact-tap-hint">Tap to flip</span>
                   </div>
 
                   <div className="use-case-impact-card-back">
                     <Icon aria-hidden="true" size={34} strokeWidth={1.9} />
                     <h3>{impact.label}</h3>
                     <p>{impact.detail}</p>
+                    <span className="use-case-impact-tap-hint use-case-impact-tap-hint-back">
+                      Tap to return
+                    </span>
                   </div>
                 </div>
               </article>
@@ -353,6 +402,9 @@ export default function UseCasePage() {
               </a>
             )
           })}
+        </div>
+        <div className="use-case-role-scroll-cue" aria-hidden="true">
+          <span />
         </div>
 
         <div className="use-case-role-card-list">
@@ -401,7 +453,9 @@ export default function UseCasePage() {
 
                   <div className="use-case-role-actions">
                     <Link to={fullCaseRoutes[routeIndex]}>Read the full case</Link>
-                    <a href="/contact-us">Request platform brief</a>
+                    <Link to="/contact-us" state={{ scrollTo: 'contact' }}>
+                      Request platform brief
+                    </Link>
                   </div>
                 </div>
 
@@ -428,7 +482,11 @@ export default function UseCasePage() {
             We'll scope the sweep, the reconciliation, and the artifact your
             stakeholder needs, in the language of the role you actually work in.
           </p>
-          <Link to="/contact-us" className="use-case-next-step-button">
+          <Link
+            to="/contact-us"
+            state={{ scrollTo: 'contact' }}
+            className="use-case-next-step-button"
+          >
             Request platform brief
             <span aria-hidden="true">-&gt;</span>
           </Link>

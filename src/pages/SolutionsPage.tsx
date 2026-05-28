@@ -135,6 +135,7 @@ const workflowCards = [
 
 function PrinciplesSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
+  const mobileCardRatiosRef = useRef<number[]>([])
   const [revealed, setRevealed] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
@@ -157,6 +158,76 @@ function PrinciplesSection() {
 
     observer.observe(section)
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section || !('IntersectionObserver' in window)) {
+      return
+    }
+
+    const mobileQuery = window.matchMedia('(max-width: 700px)')
+    let observer: IntersectionObserver | null = null
+
+    const disconnectObserver = () => {
+      observer?.disconnect()
+      observer = null
+      mobileCardRatiosRef.current = []
+    }
+
+    const startObserver = () => {
+      disconnectObserver()
+
+      if (!mobileQuery.matches) {
+        setHoveredIndex(null)
+        return
+      }
+
+      const cards = Array.from(
+        section.querySelectorAll<HTMLElement>('.principle-card'),
+      )
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const index = Number(
+              (entry.target as HTMLElement).dataset.principleIndex,
+            )
+
+            if (!Number.isNaN(index)) {
+              mobileCardRatiosRef.current[index] = entry.isIntersecting
+                ? entry.intersectionRatio
+                : 0
+            }
+          })
+
+          const nextIndex = mobileCardRatiosRef.current.reduce<number | null>(
+            (activeIndex, ratio, index, ratios) =>
+              ratio > (activeIndex === null ? 0 : ratios[activeIndex])
+                ? index
+                : activeIndex,
+            null,
+          )
+
+          setHoveredIndex(nextIndex)
+        },
+        {
+          root: null,
+          rootMargin: '-18% 0px -30% 0px',
+          threshold: [0, 0.2, 0.35, 0.5, 0.65, 0.8, 1],
+        },
+      )
+
+      cards.forEach((card) => observer?.observe(card))
+    }
+
+    startObserver()
+    mobileQuery.addEventListener('change', startObserver)
+
+    return () => {
+      mobileQuery.removeEventListener('change', startObserver)
+      disconnectObserver()
+    }
   }, [])
 
   return (
@@ -197,6 +268,7 @@ function PrinciplesSection() {
             }${
               hoveredIndex !== null && hoveredIndex !== index ? ' is-dimmed' : ''
             }`}
+            data-principle-index={index}
             style={{ '--card-index': index } as CSSProperties}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
@@ -236,6 +308,21 @@ function PrinciplesSection() {
 
 function RackTopologySection() {
   const [activeFeature, setActiveFeature] = useState('orbit')
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setActiveFeature((currentFeature) => {
+        const currentIndex = topologyFeatures.findIndex(
+          (feature) => feature.id === currentFeature,
+        )
+        const nextIndex = (currentIndex + 1) % topologyFeatures.length
+
+        return topologyFeatures[nextIndex].id
+      })
+    }, 2500)
+
+    return () => window.clearInterval(intervalId)
+  }, [])
 
   return (
     <section className="rack-topology-section" id="rack-3d">
@@ -462,7 +549,7 @@ export default function SolutionsPage() {
 
           <div className="hero-actions">
             <a className="primary-action" href="#rack-3d">
-              Explore the 3D rack {'->'}
+              Explore the 3D Topology {'->'}
             </a>
             <a className="secondary-action" href="#workflow">
               See the workflow
