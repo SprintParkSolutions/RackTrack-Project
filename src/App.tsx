@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from 'react'
+﻿import { Suspense, lazy, useEffect } from 'react'
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { ReactLenis } from 'lenis/react'
 import Navbar from './components/Navbar'
@@ -47,13 +47,13 @@ const SEO_BY_PATH: Record<
   '/': {
     title: 'RackTrack | The Infrastructure Digital Twin Platform',
     description:
-      'RackTrack is the Infrastructure Digital Twin Platform — continuous physical infrastructure intelligence for rack inventory, topology reconciliation, port mapping, and audit-ready reporting.',
+      'RackTrack transforms rack images and network signals into verified infrastructure intelligence for rack inventory, topology reconciliation, connectivity intelligence, and audit-ready reporting.',
     canonicalPath: '/',
   },
   '/about-us': {
     title: 'About RackTrack | Physical Layer Intelligence',
     description:
-      'Learn how RackTrack helps teams modernize rack audits, cable mapping, and infrastructure visibility with AI-powered physical layer intelligence.',
+      'Learn how RackTrack is building the Physical Infrastructure Intelligence Platform for data centers - the intelligence layer underneath audits, DCIM, and rack operations.',
     canonicalPath: '/about-us',
   },
   // '/product': {
@@ -113,7 +113,7 @@ const SEO_BY_PATH: Record<
   '/why-racktrack': {
     title: 'Why RackTrack | Infrastructure Truth Across Rack, Network, and Security',
     description:
-      'See why RackTrack stands apart by sensing the rack, verifying against the network, and enriching with vendor and security data in one reconciled workflow.',
+      'See how RackTrack perceives, reconciles, and reasons about physical infrastructure through visual rack intelligence, cable-to-port mapping, and continuous reconciliation.',
     canonicalPath: '/why-racktrack',
   },
   '/trust-security': {
@@ -129,9 +129,9 @@ const SEO_BY_PATH: Record<
     canonicalPath: '/resources',
   },
   '/contact-us': {
-    title: 'Contact RackTrack | Book a Demo',
+    title: 'Contact RackTrack | Request Platform Brief',
     description:
-      'Contact RackTrack to book a demo, discuss rollout planning, and explore AI-powered rack scanning, cable mapping, and audit workflows.',
+      'Contact RackTrack to request a platform brief, scope a deployment, and explore continuous reconciliation across your infrastructure.',
     canonicalPath: '/contact-us',
   },
 }
@@ -257,3 +257,7 @@ export default function App() {
     </BrowserRouter>
   )
 }
+
+
+
+

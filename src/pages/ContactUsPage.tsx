@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import './ContactUsPage.css'
 import {
@@ -35,7 +35,7 @@ const faqs = [
   ],
   [
     'Does RackTrack replace our CMDB or DCIM?',
-    'No. RackTrack acts as the physical intelligence layer underneath existing CMDB, DCIM, and ITSM platforms — helping reconcile what systems report against what is physically present in the rack.',
+    'No. RackTrack acts as the physical infrastructure intelligence layer underneath existing CMDB, DCIM, and ITSM platforms - helping reconcile what systems report against what is physically present in the rack.',
   ],
   [
     'Is RackTrack useful for compliance and audit preparation?',
@@ -251,12 +251,12 @@ export default function ContactUsPage() {
           </h1>
 
           <p>
-            Whether you're evaluating the platform, scoping a deployment, or designing a continuous reconciliation strategy across your fleet — our team is ready.
+            Whether you're evaluating the platform, scoping a deployment, or designing a continuous reconciliation strategy across your fleet - our team is ready.
           </p>
 
           <div className="hero-actions">
             <button type="button" className="primary-btn" onClick={scrollToForm}>
-              Start a Conversation <ArrowUpRight size={16} />
+              Request Platform Brief <ArrowUpRight size={16} />
             </button>
           </div>
         </div>
@@ -370,11 +370,11 @@ export default function ContactUsPage() {
                   aria-label="Country code"
                   required
                 >
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                  <option value="+91">🇮🇳 +91</option>
-                  <option value="+61">🇦🇺 +61</option>
-                  <option value="+49">🇩🇪 +49</option>
+                  <option value="+1">US +1</option>
+                  <option value="+44">UK +44</option>
+                  <option value="+91">IN +91</option>
+                  <option value="+61">AU +61</option>
+                  <option value="+49">DE +49</option>
                 </select>
                 <input
                   type="tel"
@@ -417,7 +417,7 @@ export default function ContactUsPage() {
                   ? 'Sending'
                   : submitState === 'error'
                     ? 'Try Again'
-                    : 'Submit Request'}
+                    : 'Request Platform Brief'}
             </span>
             {submitState === 'sent' ? (
               <CheckCircle2 size={16} />
@@ -458,3 +458,7 @@ export default function ContactUsPage() {
     </main>
   )
 }
+
+
+
+
