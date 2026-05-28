@@ -1330,6 +1330,13 @@
   width: 24px;
   height: 24px;
   border-radius: 4px;
+  line-height: 1;
+  text-align: center;
+}
+
+.why-matrix__status svg {
+  display: block;
+  flex: 0 0 auto;
 }
 
 .why-matrix__status--full {
@@ -1359,7 +1366,7 @@
   color: rgba(245, 158, 11, 0.9);
   font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 }
 
 .why-matrix__status--none {
@@ -1426,10 +1433,41 @@
   gap: 10px;
 }
 
+.why-matrix__legend .why-matrix__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  line-height: 1;
+}
+
+.why-matrix__legend .why-matrix__status--full {
+  color: #1af0a0;
+}
+
+.why-matrix__legend .why-matrix__status--partial {
+  color: rgba(245, 158, 11, 0.9);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.why-matrix__legend .why-matrix__status--none {
+  width: 16px;
+  height: 2px;
+}
+
 .why-matrix__legend small {
   color: #ffffff;
   font-size: 1rem;
   font-weight: 500;
+}
+
+/* Hidden by default on desktop, shown on mobile via media query */
+.why-matrix__scrollbar {
+  display: none;
 }
 
 .why-trust__intro {
@@ -1563,12 +1601,45 @@
   }
 
   .why-matrix__panel {
-    overflow-x: auto;
+    overflow-x: scroll;
+    padding-bottom: 18px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .why-matrix__panel::-webkit-scrollbar {
+    display: none;
   }
 
   .why-matrix__grid {
     min-width: 760px;
   }
+
+  .why-matrix__scrollbar {
+    display: block;
+    position: sticky;
+    bottom: 16px;
+    z-index: 10;
+    width: min(260px, calc(100vw - 48px));
+    height: 6px;
+    margin: 14px auto 0;
+    border-radius: 999px;
+    background: rgba(30, 41, 59, 0.85);
+    box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.18);
+    pointer-events: none;
+  }
+
+  .why-matrix__scrollbar span {
+    display: block;
+    width: 40%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #00d2ff, #7dd3fc);
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
+    transform: translateX(calc(var(--matrix-scroll-progress, 0) * 150%));
+    transition: transform 0.1s linear;
+  }
+
 
   .why-trust__card {
     min-height: 430px;
@@ -1757,10 +1828,15 @@
 @media (max-width: 900px) {
   .why-card-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 
   .why-connector-grid {
     display: none;
+  }
+
+  .why-connector-grid + .why-card-grid {
+    margin-top: 1.25rem;
   }
 }
 
