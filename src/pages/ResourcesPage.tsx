@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+﻿import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -7,20 +7,21 @@ import './ResourcesPage.css'
 
 const featuredPost = resourcePosts[0]
 const latestPosts = resourcePosts.slice(1)
+const articleFilters = ['All', ...new Set(resourcePosts.map((post) => post.category))] as const
 
 const editorialPillars = [
   {
-    title: 'Operations clarity',
+    title: 'Operational Intelligence',
     description:
       'How teams reduce inventory drift, audit delays, and rack-level uncertainty.',
   },
   {
-    title: 'Security visibility',
+    title: 'Posture & Compliance Intelligence',
     description:
       'Why physical presence still matters in infrastructure security programs.',
   },
   {
-    title: 'Infrastructure planning',
+    title: 'Infrastructure Strategy',
     description:
       'What accurate rack data changes for upgrades, migrations, and budgeting.',
   },
@@ -29,6 +30,15 @@ const editorialPillars = [
 export default function ResourcesPage() {
   const pageRef = useRef<HTMLElement>(null)
   const navigate = useNavigate()
+  const [activeFilter, setActiveFilter] = useState<(typeof articleFilters)[number]>('All')
+
+  const filteredPosts = useMemo(
+    () =>
+      activeFilter === 'All'
+        ? latestPosts
+        : latestPosts.filter((post) => post.category === activeFilter),
+    [activeFilter]
+  )
 
   const openArticle = (slug: string) => {
     navigate(`/resources/${slug}`)
@@ -57,16 +67,15 @@ export default function ResourcesPage() {
         <div className="res-hero__grid" aria-hidden="true" />
 
         <div className="res-hero__content">
-          <span className="app-eyebrow">Resources</span>
+          <span className="app-eyebrow">Intelligence</span>
           <h1>
-            <span className="res-h1-line">RackTrack insights for</span>
-            <span className="res-h1-line">infrastructure teams that</span>
-            <span className="res-h1-line res-h1-grad">need better physical truth.</span>
+            <span className="res-h1-line">Research, frameworks,</span>
+            <span className="res-h1-line">and insights for teams</span>
+            <span className="res-h1-line res-h1-grad">responsible for infrastructure truth.</span>
           </h1>
           <p>
-            Resources is now a focused editorial library. Explore practical blog
-            content on rack inventory, audit readiness, infrastructure security,
-            and physical layer intelligence.
+            Explore insight-driven content on CMDB drift, topology debt, audit readiness,
+            infrastructure security, and physical infrastructure intelligence.
           </p>
 
           <div className="res-hero-pills" aria-label="Editorial focus">
@@ -126,7 +135,7 @@ export default function ResourcesPage() {
       <section className="app-section res-blog reveal-on-scroll">
         <div className="app-section-heading">
           <span className="app-eyebrow">All Articles</span>
-          <h2>Browse the RackTrack blog library.</h2>
+          <h2>Browse the RackTrack intelligence library.</h2>
           <p>
             Search-friendly, practical articles for infrastructure, operations,
             compliance, and security teams evaluating physical layer intelligence.
@@ -134,15 +143,35 @@ export default function ResourcesPage() {
         </div>
 
         <div className="res-blog-toolbar" aria-label="Article library summary">
-          <p>
-            Explore posts on CMDB drift, rack inventory accuracy, audit evidence,
-            data center security, and infrastructure planning.
-          </p>
-          <span className="res-blog-count">{latestPosts.length + 1} published articles</span>
+          <div className="res-blog-controls">
+            <p>
+              Explore posts on CMDB drift, rack inventory accuracy, audit evidence,
+              data center security, and infrastructure planning.
+            </p>
+
+            <div className="res-blog-filters" role="tablist" aria-label="Filter articles by category">
+              {articleFilters.map((filter) => (
+                <button
+                  key={filter}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeFilter === filter}
+                  className={`res-blog-filter${activeFilter === filter ? ' is-active' : ''}`}
+                  onClick={() => setActiveFilter(filter)}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <span className="res-blog-count">
+            {filteredPosts.length} {filteredPosts.length === 1 ? 'article' : 'articles'} shown
+          </span>
         </div>
 
         <div className="res-blog-grid">
-          {latestPosts.map((post, index) => (
+          {filteredPosts.map((post, index) => (
             <article
               key={post.id}
               className="res-blog-card"
@@ -192,3 +221,5 @@ export default function ResourcesPage() {
     </main>
   )
 }
+
+

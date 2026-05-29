@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+﻿import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   motion,
-  type MotionStyle,
   type Variants,
   useAnimationControls,
   useInView,
@@ -13,21 +12,14 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import {
-  ArrowRight,
-  Award,
-  BriefcaseBusiness,
   Cpu,
   Gauge,
-  GraduationCap,
-  Handshake,
   Network,
   Radar,
   Search,
   Shield,
   Sparkles,
-  Users,
   Zap,
 } from 'lucide-react';
 
@@ -97,17 +89,18 @@ const mobileMetricCardEntrance = {
 };
 
 const heroMetrics = [
-  { label: 'Rack scan accuracy', value: '99.2%', detail: 'AI device and port recognition', icon: Shield },
-  { label: 'Inventory speed', value: 'Seconds', detail: 'from photo to full rack context', icon: Radar },
-  { label: 'Ops time saved', value: '34%', detail: 'less manual discovery and triage', icon: Zap },
+  { label: 'Truth fidelity', value: '99.2%', detail: 'Verified device and port recognition', icon: Shield },
+  { label: 'Time to verified state', value: 'Minutes', detail: 'from rack capture to operational context', icon: Radar },
+  { label: 'Manual operations reduced', value: '34%', detail: 'less manual discovery and triage', icon: Zap },
 ];
 
 const signalSteps = [
-  { label: 'Capture', value: 'Phone-guided', icon: Cpu },
-  { label: 'Detect', value: 'Ports and devices', icon: Gauge },
-  { label: 'Sync', value: 'CMDB ready', icon: Network },
-  { label: 'Share', value: 'Audit report', icon: Sparkles },
+  { label: 'Capture', value: 'Phone-guided rack sensing', icon: Cpu },
+  { label: 'Validate', value: 'Physical-to-network truth', icon: Gauge },
+  { label: 'Reconcile', value: 'Structured intelligence', icon: Network },
+  { label: 'Operationalize', value: 'Audit-ready artifacts', icon: Sparkles },
 ];
+
 
 const founderNarrative: Array<{ label: string; body: React.ReactNode }> = [
   {
@@ -138,48 +131,9 @@ const founderNarrative: Array<{ label: string; body: React.ReactNode }> = [
     label: 'The build',
     body: (
       <>
-        We are building a practical system of record for the rack: fast capture, AI-assisted verification, and clean sync into the tools operations, audit, and service teams already run.
+        RackTrack is built on patent-pending innovations for <strong>automated network cable mapping, visual rack intelligence, and physical infrastructure reconciliation</strong>. The architecture came out of eighteen months of engineering work, and is now the subject of a pending US utility patent application.
       </>
     ),
-  },
-];
-
-const teamMembers = [
-  {
-    name: 'Co-Founder, Enterprise Architecture',
-    role: 'Founder',
-    credential: 'Enterprise architecture leadership across integration-heavy operating environments.',
-    icon: BriefcaseBusiness,
-  },
-  {
-    name: 'Co-Founder, Network Intelligence',
-    role: 'Founder',
-    credential: 'Networking expertise with hands-on physical infrastructure and port-level workflow depth.',
-    icon: Network,
-  },
-  {
-    name: 'Senior Architecture Advisors',
-    role: 'Advisors',
-    credential: 'Guidance from leaders with Salesforce, MuleSoft, CMDB, and enterprise platform experience.',
-    icon: Award,
-  },
-  {
-    name: 'Academic & Technical Fellows',
-    role: 'Advisors',
-    credential: 'Academic and fellowship credentials including IET Fellow and Senior IEEE Member experience.',
-    icon: GraduationCap,
-  },
-  {
-    name: 'Design Partners',
-    role: 'Partners',
-    credential: 'Infrastructure teams shaping scan flows, audit outputs, and operational handoffs.',
-    icon: Handshake,
-  },
-  {
-    name: 'Product & Engineering Hires',
-    role: 'Team',
-    credential: 'Specialists in applied AI, product design, and production-grade systems integration.',
-    icon: Users,
   },
 ];
 
@@ -282,6 +236,19 @@ function MetricCard({
     runLoadingSequence();
   }, [isLoaded, runLoadingSequence]);
 
+  useEffect(() => {
+    if (!prefersLightMotion) return;
+
+    if (animationFrameRef.current !== null) {
+      window.cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    isLoadingRef.current = false;
+    setCount(100);
+    setIsLoaded(true);
+  }, [prefersLightMotion]);
+
   const replayLoading = useCallback(async () => {
     if (clickSequenceRef.current) return;
     clickSequenceRef.current = true;
@@ -301,10 +268,12 @@ function MetricCard({
   }, [pressControls, runLoadingSequence]);
 
   useEffect(() => {
+    if (prefersLightMotion) return;
+
     if (isInView && shouldLoad) {
       startLoading();
     }
-  }, [isInView, shouldLoad, startLoading]);
+  }, [isInView, shouldLoad, startLoading, prefersLightMotion]);
 
   useEffect(
     () => () => {
@@ -314,6 +283,28 @@ function MetricCard({
     },
     [],
   );
+
+  if (prefersLightMotion) {
+    return (
+      <motion.article
+        ref={ref}
+        variants={variants}
+        custom={index}
+        className="about-metric-card"
+      >
+        <div className="about-metric-card__inner about-metric-card__inner--static">
+          <div className="about-metric-card__content about-metric-card__content--static">
+            <div className="about-metric-card__header">
+              <Icon className="about-card-icon" />
+              <span>{label}</span>
+            </div>
+            <strong>{value}</strong>
+            <p>{detail}</p>
+          </div>
+        </div>
+      </motion.article>
+    );
+  }
 
   return (
     <motion.article
@@ -334,15 +325,16 @@ function MetricCard({
       <motion.div
         className="about-metric-card__inner"
         animate={pressControls}
-        onClick={replayLoading}
+        onClick={prefersLightMotion ? undefined : replayLoading}
         onKeyDown={(event) => {
+          if (prefersLightMotion) return;
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
             replayLoading();
           }
         }}
-        role="button"
-        tabIndex={0}
+        role={prefersLightMotion ? undefined : 'button'}
+        tabIndex={prefersLightMotion ? -1 : 0}
       >
         <AnimatePresence mode="wait">
           {!isLoaded ? (
@@ -409,52 +401,20 @@ function ScrollScene({
   );
 }
 
-function TeamCard({
-  name,
-  role,
-  credential,
-  icon: Icon,
-}: {
-  name: string;
-  role: string;
-  credential: string;
-  icon: IconType;
-}) {
-  const handlePointerMove = (event: React.PointerEvent<HTMLElement>) => {
-    if (event.pointerType !== 'mouse') return;
 
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
-    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
-    event.currentTarget.style.setProperty('--about-card-x', `${x}%`);
-    event.currentTarget.style.setProperty('--about-card-y', `${y}%`);
-  };
 
-  return (
-    <motion.article
-      className="about-team-card"
-      variants={reveal}
-      whileHover={{ y: -6, scale: 1.01 }}
-      transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-      onPointerMove={handlePointerMove}
-    >
-      <div className="about-team-card__icon">
-        <Icon aria-hidden="true" />
-      </div>
-      <div>
-        <span>{role}</span>
-        <h3>{name}</h3>
-        <p>{credential}</p>
-      </div>
-    </motion.article>
-  );
-}
 
 function FounderStorySection() {
+  const isMobileViewport = useMediaQuery('(max-width: 768px)');
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const stepRefs = useRef<Array<HTMLSpanElement | null>>([]);
 
   useEffect(() => {
+    if (isMobileViewport) {
+      setActiveIndex(0);
+      return undefined;
+    }
+
     const steps = stepRefs.current.filter(Boolean) as HTMLSpanElement[];
     if (!steps.length) return undefined;
 
@@ -481,21 +441,21 @@ function FounderStorySection() {
     steps.forEach((step) => observer.observe(step));
 
     return () => observer.disconnect();
-  }, []);
+  }, [isMobileViewport]);
 
   return (
     <ScrollScene className="about-founder-story">
       <motion.aside className="about-founder-story__anchor" variants={reveal}>
         <span className="about-founder-story__eyebrow">Founder Narrative</span>
-        <h2>
-          Why We Built <span className="about-founder-story__brand">RackTrack</span>
-        </h2>
+        <p className="about-founder-story__intro">
+          The story behind <span className="about-founder-story__brand">RackTrack</span>.
+        </p>
       </motion.aside>
 
       <motion.div className="about-founder-story__narrative" variants={reveal}>
         {founderNarrative.map((item, index) => (
           <article
-            className={`about-founder-story__thought${activeIndex === index ? ' is-active' : ''}`}
+            className={`about-founder-story__thought${isMobileViewport || activeIndex === index ? ' is-active' : ''}`}
             key={item.label}
           >
             <h3>{item.label}</h3>
@@ -505,24 +465,25 @@ function FounderStorySection() {
           </article>
         ))}
       </motion.div>
-      <div className="about-founder-story__scroll-steps" aria-hidden="true">
-        {founderNarrative.map((item, index) => (
-          <span
-            ref={(node) => {
-              stepRefs.current[index] = node;
-            }}
-            className="about-founder-story__scroll-step"
-            data-story-index={index}
-            key={item.label}
-          />
-        ))}
-      </div>
+      {!isMobileViewport && (
+        <div className="about-founder-story__scroll-steps" aria-hidden="true">
+          {founderNarrative.map((item, index) => (
+            <span
+              ref={(node) => {
+                stepRefs.current[index] = node;
+              }}
+              className="about-founder-story__scroll-step"
+              data-story-index={index}
+              key={item.label}
+            />
+          ))}
+        </div>
+      )}
     </ScrollScene>
   );
 }
 
 export default function AboutUsPage() {
-  const navigate = useNavigate();
   const reducedMotion = useReducedMotion();
   const isMobileViewport = useMediaQuery('(max-width: 768px)');
   const prefersLightMotion = reducedMotion || isMobileViewport;
@@ -533,14 +494,6 @@ export default function AboutUsPage() {
   const lightY = useSpring(mouseY, { stiffness: 400, damping: 30, mass: 0.1 });
   const spotlight = useMotionTemplate`radial-gradient(54rem circle at ${lightX}% ${lightY}%, rgba(122, 223, 255, 0.18), rgba(95, 168, 255, 0.08) 34%, transparent 68%)`;
 
-  // Workflow Image Parallax
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress: heroScrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start end', 'end start'],
-  });
-  const heroParallaxY = useTransform(heroScrollYProgress, [0, 1], [prefersLightMotion ? 0 : -90, prefersLightMotion ? 0 : 120]);
-  const heroImageY = useMotionTemplate`${heroParallaxY}px`;
 
   const workflowShotRef = useRef<HTMLDivElement>(null);
   const [isHoveringImage, setIsHoveringImage] = useState(false);
@@ -614,54 +567,68 @@ export default function AboutUsPage() {
 
       <main className="about-shell">
         <motion.section
-          ref={heroRef}
           className="about-hero"
-          style={{ '--about-hero-image-y': heroImageY } as MotionStyle}
         >
           <div className="about-hero__content">
-            <motion.h1 variants={reveal} initial="hidden" animate="visible" className="about-hero-title">
-              <span className="about-hero-title__line-1">Scan the rack.</span>
-              <span className="about-hero-title__line-2">
-                <span className="about-hero-title__accent">Know the stack.</span>
-              </span>
+            <motion.span
+              variants={reveal}
+              initial="hidden"
+              animate="visible"
+              className="about-founder-story__eyebrow"
+            >
+              Our Story
+            </motion.span>
+
+            <motion.h1
+              variants={reveal}
+              initial="hidden"
+              animate="visible"
+              className="about-hero__story-title"
+            >
+              Why we built{' '}
+              <span className="about-founder-story__brand">RackTrack</span>
             </motion.h1>
 
-            <motion.p variants={reveal} initial="hidden" animate="visible" className="about-hero-caption">
-              RackTrack turns a quick phone sweep into verified devices, ports, topology, and inventory your team can trust.
-            </motion.p>
+            <motion.blockquote
+              variants={reveal}
+              initial="hidden"
+              animate="visible"
+              className="about-hero__quote"
+            >
+              Every system above the rack assumed the rack matched the record. No system could prove it.
+            </motion.blockquote>
 
-            <motion.div variants={reveal} initial="hidden" animate="visible" className="about-hero__actions">
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                onClick={() => navigate('/contact-us', { state: { scrollTo: 'contact' } })}
-                className="about-button about-button--primary"
-              >
-                Book a Demo
-                <ArrowRight size={18} className="about-button__icon" />
-              </motion.button>
-              <motion.a
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                href="/solutions"
-                className="about-button about-button--ghost"
-              >
-                Explore Platform
-              </motion.a>
-            </motion.div>
+            <motion.p
+              variants={reveal}
+              initial="hidden"
+              animate="visible"
+              className="about-hero-caption"
+            >
+              Two decades of running enterprise infrastructure - and one problem that never went away. We stopped waiting for someone else to solve it.
+            </motion.p>
           </div>
+
+          <motion.div
+            className="about-hero__images"
+            variants={reveal}
+            initial="hidden"
+            animate="visible"
+          >
+            <img
+              src="/Images/AboutUs_hero.png"
+              alt="RackTrack infrastructure"
+              className="about-hero__img"
+            />
+          </motion.div>
         </motion.section>
 
         {/* --- "WHAT RACKTRACK DOES" SECTION --- */}
         <ScrollScene className="about-story">
           <div className="about-story__copy">
             <span className="about-eyebrow">What RackTrack Does</span>
-            <h2>Rack scanning, inventory, and sync in one AI workflow.</h2>
+            <h2>Physical infrastructure intelligence - captured, validated, reconciled, and operationalized.</h2>
             <p>
-              Capture the rack once, let AI identify the hardware, then push the verified result into your operational systems.
+              One phone sweep produces a continuously reconciled digital twin of your physical rack - inventory, topology, port state, and firmware posture synced to every system your teams already run.
             </p>
           </div>
 
@@ -773,28 +740,7 @@ export default function AboutUsPage() {
           ))}
         </motion.div>
 
-        <ScrollScene className="about-team-section">
-          <div className="about-team-section__header">
-            <span className="about-eyebrow">Team</span>
-            <h2>Built by operators who understand both the rack and the systems around it.</h2>
-            <p>
-              RackTrack combines infrastructure operations, enterprise integration, and applied AI experience so scan output can become trusted operational data.
-            </p>
-          </div>
-          <motion.div
-            className="about-team-grid"
-            variants={metricsCardsGroup}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewport}
-          >
-            {teamMembers.map((member) => (
-              <TeamCard key={member.name} {...member} />
-            ))}
-          </motion.div>
-        </ScrollScene>
-
-        {investors.length > 0 && (
+{investors.length > 0 && (
           <ScrollScene className="about-backers-section">
             <div className="about-backers-section__header">
               <span className="about-eyebrow">Investors & Backers</span>
@@ -811,48 +757,32 @@ export default function AboutUsPage() {
         )}
 
         <ScrollScene className="about-cta">
-          <video
-            className="about-cta__video"
-            autoPlay
-            loop
-            muted
-            playsInline
-            aria-hidden="true"
-          >
-            <source src="/media/background1.mp4" type="video/mp4" />
-          </video>
           <div className="about-cta__beam" />
           <div className="about-cta__content">
-            <span className="about-eyebrow">The Next Move</span>
-            <h2>Give your team a faster way to understand every rack they touch.</h2>
-            <p>
-              RackTrack brings scanning, AI recognition, and system sync into one workflow built for real data center operations.
+            <span className="about-eyebrow">Our mission</span>
+            <h2>Build the Physical Infrastructure Intelligence Platform for data centers.</h2>
+            <p className="about-cta__lead">
+              Not an audit tool. Not a DCIM replacement. The intelligence layer underneath both.
             </p>
-            <div className="about-cta__actions">
-              <motion.button
-                type="button"
-                whileHover={{ y: -2, scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                onClick={() => navigate('/contact-us', { state: { scrollTo: 'contact' } })}
-                className="about-button about-button--primary"
-              >
-                Book a Demo
-                <ArrowRight className="about-button__icon" />
-              </motion.button>
-              <motion.a
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                href="/solutions"
-                className="about-button about-button--ghost"
-              >
-                View Use Cases
-              </motion.a>
+            <div className="about-cta__signals" aria-label="Mission highlights">
+              <span>Not an audit tool</span>
+              <span>Not a DCIM replacement</span>
+              <span>Patent pending platform</span>
             </div>
+            <p className="about-cta__meta">
+              Built to make physical infrastructure legible, trusted, and operational at enterprise scale. US Application 19/219,347.
+            </p>
+            <p>
+              Not an audit tool. Not a DCIM replacement.
+              The intelligence layer underneath both. Patent Pending - US Application 19/219,347.
+            </p>
           </div>
         </ScrollScene>
       </main>
     </div>
   );
 }
+
+
+
+

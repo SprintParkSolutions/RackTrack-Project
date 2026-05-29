@@ -3,7 +3,10 @@ import type { CSSProperties } from 'react'
 import './SolutionsPage.css'
 
 const solutionsImagePath = '/solutions%20page%20images'
-const heroVideo = `${solutionsImagePath}/hero_video.mp4`
+const heroBackgroundImages = [
+  `${solutionsImagePath}/solutions-hero-bg-1-compressed.jpg`,
+  `${solutionsImagePath}/solutions-hero-bg-2-compressed.jpg`,
+]
 const principleCardImages = [
   `${solutionsImagePath}/Principle_Vision.png`,
   `${solutionsImagePath}/Principle_Fusion.png`,
@@ -15,7 +18,7 @@ const workflowPortTrackingImage = `${solutionsImagePath}/Port_Tracking.jpg`
 const workflowNetworkTopologyImage = `${solutionsImagePath}/Network_Topology.jpg`
 const workflowAutomatedInventoryImage = `${solutionsImagePath}/Automated_Inventory.jpg`
 const workflowSecurityComplianceImage = `${solutionsImagePath}/Security_Compliance.jpg`
-const rackVideo = `${solutionsImagePath}/server_rack.mp4`
+const topologySectionImage = `${solutionsImagePath}/topology-section-bg-compressed.jpg`
 
 const stats = [
   { value: '10x', label: 'faster audits' },
@@ -35,21 +38,24 @@ void detectedRows
 const principleCards = [
   {
     number: '01',
-    title: 'Vision-first',
+    title: 'Perceive',
     description:
-      'Camera is the input. Everything starts with a single photo of the rack.',
+      'AI-powered computer vision captures the physical reality with precision and scale.',
+    features: ['AI Vision Scan'],
   },
   {
     number: '02',
-    title: 'Data fusion',
+    title: 'Reconcile',
     description:
-      'Camera + switch telemetry + CMDB into one source of truth in seconds.',
+      'We reconcile data from every source into one verified, living model of your infrastructure.',
+    features: ['Data Fusion', 'De-duplication', 'Continuous Verification'],
   },
   {
     number: '03',
-    title: 'Floor-ready',
+    title: 'Operationalize',
     description:
-      'Mobile-first, dark-default, designed for noisy data center aisles.',
+      'Actionable intelligence delivered anywhere, empowering your teams to move faster and operate with confidence.',
+    features: ['Mobile-First', 'Real-Time', 'Workflow Automation'],
   },
 ]
 
@@ -79,56 +85,57 @@ const topologyFeatures = [
 const workflowCards = [
   {
     number: '01',
-    badge: 'AR SCAN',
-    title: 'AR Rack Scanning',
+    badge: 'PERCEIVE',
+    title: 'Visual Rack Intelligence',
     description:
-      'Open the mobile scanner, align the rack, and capture device positions with guided AR overlays.',
+      'Capture rack-facing visual evidence that identifies device placement, rack-unit position, labels, visible ports, and front-panel state from a guided sweep.',
     image: workflowArRackImage,
   },
   {
     number: '02',
-    badge: 'AI DETECT',
-    title: 'AI Device Detection',
+    badge: 'COGNIZE',
+    title: 'Autonomous Asset Identification',
     description:
-      'Detect switches, servers, patch panels, labels, and rack units from the captured frame.',
+      'Classify switches, servers, patch panels, PDUs, controllers, and labels into structured asset records without manual transcription.',
     image: workflowAiDetectionImage,
   },
   {
     number: '03',
-    badge: 'PORTS',
-    title: 'Port Tracking',
+    badge: 'CONNECT',
+    title: 'Connectivity Intelligence',
     description:
-      'Compare free, used, and reserved ports with live status mapped back to the rack image.',
+      'Map visible port usage, cable paths, link indicators, and active or unused connections against the physical rack evidence.',
     image: workflowPortTrackingImage,
   },
   {
     number: '04',
-    badge: 'TOPOLOGY',
-    title: 'Network Topology',
+    badge: 'TWIN',
+    title: 'Topology Intelligence',
     description:
-      'Build 2D and 3D topology views that connect physical rack layout to network paths.',
+      'Connect rack position, device relationships, ports, and cabling context into a verified topology view teams can inspect and reconcile.',
     image: workflowNetworkTopologyImage,
   },
   {
     number: '05',
-    badge: 'INVENTORY',
-    title: 'Automated Inventory',
+    badge: 'RECONCILE',
+    title: 'Continuous Reconciliation',
     description:
-      'Keep asset records, rack slots, device names, and ownership details current after each scan.',
+      'Compare every new scan with CMDB, DCIM, asset, and network records so changes, drift, and missing fields stay visible.',
     image: workflowAutomatedInventoryImage,
   },
   {
     number: '06',
-    badge: 'SECURITY',
-    title: 'Security & Compliance',
+    badge: 'POSTURE',
+    title: 'Posture Intelligence',
     description:
-      'Surface firmware drift, missing records, and vulnerability alerts before audit day arrives.',
+      'Surface device-level risk signals, missing evidence, firmware context, and audit gaps from the verified infrastructure record.',
     image: workflowSecurityComplianceImage,
   },
 ]
 
 function PrinciplesSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
+  const mobileCardRatiosRef = useRef<number[]>([])
   const [revealed, setRevealed] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
@@ -153,6 +160,76 @@ function PrinciplesSection() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section || !('IntersectionObserver' in window)) {
+      return
+    }
+
+    const mobileQuery = window.matchMedia('(max-width: 700px)')
+    let observer: IntersectionObserver | null = null
+
+    const disconnectObserver = () => {
+      observer?.disconnect()
+      observer = null
+      mobileCardRatiosRef.current = []
+    }
+
+    const startObserver = () => {
+      disconnectObserver()
+
+      if (!mobileQuery.matches) {
+        setHoveredIndex(null)
+        return
+      }
+
+      const cards = Array.from(
+        section.querySelectorAll<HTMLElement>('.principle-card'),
+      )
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const index = Number(
+              (entry.target as HTMLElement).dataset.principleIndex,
+            )
+
+            if (!Number.isNaN(index)) {
+              mobileCardRatiosRef.current[index] = entry.isIntersecting
+                ? entry.intersectionRatio
+                : 0
+            }
+          })
+
+          const nextIndex = mobileCardRatiosRef.current.reduce<number | null>(
+            (activeIndex, ratio, index, ratios) =>
+              ratio > (activeIndex === null ? 0 : ratios[activeIndex])
+                ? index
+                : activeIndex,
+            null,
+          )
+
+          setHoveredIndex(nextIndex)
+        },
+        {
+          root: null,
+          rootMargin: '-18% 0px -30% 0px',
+          threshold: [0, 0.2, 0.35, 0.5, 0.65, 0.8, 1],
+        },
+      )
+
+      cards.forEach((card) => observer?.observe(card))
+    }
+
+    startObserver()
+    mobileQuery.addEventListener('change', startObserver)
+
+    return () => {
+      mobileQuery.removeEventListener('change', startObserver)
+      disconnectObserver()
+    }
+  }, [])
+
   return (
     <section
       ref={sectionRef}
@@ -160,15 +237,26 @@ function PrinciplesSection() {
     >
       <div className="principles-bg-glow principles-bg-glow-one" />
       <div className="principles-bg-glow principles-bg-glow-two" />
+      <div className="principles-wave" aria-hidden="true" />
 
       <div className="principles-header">
-        <p className="section-kicker">PRINCIPLES</p>
+        <div className="principles-header-main">
+          <p className="section-kicker principles-kicker">
+            <span aria-hidden="true" />
+            PRINCIPLES
+          </p>
 
-        <h2>
-          Built on three
-          <br />
-          <span>non-negotiables.</span>
-        </h2>
+          <h2>
+            Built on three
+            <br />
+            <span>non-negotiables.</span>
+          </h2>
+        </div>
+
+        <p className="principles-intro">
+          RackTrack unifies the physical and digital layers of your infrastructure,
+          delivering trusted, real-time intelligence you can act on.
+        </p>
       </div>
 
       <div className="principles-card-row">
@@ -180,6 +268,7 @@ function PrinciplesSection() {
             }${
               hoveredIndex !== null && hoveredIndex !== index ? ' is-dimmed' : ''
             }`}
+            data-principle-index={index}
             style={{ '--card-index': index } as CSSProperties}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
@@ -187,16 +276,31 @@ function PrinciplesSection() {
             onBlur={() => setHoveredIndex(null)}
             tabIndex={0}
           >
-            <div className="principle-card-content">
-              <span className="principle-number">{card.number}</span>
-              <h3>{card.title}</h3>
-              <p>{card.description}</p>
-            </div>
             <div className="principle-card-visual" aria-hidden="true">
               <img src={principleCardImages[index]} alt="" />
             </div>
+            <div className="principle-card-content">
+              <span className="principle-number">{card.number}</span>
+              <h3>{card.title}</h3>
+              <i aria-hidden="true" />
+              <p>{card.description}</p>
+            </div>
+
+            <div className="principle-feature-strip" aria-hidden="true">
+              {card.features.map((feature) => (
+                <span key={feature}>
+                  <i />
+                  {feature}
+                </span>
+              ))}
+            </div>
           </article>
         ))}
+      </div>
+
+      <div className="principles-footer-line">
+        <span aria-hidden="true" />
+        One Platform. Complete Confidence.
       </div>
     </section>
   )
@@ -205,8 +309,29 @@ function PrinciplesSection() {
 function RackTopologySection() {
   const [activeFeature, setActiveFeature] = useState('orbit')
 
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setActiveFeature((currentFeature) => {
+        const currentIndex = topologyFeatures.findIndex(
+          (feature) => feature.id === currentFeature,
+        )
+        const nextIndex = (currentIndex + 1) % topologyFeatures.length
+
+        return topologyFeatures[nextIndex].id
+      })
+    }, 2500)
+
+    return () => window.clearInterval(intervalId)
+  }, [])
+
   return (
     <section className="rack-topology-section" id="rack-3d">
+      <img
+        className="topology-section-bg-image"
+        src={topologySectionImage}
+        alt=""
+        aria-hidden="true"
+      />
       <div className="topology-bg topology-bg-one" />
       <div className="topology-bg topology-bg-two" />
       <div className="topology-stars" />
@@ -215,15 +340,15 @@ function RackTopologySection() {
         <p className="topology-kicker">3D TOPOLOGY</p>
 
         <h2>
-          A rack you can <span>scan,</span>
+          A rack you can <span>perceive,</span>
           <br />
-          <strong>trace & verify.</strong>
+          <strong>reconcile & operationalize.</strong>
         </h2>
 
         <p className="topology-description">
-          RackTrack reads live rack footage to identify switches, patch panels,
-          servers, port activity, LEDs and cable routes, turning one cabinet video
-          into a verified rack inventory.
+          RackTrack reads rack imagery to build a continuously reconciled digital twin — switches, patch panels,
+          servers, port activity, LED state, and cable routes — turning one cabinet sweep
+          into verified infrastructure intelligence.
         </p>
 
         <div className="topology-feature-list">
@@ -254,68 +379,10 @@ function RackTopologySection() {
         </div>
       </div>
 
-      <div className={`topology-stage active-${activeFeature}`}>
-        <div className="topology-stage-label">
-          <span />
-          LIVE RACK · VIDEO AUDIT
-        </div>
-
-        <div className="topology-scene-glow" />
-
-        <div className="rack-viewer-orbits" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
-
-        <div className="sketchfab-rack-shell">
-          <div className="sketchfab-glow-ring" />
-
-          <video
-            className="rack-video-frame"
-            src={rackVideo}
-            aria-label="RackTrack 3D server rack rotation"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-          />
-
-          <div className="rack-ui-overlay">
-            <div className="rack-scan-line rack-scan-line-one" />
-            <div className="rack-scan-line rack-scan-line-two" />
-            <div className="rack-scan-line rack-scan-line-three" />
-
-            <div className="rack-floating-tag rack-floating-tag-one">
-              <span>SCAN</span>
-              <strong>RACK</strong>
-            </div>
-
-            <div className="rack-floating-tag rack-floating-tag-two">
-              <span>LEDs</span>
-              <strong>LIVE</strong>
-            </div>
-
-            <div className="rack-floating-tag rack-floating-tag-three">
-              <span>PORTS</span>
-              <strong>ACTIVE</strong>
-            </div>
-          </div>
-        </div>
-
-        <div className="topology-status-pill">
-          <span>RACK.42U</span>
-          <i />
-          <span>DEVICES 9</span>
-        </div>
-
-        <div className="topology-floor-lines">
-          <span />
-          <span />
-          <span />
-        </div>
-      </div>
+      <div
+        className={`topology-stage active-${activeFeature}`}
+        aria-label="Exploded 3D rack topology stack"
+      />
     </section>
   )
 }
@@ -402,14 +469,14 @@ function WorkflowSection() {
         <p className="workflow-kicker">WORKFLOW</p>
 
         <h2>
-          Six moments.
+          One platform.
           <br />
-          <span>One scan.</span>
+          <span>Six intelligence surfaces.</span>
         </h2>
 
         <p>
-          Every step of the RackTrack workflow is powered by one rack scan —
-          capture, detect, track, map, inventory, and secure.
+          Every intelligence surface in RackTrack is powered by one continuous workflow —
+          perceive, cognize, connect, twin, reconcile, and secure.
         </p>
       </div>
 
@@ -454,33 +521,35 @@ export default function SolutionsPage() {
   return (
     <main className="solutions-page">
       <section className="solutions-hero">
-        <video
-          className="hero-bg-video"
-          src={heroVideo}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        />
+        <div className="hero-bg-flip" aria-hidden="true">
+          {heroBackgroundImages.map((image, index) => (
+            <div
+              className={`hero-bg-flip__image hero-bg-flip__image--${index + 1}`}
+              key={image}
+              style={{ backgroundImage: `url("${image}")` }}
+            />
+          ))}
+        </div>
 
         <div className="solutions-copy">
           <h1 className="hero-title">
-            <span className="title-line">One workflow.</span>
+            <span className="title-line">One platform.</span>
             <span className="title-line title-gradient">
-              Every rack in your fleet.
+              Six intelligence surfaces.
             </span>
           </h1>
 
           <p className="hero-description">
-            From one rack scan to a synced CMDB record, RackTrack turns audits
-            into one clear mobile workflow.
+            From physical perception to continuous reconciliation, RackTrack turns rack data into verified infrastructure intelligence — synced to every system your teams already use.
+          </p>
+
+          <p className="hero-patent-sublabel">
+            Built on patent-pending innovations for automated network cable mapping.
           </p>
 
           <div className="hero-actions">
             <a className="primary-action" href="#rack-3d">
-              Explore the 3D rack {'->'}
+              Explore the 3D Topology {'->'}
             </a>
             <a className="secondary-action" href="#workflow">
               See the workflow

@@ -1,4 +1,4 @@
-import "./HomePage.css";
+﻿import "./HomePage.css";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -23,69 +23,73 @@ import {
 
 const capabilities = [
   [
-    "Physical Asset Discovery",
-    "Automatically detect servers, switches, routers, firewalls, UPS systems, and rack equipment using AI-powered image recognition.",
+    "Autonomous Asset Identification",
+    "Computer vision identifies every device, port, label, and rack unit position - a continuously reconciled digital record from a single phone sweep.",
     "/solutions page images/Automated_Inventory.jpg",
     Box,
   ],
   [
-    "Port & Cable Intelligence",
-    "Identify active ports, unused interfaces, cable types, and connection paths instantly.",
+    "Connectivity Intelligence",
+    "Port-level mapping of active connections, unused interfaces, cable types, and physical paths - verified against live network telemetry.",
     "/solutions page images/Port_Tracking.jpg",
     Cable,
   ],
   [
-    "Topology Visualization",
-    "Generate accurate 2D and interactive 3D rack topology maps for easier infrastructure management.",
+    "Visual Rack Intelligence",
+    "A continuously reconciled digital twin of your physical rack - topology, device posture, and connectivity - synced to your systems of record.",
     "/solutions page images/Network_Topology.jpg",
     Network,
   ],
   [
-    "Security & Firmware Insights",
-    "Detect outdated firmware versions and uncover known infrastructure vulnerabilities before they become risks.",
+    "Posture & Vulnerability Intelligence",
+    "Device-level firmware state, vulnerability exposure, and infrastructure posture surfaced per asset - not per fleet average.",
     "/solutions page images/Security_Compliance.jpg",
     ShieldCheck,
   ],
   [
-    "Incident Response Acceleration",
-    "Link scans directly to infrastructure incidents and reduce troubleshooting time dramatically.",
+    "Operational Resilience",
+    "Spatial search from alert to physical row in seconds. Current device and port state without a detour through stale CMDB records.",
     "/solutions page images/Server_rack-scan.jpg",
     Activity,
   ],
   [
-    "Capacity Planning",
-    "Monitor rack utilization, available space, power distribution, and future infrastructure requirements.",
+    "Capacity Intelligence",
+    "Rack utilization, available slots, and power state mapped to current physical reality - not the last scheduled audit.",
     "/solutions page images/AR_Rack.jpg",
     BarChart3,
   ],
   [
-    "Procurement Validation",
-    "Verify installed hardware against procurement records and asset databases.",
+    "Procurement Reconciliation",
+    "Reconcile installed hardware against procurement records and asset databases with verified physical evidence.",
     "/solutions page images/AI_Device_Detection.jpg",
     ShoppingCart,
   ],
   [
-    "Compliance Documentation",
-    "Maintain accurate infrastructure records for audits, governance, and operational compliance.",
+    "Compliance Evidence Automation",
+    "Continuously generated audit artifacts mapped to SOC 2, ISO 27001, HIPAA, and PCI-DSS Requirement 9 - ready before the auditor arrives.",
     "/solutions page images/datacenter-bg.jpg",
     FileCheck,
   ],
 ] as const;
 
 const problemStats = [
-  ["40-60%", "CMDB drift", "Physical reality and records do not match."],
+  ["40-60%", "Truth decay", "Physical reality and records do not match."],
   [
     "~30%",
-    "Outage root cause",
+    "Untraceable failures",
     "Outages linked to inventory and config drift.",
   ],
-  ["15-20%", "Ghost assets", "Assets still drawing power and license cost."],
-  ["3-6 weeks", "Evidence prep", "Manual compliance work per cycle."],
-  ["20-40 min", "Incident delay", "Time lost confirming rack truth."],
+  ["15-20%", "Unaccounted footprint", "Assets still drawing power and license cost."],
+  ["3-6 weeks", "Audit exposure", "Manual compliance work per cycle."],
+  ["20-40 min", "Response latency", "Time lost confirming rack truth."],
 ] as const;
 
 const oldWay = [
-  ["Manual infrastructure checks", "Teams walk the rack to confirm what exists.", Clock],
+  [
+    "Manual infrastructure checks",
+    "Teams walk the rack to confirm what exists.",
+    Clock,
+  ],
   [
     "Tool disagreement",
     "CMDB, DCIM, and asset registers drift apart.",
@@ -114,41 +118,41 @@ const rackTrackWay = [
 
 const roles = [
   [
-    "Infrastructure Leaders",
+    "For Infrastructure Executives",
     "Track physical infrastructure truth with confidence.",
     "/home-role-images/role-infrastructure-leaders.webp",
   ],
   [
-    "Network Architects",
+    "For Network Architecture",
     "Understand rack, port, and topology state faster.",
     "/home-role-images/role-network-architects.webp",
   ],
   [
-    "Security Teams",
+    "For Security Posture",
     "Connect device posture to the physical asset.",
     "/home-role-images/role-security-teams.webp",
   ],
   [
-    "Compliance Owners",
+    "For Audit & Compliance",
     "Reduce manual evidence collection and blind spots.",
     "/home-role-images/role-compliance-owners.webp",
   ],
   [
-    "Incident Responders",
+    "For Operational Resilience",
     "Find the right device before time is lost.",
     "/home-role-images/role-incident-responders.webp",
   ],
   [
-    "M&A and Migration Teams",
+    "For Transformation & M&A",
     "Baseline unknown environments before change.",
     "/home-role-images/role-ma-migration-teams.webp",
   ],
 ] as const;
 
 const heroSignals = [
-  "Rack captured",
-  "Ports verified",
-  "Topology trusted",
+  "Infrastructure digitized",
+  "Connectivity intelligence",
+  "Source of truth, continuously",
 ] as const;
 
 export default function HomePage() {
@@ -158,7 +162,11 @@ export default function HomePage() {
   const truthSectionRef = useRef<HTMLElement | null>(null);
   const [shouldLoadHeroVideo, setShouldLoadHeroVideo] = useState(false);
   const [shouldLoadProofVideo, setShouldLoadProofVideo] = useState(false);
-  const [shouldLoadTruthVideo] = useState(true);
+  const [shouldLoadTruthVideo, setShouldLoadTruthVideo] = useState(false);
+  const [shouldAutoplayTruthVideo, setShouldAutoplayTruthVideo] =
+    useState(false);
+  const [hasTruthVideoStarted, setHasTruthVideoStarted] = useState(false);
+  const [isTruthVideoPlaying, setIsTruthVideoPlaying] = useState(false);
 
   useEffect(() => {
     const elements = Array.from(
@@ -188,6 +196,18 @@ export default function HomePage() {
       behavior: "smooth",
       block: "start",
     });
+  };
+
+  const handleTruthVideoPlay = () => {
+    setShouldLoadTruthVideo(true);
+    setShouldAutoplayTruthVideo(true);
+    setHasTruthVideoStarted(true);
+  };
+
+  const resetTruthVideoPlayback = () => {
+    setShouldAutoplayTruthVideo(false);
+    setHasTruthVideoStarted(false);
+    setIsTruthVideoPlaying(false);
   };
 
   useEffect(() => {
@@ -266,7 +286,56 @@ export default function HomePage() {
       video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("loadeddata", tryPlay);
     };
+  }, [shouldLoadHeroVideo]);
+
+  useEffect(() => {
+    const section = truthSectionRef.current;
+
+    if (!section) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+
+        if (entry?.isIntersecting) {
+          setShouldLoadTruthVideo(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "280px 0px" },
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!shouldAutoplayTruthVideo || !shouldLoadTruthVideo) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      const video = truthVideoRef.current;
+
+      if (!video) {
+        return;
+      }
+
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {
+          setShouldAutoplayTruthVideo(false);
+          setHasTruthVideoStarted(false);
+          setIsTruthVideoPlaying(false);
+        });
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [shouldAutoplayTruthVideo, shouldLoadTruthVideo]);
 
   return (
     <main className="home-page">
@@ -286,48 +355,51 @@ export default function HomePage() {
           className="home-hero-bg-video-layer"
           aria-hidden="true"
         >
-          <video
-            ref={heroVideoRef}
-            className="home-hero-bg-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            disablePictureInPicture
-            preload="metadata"
-            poster="/solutions page images/Server_rack-scan.jpg"
-          >
-            {shouldLoadHeroVideo ? (
-              <>
-                <source
-                  src="/solutions page images/server_rack.mp4"
-                  type="video/mp4"
-                />
-                <source
-                  src="/solutions page images/server_rack.mp4"
-                  type="video/mp4"
-                />
-              </>
-            ) : null}
-          </video>
+          {shouldLoadHeroVideo ? (
+            <video
+              ref={heroVideoRef}
+              className="home-hero-bg-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              disablePictureInPicture
+              preload="metadata"
+            >
+              <source
+                src="/solutions page images/server_rack.mp4"
+                type="video/mp4"
+              />
+            </video>
+          ) : (
+            <img
+              className="home-hero-bg-video"
+              src="/solutions page images/Server_rack-scan.jpg"
+              alt=""
+            />
+          )}
           <div className="home-hero-video-fade" />
           <div className="home-hero-scan-sweep" />
         </div>
 
         <div className="home-hero-copy home-animate-in is-visible">
-          <span className="home-eyebrow">AI-Powered Physical Intelligence for Modern Data Centers</span>
+          <span className="home-eyebrow">
+            THE PHYSICAL INFRASTRUCTURE INTELLIGENCE PLATFORM
+          </span>
           <h1>
             <span className="home-hero-line home-hero-line-one">
-              Point your phone at the rack.
+              Your infrastructure,
             </span>
             <em className="home-hero-line home-hero-line-three">
-              Get instant visibility you can trust.
+              finally knowable.
             </em>
           </h1>
           <p className="home-hero-copy-text">
-            RackTrack transforms manual rack audits into intelligent, real-time 
-            infrastructure discovery. Scan server racks with your phone to 
-            automatically identify devices, ports, cables, serial numbers, and network connections all powered by AI.
+            RackTrack transforms rack images and network signals into verified
+            infrastructure intelligence - helping teams understand every device,
+            port, cable, and physical-to-logical relationship across the rack
+            environment. Built on patent-pending innovations for automated
+            network cable mapping.
           </p>
 
           <div className="home-hero-signal-rail" aria-hidden="true">
@@ -350,7 +422,7 @@ export default function HomePage() {
               state={{ scrollTo: "contact" }}
               className="home-primary-btn"
             >
-              Book a demo <ArrowRight size={18} />
+              SEE THE PLATFORM <ArrowRight size={18} />
             </Link>
 
             <a
@@ -359,7 +431,7 @@ export default function HomePage() {
               onClick={handleWatchTour}
             >
               <PlayCircle size={18} />
-              Watch Platform Overview
+              WATCH DEMO
             </a>
           </div>
         </div>
@@ -368,9 +440,15 @@ export default function HomePage() {
       <section className="home-section home-problem-section home-animate-in">
         <div className="home-section-header">
           <span>Problem</span>
-          <h2>Your CMDB is outdated. Your DCIM is incomplete. RackTrack reveals the physical truth. </h2>
+          <h2>
+            Your CMDB is outdated. Your DCIM is incomplete. RackTrack is the
+            intelligence layer that closes the gap.
+          </h2>
           <p>
-            Most infrastructure databases drift away from reality over time. RackTrack bridges the gap between physical infrastructure and digital records using AI-powered rack scanning and automated topology discovery.
+            Every infrastructure record drifts. Every CMDB lies. Every DCIM has
+            blind spots. RackTrack delivers continuous reconciliation between
+            the physical world and your operational systems - autonomous,
+            verifiable, defensible.
           </p>
         </div>
 
@@ -396,25 +474,43 @@ export default function HomePage() {
         <div className="home-truth-visual">
           <div className="home-truth-canvas">
             <div className="home-truth-img-wrap">
+              {!isTruthVideoPlaying ? (
+                <button
+                  type="button"
+                  className="home-truth-play-btn"
+                  onClick={handleTruthVideoPlay}
+                  aria-label="Play RackTrack video"
+                >
+                  <span className="home-truth-play-icon">
+                    <PlayCircle size={32} />
+                  </span>
+                  <span className="home-truth-play-label">Play video</span>
+                </button>
+              ) : null}
               <video
                 ref={truthVideoRef}
                 className="home-truth-video"
-                loop
-                controls
+                controls={hasTruthVideoStarted}
                 playsInline
-                preload="metadata"
-                poster="/solutions page images/Server_rack-scan.jpg"
+                preload="none"
+                poster="/RackTrack-poster.jpg"
+                onPlay={() => {
+                  setShouldAutoplayTruthVideo(false);
+                  setHasTruthVideoStarted(true);
+                  setIsTruthVideoPlaying(true);
+                }}
+                onPause={() => setIsTruthVideoPlaying(false)}
+                onEnded={() => {
+                  const video = truthVideoRef.current;
+                  if (video) {
+                    video.currentTime = 0;
+                  }
+                  resetTruthVideoPlayback();
+                }}
               >
                 {shouldLoadTruthVideo ? (
                   <>
-                    <source
-                      src="/solutions page images/server_rack.mp4"
-                      type="video/mp4"
-                    />
-                    <source
-                      src="/solutions page images/server_rack.mp4"
-                      type="video/mp4"
-                    />
+                    <source src="/RackTrack-web.mp4" type="video/mp4" />
                   </>
                 ) : null}
               </video>
@@ -424,15 +520,22 @@ export default function HomePage() {
 
         <div className="home-truth-copy">
           <span>What RackTrack Is</span>
-          <h2>The Physical Intelligence Layer for the modern data center.</h2>
+          <h2>
+            Physical Infrastructure Intelligence - continuously reconciled
+            across your entire footprint.
+          </h2>
           <p>
-            RackTrack combines computer vision, OCR, network discovery, and infrastructure intelligence into a single platform. 
-            Instantly scan racks, identify assets, visualize topology, and synchronize updates with your CMDB. 
+            RackTrack combines computer vision, network telemetry, vendor data,
+            and security intelligence into a single platform. One phone sweep
+            produces a verified infrastructure digital twin - inventory,
+            topology, port state, and firmware posture synced to your
+            operational stack.
           </p>
 
           <div className="home-truth-note">
-            From physical rack validation to automated infrastructure documentation 
-            RackTrack gives operations teams complete visibility in minutes, not days.
+            From physical rack perception to continuous reconciliation,
+            RackTrack gives every team one verified source of infrastructure
+            truth.
           </div>
         </div>
       </section>
@@ -440,7 +543,7 @@ export default function HomePage() {
       <section className="home-section home-capabilities-section home-animate-in">
         <div className="home-section-header">
           <span>Capabilities</span>
-          <h2>One intelligent scan. Multiple operational outcomes.</h2>
+          <h2>One platform. Every infrastructure outcome.</h2>
         </div>
 
         <div className="home-capability-image-grid">
@@ -463,7 +566,9 @@ export default function HomePage() {
       <section className="home-section home-proof-section home-animate-in">
         <div className="home-section-header">
           <span>Proof</span>
-          <h2>From manual rack audits to AI-powered infrastructure validation.</h2>
+          <h2>
+            From manual rack audits to AI-powered infrastructure validation.
+          </h2>
         </div>
 
         <div className="home-proof-compare">
@@ -471,7 +576,7 @@ export default function HomePage() {
             <div className="home-proof-title">
               <XCircle size={28} />
               <div>
-                <h3>Without RackTrack</h3>
+                <h3>Legacy infrastructure operations</h3>
                 <p>Manual. Slow. Error-prone.</p>
               </div>
             </div>
@@ -503,7 +608,7 @@ export default function HomePage() {
             <div className="home-proof-title">
               <CheckCircle2 size={28} />
               <div>
-                <h3>With RackTrack</h3>
+                <h3>The intelligence layer</h3>
                 <p>Automated. Fast. Verified.</p>
               </div>
             </div>
@@ -532,7 +637,6 @@ export default function HomePage() {
                 ) : null}
               </video>
 
-              <div className="home-proof-scan-box" />
               <div className="home-proof-hud">
                 <small>Output Ready</small>
                 <strong>Rack verified</strong>
@@ -610,12 +714,13 @@ export default function HomePage() {
         <div className="home-final-copy">
           <span>See RackTrack In Action</span>
           <h2>
-            <span>Turn one rack into</span>
-            <em>verified infrastructure truth.</em>
+            <span>Begin with one rack. Build toward</span>
+            <em>continuous infrastructure intelligence.</em>
           </h2>
           <p>
             Start with a guided assessment on a single rack or row. In minutes,
-            compare live rack reality against CMDB and network records.
+            see your physical infrastructure reconciled against CMDB and network
+            records.
           </p>
 
           <Link
@@ -623,10 +728,12 @@ export default function HomePage() {
             state={{ scrollTo: "contact" }}
             className="home-primary-btn home-final-btn"
           >
-            Schedule a rack assessment <Rocket size={18} />
+            RUN A TOPOLOGY DIAGNOSTIC <Rocket size={18} />
           </Link>
         </div>
       </section>
     </main>
   );
 }
+
+

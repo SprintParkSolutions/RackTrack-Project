@@ -1,4 +1,4 @@
-export type ResourcePostSection = {
+﻿export type ResourcePostSection = {
   eyebrow: string
   title: string
   body: string[]
@@ -23,9 +23,9 @@ export const resourcePosts: ResourcePost[] = [
     id: 'cmdb-drift',
     slug: 'the-cost-of-cmdb-drift',
     category: 'Operations',
-    title: 'The Cost of CMDB Drift',
+    title: 'Why every enterprise CMDB is 40% wrong - and the architecture that closes the gap',
     excerpt:
-      'When the CMDB drifts from physical reality, every downstream decision built on it becomes less reliable.',
+      'When the CMDB drifts from physical reality, every downstream decision built on it becomes less reliable - and the cost compounds across every operational workflow.',
     image: '/resource-thought-images/blog-cmdb-drift.webp',
     imageAlt: 'Rack blueprint diagrams compared with a live network rack',
     detailIntro:
@@ -68,9 +68,9 @@ export const resourcePosts: ResourcePost[] = [
     id: 'manual-audit-failure',
     slug: 'the-failure-modes-of-manual-rack-audits',
     category: 'Infrastructure',
-    title: 'The Failure Modes of Manual Rack Audits',
+    title: 'The hidden cost of unreconciled infrastructure: A framework for quantifying topology debt',
     excerpt:
-      'Manual audits are slow, expensive, and often out of date before the work is complete.',
+      'Manual audits are slow, expensive, and often out of date before the work is complete - creating topology debt that spreads across teams.',
     image: '/resource-thought-images/blog-manual-rack-audits.webp',
     imageAlt: 'Audit toolkit beside data center rack equipment',
     detailIntro:
@@ -113,7 +113,7 @@ export const resourcePosts: ResourcePost[] = [
     id: 'evidence-grade',
     slug: 'the-case-for-evidence-grade-inventory',
     category: 'Strategy',
-    title: 'The Case for Evidence-Grade Inventory',
+    title: 'From audit to autonomy: How continuous reconciliation reshapes data center operations',
     excerpt:
       'Defensible infrastructure inventory starts with traceable evidence, not static records or assumptions.',
     image: '/resource-thought-images/blog-evidence-grade-inventory.webp',
@@ -437,3 +437,5 @@ export const resourcePosts: ResourcePost[] = [
 export function getResourcePostBySlug(slug: string) {
   return resourcePosts.find((post) => post.slug === slug)
 }
+
+
