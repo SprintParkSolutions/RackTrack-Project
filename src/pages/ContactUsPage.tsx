@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import './ContactUsPage.css'
 import {
@@ -35,7 +35,7 @@ const faqs = [
   ],
   [
     'Does RackTrack replace our CMDB or DCIM?',
-    'No. RackTrack acts as the physical intelligence layer underneath existing CMDB, DCIM, and ITSM platforms — helping reconcile what systems report against what is physically present in the rack.',
+    'No. RackTrack acts as the physical infrastructure intelligence layer underneath existing CMDB, DCIM, and ITSM platforms - helping reconcile what systems report against what is physically present in the rack.',
   ],
   [
     'Is RackTrack useful for compliance and audit preparation?',
@@ -88,8 +88,31 @@ const initialFormData: RackTrackLeadPayload = {
   mobileNumber: '',
 }
 
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+function isValidEmail(email: string): boolean {
+  const trimmed = email.trim()
+  const atParts = trimmed.split('@')
+  if (atParts.length !== 2) return false
+
+  const [local, domain] = atParts
+  if (!local || !domain) return false
+
+  if (!/^[a-zA-Z0-9._%+\-]+$/.test(local)) return false
+
+  const labels = domain.split('.')
+  if (labels.length < 2) return false
+  if (labels.some(l => !l || !/^[a-zA-Z0-9\-]+$/.test(l))) return false
+
+  const tld = labels[labels.length - 1]
+  if (!/^[a-zA-Z]{2,10}$/.test(tld)) return false
+
+  // Reject double-TLD patterns: .com.com, .net.org etc.
+  if (labels.length >= 3) {
+    const penultimate = labels[labels.length - 2].toLowerCase()
+    const genericTLDs = ['com', 'net', 'org', 'edu', 'gov', 'int', 'info', 'biz', 'app', 'io', 'ai', 'dev']
+    if (genericTLDs.includes(penultimate)) return false
+  }
+
+  return true
 }
 
 export default function ContactUsPage() {
@@ -133,9 +156,16 @@ export default function ContactUsPage() {
   ) => {
     const { name, value } = event.target
 
+    let sanitized = value
+    if (name === 'fullName') {
+      sanitized = value.replace(/[^a-zA-Z\s'\-]/g, '')
+    } else if (name === 'mobileNumber') {
+      sanitized = value.replace(/\D/g, '').slice(0, 10)
+    }
+
     setFormData((current) => ({
       ...current,
-      [name]: value,
+      [name]: sanitized,
     }))
 
     if (submitState !== 'idle') {
@@ -149,6 +179,8 @@ export default function ContactUsPage() {
 
     if (!formData.fullName.trim()) {
       missingFields.push('Full Name')
+    } else if (!/^[a-zA-Z\s'\-]+$/.test(formData.fullName.trim())) {
+      return 'Full Name must contain only letters.'
     }
 
     if (!formData.email.trim()) {
@@ -161,6 +193,8 @@ export default function ContactUsPage() {
 
     if (!formData.mobileNumber.trim()) {
       missingFields.push('Mobile Number')
+    } else if (!/^\d{10}$/.test(formData.mobileNumber.trim())) {
+      return 'Mobile Number must be exactly 10 digits.'
     }
 
     if (missingFields.length > 0) {
@@ -246,19 +280,17 @@ export default function ContactUsPage() {
       <section className="contact-hero">
         <div className="hero-content">
           <h1>
-            Talk to
-            <span> RackTrack.</span>
+            Engage the
+            <span> platform team.</span>
           </h1>
 
           <p>
-            Partner with RackTrack to simplify data center operations and accelerate
-            decision-making. From real-time visibility to smarter workflows, we deliver
-            the insights you need to build, manage, and scale with confidence.
+            Whether you're evaluating the platform, scoping a deployment, or designing a continuous reconciliation strategy across your fleet - our team is ready.
           </p>
 
           <div className="hero-actions">
             <button type="button" className="primary-btn" onClick={scrollToForm}>
-              Start a Conversation <ArrowUpRight size={16} />
+              Request Platform Brief <ArrowUpRight size={16} />
             </button>
           </div>
         </div>
@@ -310,13 +342,12 @@ export default function ContactUsPage() {
       <section id="contact" className="contact-main-section">
         <form className="contact-form" onSubmit={handleSubmit} noValidate>
           <h2>
-            Start your
-            <span> conversation.</span>
+            Tell us about your
+            <span> infrastructure.</span>
           </h2>
 
           <p className="contact-form-intro">
-            Tell us what you need and the RackTrack team will get back to you with the
-            right next step.
+            Tell us about your infrastructure footprint and the RackTrack team will scope a guided demo against your environment.
           </p>
 
           <div className="form-row">
@@ -373,18 +404,19 @@ export default function ContactUsPage() {
                   aria-label="Country code"
                   required
                 >
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                  <option value="+91">🇮🇳 +91</option>
-                  <option value="+61">🇦🇺 +61</option>
-                  <option value="+49">🇩🇪 +49</option>
+                  <option value="+1">US +1</option>
+                  <option value="+44">UK +44</option>
+                  <option value="+91">IN +91</option>
+                  <option value="+61">AU +61</option>
+                  <option value="+49">DE +49</option>
                 </select>
                 <input
                   type="tel"
                   name="mobileNumber"
-                  placeholder="Enter your mobile number"
+                  placeholder="Enter 10-digit number"
                   value={formData.mobileNumber}
                   onChange={handleChange}
+                  maxLength={10}
                   required
                 />
               </div>
@@ -420,7 +452,7 @@ export default function ContactUsPage() {
                   ? 'Sending'
                   : submitState === 'error'
                     ? 'Try Again'
-                    : 'Submit Request'}
+                    : 'Request Platform Brief'}
             </span>
             {submitState === 'sent' ? (
               <CheckCircle2 size={16} />
@@ -461,3 +493,7 @@ export default function ContactUsPage() {
     </main>
   )
 }
+
+
+
+

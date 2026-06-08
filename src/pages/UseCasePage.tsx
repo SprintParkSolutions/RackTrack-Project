@@ -1,7 +1,7 @@
-import './UseCasePage.css'
+﻿import './UseCasePage.css'
 import { useEffect, useMemo, useState } from 'react'
 import type { MouseEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
   BellRing,
   Building2,
@@ -24,7 +24,7 @@ const useCaseHeroImage = '/use-case-images/use-case-hero.png'
 const roleCards = [
   {
     id: 'infra-leaders',
-    navLabel: 'Infra Leaders',
+    navLabel: 'Infrastructure Executives',
     number: '01',
     icon: Building2,
     title: 'Infrastructure & Data Center Leaders',
@@ -42,7 +42,7 @@ const roleCards = [
   },
   {
     id: 'network',
-    navLabel: 'Network',
+    navLabel: 'Network Arch.',
     number: '02',
     icon: Network,
     title: 'Network Architects & Engineers',
@@ -60,7 +60,7 @@ const roleCards = [
   },
   {
     id: 'security',
-    navLabel: 'Security',
+    navLabel: 'Security & Risk',
     number: '03',
     icon: ShieldCheck,
     title: 'Security & Vulnerability Teams',
@@ -78,7 +78,7 @@ const roleCards = [
   },
   {
     id: 'compliance',
-    navLabel: 'Compliance',
+    navLabel: 'Audit & Gov.',
     number: '04',
     icon: FileCheck2,
     title: 'Compliance & Audit Owners',
@@ -96,7 +96,7 @@ const roleCards = [
   },
   {
     id: 'incident',
-    navLabel: 'Incident',
+    navLabel: 'Operational Resilience',
     number: '05',
     icon: BellRing,
     title: 'Incident Responders & On-Call',
@@ -114,7 +114,7 @@ const roleCards = [
   },
   {
     id: 'ma',
-    navLabel: 'M&A',
+    navLabel: 'Transformation',
     number: '06',
     icon: GitBranch,
     title: 'M&A & Migration Teams',
@@ -133,15 +133,15 @@ const roleCards = [
 ]
 
 const heroStats = [
-  { value: '6', label: 'Roles, one platform' },
-  { value: '<10 days', label: 'Time to defensible inventory' },
-  { value: '99.6%', label: 'Fabric to floor agreement' },
+  { value: '6', label: 'Operational disciplines unified' },
+  { value: '<10 days', label: 'Time to continuous truth' },
+  { value: '99.6%', label: 'Physical-logical convergence' },
 ]
 
 const impactCards = [
   {
     value: '99%+',
-    label: 'Inventory Accuracy',
+    label: 'State Fidelity',
     icon: Target,
     tone: 'cyan',
     visual: (
@@ -154,7 +154,7 @@ const impactCards = [
   },
   {
     value: '5-15 Min',
-    label: 'From Rack Scan to Insights',
+    label: 'Rack Capture to Operational Insight',
     icon: TimerReset,
     tone: 'violet',
     visual: (
@@ -168,7 +168,7 @@ const impactCards = [
   },
   {
     value: '90%+',
-    label: 'Reduction in Manual Effort',
+    label: 'Manual Operations Eliminated',
     icon: ChartNoAxesColumnIncreasing,
     tone: 'blue',
     visual: (
@@ -183,7 +183,7 @@ const impactCards = [
   },
   {
     value: 'Continuous',
-    label: 'Physical-to-Logical Reconciliation',
+    label: 'Continuous Reconciliation',
     icon: InfinityIcon,
     tone: 'green',
     visual: (
@@ -207,7 +207,9 @@ const fullCaseRoutes = [
 ]
 
 export default function UseCasePage() {
+  const location = useLocation()
   const [selectedRoleId, setSelectedRoleId] = useState(roleCards[0].id)
+  const [flippedImpactIndex, setFlippedImpactIndex] = useState<number | null>(null)
   const filteredRoleCards = useMemo(
     () => roleCards.filter((role) => role.id === selectedRoleId),
     [selectedRoleId],
@@ -242,9 +244,39 @@ export default function UseCasePage() {
     return () => observer.disconnect()
   }, [selectedRoleId])
 
+  useEffect(() => {
+    const roleIdFromHash = location.hash.slice(1)
+
+    if (!roleCards.some((role) => role.id === roleIdFromHash)) {
+      return
+    }
+
+    setSelectedRoleId(roleIdFromHash)
+
+    const scrollToSelectedRole = () => {
+      document.getElementById(roleIdFromHash)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+
+    const timeoutId = window.setTimeout(scrollToSelectedRole, 80)
+    const frameId = window.requestAnimationFrame(scrollToSelectedRole)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+      window.cancelAnimationFrame(frameId)
+    }
+  }, [location.hash])
+
   const handleRoleNavClick = (event: MouseEvent<HTMLAnchorElement>, roleId: string) => {
     event.preventDefault()
     setSelectedRoleId(roleId)
+    event.currentTarget.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    })
   }
 
   return (
@@ -261,13 +293,12 @@ export default function UseCasePage() {
           <span className="use-case-eyebrow">Use Cases</span>
 
           <h1>
-            <span>Built for every</span>
-            <strong>infrastructure moment.</strong>
+            <span>Operational outcomes across</span>
+            <strong>the infrastructure lifecycle.</strong>
           </h1>
 
           <p>
-            RackTrack empowers data center teams with AI-powered rack intelligence to streamline operations, 
-            reduce risk, and maintain a single source of truth.
+            RackTrack connects rack reality, network validation, and continuous reconciliation so teams can move from physical evidence to operational outcomes faster.
           </p>
 
           <div className="use-case-hero-stats">
@@ -284,16 +315,33 @@ export default function UseCasePage() {
       <section className="use-case-impact-section" aria-labelledby="use-case-impact-title">
         <div className="use-case-impact-header">
           <span>Impact that matters</span>
-          <h2 id="use-case-impact-title">Real Results. Measurable Impact.</h2>
-          <p>RackTrack delivers accuracy, speed, and clarity at every layer.</p>
+          <h2 id="use-case-impact-title">Operational outcomes, measured against physical truth.</h2>
+          <p>RackTrack turns verified rack evidence into faster decisions, stronger controls, and less manual reconciliation work.</p>
         </div>
 
         <div className="use-case-impact-grid">
-          {impactCards.map((impact) => {
+          {impactCards.map((impact, index) => {
             const Icon = impact.icon
 
             return (
-              <article className={`use-case-impact-card use-case-impact-card-${impact.tone}`} key={impact.label} tabIndex={0}>
+              <article
+                className={`use-case-impact-card use-case-impact-card-${impact.tone}${impact.value.length > 8 ? ' use-case-impact-card-long-value' : ''}${flippedImpactIndex === index ? ' is-flipped' : ''}`}
+                key={impact.label}
+                onClick={() =>
+                  setFlippedImpactIndex((currentIndex) =>
+                    currentIndex === index ? null : index,
+                  )
+                }
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    setFlippedImpactIndex((currentIndex) =>
+                      currentIndex === index ? null : index,
+                    )
+                  }
+                }}
+                tabIndex={0}
+              >
                 <div className="use-case-impact-card-inner">
                   <div className="use-case-impact-card-front">
                     <Icon className="use-case-impact-icon" aria-hidden="true" size={48} strokeWidth={1.9} />
@@ -301,12 +349,16 @@ export default function UseCasePage() {
                     <h3>{impact.label}</h3>
                     {impact.visual}
                     <span className="use-case-impact-hint">Hover to flip</span>
+                    <span className="use-case-impact-tap-hint">Tap to flip</span>
                   </div>
 
                   <div className="use-case-impact-card-back">
                     <Icon aria-hidden="true" size={34} strokeWidth={1.9} />
                     <h3>{impact.label}</h3>
                     <p>{impact.detail}</p>
+                    <span className="use-case-impact-tap-hint use-case-impact-tap-hint-back">
+                      Tap to return
+                    </span>
                   </div>
                 </div>
               </article>
@@ -323,7 +375,7 @@ export default function UseCasePage() {
           </h2>
           <p>
             Each role lives with a specific failure mode of the current stack.
-            Each one gets a specific surface.
+            Each one gets a specific intelligence surface.
           </p>
         </div>
 
@@ -350,6 +402,9 @@ export default function UseCasePage() {
               </a>
             )
           })}
+        </div>
+        <div className="use-case-role-scroll-cue" aria-hidden="true">
+          <span />
         </div>
 
         <div className="use-case-role-card-list">
@@ -398,7 +453,9 @@ export default function UseCasePage() {
 
                   <div className="use-case-role-actions">
                     <Link to={fullCaseRoutes[routeIndex]}>Read the full case</Link>
-                    <a href="/contact-us">Talk to our team</a>
+                    <Link to="/contact-us" state={{ scrollTo: 'contact' }}>
+                      Request platform brief
+                    </Link>
                   </div>
                 </div>
 
@@ -425,8 +482,12 @@ export default function UseCasePage() {
             We'll scope the sweep, the reconciliation, and the artifact your
             stakeholder needs, in the language of the role you actually work in.
           </p>
-          <Link to="/contact-us" className="use-case-next-step-button">
-            Talk to our team
+          <Link
+            to="/contact-us"
+            state={{ scrollTo: 'contact' }}
+            className="use-case-next-step-button"
+          >
+            Request platform brief
             <span aria-hidden="true">-&gt;</span>
           </Link>
         </div>
@@ -434,3 +495,5 @@ export default function UseCasePage() {
     </main>
   )
 }
+
+

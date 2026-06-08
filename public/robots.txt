@@ -1,0 +1,12 @@
+# RackTrack.ai robots.txt
+# Allow all search engine crawlers full access
+
+User-agent: *
+Allow: /
+
+# Disallow non-public paths
+Disallow: /api/
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://racktrack.ai/sitemap.xml

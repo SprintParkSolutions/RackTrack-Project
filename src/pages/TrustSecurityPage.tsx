@@ -1,4 +1,4 @@
-import { type CSSProperties, useEffect, useRef } from 'react'
+﻿import { type CSSProperties, useEffect, useRef } from 'react'
 import { ArrowRight, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import './TrustSecurityPage.css'
@@ -40,22 +40,22 @@ const heroPrinciples = [
 const deploymentOptions = [
   {
     icon: 'cloud',
-    label: 'Cloud-Hosted',
+    label: 'Multi-Tenant Cloud',
     detail: 'Secure, scalable, and fastest time to value.',
   },
   {
     icon: 'private',
-    label: 'Private Cloud / Customer VPC',
+    label: 'Dedicated Cloud Tenancy',
     detail: 'Deployed in your private environment with full control.',
   },
   {
     icon: 'onprem',
-    label: 'On-Premise Deployment',
+    label: 'Customer-Hosted Deployment',
     detail: 'Runs in your data center for regulated environments.',
   },
   {
     icon: 'airgap',
-    label: 'Air-Gapped Deployment',
+    label: 'Sovereign / Air-Gapped Deployment',
     detail: 'For classified or restricted facilities with no external access.',
   },
 ] as const
@@ -361,11 +361,11 @@ export default function TrustSecurityPage() {
           <div className="trust-hero__content">
             <span className="app-eyebrow">Trust & Security</span>
             <h1>
-              <span className="trust-h1-line">Clear controls.</span>
-              <span className="trust-h1-line trust-h1-grad">Clear boundaries.</span>
+              <span className="trust-h1-line">Enterprise-grade by architecture.</span>
+              <span className="trust-h1-line trust-h1-grad">Audit-ready by default.</span>
             </h1>
             <p>
-              RackTrack is designed to fit how security and infrastructure teams assess platforms.
+              RackTrack is designed to meet how enterprise security, compliance, and infrastructure teams assess platforms - with clear data ownership, flexible deployment, and defensible patent-pending innovation.
             </p>
 
             <div className="trust-hero__actions">
@@ -424,8 +424,8 @@ export default function TrustSecurityPage() {
           <div className="trust-data__copy">
             <span className="app-eyebrow">Data Handling</span>
             <h2>
-              Your video,
-              <span className="trust-data__title-accent"> your control.</span>
+              Customer-controlled
+              <span className="trust-data__title-accent"> data sovereignty.</span>
             </h2>
             <p>
               Rack video is processed in your tenant, structured into device and topology records,
@@ -521,6 +521,49 @@ export default function TrustSecurityPage() {
           </Link>
         </div>
       </section>
+
+      <section className="app-section trust-innovation reveal-on-scroll">
+        <div className="app-section-heading">
+          <span className="app-eyebrow">Defensible Innovation</span>
+          <h2>Built on Defensible Innovation</h2>
+          <p>
+            RackTrack's platform is supported by pending patent filings covering automated network cable mapping and infrastructure intelligence workflows - the foundation of a multi-year technical moat.
+          </p>
+        </div>
+
+        <div className="trust-innovation__grid">
+          <article className="trust-innovation__card">
+            <div className="trust-innovation__badge">Patent Pending</div>
+            <h3>Visual Rack Intelligence</h3>
+            <p>
+              Patent-pending methods for capturing rack images and identifying devices, ports, cables, and labels in the rack environment.
+            </p>
+            <div className="trust-innovation__ref">US Application 19/219,347</div>
+          </article>
+
+          <article className="trust-innovation__card">
+            <div className="trust-innovation__badge">Patent Pending</div>
+            <h3>Cable-to-Port Mapping & Validation</h3>
+            <p>
+              Patent-pending workflows for generating cable-to-port maps from visual data and validating them against live switch data (CDP, LLDP, ARP) and neighbor information.
+            </p>
+            <div className="trust-innovation__ref">US Application 19/219,347</div>
+          </article>
+
+          <article className="trust-innovation__card">
+            <div className="trust-innovation__badge">Patent Pending</div>
+            <h3>Infrastructure Reconciliation Methods</h3>
+            <p>
+              Patent-pending methods for merging scans across rack sessions and reconciling physical-to-logical infrastructure data into a single verified state.
+            </p>
+            <div className="trust-innovation__ref">US Application 19/219,347</div>
+          </article>
+        </div>
+      </section>
     </main>
   )
 }
+
+
+
+

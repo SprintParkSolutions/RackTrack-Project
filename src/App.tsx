@@ -1,5 +1,6 @@
-import { Suspense, lazy, useEffect } from 'react'
+﻿import { Suspense, lazy, useEffect } from 'react'
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { useState } from 'react'
 import { ReactLenis } from 'lenis/react'
 import Navbar from './components/Navbar'
 import SideSocialRail from './components/SideSocialRail'
@@ -45,15 +46,15 @@ const SEO_BY_PATH: Record<
   { title: string; description: string; canonicalPath: string }
 > = {
   '/': {
-    title: 'RackTrack | Scan Any Rack. Find Any Port. Instantly.',
+    title: 'RackTrack | The Infrastructure Digital Twin Platform',
     description:
-      'RackTrack turns physical layer infrastructure into live intelligence with AI-powered rack scans, port identification, cable mapping, and audit-ready reports.',
+      'RackTrack transforms rack images and network signals into verified infrastructure intelligence for rack inventory, topology reconciliation, connectivity intelligence, and audit-ready reporting.',
     canonicalPath: '/',
   },
   '/about-us': {
     title: 'About RackTrack | Physical Layer Intelligence',
     description:
-      'Learn how RackTrack helps teams modernize rack audits, cable mapping, and infrastructure visibility with AI-powered physical layer intelligence.',
+      'Learn how RackTrack is building the Physical Infrastructure Intelligence Platform for data centers - the intelligence layer underneath audits, DCIM, and rack operations.',
     canonicalPath: '/about-us',
   },
   // '/product': {
@@ -63,9 +64,9 @@ const SEO_BY_PATH: Record<
   //   canonicalPath: '/product',
   // },
   '/solutions': {
-    title: 'RackTrack Solutions | Rack Audits, Cable Mapping, Port Visibility',
+    title: 'RackTrack Platform | Infrastructure Intelligence Capabilities',
     description:
-      'Explore RackTrack solutions for rack inventory, switch recognition, cable tracing, free-port discovery, and audit-ready infrastructure reporting.',
+      'Explore RackTrack platform capabilities: Visual Rack Intelligence, Connectivity Intelligence, Infrastructure Digital Twin, Security Posture Intelligence, and Continuous Reconciliation.',
     canonicalPath: '/solutions',
   },
   '/use-cases': {
@@ -113,7 +114,7 @@ const SEO_BY_PATH: Record<
   '/why-racktrack': {
     title: 'Why RackTrack | Infrastructure Truth Across Rack, Network, and Security',
     description:
-      'See why RackTrack stands apart by sensing the rack, verifying against the network, and enriching with vendor and security data in one reconciled workflow.',
+      'See how RackTrack perceives, reconciles, and reasons about physical infrastructure through visual rack intelligence, cable-to-port mapping, and continuous reconciliation.',
     canonicalPath: '/why-racktrack',
   },
   '/trust-security': {
@@ -123,15 +124,15 @@ const SEO_BY_PATH: Record<
     canonicalPath: '/trust-security',
   },
   '/resources': {
-    title: 'Resources | RackTrack Blog and Infrastructure Insights',
+    title: 'Infrastructure Intelligence | Research, Frameworks & Insights',
     description:
-      'Browse RackTrack blog content on CMDB drift, rack audits, infrastructure security, audit readiness, and physical layer intelligence.',
+      'Browse RackTrack research, frameworks, and insights on CMDB drift, infrastructure digital twins, topology reconciliation, audit readiness, and physical infrastructure intelligence.',
     canonicalPath: '/resources',
   },
   '/contact-us': {
-    title: 'Contact RackTrack | Book a Demo',
+    title: 'Contact RackTrack | Request Platform Brief',
     description:
-      'Contact RackTrack to book a demo, discuss rollout planning, and explore AI-powered rack scanning, cable mapping, and audit workflows.',
+      'Contact RackTrack to request a platform brief, scope a deployment, and explore continuous reconciliation across your infrastructure.',
     canonicalPath: '/contact-us',
   },
 }
@@ -183,11 +184,36 @@ function AppSeo() {
   return null
 }
 
+function useNativeMobileScroll() {
+  const getShouldUseNativeScroll = () =>
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(max-width: 860px), (pointer: coarse)').matches
+
+  const [useNativeScroll, setUseNativeScroll] = useState(getShouldUseNativeScroll)
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') {
+      return
+    }
+
+    const mediaQuery = window.matchMedia('(max-width: 860px), (pointer: coarse)')
+    const update = () => setUseNativeScroll(mediaQuery.matches)
+
+    update()
+    mediaQuery.addEventListener('change', update)
+
+    return () => mediaQuery.removeEventListener('change', update)
+  }, [])
+
+  return useNativeScroll
+}
+
 export default function App() {
-  return (
-    <BrowserRouter>
-      <ReactLenis root options={{ lerp: 0.05 }}>
-      <div className="app-shell">
+  const useNativeScroll = useNativeMobileScroll()
+
+  const appContent = (
+    <div className="app-shell">
         <AppSeo />
         <ScrollToTop />
         <Navbar />
@@ -227,7 +253,7 @@ export default function App() {
               <Link to="/" className="app-footer-logo" aria-label="Go to RackTrack home">
                 <img src="/RackTrack_Logo.png" alt="RackTrack" className="app-footer-logo-image" />
               </Link>
-              <p>A True Physical Layer Inteligence</p>
+              <p>Physical Infrastructure Intelligence for Data Centers</p>
             </div>
             <div className="app-footer-columns">
               <nav className="app-footer-nav" aria-label="Footer navigation">
@@ -250,10 +276,24 @@ export default function App() {
               </div>
             </div>
           </div>
-          <div className="app-footer-bottom">All rights reserved</div>
+          <div className="app-footer-bottom">© 2026 RackTrack Inc. · Physical Infrastructure Intelligence for Data Centers · Patent Pending</div>
         </footer>
       </div>
-      </ReactLenis>
+  )
+
+  return (
+    <BrowserRouter>
+      {useNativeScroll ? (
+        appContent
+      ) : (
+        <ReactLenis root options={{ lerp: 0.05 }}>
+          {appContent}
+        </ReactLenis>
+      )}
     </BrowserRouter>
   )
 }
+
+
+
+

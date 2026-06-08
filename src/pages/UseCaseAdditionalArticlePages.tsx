@@ -1,4 +1,4 @@
-import './UseCasePage.css'
+﻿import './UseCasePage.css'
 import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -98,8 +98,8 @@ function UseCaseArticleTemplate({ article }: { article: ArticleConfig }) {
             <span>Final Message</span>
             <h2>{article.finalTitle}</h2>
             <p>{article.finalBody}</p>
-            <Link to="/contact-us">
-              Talk to our team
+            <Link to="/contact-us" state={{ scrollTo: 'contact' }}>
+              Request platform brief
               <ArrowRight aria-hidden="true" size={18} />
             </Link>
           </div>
@@ -410,7 +410,7 @@ const migrationArticle: ArticleConfig = {
       title: 'Walk the rows with a phone.',
       body: [
         'RackTrack helps teams scan the environment, identify what exists today, compare it against available records, and surface unknowns early.',
-        'Instead of asking, "Can we trust the seller’s spreadsheet?", teams can ask, "What does the floor actually show?"',
+        'Instead of asking, "Can we trust the seller\'s spreadsheet?", teams can ask, "What does the floor actually show?"',
       ],
     },
     {
@@ -460,3 +460,5 @@ export function UseCaseIncidentArticlePage() {
 export function UseCaseMigrationArticlePage() {
   return <UseCaseArticleTemplate article={migrationArticle} />
 }
+
+

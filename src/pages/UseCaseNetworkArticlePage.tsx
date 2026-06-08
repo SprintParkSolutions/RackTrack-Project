@@ -1,4 +1,4 @@
-import './UseCasePage.css'
+﻿import './UseCasePage.css'
 import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -164,8 +164,8 @@ export default function UseCaseNetworkArticlePage() {
               changes, and a network environment that can be trusted from
               diagram to rack.
             </p>
-            <Link to="/contact-us">
-              Talk to our team
+            <Link to="/contact-us" state={{ scrollTo: 'contact' }}>
+              Request platform brief
               <ArrowRight aria-hidden="true" size={18} />
             </Link>
           </div>
@@ -179,3 +179,5 @@ export default function UseCaseNetworkArticlePage() {
     </main>
   )
 }
+
+
