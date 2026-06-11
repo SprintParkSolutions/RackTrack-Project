@@ -271,7 +271,7 @@ export default function App() {
               <div className="app-footer-contact">
                 <span className="app-footer-heading">Contact</span>
                 <a href="mailto:info@racktrack.ai">info@racktrack.ai</a>
-                <a href="tel:+18605669894">+1 (860) 566 9894</a>
+                <a href="tel:+18608782448">+1 (860) 878 2448</a>
                 <p>85 Felt Rd, Suite #604, South Windsor, CT 06074</p>
               </div>
             </div>

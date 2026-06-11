@@ -327,7 +327,7 @@ export default function ContactUsPage() {
         <div className="info-card">
           <PhoneCall />
           <span>Phone</span>
-          <strong>+1 (860) 566 9894</strong>
+          <strong>+1 (860) 878 2448</strong>
           <p>Call our contact team for demos, support, and meeting schedules.</p>
         </div>
 
