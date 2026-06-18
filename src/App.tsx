@@ -1,5 +1,6 @@
 ﻿import { Suspense, lazy, useEffect } from 'react'
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { useState } from 'react'
 import { ReactLenis } from 'lenis/react'
 import Navbar from './components/Navbar'
 import SideSocialRail from './components/SideSocialRail'
@@ -183,11 +184,36 @@ function AppSeo() {
   return null
 }
 
+function useNativeMobileScroll() {
+  const getShouldUseNativeScroll = () =>
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(max-width: 860px), (pointer: coarse)').matches
+
+  const [useNativeScroll, setUseNativeScroll] = useState(getShouldUseNativeScroll)
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') {
+      return
+    }
+
+    const mediaQuery = window.matchMedia('(max-width: 860px), (pointer: coarse)')
+    const update = () => setUseNativeScroll(mediaQuery.matches)
+
+    update()
+    mediaQuery.addEventListener('change', update)
+
+    return () => mediaQuery.removeEventListener('change', update)
+  }, [])
+
+  return useNativeScroll
+}
+
 export default function App() {
-  return (
-    <BrowserRouter>
-      <ReactLenis root options={{ lerp: 0.05 }}>
-      <div className="app-shell">
+  const useNativeScroll = useNativeMobileScroll()
+
+  const appContent = (
+    <div className="app-shell">
         <AppSeo />
         <ScrollToTop />
         <Navbar />
@@ -245,7 +271,7 @@ export default function App() {
               <div className="app-footer-contact">
                 <span className="app-footer-heading">Contact</span>
                 <a href="mailto:info@racktrack.ai">info@racktrack.ai</a>
-                <a href="tel:+18605669894">+1 (860) 566 9894</a>
+                <a href="tel:+18608782448">+1 (860) 878 2448</a>
                 <p>85 Felt Rd, Suite #604, South Windsor, CT 06074</p>
               </div>
             </div>
@@ -253,7 +279,17 @@ export default function App() {
           <div className="app-footer-bottom">© 2026 RackTrack Inc. · Physical Infrastructure Intelligence for Data Centers · Patent Pending</div>
         </footer>
       </div>
-      </ReactLenis>
+  )
+
+  return (
+    <BrowserRouter>
+      {useNativeScroll ? (
+        appContent
+      ) : (
+        <ReactLenis root options={{ lerp: 0.05 }}>
+          {appContent}
+        </ReactLenis>
+      )}
     </BrowserRouter>
   )
 }

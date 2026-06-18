@@ -431,7 +431,7 @@ export default function HomePage() {
               onClick={handleWatchTour}
             >
               <PlayCircle size={18} />
-              REQUEST PLATFORM BRIEF
+              WATCH DEMO
             </a>
           </div>
         </div>
@@ -735,6 +735,5 @@ export default function HomePage() {
     </main>
   );
 }
-
 
 

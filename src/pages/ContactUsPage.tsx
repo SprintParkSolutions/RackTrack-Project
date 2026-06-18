@@ -88,8 +88,31 @@ const initialFormData: RackTrackLeadPayload = {
   mobileNumber: '',
 }
 
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+function isValidEmail(email: string): boolean {
+  const trimmed = email.trim()
+  const atParts = trimmed.split('@')
+  if (atParts.length !== 2) return false
+
+  const [local, domain] = atParts
+  if (!local || !domain) return false
+
+  if (!/^[a-zA-Z0-9._%+\-]+$/.test(local)) return false
+
+  const labels = domain.split('.')
+  if (labels.length < 2) return false
+  if (labels.some(l => !l || !/^[a-zA-Z0-9\-]+$/.test(l))) return false
+
+  const tld = labels[labels.length - 1]
+  if (!/^[a-zA-Z]{2,10}$/.test(tld)) return false
+
+  // Reject double-TLD patterns: .com.com, .net.org etc.
+  if (labels.length >= 3) {
+    const penultimate = labels[labels.length - 2].toLowerCase()
+    const genericTLDs = ['com', 'net', 'org', 'edu', 'gov', 'int', 'info', 'biz', 'app', 'io', 'ai', 'dev']
+    if (genericTLDs.includes(penultimate)) return false
+  }
+
+  return true
 }
 
 export default function ContactUsPage() {
@@ -133,9 +156,16 @@ export default function ContactUsPage() {
   ) => {
     const { name, value } = event.target
 
+    let sanitized = value
+    if (name === 'fullName') {
+      sanitized = value.replace(/[^a-zA-Z\s'\-]/g, '')
+    } else if (name === 'mobileNumber') {
+      sanitized = value.replace(/\D/g, '').slice(0, 10)
+    }
+
     setFormData((current) => ({
       ...current,
-      [name]: value,
+      [name]: sanitized,
     }))
 
     if (submitState !== 'idle') {
@@ -149,6 +179,8 @@ export default function ContactUsPage() {
 
     if (!formData.fullName.trim()) {
       missingFields.push('Full Name')
+    } else if (!/^[a-zA-Z\s'\-]+$/.test(formData.fullName.trim())) {
+      return 'Full Name must contain only letters.'
     }
 
     if (!formData.email.trim()) {
@@ -161,6 +193,8 @@ export default function ContactUsPage() {
 
     if (!formData.mobileNumber.trim()) {
       missingFields.push('Mobile Number')
+    } else if (!/^\d{10}$/.test(formData.mobileNumber.trim())) {
+      return 'Mobile Number must be exactly 10 digits.'
     }
 
     if (missingFields.length > 0) {
@@ -293,7 +327,7 @@ export default function ContactUsPage() {
         <div className="info-card">
           <PhoneCall />
           <span>Phone</span>
-          <strong>+1 (860) 566 9894</strong>
+          <strong>+1 (860) 878 2448</strong>
           <p>Call our contact team for demos, support, and meeting schedules.</p>
         </div>
 
@@ -379,9 +413,10 @@ export default function ContactUsPage() {
                 <input
                   type="tel"
                   name="mobileNumber"
-                  placeholder="Enter your mobile number"
+                  placeholder="Enter 10-digit number"
                   value={formData.mobileNumber}
                   onChange={handleChange}
+                  maxLength={10}
                   required
                 />
               </div>

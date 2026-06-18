@@ -165,7 +165,7 @@ export default function UseCaseArticlePage() {
               to one trusted source of truth, teams can plan faster, respond
               better, and scale with confidence.
             </p>
-            <Link to="/contact-us">
+            <Link to="/contact-us" state={{ scrollTo: 'contact' }}>
               Request platform brief
               <ArrowRight aria-hidden="true" size={18} />
             </Link>
