@@ -72,11 +72,9 @@
 
 .rt-nav-link {
   position: relative;
-  isolation: isolate;
   color: var(--rt-nav-muted);
   text-decoration: none;
-  padding: 11px 16px;
-  border-radius: 999px;
+  padding: 11px 16px 13px;
   font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 600;
@@ -88,7 +86,7 @@
 
 .rt-nav-link:hover,
 .rt-nav-link-active {
-  color: #ffffff;
+  color: var(--rt-nav-cyan);
 }
 
 .rt-nav-link-label {
@@ -96,13 +94,27 @@
   display: inline-block;
 }
 
-.rt-nav-active-pill {
+.rt-nav-link-label::after {
+  content: '';
   position: absolute;
-  inset: 0;
-  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(0, 210, 255, 0.2), rgba(0, 153, 204, 0.08));
-  box-shadow: inset 0 0 0 1px rgba(0, 210, 255, 0.24), 0 0 24px rgba(0, 210, 255, 0.12);
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0.45);
+  transform-origin: center;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.rt-nav-link:hover .rt-nav-link-label::after,
+.rt-nav-link-active .rt-nav-link-label::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .rt-nav-actions {
@@ -205,9 +217,9 @@
 }
 
 .rt-mobile-link-active {
-  color: #ffffff;
-  background: var(--rt-nav-cyan-soft);
-  box-shadow: inset 0 0 0 1px rgba(0, 210, 255, 0.18);
+  color: var(--rt-nav-cyan);
+  background: transparent;
+  box-shadow: inset 0 -2px 0 currentColor;
 }
 
 .rt-mobile-cta {
