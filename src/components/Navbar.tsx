@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
+import { preloadRoute } from '../routePreload'
 import './Navbar.css'
 
 const navItems = [
@@ -15,11 +16,45 @@ const navItems = [
   { label: 'Contact Us', path: '/contact-us' },
 ]
 
+const getActiveNavPath = (pathname: string) => {
+  if (pathname === '/') {
+    return '/'
+  }
+
+  return (
+    navItems
+      .filter((item) => item.path !== '/')
+      .sort((first, second) => second.path.length - first.path.length)
+      .find((item) => pathname === item.path || pathname.startsWith(`${item.path}/`))
+      ?.path ?? '/'
+  )
+}
+
 export default function Navbar() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [optimisticNav, setOptimisticNav] = useState<{
+    path: string
+    pathnameAtSelection: string
+  } | null>(null)
+  const activePath = getActiveNavPath(location.pathname)
+  const highlightedPath =
+    optimisticNav?.pathnameAtSelection === location.pathname ? optimisticNav.path : activePath
+
+  const handleNavIntent = (path: string) => {
+    preloadRoute(path)
+  }
+
+  const handleNavClick = (path: string) => {
+    setOptimisticNav({ path, pathnameAtSelection: location.pathname })
+    setMenuOpen(false)
+    preloadRoute(path)
+  }
 
   const goToContact = () => {
+    setOptimisticNav({ path: '/contact-us', pathnameAtSelection: location.pathname })
+    preloadRoute('/contact-us')
     setMenuOpen(false)
     navigate('/contact-us', { state: { scrollTo: 'contact' } })
   }
@@ -38,7 +73,7 @@ export default function Navbar() {
             to="/"
             className="rt-nav-logo"
             aria-label="Go to RackTrack home"
-            onClick={() => setMenuOpen(false)}
+            onClick={() => handleNavClick('/')}
           >
             <img
               src="/RackTrack_Logo.png"
@@ -52,26 +87,12 @@ export default function Navbar() {
               <NavLink
                 key={item.path}
                 to={item.path}
-                className={({ isActive }) =>
-                  `rt-nav-link${isActive ? ' rt-nav-link-active' : ''}`
-                }
+                onPointerEnter={() => handleNavIntent(item.path)}
+                onFocus={() => handleNavIntent(item.path)}
+                onClick={() => handleNavClick(item.path)}
+                className={`rt-nav-link${highlightedPath === item.path ? ' rt-nav-link-active' : ''}`}
               >
-                {({ isActive }) => (
-                  <>
-                    {isActive && (
-                      <motion.span
-                        className="rt-nav-active-pill"
-                        layoutId="rt-nav-active-pill"
-                        transition={{
-                          type: 'spring',
-                          stiffness: 420,
-                          damping: 34,
-                        }}
-                      />
-                    )}
-                    <span className="rt-nav-link-label">{item.label}</span>
-                  </>
-                )}
+                <span className="rt-nav-link-label">{item.label}</span>
               </NavLink>
             ))}
           </div>
@@ -115,10 +136,10 @@ export default function Navbar() {
               <NavLink
                 key={item.path}
                 to={item.path}
-                onClick={() => setMenuOpen(false)}
-                className={({ isActive }) =>
-                  `rt-mobile-link${isActive ? ' rt-mobile-link-active' : ''}`
-                }
+                onPointerEnter={() => handleNavIntent(item.path)}
+                onFocus={() => handleNavIntent(item.path)}
+                onClick={() => handleNavClick(item.path)}
+                className={`rt-mobile-link${highlightedPath === item.path ? ' rt-mobile-link-active' : ''}`}
               >
                 {item.label}
                 <ArrowUpRight aria-hidden="true" size={16} />

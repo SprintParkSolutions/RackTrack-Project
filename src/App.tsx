@@ -6,11 +6,12 @@ import Navbar from './components/Navbar'
 import SideSocialRail from './components/SideSocialRail'
 import ScrollToTop from './components/ScrollToTop'
 import { getResourcePostBySlug } from './data/resourcePosts'
+import { routePreloaders } from './routePreload'
 import HomePage from './pages/HomePage'
 import './App.css'
 
-const SolutionsPage = lazy(() => import('./pages/SolutionsPage'))
-const UseCasePage = lazy(() => import('./pages/UseCasePage'))
+const SolutionsPage = lazy(routePreloaders['/solutions'])
+const UseCasePage = lazy(routePreloaders['/use-cases'])
 const UseCaseArticlePage = lazy(() => import('./pages/UseCaseArticlePage'))
 const UseCaseNetworkArticlePage = lazy(() => import('./pages/UseCaseNetworkArticlePage'))
 const UseCaseSecurityArticlePage = lazy(() =>
@@ -33,13 +34,13 @@ const UseCaseMigrationArticlePage = lazy(() =>
     default: module.UseCaseMigrationArticlePage,
   })),
 )
-const WhyRackTrackPage = lazy(() => import('./pages/WhyRackTrackPage'))
-const TrustSecurityPage = lazy(() => import('./pages/TrustSecurityPage'))
-const ResourcesPage = lazy(() => import('./pages/ResourcesPage'))
+const WhyRackTrackPage = lazy(routePreloaders['/why-racktrack'])
+const TrustSecurityPage = lazy(routePreloaders['/trust-security'])
+const ResourcesPage = lazy(routePreloaders['/resources'])
 const ResourceArticlePage = lazy(() => import('./pages/ResourceArticlePage'))
 // const ProductPage = lazy(() => import('./pages/ProductPage'))
-const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
-const ContactUsPage = lazy(() => import('./pages/ContactUsPage'))
+const AboutUsPage = lazy(routePreloaders['/about-us'])
+const ContactUsPage = lazy(routePreloaders['/contact-us'])
 
 const SEO_BY_PATH: Record<
   string,
