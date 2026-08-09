@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Infrastructure Intelligence | Research, Frameworks &amp; Insights</title>
+<meta content="Browse RackTrack research, frameworks, and insights on CMDB drift, infrastructure digital twins, topology reconciliation, audit readiness, and physical infrastructure intelligence." name="description"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>document.documentElement.classList.add("js")</script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#2563eb",
+                        "surface-dim": "#e7ebf2",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#eff1f3",
+                        "outline-variant": "#dde2ec",
+                        "primary-fixed": "#dbe1ff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-secondary-container": "#5c647a",
+                        "tertiary-container": "#6b6e70",
+                        "surface-container-highest": "#e2e7f0",
+                        "surface-container-low": "#f4f6fa",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-primary-fixed": "#00174b",
+                        "inverse-primary": "#b4c5ff",
+                        "primary": "#1a3fd4",
+                        "error": "#b3261e",
+                        "on-surface": "#0a111e",
+                        "on-primary-fixed-variant": "#12309f",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "surface-bright": "#ffffff",
+                        "surface-variant": "#eaeef6",
+                        "outline": "#727a8a",
+                        "on-background": "#0a111e",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "secondary": "#3f4757",
+                        "secondary-fixed": "#dae2fd",
+                        "on-error": "#ffffff",
+                        "surface-container": "#eaeef6",
+                        "inverse-on-surface": "#e8ecf4",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "background": "#ffffff",
+                        "surface-tint": "#0053db",
+                        "secondary-container": "#dae2fd",
+                        "surface-container-high": "#e5eaf3",
+                        "on-tertiary-fixed": "#191c1e",
+                        "inverse-surface": "#061127",
+                        "surface": "#f4f6fa",
+                        "tertiary": "#525657",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-primary-container": "#eeefff",
+                        "on-surface-variant": "#3f4757",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "shell": "#061127",
+                        "shell-deep": "#020916",
+                        "shell-line": "#1b2942",
+                        "shell-text": "#9fb0c9",
+                        "accent": "#8ab4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.1875rem",
+                        "xl": "0.25rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "section-padding": "72px",
+                        "stack-sm": "8px",
+                        "container-max-width": "1320px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "margin": "22px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "label-md": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "body-md": ["Geist"],
+                        "body-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["56px", { "lineHeight": "1.02", "letterSpacing": "-0.035em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "1.15", "fontWeight": "600" }],
+                        "headline-lg": ["38px", { "lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "1.45", "fontWeight": "450" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.022em", "fontWeight": "600" }],
+                        "body-md": ["15.5px", { "lineHeight": "1.55", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.55", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        :root {
+            --hair: #dde2ec;
+            --hair-2: #c6cddb;
+            --ink: #0a111e;
+            --body: #3f4757;
+            --muted: #727a8a;
+            --blue: #1a3fd4;
+            --shell: #061127;
+            --shell-line: #1b2942;
+            --shell-text: #9fb0c9;
+            --accent: #8ab4ff;
+        }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+            color: var(--body);
+            font-size: 15.5px;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        section[id], div[id], article[id] { scroll-margin-top: 80px; }
+        h1, h2, h3, h4 { color: var(--ink); font-weight: 600; }
+
+        .h1  { font-size: clamp(34px, 5.2vw, 66px); line-height: 1.02; letter-spacing: -0.036em; font-weight: 600; }
+        .h2  { font-size: clamp(26px, 3.1vw, 42px); line-height: 1.08; letter-spacing: -0.032em; font-weight: 600; }
+        .h3  { font-size: clamp(17px, 1.45vw, 19.5px); line-height: 1.28; letter-spacing: -0.02em; font-weight: 600; }
+        .h4  { font-size: 15px; line-height: 1.35; letter-spacing: -0.012em; font-weight: 600; color: var(--ink); }
+        .lede { font-size: clamp(16.5px, 1.45vw, 19px); line-height: 1.5; }
+        .measure    { max-width: 62ch; }
+        .measure-sm { max-width: 46ch; }
+        .measure-xs { max-width: 34ch; }
+
+        .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, monospace; font-variant-numeric: tabular-nums; }
+        .eyebrow {
+            font-family: 'Geist Mono', ui-monospace, monospace;
+            font-size: 10.5px; font-weight: 500; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--muted);
+        }
+        .stat {
+            font-variant-numeric: tabular-nums;
+            font-size: clamp(28px, 2.7vw, 36px); font-weight: 500;
+            letter-spacing: -0.04em; line-height: 1.02; color: var(--ink);
+        }
+        .stat-sm { font-size: clamp(22px, 2vw, 27px); }
+
+        /* Dark shell bands — nav, hero, CTA, footer */
+        .shell-band { background: var(--shell); color: var(--shell-text); }
+        .shell-band h1, .shell-band h2, .shell-band h3, .shell-band h4 { color: #fff; }
+        .shell-band .eyebrow { color: var(--accent); }
+        .shell-band .stat { color: #fff; }
+        .shell-band .hair { border-color: var(--shell-line); }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 14px; font-weight: 500; letter-spacing: -0.006em;
+            padding: 11px 20px; border-radius: 3px;
+            transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+        }
+        .btn-primary { background: var(--blue); color: #fff; }
+        .btn-primary:hover { background: #12309f; }
+        .btn-ghost { border: 1px solid var(--hair-2); color: var(--ink); }
+        .btn-ghost:hover { border-color: #97a1b3; }
+        .shell-band .btn-primary { background: #fff; color: var(--shell); }
+        .shell-band .btn-primary:hover { background: #dbe6f5; }
+        .shell-band .btn-ghost { border-color: #2c3d5c; color: #fff; }
+        .shell-band .btn-ghost:hover { border-color: #4a5f83; }
+
+        .link-arrow { display: inline-flex; align-items: baseline; gap: 6px; font-size: 14px; font-weight: 500; color: var(--blue); }
+        .link-arrow:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+        .row-list > * + * { border-top: 1px solid var(--hair); }
+        .shell-band .row-list > * + * { border-top-color: var(--shell-line); }
+        .idx { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 10.5px; color: var(--muted); letter-spacing: 0.08em; }
+
+        /* Compact module: gives sections structure without generic cards */
+        .mod { background: #fff; border: 1px solid var(--hair); padding: 22px; transition: border-color .15s ease, background-color .15s ease; }
+        .mod:hover { border-color: var(--hair-2); }
+
+        details > summary { list-style: none; cursor: pointer; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] .chev { transform: rotate(180deg); }
+        .chev { transition: transform .2s ease; }
+        img { -webkit-user-drag: none; }
+
+        /* Guided tour */
+        .tour-view, .tour-step { display: none; }
+        .tour-view.is-active, .tour-step.is-active { display: block; }
+        .js .tour-view.is-active, .js .tour-step.is-active { animation: tourIn .45s cubic-bezier(.16,1,.3,1) both; }
+        @keyframes tourIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+        .tour-crumb { display: none; }
+        .tour-crumb.is-active { display: inline; }
+        .tour-dot { width: 20px; height: 2px; background: #2b3f60; border: 0; padding: 0; cursor: pointer; transition: background-color .2s ease; }
+        .tour-dot.is-active { background: var(--accent); }
+        .tour-dot:hover { background: #4a6289; }
+        .hot { cursor: pointer; }
+        .hot .hot-ring { transition: fill-opacity .2s ease, r .2s ease; }
+        .hot:hover .hot-ring, .hot:focus-visible .hot-ring { fill-opacity: .32; }
+        .hot:focus-visible { outline: none; }
+        .hot:focus-visible .hot-dot { stroke: #fff; stroke-width: 2; }
+        .js .hot .hot-ring { animation: hotPulse 2.6s ease-in-out infinite; }
+        @keyframes hotPulse { 0%,100% { fill-opacity: .12; } 50% { fill-opacity: .3; } }
+        .port { cursor: default; }
+        .port.is-live { cursor: pointer; }
+        .port .port-box { transition: fill .15s ease, stroke .15s ease; }
+        .port.is-live:hover .port-box { fill: #17708a; }
+        .port.is-live:focus-visible { outline: none; }
+        .port.is-live:focus-visible .port-box { stroke: #fff; }
+        .port.is-picked .port-box { stroke: #fbbf24; stroke-width: 1.8; }
+        /* the tour reads as a real application window */
+        .app-frame { background: #061127; border: 1px solid #24395c; box-shadow: 0 1px 0 rgba(255,255,255,.04) inset; }
+        .app-bar { display: flex; align-items: center; gap: 12px; padding: 9px 12px;
+            background: #081733; border-bottom: 1px solid #24395c; }
+        .app-dots { display: flex; gap: 5px; }
+        .app-dots i { width: 8px; height: 8px; border-radius: 9999px; background: #24395c; display: block; }
+        .app-dots i:first-child { background: #3d5480; }
+        .app-brand { display: inline-flex; align-items: center; gap: 6px; font-size: 12px;
+            font-weight: 500; color: #dce6f5; letter-spacing: -.01em; }
+        .app-brand img { width: 16px; height: 16px; mix-blend-mode: screen; }
+        .app-path { flex: 1; font-size: 10.5px; color: #8fa6c6; letter-spacing: .04em;
+            background: #0a1730; border: 1px solid #1b2942; padding: 3px 10px; text-align: center;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .app-count { font-size: 10.5px; letter-spacing: .08em; color: #8ab4ff; }
+        .shot { position: relative; overflow: hidden; background: #060d1b; }
+        .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .shot-row img { height: 300px; object-position: center 42%; }
+        /* photo aspect matches the source so the overlay registers 1:1 */
+        .shot-rack, .shot-dev { position: relative; width: 100%; height: 0; align-self: start; }
+        .shot-rack { padding-top: 150%; }                 /* source is 2:3 — overlay maps 1:1 */
+        .shot-dev  { padding-top: 62%; }                  /* landscape switch close-up */
+        .shot-rack img, .shot-dev img { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .shot-rack img { object-fit: fill; }
+        .shot-dev img  { object-fit: cover; object-position: 50% 52%; }
+        .shot-ov { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .shot-ov .dev rect { fill: none; stroke: #7f98bd; stroke-opacity: .55; stroke-width: .35; }
+        .shot-ov .dev text { fill: #cfe0f5; font-size: 2.1px; font-family: 'Geist Mono', monospace; letter-spacing: .04em; }
+        .shot-ov .dev .u { fill: #8fa6c6; }
+        .shot-ov .dev.is-sel rect { stroke: #8ab4ff; stroke-width: .7; fill: #8ab4ff; fill-opacity: .08; }
+        .shot-ov .dev.is-sel text { fill: #8ab4ff; }
+        .shot-ov .port-mark rect { fill: none; stroke: #fbbf24; stroke-width: .8; }
+        .shot-tag { position: absolute; left: 10px; bottom: 8px; font-family: 'Geist Mono', monospace;
+            font-size: 9.5px; letter-spacing: .1em; color: #8ab4ff; background: rgba(6,17,39,.82); padding: 3px 8px; }
+        .rack-split { display: grid; grid-template-columns: 34% 1fr; gap: 16px; padding: 12px; align-items: start; }
+        .dev-split { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 12px; align-items: start; }
+        @media (min-width: 900px) { .dev-split { grid-template-columns: 42% 1fr; } }
+        .rec, .pmap { display: flex; flex-direction: column; }
+        .rec-h { font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: .1em;
+            color: #6b82a6; border-bottom: 1px solid #24395c; padding-bottom: 7px; margin-bottom: 4px; }
+        .rec-row { display: flex; justify-content: space-between; font-family: 'Geist Mono', monospace;
+            font-size: 11px; color: #dce6f5; border-bottom: 1px solid #16294a; padding: 7px 0; }
+        .rec-row span:first-child { color: #6b82a6; }
+        .rec-row .ok { color: #8ab4ff; }
+        .pmap-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; margin-top: 10px; }
+        .pmap-sfp { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin-top: 6px; max-width: 160px; }
+        .pmap-p { border: 1px solid #24395c; background: #0d1a30; aspect-ratio: 1 / .78;
+            display: flex; align-items: center; justify-content: center; cursor: default; padding: 0; }
+        .pmap-p span { font-family: 'Geist Mono', monospace; font-size: 8.5px; color: #55688a; }
+        .pmap-p.live { background: #0e4f63; border-color: #8ab4ff; cursor: pointer; }
+        .pmap-p.live span { color: #bdf1fb; }
+        .pmap-p.live:hover { background: #17708a; }
+        .pmap-p.live.is-picked { border-color: #fbbf24; border-width: 2px; }
+        .pmap-p.sfp { border-style: dashed; }
+        .pd { margin-top: 12px; border-top: 1px solid #24395c; padding-top: 10px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 10px; }
+        .pd-sel { grid-column: 1 / -1; font-family: 'Geist Mono', monospace; font-size: 9.5px;
+            letter-spacing: .08em; color: #fbbf24; }
+        .pd-c { display: flex; flex-direction: column; font-family: 'Geist Mono', monospace; }
+        .pd-c span:first-child { font-size: 8.5px; color: #6b82a6; }
+        .pd-c span:last-child { font-size: 11px; color: #dce6f5; }
+        .pmap-trace { margin-top: 12px; align-self: start; border: 1px solid #8ab4ff; color: #8ab4ff;
+            background: rgba(34,211,238,.07); font-family: 'Geist Mono', monospace; font-size: 10px;
+            letter-spacing: .08em; padding: 8px 14px; cursor: pointer; }
+        .pmap-trace:hover { background: rgba(34,211,238,.16); }
+        .sheet-band { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end;
+            gap: 10px; border-top: 1px solid #24395c; padding: 10px 12px; }
+        .sheet-meta { display: flex; flex-direction: column; gap: 2px; }
+        .sheet-title { font-family: 'Geist Mono', monospace; font-size: 10px; color: #dce6f5; letter-spacing: .04em; }
+        .sheet-note { font-family: 'Geist Mono', monospace; font-size: 8.5px; color: #6b82a6; }
+        .tb { display: flex; border: 1px solid #24395c; }
+        .tb-cell { padding: 5px 10px; border-left: 1px solid #24395c; display: flex; flex-direction: column; gap: 2px; }
+        .tb-cell:first-child { border-left: 0; }
+        .tb-k { font-family: 'Geist Mono', monospace; font-size: 7px; letter-spacing: .1em; color: #6b82a6; }
+        .tb-v { font-family: 'Geist Mono', monospace; font-size: 9px; color: #dce6f5; }
+        .tour-nav {
+            width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+            border: 1px solid #2c3d5c; color: #fff; font-size: 14px; line-height: 1;
+            transition: border-color .15s ease, background-color .15s ease, opacity .15s ease;
+        }
+        .tour-nav:hover:not(:disabled) { border-color: #4a5f83; background: rgba(255,255,255,.04); }
+        .tour-nav:disabled { opacity: .3; cursor: default; }
+        @media (prefers-reduced-motion: reduce) {
+            .js .tour-view.is-active, .js .tour-step.is-active { animation: none; }
+            .js .hot .hot-ring { animation: none; }
+        }
+
+        /* Motion — one quiet reveal on first view. No loops, no bounce, no overshoot. */
+        .js [data-reveal] { opacity: 0; transform: translateY(14px); }
+        .js [data-reveal].is-in {
+            opacity: 1; transform: none;
+            transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+            transition-delay: var(--d, 0ms);
+        }
+        .js [data-reveal-img] { overflow: hidden; }
+        .js [data-reveal-img] img { transform: scale(1.06); }
+        .js [data-reveal-img].is-in img { transform: scale(1); transition: transform 1.5s cubic-bezier(.16,1,.3,1); }
+        nav { transition: box-shadow .25s ease; }
+        nav.nav-scrolled { box-shadow: 0 1px 0 rgba(255,255,255,.07), 0 8px 24px rgba(2,9,22,.35); }
+        .mod { transition: border-color .18s ease, transform .18s ease; }
+        .mod:hover { transform: translateY(-1px); }
+
+        @media print {
+            .js [data-reveal], .js [data-reveal-img] img { opacity: 1 !important; transform: none !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .js [data-reveal], .js [data-reveal].is-in { opacity: 1; transform: none; transition: none; }
+            .js [data-reveal-img] img, .js [data-reveal-img].is-in img { transform: none; transition: none; }
+            .mod:hover { transform: none; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body class="bg-background text-secondary antialiased selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-shell border-b border-shell-line">
+<div class="flex justify-between items-center w-full px-margin h-[60px] max-w-container-max-width mx-auto">
+<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="code.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="logo.jpg"/>RackTrack</a>
+<div class="hidden lg:flex gap-6 xl:gap-7 items-center">
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="code.html">Home</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="why-racktrack.html">Why RackTrack</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="solutions.html">Solutions</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="trust-security.html">Trust &amp; Security</a>
+<a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="resources.html">Resources</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="about-us.html">About Us</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="contact-us.html">Contact Us</a>
+</div>
+<div class="flex items-center gap-4">
+<a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] !py-[7px] !px-[14px] !text-[13px]" href="contact-us.html">Get a demo</a>
+<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
+</div>
+</div>
+<div class="hidden lg:hidden border-t border-shell-line bg-shell px-margin py-5 flex-col gap-4" id="mobile-menu">
+<a class="text-[15px] font-normal text-shell-text" href="code.html">Home</a>
+<a class="text-[15px] font-normal text-shell-text" href="why-racktrack.html">Why RackTrack</a>
+<a class="text-[15px] font-normal text-shell-text" href="solutions.html">Solutions</a>
+<a class="text-[15px] font-normal text-shell-text" href="use-cases.html">Use Cases</a>
+<a class="text-[15px] font-normal text-shell-text" href="trust-security.html">Trust &amp; Security</a>
+<a class="text-[15px] font-medium text-white" href="resources.html">Resources</a>
+<a class="text-[15px] font-normal text-shell-text" href="about-us.html">About Us</a>
+<a class="text-[15px] font-normal text-shell-text" href="contact-us.html">Contact Us</a>
+<a class="btn bg-white text-shell mt-2 max-w-fit" href="contact-us.html">Get a demo</a>
+</div>
+</nav>
+
+<main class="pt-[60px]">
+<!-- Hero -->
+<section class="shell-band">
+<div class="max-w-container-max-width mx-auto px-margin pt-12 md:pt-[68px] pb-12 md:pb-[68px]">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-7 md:row-start-1">
+<p class="eyebrow">Intelligence</p>
+<h1 class="h1 mt-6 max-w-[20ch]">Research, frameworks, and insights for teams responsible for infrastructure truth.</h1>
+</div>
+<p class="md:col-span-4 md:col-start-9 md:row-start-1 lede self-end mt-10 md:mt-0 md:pb-2">Explore insight-driven content on CMDB drift, topology debt, audit readiness, infrastructure security, and physical infrastructure intelligence.</p>
+</div>
+</div>
+</section>
+<div class="max-w-container-max-width mx-auto px-margin">
+<dl data-reveal class="grid grid-cols-1 md:grid-cols-3 gap-x-gutter border-y border-outline-variant">
+<div class="py-7 md:pr-8 border-b md:border-b-0 border-outline-variant"><dt class="h4">Operational Intelligence</dt><dd class="text-[14px] leading-relaxed mt-1.5">How teams reduce inventory drift, audit delays, and rack-level uncertainty.</dd></div>
+<div class="py-7 md:px-8 md:border-l border-b md:border-b-0 border-outline-variant"><dt class="h4">Posture &amp; Compliance Intelligence</dt><dd class="text-[14px] leading-relaxed mt-1.5">Why physical presence still matters in infrastructure security programs.</dd></div>
+<div class="py-7 md:pl-8 md:border-l border-outline-variant"><dt class="h4">Infrastructure Strategy</dt><dd class="text-[14px] leading-relaxed mt-1.5">What accurate rack data changes for upgrades, migrations, and budgeting.</dd></div>
+</dl>
+</div>
+
+<!-- Featured -->
+<section class="py-14 md:py-20">
+<div class="max-w-container-max-width mx-auto px-margin">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-5">
+<p class="eyebrow">Featured article</p>
+<h2 class="h2 mt-5 max-w-[18ch]">Start with the biggest source of infrastructure confusion.</h2>
+</div>
+<p class="md:col-span-6 md:col-start-7 lede self-end">The most common breakdown is not missing tooling. It is teams making decisions from records that no longer match the rack.</p>
+</div>
+<article data-reveal class="mt-9 md:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8 border-t border-outline-variant pt-10">
+<figure data-reveal class="lg:col-span-5 flex flex-col">
+<div class="w-full aspect-[4/3] lg:aspect-auto lg:flex-1 lg:min-h-[320px] overflow-hidden bg-surface-dim">
+<img alt="Structured cabling terminated across a patch field" class="w-full h-full object-cover object-center" src="https://images.unsplash.com/photo-1683322499436-f4383dd59f5a?auto=format&amp;fit=crop&amp;w=1400&amp;q=80"/>
+</div>
+<figcaption class="mono text-[10.5px] text-outline tracking-[0.06em] pt-3">Fig. 4.0 — Structured cabling, patch field</figcaption>
+</figure>
+<div class="lg:col-span-6 lg:col-start-7">
+<p class="mono text-[11px] tracking-[0.1em] uppercase text-outline">Featured · Operations</p>
+<h3 class="h2 !text-[24px] md:!text-[30px] mt-4">Why every enterprise CMDB is 40% wrong — and the architecture that closes the gap</h3>
+<p class="lede mt-5">When the CMDB drifts from physical reality, every downstream decision built on it becomes less reliable — and the cost compounds across every operational workflow.</p>
+<details class="mt-8 border-t border-outline-variant pt-5">
+<summary class="flex items-center justify-between gap-4"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[20px]">expand_more</span></summary>
+<div class="pt-8 flex flex-col gap-8">
+<p class="text-[15px] leading-relaxed">CMDB drift is not just a documentation problem. It quietly degrades planning, troubleshooting, security reviews, and investment decisions across the infrastructure team. This article explains why physical verification matters when the system of record no longer matches what is really installed in the rack.</p>
+<div class="border-t border-outline-variant pt-5">
+<p class="eyebrow">Key takeaways</p>
+<ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5">
+<li>Configuration systems decay faster than most teams expect.</li>
+<li>Operational risk compounds when asset records are assumed to be correct.</li>
+<li>Visual verification gives teams a defensible way to close the gap.</li>
+</ul>
+</div>
+<div><h4 class="h4">Why drift happens — Change moves faster than documentation.</h4><p class="text-[15px] leading-relaxed mt-2.5">Rack environments are dynamic. Hardware gets replaced, labels change, uplinks move, and temporary fixes often become permanent. In many teams, those changes are documented later, if they are documented at all. The result is a CMDB that still looks complete on paper while slowly diverging from what engineers would find if they walked the room today.</p></div>
+<div><h4 class="h4">Why it matters — Bad inventory creates expensive decisions.</h4><p class="text-[15px] leading-relaxed mt-2.5">Capacity planning, incident response, refresh forecasting, compliance reviews, and vulnerability scoping all depend on accurate infrastructure records. Once the source of truth drifts, every downstream workflow inherits uncertainty. That uncertainty turns into wasted time, avoidable hardware purchases, longer outages, and difficult audit conversations.</p></div>
+<div><h4 class="h4">What good teams do differently — They verify the rack, not just the record.</h4><p class="text-[15px] leading-relaxed mt-2.5">High-trust infrastructure programs treat physical verification as part of operational hygiene. They compare what is documented against what is visible in the rack and use that evidence to reconcile the system of record. This approach turns the CMDB from a best-effort spreadsheet into something teams can rely on under pressure.</p></div>
+</div>
+</details>
+</div>
+</article>
+</div>
+</section>
+
+<!-- Article Library -->
+<section class="border-t border-outline-variant py-14 md:py-20 bg-surface" id="library">
+<div class="max-w-container-max-width mx-auto px-margin">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<h2 class="h2 md:col-span-5 max-w-[18ch]">Browse the RackTrack intelligence library.</h2>
+<div class="md:col-span-6 md:col-start-7 flex flex-col gap-3 self-end">
+<p class="text-[15px] leading-relaxed">Search-friendly, practical articles for infrastructure, operations, compliance, and security teams evaluating physical layer intelligence.</p>
+<p class="text-[15px] leading-relaxed">Explore posts on CMDB drift, rack inventory accuracy, audit evidence, data center security, and infrastructure planning.</p>
+</div>
+</div>
+<div class="flex flex-wrap justify-between items-baseline gap-x-8 gap-y-4 border-b border-outline-variant pb-4 mt-9 md:mt-11">
+<div class="flex flex-wrap gap-x-6 gap-y-2" id="filters">
+<button class="filter-btn text-[13.5px] text-on-background font-medium border-b border-on-background pb-0.5 transition-colors" data-filter="all">All</button>
+<button class="filter-btn text-[13.5px] text-secondary hover:text-on-background border-b border-transparent pb-0.5 transition-colors" data-filter="operations">Operations</button>
+<button class="filter-btn text-[13.5px] text-secondary hover:text-on-background border-b border-transparent pb-0.5 transition-colors" data-filter="infrastructure">Infrastructure</button>
+<button class="filter-btn text-[13.5px] text-secondary hover:text-on-background border-b border-transparent pb-0.5 transition-colors" data-filter="strategy">Strategy</button>
+<button class="filter-btn text-[13.5px] text-secondary hover:text-on-background border-b border-transparent pb-0.5 transition-colors" data-filter="security">Security</button>
+<button class="filter-btn text-[13.5px] text-secondary hover:text-on-background border-b border-transparent pb-0.5 transition-colors" data-filter="compliance">Compliance</button>
+<button class="filter-btn text-[13.5px] text-secondary hover:text-on-background border-b border-transparent pb-0.5 transition-colors" data-filter="finance">Finance</button>
+</div>
+<span class="mono text-[11px] tracking-[0.06em] text-outline" id="count-badge">8 Articles Shown</span>
+</div>
+
+<div class="row-list" id="article-grid">
+
+<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="infrastructure">
+<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Infrastructure</p>
+<div class="md:col-span-10 md:col-start-3">
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">The hidden cost of unreconciled infrastructure: A framework for quantifying topology debt</h3>
+<p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Manual audits are slow, expensive, and often out of date before the work is complete — creating topology debt that spreads across teams.</p>
+<details class="mt-6">
+<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
+<div class="pt-7 flex flex-col gap-7">
+<p class="text-[15px] leading-relaxed measure">Manual rack audits feel safe because they are familiar, but they break down quickly once teams operate across many rows, rooms, and sites. This piece outlines the common failure modes that make spreadsheet-first rack validation hard to trust at scale.</p>
+<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Manual audits introduce delay before accuracy is achieved.</li><li>Human transcription creates inconsistent records and missed exceptions.</li><li>Teams need repeatable capture, not one-time cleanup efforts.</li></ul></div>
+<div><h4 class="h4">The hidden problem — Manual audits are snapshots with a long lag.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">By the time a team completes a manual audit, reviews notes, fixes labels, and updates the inventory system, the environment has usually changed again. That means the record is already aging before it is even approved as complete.</p></div>
+<div><h4 class="h4">Where they fail — The weak point is consistency.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Different engineers capture different levels of detail. Some log serial numbers. Some stop at device class. Some note cables. Others focus only on occupied rack units. This inconsistency makes cross-site comparison difficult and turns every audit cycle into a fresh data-cleaning project.</p></div>
+<div><h4 class="h4">A better pattern — Standardized evidence beats handwritten interpretation.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">A modern audit workflow starts from structured capture and repeatable evidence. Teams should be able to inspect the same rack later and arrive at the same core result. That is how inventory validation becomes scalable instead of heroic.</p></div>
+</div>
+</details>
+</div>
+</article>
+
+<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="strategy">
+<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Strategy</p>
+<div class="md:col-span-10 md:col-start-3">
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">From audit to autonomy: How continuous reconciliation reshapes data center operations</h3>
+<p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Defensible infrastructure inventory starts with traceable evidence, not static records or assumptions.</p>
+<details class="mt-6">
+<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
+<div class="pt-7 flex flex-col gap-7">
+<p class="text-[15px] leading-relaxed measure">Evidence-grade inventory means every important infrastructure record can be traced back to something verifiable, not just something entered into a form. The strongest inventory programs do not stop at asset lists. They preserve the proof behind the list.</p>
+<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Trust improves when records are tied to visible evidence.</li><li>Audit readiness depends on traceability, not just completeness.</li><li>Evidence-first inventory supports both operations and governance.</li></ul></div>
+<div><h4 class="h4">What it means — Evidence-grade is inventory you can defend.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">An evidence-grade record is not just a row in a database. It is a row that can be tied back to visual proof, capture context, and a clear verification step. That makes it useful in executive review, incident analysis, and external audit conversations alike.</p></div>
+<div><h4 class="h4">Static records age, evidence holds up.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Most infrastructure systems assume records stay true until someone updates them. Evidence-grade workflows reverse that assumption. They ask teams to prove what is there when it matters most. This makes the inventory base more reliable for planning, risk review, and cross-functional decision making.</p></div>
+<div><h4 class="h4">What changes — Teams move from opinion to proof.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">With evidence attached to physical inventory, reconciliation becomes simpler. Disagreements can be resolved by checking the source, not by debating who last edited a record. That shift reduces friction across infrastructure, security, and compliance teams.</p></div>
+</div>
+</details>
+</div>
+</article>
+
+<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="security">
+<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Security</p>
+<div class="md:col-span-10 md:col-start-3">
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">Physical Layer: The Missing Link in Infrastructure Security</h3>
+<p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Network tools see what is active on the network, not what is physically in the rack. That gap is where risk accumulates.</p>
+<details class="mt-6">
+<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
+<div class="pt-7 flex flex-col gap-7">
+<p class="text-[15px] leading-relaxed measure">Security programs often assume inventory starts from the network, but many infrastructure risks begin before a device is properly classified or monitored there. This article looks at the blind spots created when security teams cannot reliably connect physical presence to logical visibility.</p>
+<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Network visibility does not equal physical completeness.</li><li>Untracked physical devices create real security exposure.</li><li>Security posture improves when rack-level truth is part of inventory.</li></ul></div>
+<div><h4 class="h4">The security gap — If it is not in inventory, it is hard to govern.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Switches, appliances, patch equipment, out-of-band systems, and legacy devices can all fall outside traditional endpoint-centered tooling. If a security team cannot confirm what is physically present, vulnerability prioritization starts on an incomplete foundation.</p></div>
+<div><h4 class="h4">Why teams miss it — Logical tools answer a different question.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Most security tooling is excellent at showing what is reachable, active, scanned, or authenticated. It is not designed to prove what is physically installed in each rack location. That distinction matters whenever ownership, firmware posture, or unauthorized hardware is in question.</p></div>
+<div><h4 class="h4">What improves — Physical awareness strengthens security operations.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">When security teams can reconcile physical presence with network state, they gain a cleaner inventory baseline for remediation programs, exception handling, and audit preparation. The outcome is not just more data. It is better scoping.</p></div>
+</div>
+</details>
+</div>
+</article>
+
+<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="compliance">
+<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Compliance</p>
+<div class="md:col-span-10 md:col-start-3">
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">How Infrastructure Teams Prepare for SOC 2 Audits</h3>
+<p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">SOC 2 Type II requires continuous evidence of asset control. Here is how teams can generate it systematically.</p>
+<details class="mt-6">
+<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
+<div class="pt-7 flex flex-col gap-7">
+<p class="text-[15px] leading-relaxed measure">SOC 2 readiness is difficult when teams collect proof manually at the end of the cycle instead of building evidence throughout the year. Infrastructure organizations can reduce audit stress by treating physical asset verification as a recurring control activity.</p>
+<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Auditors care about control evidence, not just policy statements.</li><li>Continuous verification reduces the scramble before review.</li><li>Physical inventory evidence supports broader asset-control claims.</li></ul></div>
+<div><h4 class="h4">What auditors ask — Control claims need supporting evidence.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">SOC 2 does not reward confidence alone. Teams need to show how they know where assets are, how access is controlled, and how exceptions are identified and handled. That becomes difficult when physical infrastructure records are fragmented or stale.</p></div>
+<div><h4 class="h4">What slows teams down — Preparation becomes a project instead of a process.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Many teams treat audit readiness as a seasonal cleanup effort. They gather screenshots, spreadsheets, emails, and exported lists shortly before the auditor arrives. This creates rushed validation work and leaves little confidence that the evidence reflects normal operations.</p></div>
+<div><h4 class="h4">What works better — Build a repeatable evidence trail.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">The strongest teams produce audit support from day-to-day operating processes. They verify assets regularly, preserve proof, and make exceptions visible early. That approach shortens the audit cycle and improves control credibility.</p></div>
+</div>
+</details>
+</div>
+</article>
+
+<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="operations">
+<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Operations</p>
+<div class="md:col-span-10 md:col-start-3">
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">DCIM vs. Physical Reality: Why the Gap Matters</h3>
+<p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">DCIM platforms model intent. Understanding the gap between model and reality helps teams solve the right problem.</p>
+<details class="mt-6">
+<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
+<div class="pt-7 flex flex-col gap-7">
+<p class="text-[15px] leading-relaxed measure">DCIM is valuable, but only when teams understand where the model ends and physical verification must begin. This article explains why the difference between planned infrastructure and installed infrastructure is operationally important.</p>
+<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>DCIM often reflects expected state, not confirmed state.</li><li>Reality gaps distort capacity, dependency, and risk analysis.</li><li>Verification should complement DCIM, not replace it.</li></ul></div>
+<div><h4 class="h4">The model — DCIM is strongest when it captures intent.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Planning systems help teams document expected layouts, power relationships, rack occupancy, and deployment standards. That structure is useful and necessary. The problem begins when teams assume the model is automatically true in the room.</p></div>
+<div><h4 class="h4">The gap — Physical environments drift from planned layouts.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Moves, additions, emergency swaps, patch changes, and label decay all create divergence. Over time, the planned state and the installed state are no longer the same thing. When teams ignore that difference, they troubleshoot and plan against fiction.</p></div>
+<div><h4 class="h4">The right approach — Use DCIM as structure and verification as proof.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">The most effective programs combine planning systems with physical validation. DCIM holds the operating model. Verification confirms whether the environment still matches it. That combination creates a stronger source of truth than either system alone.</p></div>
+</div>
+</details>
+</div>
+</article>
+
+<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="finance">
+<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Finance</p>
+<div class="md:col-span-10 md:col-start-3">
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">The Hidden Cost of Wrong Rack Inventory</h3>
+<p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Misidentified hardware, premature refreshes, and wasted capacity often go unmeasured until they become costly.</p>
+<details class="mt-6">
+<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
+<div class="pt-7 flex flex-col gap-7">
+<p class="text-[15px] leading-relaxed measure">Inventory inaccuracy creates financial waste in quiet ways. Teams often feel the cost long before they measure it directly. Better rack visibility improves budget quality by reducing avoidable purchases, bad assumptions, and preventable rework.</p>
+<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Wrong inventory distorts investment decisions.</li><li>Overbuying often starts as an accuracy problem.</li><li>Verified rack data makes business cases easier to defend.</li></ul></div>
+<div><h4 class="h4">Where the cost hides — Waste usually looks like uncertainty.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">When teams cannot trust what is already installed, they buy defensively. They reserve extra hardware, overestimate risk, or accelerate refresh decisions before they are necessary. That caution may feel responsible, but it increases spend.</p></div>
+<div><h4 class="h4">Operational fallout — Bad inventory also burns labor.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Finance impact is not limited to equipment purchases. Engineers lose time validating rack state during planning, migrations, and incident response. That hidden labor cost compounds across every major infrastructure project.</p></div>
+<div><h4 class="h4">What changes with better visibility — Confidence improves the quality of spend.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">When teams can confirm what exists, what is available, and what has changed, budgets become more precise. Capacity conversations shift from assumption to evidence. That makes both finance and engineering teams more effective.</p></div>
+</div>
+</details>
+</div>
+</article>
+
+<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="infrastructure">
+<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Infrastructure</p>
+<div class="md:col-span-10 md:col-start-3">
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">What "Network-Verified" Actually Means</h3>
+<p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Reconciling physical presence with live network state is what makes infrastructure inventory trustworthy.</p>
+<details class="mt-6">
+<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
+<div class="pt-7 flex flex-col gap-7">
+<p class="text-[15px] leading-relaxed measure">Network-verified inventory is more than device discovery. It is the process of proving that the physical rack and the logical network perspective support the same story. This article breaks down why physical evidence and network telemetry are most useful when they are reconciled together.</p>
+<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Physical and logical views each answer different questions.</li><li>Trust improves when both views align.</li><li>Reconciliation turns discovery into usable infrastructure intelligence.</li></ul></div>
+<div><h4 class="h4">The phrase — Network-verified should mean reconciled, not assumed.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Many tools claim network verification when they discover active devices and collect telemetry. That is useful, but it does not confirm that the physical rack inventory is complete or correctly labeled. Verification is stronger when network data is matched against what is physically visible and installed.</p></div>
+<div><h4 class="h4">Why the distinction matters — Telemetry alone cannot resolve every ambiguity.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">A live network can tell you what is speaking. It cannot always tell you what is missing from the rack record, what was swapped without documentation, or how the physical layout has changed. That is why physical context still matters.</p></div>
+<div><h4 class="h4">What good looks like — One inventory story from two evidence sources.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">When physical capture and network discovery agree, teams can trust the output more deeply. When they disagree, the gap becomes a clear action item instead of a hidden risk. That is the real value of network-verified infrastructure intelligence.</p></div>
+</div>
+</details>
+</div>
+</article>
+
+<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="infrastructure">
+<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Infrastructure</p>
+<div class="md:col-span-10 md:col-start-3">
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">Free Port Discovery and Rack Capacity Planning</h3>
+<p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Teams plan capacity better when they can see which switch ports are truly available instead of relying on outdated assumptions.</p>
+<details class="mt-6">
+<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
+<div class="pt-7 flex flex-col gap-7">
+<p class="text-[15px] leading-relaxed measure">Free port discovery sounds simple, but it becomes difficult when rack documentation, switch usage, and physical cabling no longer tell the same story. Good capacity planning starts by resolving that gap. This article explains why visually verified port availability helps infrastructure teams plan growth, reduce wasted time, and avoid avoidable deployment delays.</p>
+<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Available switch capacity is often overstated or understated in static records.</li><li>Physical port visibility helps teams plan adds, moves, and expansions faster.</li><li>Capacity conversations improve when port availability is verified, not guessed.</li></ul></div>
+<div><h4 class="h4">The planning problem — Port availability is rarely as clear as it looks in the spreadsheet.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Many teams assume they know how much switch capacity is available because a diagram, spreadsheet, or DCIM record says a set of ports is still open. In reality, field changes, patch updates, temporary links, and incomplete documentation can make those records unreliable. A port that looks available in the system may already be in use, while a port that appears occupied may no longer serve a production workload.</p></div>
+<div><h4 class="h4">Capacity planning depends on the physical truth of the rack.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Free port discovery affects more than cable work. It impacts deployment speed, expansion planning, migration readiness, and refresh timelines. When teams cannot confidently identify spare switch capacity, every new project starts with extra validation effort. That slows down implementation and creates avoidable uncertainty during change windows.</p></div>
+<div><h4 class="h4">What strong teams do — They verify physical port state before they promise capacity.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">The most effective infrastructure teams compare logical switch data with visible rack conditions. They confirm which ports are patched, which are unused, and whether cabling matches the expected topology before committing new capacity to a project. This approach reduces surprises and turns port planning into a faster, more defensible workflow.</p></div>
+<div><h4 class="h4">Operational impact — Accurate port visibility saves time across every rack change.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">When port availability is clear, engineers spend less time tracing cables, second-guessing diagrams, or reopening change plans. New installs move faster because the team starts from a verified view of the rack instead of a debated one. That creates smoother provisioning, cleaner rack layouts, and more reliable infrastructure planning over time.</p></div>
+</div>
+</details>
+</div>
+</article>
+
+</div>
+<p class="text-[15px] py-10 hidden" id="empty-state">No articles in this category.</p>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="shell-band py-16 md:py-24">
+<div class="max-w-container-max-width mx-auto px-margin grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-7">
+<p class="eyebrow">Put it into practice</p>
+<h2 class="h2 mt-5 max-w-[18ch]">Read the theory. Then run it on your rack.</h2>
+</div>
+<div class="md:col-span-4 md:col-start-9 flex md:justify-end md:pt-12">
+<a class="btn btn-primary max-w-fit" href="contact-us.html">Request platform brief</a>
+</div>
+</div>
+</section>
+</main>
+<script>
+    (function () {
+        var buttons = document.querySelectorAll('.filter-btn');
+        var cards = document.querySelectorAll('.article-card');
+        var badge = document.getElementById('count-badge');
+        var empty = document.getElementById('empty-state');
+        var ACTIVE = ['text-on-background', 'font-medium', 'border-on-background'];
+        var IDLE = ['text-secondary', 'hover:text-on-background', 'border-transparent'];
+
+        buttons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                buttons.forEach(function (b) {
+                    b.classList.remove.apply(b.classList, ACTIVE);
+                    b.classList.add.apply(b.classList, IDLE);
+                });
+                btn.classList.remove.apply(btn.classList, IDLE);
+                btn.classList.add.apply(btn.classList, ACTIVE);
+
+                var filter = btn.dataset.filter;
+                var shown = 0;
+                cards.forEach(function (card) {
+                    var match = filter === 'all' || card.dataset.category === filter;
+                    card.classList.toggle('hidden', !match);
+                    if (match) { shown++; }
+                });
+                badge.textContent = shown + (shown === 1 ? ' Article Shown' : ' Articles Shown');
+                empty.classList.toggle('hidden', shown > 0);
+            });
+        });
+    })();
+</script>
+<!-- Footer -->
+<footer class="bg-shell-deep border-t border-shell-line pt-12 md:pt-16 pb-7 text-shell-text">
+<div class="max-w-container-max-width mx-auto px-margin">
+<div class="grid grid-cols-2 md:grid-cols-12 gap-x-gutter gap-y-10">
+<div class="col-span-2 md:col-span-4 flex flex-col gap-3">
+<span class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="logo.jpg"/>RackTrack</span>
+<p class="text-[13.5px] leading-relaxed max-w-[30ch]">Physical Infrastructure Intelligence for Data Centers.</p>
+</div>
+<nav class="md:col-span-2 md:col-start-6 flex flex-col gap-2.5">
+<span class="eyebrow !text-white/45">Platform</span>
+<a class="text-[13.5px] hover:text-white transition-colors" href="why-racktrack.html">Why RackTrack</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="solutions.html">Solutions</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="use-cases.html">Use Cases</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="trust-security.html">Trust &amp; Security</a>
+</nav>
+<nav class="md:col-span-2 flex flex-col gap-2.5">
+<span class="eyebrow !text-white/45">Company</span>
+<a class="text-[13.5px] hover:text-white transition-colors" href="resources.html">Resources</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="about-us.html">About Us</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="contact-us.html">Contact Us</a>
+</nav>
+<div class="col-span-2 md:col-span-3 md:col-start-10 flex flex-col gap-2.5">
+<span class="eyebrow !text-white/45">Contact</span>
+<a class="text-[13.5px] hover:text-white transition-colors" href="mailto:info@racktrack.ai">info@racktrack.ai</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="tel:+18608782448">+1 (860) 878 2448</a>
+<address class="text-[13.5px] not-italic leading-relaxed text-shell-text/70">85 Felt Rd, Suite #604<br/>South Windsor, CT 06074</address>
+</div>
+</div>
+<div class="border-t border-shell-line mt-10 pt-5 flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4">
+<p class="mono text-[10.5px] text-shell-text/60 tracking-[0.04em]">© 2026 RackTrack Inc. · Physical Infrastructure Intelligence for Data Centers · Patent Pending</p>
+<div class="flex gap-5">
+<a class="text-[12.5px] hover:text-white transition-colors" href="https://www.linkedin.com/company/racktrack/" rel="noopener" target="_blank">LinkedIn</a>
+<a class="text-[12.5px] hover:text-white transition-colors" href="https://www.instagram.com/racktrack_inc/" rel="noopener" target="_blank">Instagram</a>
+<a class="text-[12.5px] hover:text-white transition-colors" href="https://www.facebook.com/share/18depF5xzA/" rel="noopener" target="_blank">Facebook</a>
+</div>
+</div>
+</div></footer>
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+        var menu = document.getElementById('mobile-menu');
+        var open = menu.classList.toggle('hidden') === false;
+        menu.classList.toggle('flex', open);
+        this.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        this.querySelector('.material-symbols-outlined').textContent = open ? 'close' : 'menu';
+    });
+</script>
+<script>
+    (function () {
+        var els = [].slice.call(document.querySelectorAll('[data-reveal],[data-reveal-img]'));
+        var reveal = function (el) { el.classList.add('is-in'); };
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            els.forEach(reveal);
+        } else {
+            var pending = els, ticking = false;
+            var check = function () {
+                ticking = false;
+                var vh = window.innerHeight || document.documentElement.clientHeight;
+                pending = pending.filter(function (el) {
+                    var r = el.getBoundingClientRect();
+                    // reveal once any part enters the lower 94% of the viewport
+                    if (r.top < vh * 0.94 && r.bottom > 0) { reveal(el); return false; }
+                    return true;
+                });
+                if (!pending.length) {
+                    window.removeEventListener('scroll', onScrollCheck);
+                    window.removeEventListener('resize', onScrollCheck);
+                }
+            };
+            var onScrollCheck = function () {
+                if (!ticking) { ticking = true; window.requestAnimationFrame(check); }
+            };
+            window.addEventListener('scroll', onScrollCheck, { passive: true });
+            window.addEventListener('resize', onScrollCheck);
+            check();
+            window.addEventListener('load', check);
+            // failsafe: never leave content stranded if something goes wrong above
+            setTimeout(function () { if (pending.length) { check(); } }, 1200);
+        }
+
+        var nav = document.querySelector('nav');
+        var onScroll = function () { nav.classList.toggle('nav-scrolled', window.scrollY > 8); };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+</script>
+<script>
+    (function () {
+        var root = document.getElementById('proof-tour');
+        if (!root) { return; }
+        var views  = root.querySelectorAll('.tour-view');
+        var steps  = root.querySelectorAll('.tour-step');
+        var crumbs = root.querySelectorAll('.tour-crumb');
+        var dots   = root.querySelectorAll('.tour-dot');
+        var count  = document.getElementById('tour-count');
+        var prev   = document.getElementById('tour-prev');
+        var next   = document.getElementById('tour-next');
+        var total  = views.length, at = 0;
+        var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+
+        function show(i) {
+            at = Math.max(0, Math.min(total - 1, i));
+            [views, steps, crumbs, dots].forEach(function (set) {
+                for (var k = 0; k < set.length; k++) { set[k].classList.toggle('is-active', k === at); }
+            });
+            count.textContent = pad(at + 1) + ' / ' + pad(total);
+            prev.disabled = at === 0;
+            next.disabled = at === total - 1;
+        }
+        // drill down by clicking the drawing itself
+        root.addEventListener('click', function (e) {
+            var h = e.target.closest ? e.target.closest('.hot') : null;
+            if (h) { show(parseInt(h.dataset.goto, 10)); }
+        });
+        root.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter' && e.key !== ' ') { return; }
+            var h = e.target.closest ? e.target.closest('.hot, .pmap-p.live') : null;
+            if (!h) { return; }
+            e.preventDefault();
+            if (h.classList.contains('hot')) { show(parseInt(h.dataset.goto, 10)); }
+            else { pickPort(h); }
+        });
+
+        // per-port inspection on the switch sheet
+        function pickPort(g) {
+            root.querySelectorAll('.pmap-p.is-picked').forEach(function (o) { o.classList.remove('is-picked'); });
+            g.classList.add('is-picked');
+            var d = g.dataset, set = function (id, v) {
+                var el = document.getElementById(id); if (el) { el.textContent = v; }
+            };
+            set('pd-sel', 'PORT 1/' + d.port + ' SELECTED');
+            set('pd-port', 'Eth1/' + d.port);
+            set('pd-speed', d.speed); set('pd-vlan', d.vlan);
+            set('pd-nbr', d.nbr); set('pd-via', d.via); set('pd-chg', d.chg);
+            // move the marker on the captured frame to the matching port column
+            var mark = document.querySelector('#port-mark rect');
+            if (mark) { mark.setAttribute('x', (14 + Math.floor((d.port - 1) / 2) * 5.6).toFixed(2)); }
+        }
+        root.querySelectorAll('.pmap-p.live').forEach(function (g) {
+            g.addEventListener('click', function () { pickPort(g); });
+        });
+
+        prev.addEventListener('click', function () { show(at - 1); });
+        next.addEventListener('click', function () { show(at + 1); });
+        dots.forEach(function (d) {
+            d.addEventListener('click', function () { show(parseInt(d.dataset.goto, 10)); });
+        });
+        root.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowLeft')  { show(at - 1); }
+            if (e.key === 'ArrowRight') { show(at + 1); }
+        });
+        show(0);
+    })();
+</script>
+</body></html>

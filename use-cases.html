@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RackTrack Use Cases | One Source of Truth for Every Role</title>
+<meta content="See how RackTrack gives infrastructure, network, security, compliance, incident, and M&amp;A teams one verified source of physical infrastructure truth." name="description"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>document.documentElement.classList.add("js")</script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#2563eb",
+                        "surface-dim": "#e7ebf2",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#eff1f3",
+                        "outline-variant": "#dde2ec",
+                        "primary-fixed": "#dbe1ff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-secondary-container": "#5c647a",
+                        "tertiary-container": "#6b6e70",
+                        "surface-container-highest": "#e2e7f0",
+                        "surface-container-low": "#f4f6fa",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-primary-fixed": "#00174b",
+                        "inverse-primary": "#b4c5ff",
+                        "primary": "#1a3fd4",
+                        "error": "#b3261e",
+                        "on-surface": "#0a111e",
+                        "on-primary-fixed-variant": "#12309f",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "surface-bright": "#ffffff",
+                        "surface-variant": "#eaeef6",
+                        "outline": "#727a8a",
+                        "on-background": "#0a111e",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "secondary": "#3f4757",
+                        "secondary-fixed": "#dae2fd",
+                        "on-error": "#ffffff",
+                        "surface-container": "#eaeef6",
+                        "inverse-on-surface": "#e8ecf4",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "background": "#ffffff",
+                        "surface-tint": "#0053db",
+                        "secondary-container": "#dae2fd",
+                        "surface-container-high": "#e5eaf3",
+                        "on-tertiary-fixed": "#191c1e",
+                        "inverse-surface": "#061127",
+                        "surface": "#f4f6fa",
+                        "tertiary": "#525657",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-primary-container": "#eeefff",
+                        "on-surface-variant": "#3f4757",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "shell": "#061127",
+                        "shell-deep": "#020916",
+                        "shell-line": "#1b2942",
+                        "shell-text": "#9fb0c9",
+                        "accent": "#8ab4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.1875rem",
+                        "xl": "0.25rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "section-padding": "72px",
+                        "stack-sm": "8px",
+                        "container-max-width": "1320px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "margin": "22px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "label-md": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "body-md": ["Geist"],
+                        "body-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["56px", { "lineHeight": "1.02", "letterSpacing": "-0.035em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "1.15", "fontWeight": "600" }],
+                        "headline-lg": ["38px", { "lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "1.45", "fontWeight": "450" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.022em", "fontWeight": "600" }],
+                        "body-md": ["15.5px", { "lineHeight": "1.55", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.55", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        :root {
+            --hair: #dde2ec;
+            --hair-2: #c6cddb;
+            --ink: #0a111e;
+            --body: #3f4757;
+            --muted: #727a8a;
+            --blue: #1a3fd4;
+            --shell: #061127;
+            --shell-line: #1b2942;
+            --shell-text: #9fb0c9;
+            --accent: #8ab4ff;
+        }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+            color: var(--body);
+            font-size: 15.5px;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        section[id], div[id], article[id] { scroll-margin-top: 80px; }
+        h1, h2, h3, h4 { color: var(--ink); font-weight: 600; }
+
+        .h1  { font-size: clamp(34px, 5.2vw, 66px); line-height: 1.02; letter-spacing: -0.036em; font-weight: 600; }
+        .h2  { font-size: clamp(26px, 3.1vw, 42px); line-height: 1.08; letter-spacing: -0.032em; font-weight: 600; }
+        .h3  { font-size: clamp(17px, 1.45vw, 19.5px); line-height: 1.28; letter-spacing: -0.02em; font-weight: 600; }
+        .h4  { font-size: 15px; line-height: 1.35; letter-spacing: -0.012em; font-weight: 600; color: var(--ink); }
+        .lede { font-size: clamp(16.5px, 1.45vw, 19px); line-height: 1.5; }
+        .measure    { max-width: 62ch; }
+        .measure-sm { max-width: 46ch; }
+        .measure-xs { max-width: 34ch; }
+
+        .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, monospace; font-variant-numeric: tabular-nums; }
+        .eyebrow {
+            font-family: 'Geist Mono', ui-monospace, monospace;
+            font-size: 10.5px; font-weight: 500; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--muted);
+        }
+        .stat {
+            font-variant-numeric: tabular-nums;
+            font-size: clamp(28px, 2.7vw, 36px); font-weight: 500;
+            letter-spacing: -0.04em; line-height: 1.02; color: var(--ink);
+        }
+        .stat-sm { font-size: clamp(22px, 2vw, 27px); }
+
+        /* Dark shell bands — nav, hero, CTA, footer */
+        .shell-band { background: var(--shell); color: var(--shell-text); }
+        .shell-band h1, .shell-band h2, .shell-band h3, .shell-band h4 { color: #fff; }
+        .shell-band .eyebrow { color: var(--accent); }
+        .shell-band .stat { color: #fff; }
+        .shell-band .hair { border-color: var(--shell-line); }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 14px; font-weight: 500; letter-spacing: -0.006em;
+            padding: 11px 20px; border-radius: 3px;
+            transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+        }
+        .btn-primary { background: var(--blue); color: #fff; }
+        .btn-primary:hover { background: #12309f; }
+        .btn-ghost { border: 1px solid var(--hair-2); color: var(--ink); }
+        .btn-ghost:hover { border-color: #97a1b3; }
+        .shell-band .btn-primary { background: #fff; color: var(--shell); }
+        .shell-band .btn-primary:hover { background: #dbe6f5; }
+        .shell-band .btn-ghost { border-color: #2c3d5c; color: #fff; }
+        .shell-band .btn-ghost:hover { border-color: #4a5f83; }
+
+        .link-arrow { display: inline-flex; align-items: baseline; gap: 6px; font-size: 14px; font-weight: 500; color: var(--blue); }
+        .link-arrow:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+        .row-list > * + * { border-top: 1px solid var(--hair); }
+        .shell-band .row-list > * + * { border-top-color: var(--shell-line); }
+        .idx { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 10.5px; color: var(--muted); letter-spacing: 0.08em; }
+
+        /* Compact module: gives sections structure without generic cards */
+        .mod { background: #fff; border: 1px solid var(--hair); padding: 22px; transition: border-color .15s ease, background-color .15s ease; }
+        .mod:hover { border-color: var(--hair-2); }
+
+        details > summary { list-style: none; cursor: pointer; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] .chev { transform: rotate(180deg); }
+        .chev { transition: transform .2s ease; }
+        img { -webkit-user-drag: none; }
+
+        /* Guided tour */
+        .tour-view, .tour-step { display: none; }
+        .tour-view.is-active, .tour-step.is-active { display: block; }
+        .js .tour-view.is-active, .js .tour-step.is-active { animation: tourIn .45s cubic-bezier(.16,1,.3,1) both; }
+        @keyframes tourIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+        .tour-crumb { display: none; }
+        .tour-crumb.is-active { display: inline; }
+        .tour-dot { width: 20px; height: 2px; background: #2b3f60; border: 0; padding: 0; cursor: pointer; transition: background-color .2s ease; }
+        .tour-dot.is-active { background: var(--accent); }
+        .tour-dot:hover { background: #4a6289; }
+        .hot { cursor: pointer; }
+        .hot .hot-ring { transition: fill-opacity .2s ease, r .2s ease; }
+        .hot:hover .hot-ring, .hot:focus-visible .hot-ring { fill-opacity: .32; }
+        .hot:focus-visible { outline: none; }
+        .hot:focus-visible .hot-dot { stroke: #fff; stroke-width: 2; }
+        .js .hot .hot-ring { animation: hotPulse 2.6s ease-in-out infinite; }
+        @keyframes hotPulse { 0%,100% { fill-opacity: .12; } 50% { fill-opacity: .3; } }
+        .port { cursor: default; }
+        .port.is-live { cursor: pointer; }
+        .port .port-box { transition: fill .15s ease, stroke .15s ease; }
+        .port.is-live:hover .port-box { fill: #17708a; }
+        .port.is-live:focus-visible { outline: none; }
+        .port.is-live:focus-visible .port-box { stroke: #fff; }
+        .port.is-picked .port-box { stroke: #fbbf24; stroke-width: 1.8; }
+        /* the tour reads as a real application window */
+        .app-frame { background: #061127; border: 1px solid #24395c; box-shadow: 0 1px 0 rgba(255,255,255,.04) inset; }
+        .app-bar { display: flex; align-items: center; gap: 12px; padding: 9px 12px;
+            background: #081733; border-bottom: 1px solid #24395c; }
+        .app-dots { display: flex; gap: 5px; }
+        .app-dots i { width: 8px; height: 8px; border-radius: 9999px; background: #24395c; display: block; }
+        .app-dots i:first-child { background: #3d5480; }
+        .app-brand { display: inline-flex; align-items: center; gap: 6px; font-size: 12px;
+            font-weight: 500; color: #dce6f5; letter-spacing: -.01em; }
+        .app-brand img { width: 16px; height: 16px; mix-blend-mode: screen; }
+        .app-path { flex: 1; font-size: 10.5px; color: #8fa6c6; letter-spacing: .04em;
+            background: #0a1730; border: 1px solid #1b2942; padding: 3px 10px; text-align: center;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .app-count { font-size: 10.5px; letter-spacing: .08em; color: #8ab4ff; }
+        .shot { position: relative; overflow: hidden; background: #060d1b; }
+        .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .shot-row img { height: 300px; object-position: center 42%; }
+        /* photo aspect matches the source so the overlay registers 1:1 */
+        .shot-rack, .shot-dev { position: relative; width: 100%; height: 0; align-self: start; }
+        .shot-rack { padding-top: 150%; }                 /* source is 2:3 — overlay maps 1:1 */
+        .shot-dev  { padding-top: 62%; }                  /* landscape switch close-up */
+        .shot-rack img, .shot-dev img { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .shot-rack img { object-fit: fill; }
+        .shot-dev img  { object-fit: cover; object-position: 50% 52%; }
+        .shot-ov { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .shot-ov .dev rect { fill: none; stroke: #7f98bd; stroke-opacity: .55; stroke-width: .35; }
+        .shot-ov .dev text { fill: #cfe0f5; font-size: 2.1px; font-family: 'Geist Mono', monospace; letter-spacing: .04em; }
+        .shot-ov .dev .u { fill: #8fa6c6; }
+        .shot-ov .dev.is-sel rect { stroke: #8ab4ff; stroke-width: .7; fill: #8ab4ff; fill-opacity: .08; }
+        .shot-ov .dev.is-sel text { fill: #8ab4ff; }
+        .shot-ov .port-mark rect { fill: none; stroke: #fbbf24; stroke-width: .8; }
+        .shot-tag { position: absolute; left: 10px; bottom: 8px; font-family: 'Geist Mono', monospace;
+            font-size: 9.5px; letter-spacing: .1em; color: #8ab4ff; background: rgba(6,17,39,.82); padding: 3px 8px; }
+        .rack-split { display: grid; grid-template-columns: 34% 1fr; gap: 16px; padding: 12px; align-items: start; }
+        .dev-split { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 12px; align-items: start; }
+        @media (min-width: 900px) { .dev-split { grid-template-columns: 42% 1fr; } }
+        .rec, .pmap { display: flex; flex-direction: column; }
+        .rec-h { font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: .1em;
+            color: #6b82a6; border-bottom: 1px solid #24395c; padding-bottom: 7px; margin-bottom: 4px; }
+        .rec-row { display: flex; justify-content: space-between; font-family: 'Geist Mono', monospace;
+            font-size: 11px; color: #dce6f5; border-bottom: 1px solid #16294a; padding: 7px 0; }
+        .rec-row span:first-child { color: #6b82a6; }
+        .rec-row .ok { color: #8ab4ff; }
+        .pmap-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; margin-top: 10px; }
+        .pmap-sfp { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin-top: 6px; max-width: 160px; }
+        .pmap-p { border: 1px solid #24395c; background: #0d1a30; aspect-ratio: 1 / .78;
+            display: flex; align-items: center; justify-content: center; cursor: default; padding: 0; }
+        .pmap-p span { font-family: 'Geist Mono', monospace; font-size: 8.5px; color: #55688a; }
+        .pmap-p.live { background: #0e4f63; border-color: #8ab4ff; cursor: pointer; }
+        .pmap-p.live span { color: #bdf1fb; }
+        .pmap-p.live:hover { background: #17708a; }
+        .pmap-p.live.is-picked { border-color: #fbbf24; border-width: 2px; }
+        .pmap-p.sfp { border-style: dashed; }
+        .pd { margin-top: 12px; border-top: 1px solid #24395c; padding-top: 10px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 10px; }
+        .pd-sel { grid-column: 1 / -1; font-family: 'Geist Mono', monospace; font-size: 9.5px;
+            letter-spacing: .08em; color: #fbbf24; }
+        .pd-c { display: flex; flex-direction: column; font-family: 'Geist Mono', monospace; }
+        .pd-c span:first-child { font-size: 8.5px; color: #6b82a6; }
+        .pd-c span:last-child { font-size: 11px; color: #dce6f5; }
+        .pmap-trace { margin-top: 12px; align-self: start; border: 1px solid #8ab4ff; color: #8ab4ff;
+            background: rgba(34,211,238,.07); font-family: 'Geist Mono', monospace; font-size: 10px;
+            letter-spacing: .08em; padding: 8px 14px; cursor: pointer; }
+        .pmap-trace:hover { background: rgba(34,211,238,.16); }
+        .sheet-band { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end;
+            gap: 10px; border-top: 1px solid #24395c; padding: 10px 12px; }
+        .sheet-meta { display: flex; flex-direction: column; gap: 2px; }
+        .sheet-title { font-family: 'Geist Mono', monospace; font-size: 10px; color: #dce6f5; letter-spacing: .04em; }
+        .sheet-note { font-family: 'Geist Mono', monospace; font-size: 8.5px; color: #6b82a6; }
+        .tb { display: flex; border: 1px solid #24395c; }
+        .tb-cell { padding: 5px 10px; border-left: 1px solid #24395c; display: flex; flex-direction: column; gap: 2px; }
+        .tb-cell:first-child { border-left: 0; }
+        .tb-k { font-family: 'Geist Mono', monospace; font-size: 7px; letter-spacing: .1em; color: #6b82a6; }
+        .tb-v { font-family: 'Geist Mono', monospace; font-size: 9px; color: #dce6f5; }
+        .tour-nav {
+            width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+            border: 1px solid #2c3d5c; color: #fff; font-size: 14px; line-height: 1;
+            transition: border-color .15s ease, background-color .15s ease, opacity .15s ease;
+        }
+        .tour-nav:hover:not(:disabled) { border-color: #4a5f83; background: rgba(255,255,255,.04); }
+        .tour-nav:disabled { opacity: .3; cursor: default; }
+        @media (prefers-reduced-motion: reduce) {
+            .js .tour-view.is-active, .js .tour-step.is-active { animation: none; }
+            .js .hot .hot-ring { animation: none; }
+        }
+
+        /* Motion — one quiet reveal on first view. No loops, no bounce, no overshoot. */
+        .js [data-reveal] { opacity: 0; transform: translateY(14px); }
+        .js [data-reveal].is-in {
+            opacity: 1; transform: none;
+            transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+            transition-delay: var(--d, 0ms);
+        }
+        .js [data-reveal-img] { overflow: hidden; }
+        .js [data-reveal-img] img { transform: scale(1.06); }
+        .js [data-reveal-img].is-in img { transform: scale(1); transition: transform 1.5s cubic-bezier(.16,1,.3,1); }
+        nav { transition: box-shadow .25s ease; }
+        nav.nav-scrolled { box-shadow: 0 1px 0 rgba(255,255,255,.07), 0 8px 24px rgba(2,9,22,.35); }
+        .mod { transition: border-color .18s ease, transform .18s ease; }
+        .mod:hover { transform: translateY(-1px); }
+
+        @media print {
+            .js [data-reveal], .js [data-reveal-img] img { opacity: 1 !important; transform: none !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .js [data-reveal], .js [data-reveal].is-in { opacity: 1; transform: none; transition: none; }
+            .js [data-reveal-img] img, .js [data-reveal-img].is-in img { transform: none; transition: none; }
+            .mod:hover { transform: none; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body class="bg-background text-secondary antialiased selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-shell border-b border-shell-line">
+<div class="flex justify-between items-center w-full px-margin h-[60px] max-w-container-max-width mx-auto">
+<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="code.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="logo.jpg"/>RackTrack</a>
+<div class="hidden lg:flex gap-6 xl:gap-7 items-center">
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="code.html">Home</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="why-racktrack.html">Why RackTrack</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="solutions.html">Solutions</a>
+<a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="trust-security.html">Trust &amp; Security</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="resources.html">Resources</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="about-us.html">About Us</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="contact-us.html">Contact Us</a>
+</div>
+<div class="flex items-center gap-4">
+<a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] !py-[7px] !px-[14px] !text-[13px]" href="contact-us.html">Get a demo</a>
+<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
+</div>
+</div>
+<div class="hidden lg:hidden border-t border-shell-line bg-shell px-margin py-5 flex-col gap-4" id="mobile-menu">
+<a class="text-[15px] font-normal text-shell-text" href="code.html">Home</a>
+<a class="text-[15px] font-normal text-shell-text" href="why-racktrack.html">Why RackTrack</a>
+<a class="text-[15px] font-normal text-shell-text" href="solutions.html">Solutions</a>
+<a class="text-[15px] font-medium text-white" href="use-cases.html">Use Cases</a>
+<a class="text-[15px] font-normal text-shell-text" href="trust-security.html">Trust &amp; Security</a>
+<a class="text-[15px] font-normal text-shell-text" href="resources.html">Resources</a>
+<a class="text-[15px] font-normal text-shell-text" href="about-us.html">About Us</a>
+<a class="text-[15px] font-normal text-shell-text" href="contact-us.html">Contact Us</a>
+<a class="btn bg-white text-shell mt-2 max-w-fit" href="contact-us.html">Get a demo</a>
+</div>
+</nav>
+
+<main class="pt-[60px]">
+<!-- Hero -->
+<section class="shell-band">
+<div class="max-w-container-max-width mx-auto px-margin pt-12 md:pt-[68px] pb-12 md:pb-[68px]">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-7 md:row-start-1">
+<p class="eyebrow">Use cases</p>
+<h1 class="h1 mt-6 max-w-[19ch]">Operational outcomes across the infrastructure lifecycle.</h1>
+</div>
+<p class="md:col-span-4 md:col-start-9 md:row-start-1 lede self-end mt-10 md:mt-0 md:pb-2">RackTrack connects rack reality, network validation, and continuous reconciliation so teams can move from physical evidence to operational outcomes faster.</p>
+</div>
+</div>
+</section>
+<div class="max-w-container-max-width mx-auto px-margin">
+<dl data-reveal class="grid grid-cols-1 sm:grid-cols-3 border-y border-outline-variant">
+<div class="py-7 sm:pr-8 border-b sm:border-b-0 border-outline-variant"><dt class="stat">6</dt><dd class="eyebrow mt-3">Operational disciplines unified</dd></div>
+<div class="py-7 sm:px-8 sm:border-l border-b sm:border-b-0 border-outline-variant"><dt class="stat">&lt;10 days</dt><dd class="eyebrow mt-3">Time to continuous truth</dd></div>
+<div class="py-7 sm:pl-8 sm:border-l border-outline-variant"><dt class="stat">99.6%</dt><dd class="eyebrow mt-3">Physical-logical convergence</dd></div>
+</dl>
+</div>
+
+<!-- Impact -->
+<section class="py-14 md:py-20">
+<div class="max-w-container-max-width mx-auto px-margin">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-5">
+<p class="eyebrow">Impact that matters</p>
+<h2 class="h2 mt-5 max-w-[18ch]">Operational outcomes, measured against physical truth.</h2>
+</div>
+<p class="md:col-span-6 md:col-start-7 lede self-end">RackTrack turns verified rack evidence into faster decisions, stronger controls, and less manual reconciliation work.</p>
+</div>
+<dl data-reveal class="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-gutter border-t border-outline-variant">
+<div class="py-7 lg:pr-8 border-b lg:border-b-0 border-outline-variant">
+<dt class="stat">99%+</dt>
+<dd class="h4 mt-4">State Fidelity</dd>
+<p class="text-[14px] leading-relaxed mt-1.5">Verified rack, device, and port data replaces stale audit assumptions.</p>
+</div>
+<div class="py-7 lg:px-8 lg:border-l border-b lg:border-b-0 border-outline-variant">
+<dt class="stat">5-15 Min</dt>
+<dd class="h4 mt-4">Rack Capture to Insight</dd>
+<p class="text-[14px] leading-relaxed mt-1.5">Teams move from capture to useful operational context in minutes.</p>
+</div>
+<div class="py-7 lg:px-8 lg:border-l border-b lg:border-b-0 border-outline-variant">
+<dt class="stat">90%+</dt>
+<dd class="h4 mt-4">Manual Operations Eliminated</dd>
+<p class="text-[14px] leading-relaxed mt-1.5">Manual reconciliation, spreadsheet cleanup, and evidence prep shrink dramatically.</p>
+</div>
+<div class="py-7 lg:pl-8 lg:border-l border-outline-variant">
+<dt class="stat stat-sm">Continuous</dt>
+<dd class="h4 mt-4">Continuous Reconciliation</dd>
+<p class="text-[14px] leading-relaxed mt-1.5">Physical inventory and network truth stay aligned across changes.</p>
+</div>
+</dl>
+</div>
+</section>
+
+<figure class="relative w-full h-[280px] md:h-[420px] overflow-hidden" data-reveal-img>
+<img alt="Long aisle between equipment racks in a data centre" class="w-full h-full object-cover object-center" src="https://images.unsplash.com/photo-1584169417032-d34e8d805e8b?auto=format&amp;fit=crop&amp;w=2400&amp;q=80"/>
+<figcaption class="absolute inset-0 bg-shell/60 flex items-end">
+<div class="max-w-container-max-width mx-auto px-margin w-full pb-9 md:pb-12" data-reveal>
+<p class="eyebrow !text-accent">On the floor</p>
+<p class="h2 text-white max-w-[22ch] mt-3">Six disciplines. One reconciled record of the floor.</p>
+</div>
+</figcaption>
+</figure>
+<!-- By Role -->
+<section class="border-t border-outline-variant py-14 md:py-20 bg-surface" id="by-role">
+<div class="max-w-container-max-width mx-auto px-margin">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-5">
+<p class="eyebrow">By role</p>
+<h2 class="h2 mt-5">The people who own the rack.</h2>
+</div>
+<p class="md:col-span-6 md:col-start-7 lede self-end">Each role lives with a specific failure mode of the current stack. Each one gets a specific intelligence surface.</p>
+</div>
+<nav class="flex flex-wrap gap-x-7 gap-y-3 border-y border-outline-variant py-5 mt-12">
+<a class="text-[13.5px] text-secondary hover:text-on-background transition-colors" href="#role-1">Infrastructure Executives</a>
+<a class="text-[13.5px] text-secondary hover:text-on-background transition-colors" href="#role-2">Network Arch.</a>
+<a class="text-[13.5px] text-secondary hover:text-on-background transition-colors" href="#role-3">Security &amp; Risk</a>
+<a class="text-[13.5px] text-secondary hover:text-on-background transition-colors" href="#role-4">Audit &amp; Gov.</a>
+<a class="text-[13.5px] text-secondary hover:text-on-background transition-colors" href="#role-5">Operational Resilience</a>
+<a class="text-[13.5px] text-secondary hover:text-on-background transition-colors" href="#role-6">Transformation</a>
+</nav>
+
+<!-- ROLE 01 -->
+<article data-reveal class="pt-10 md:pt-14" id="role-1">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8">
+<div class="lg:col-span-4">
+<span class="idx">/01</span>
+<h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">Infrastructure &amp; Data Center Leaders</h3>
+<p class="stat mt-8">100%</p>
+<p class="eyebrow mt-2.5">Sites on one source of truth</p>
+<p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Every rack verified · Every site reconciled · Every plan defensible</p>
+</div>
+<div class="lg:col-span-7 lg:col-start-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 border-t border-outline-variant pt-7">
+<div><p class="eyebrow">Pain</p><p class="text-[15px] leading-relaxed mt-3">You can't manage what you can't measure, and what you measure today is months old. Every leadership review starts with a footnote on data quality.</p></div>
+<div><p class="eyebrow text-primary">With RackTrack</p><p class="text-[15px] leading-relaxed mt-3 text-on-background">One source of truth across every site, every row, every rack, continuously reconciled. Budget conversations move from spreadsheet arguments to capacity planning.</p></div>
+</div>
+<ul class="row-list border-t border-outline-variant mt-9">
+<li class="py-4 text-[15px] leading-relaxed">Multi-site rollouts complete in a quarter, not a fiscal year</li>
+<li class="py-4 text-[15px] leading-relaxed">Capacity planning runs against current state, not the last audit</li>
+<li class="py-4 text-[15px] leading-relaxed">CapEx defenses backed by evidence the CFO accepts the first time</li>
+</ul>
+<details class="border-t border-outline-variant pt-5">
+<summary class="flex items-center justify-between gap-4"><span class="link-arrow">Read the full case</span><span class="material-symbols-outlined chev text-outline !text-[20px]">expand_more</span></summary>
+<div class="pt-9 flex flex-col gap-9">
+<p class="lede text-on-background measure">One source of truth for every site, every row, every rack. RackTrack turns physical rack reality into structured, trusted, and continuously updated inventory intelligence.</p>
+<div><h4 class="h4">The challenge — The problem is trust.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Infrastructure leaders are responsible for keeping the data center estate accurate, scalable, compliant, and ready for every business demand. But most teams still depend on fragmented spreadsheets, outdated rack diagrams, manual audits, and scattered site reports.</p><p class="text-[15px] leading-relaxed mt-3 measure">Modern infrastructure teams manage hundreds or thousands of assets across multiple rooms, floors, and sites. Every rack contains critical details: servers, switches, patch panels, PDUs, storage devices, ports, serial numbers, labels, and cable connections.</p><p class="text-[15px] leading-relaxed mt-3 measure">Most inventory records become outdated the moment equipment is moved, replaced, patched, or decommissioned. A small change inside one rack can create confusion across capacity planning, compliance reviews, budgeting, incident response, and audits. When leadership asks, "What do we actually have?", teams often need days or weeks to confirm the truth.</p></div>
+<div><h4 class="h4">What RackTrack does — Rack reality becomes structured intelligence.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Instead of manually checking every rack and updating multiple systems, teams can capture a single rack image or video. RackTrack analyzes the physical rack and identifies key infrastructure components, including servers, switches, routers, firewalls, patch panels, storage devices, PDUs, load balancers, controllers, rack units, ports, labels, LED status, cables, vendor models, and serial numbers.</p><p class="text-[15px] leading-relaxed mt-3 measure">This scanned data is then transformed into a clean, searchable source of truth that can be used by network, infrastructure, security, compliance, and operations teams.</p></div>
+<div><h4 class="h4">Example scenario — A faster refresh across multiple sites.</h4><p class="text-[15px] leading-relaxed mt-3 measure">A global company is preparing for a major infrastructure refresh across multiple data center sites. Before RackTrack, the team would depend on site engineers to manually inspect racks, update spreadsheets, take photos, compare diagrams, and report back — a process that could take weeks.</p><p class="text-[15px] leading-relaxed mt-3 measure">With RackTrack, each site team scans the racks. RackTrack identifies the visible infrastructure, highlights mismatches, and creates a structured view of the rack environment. Leadership can now compare every site using the same data format. The result: faster planning, fewer surprises, and a stronger business case for infrastructure investment.</p></div>
+<div><h4 class="h4">How RackTrack works — From scan to report.</h4>
+<ol class="row-list border-t border-outline-variant mt-4">
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">01 Capture</span><span class="text-[14.5px] leading-relaxed">A technician records a rack using a mobile device or uploads rack images from the site.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">02 Detect</span><span class="text-[14.5px] leading-relaxed">RackTrack identifies components, rack positions, ports, labels, and device types.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">03 Reconcile</span><span class="text-[14.5px] leading-relaxed">Detected data is compared with CMDB records, switch telemetry, and diagrams.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">04 Verify</span><span class="text-[14.5px] leading-relaxed">Teams review output, confirm accuracy, and flag missing or mismatched items.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">05 Report</span><span class="text-[14.5px] leading-relaxed">Rack-level visibility becomes reports for planning, compliance, and budgeting.</span></li>
+</ol></div>
+<div><h4 class="h4">Business impact</h4><p class="text-[15px] leading-relaxed mt-3 measure">RackTrack is designed to reduce the time and effort required to understand physical infrastructure. For infrastructure leaders, this means fewer manual audits, fewer data quality debates, and faster decision-making. When every site, row, and rack is aligned to one trusted source of truth, teams can plan faster, respond better, and scale with confidence.</p></div>
+<a class="link-arrow" href="contact-us.html">Request platform brief →</a>
+</div>
+</details>
+</div>
+</div>
+</article>
+
+<!-- ROLE 02 -->
+<article data-reveal class="pt-10 md:pt-14" id="role-2">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8">
+<div class="lg:col-span-4">
+<span class="idx">/02</span>
+<h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">Network Architects &amp; Engineers</h3>
+<p class="stat mt-8">99.6%</p>
+<p class="eyebrow mt-2.5">Fabric to floor agreement</p>
+<p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Ports verified · Cables reconciled · Topology trusted</p>
+</div>
+<div class="lg:col-span-7 lg:col-start-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 border-t border-outline-variant pt-7">
+<div><p class="eyebrow">Pain</p><p class="text-[15px] leading-relaxed mt-3">The diagram you draw and the cable you trace rarely match. Port-level changes happen in the field and never make it back to the system of record.</p></div>
+<div><p class="eyebrow text-primary">With RackTrack</p><p class="text-[15px] leading-relaxed mt-3 text-on-background">Port-level topology that matches the cables you can actually touch, and stays current because verification happens every time a phone walks the row.</p></div>
+</div>
+<ul class="row-list border-t border-outline-variant mt-9">
+<li class="py-4 text-[15px] leading-relaxed">Every cable run reconciled against LLDP/CDP within the change window</li>
+<li class="py-4 text-[15px] leading-relaxed">Mis-cabled uplinks surfaced before they become an outage</li>
+<li class="py-4 text-[15px] leading-relaxed">Architecture reviews run against the topology that exists, not the one you drew</li>
+</ul>
+<details class="border-t border-outline-variant pt-5">
+<summary class="flex items-center justify-between gap-4"><span class="link-arrow">Read the full case</span><span class="material-symbols-outlined chev text-outline !text-[20px]">expand_more</span></summary>
+<div class="pt-9 flex flex-col gap-9">
+<p class="lede text-on-background measure">Port-level topology that matches the cables you can actually touch. RackTrack helps network teams connect digital network design with physical rack reality.</p>
+<div><h4 class="h4">The challenge — Topology drifts away from the rack.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Every switch port, patch panel connection, uplink, firewall interface, router link, and cable path matters. A single undocumented cable change can create confusion during troubleshooting, audits, migrations, and outage response.</p><p class="text-[15px] leading-relaxed mt-3 measure">Diagrams are drawn once and updated later. Cable traces are documented during installation but forgotten during change windows. Switch telemetry may show port activity, but it does not always explain what the cable physically connects to. Over time, the network diagram and the rack reality stop matching. That gap creates risk.</p></div>
+<div><h4 class="h4">What RackTrack does — The rack becomes proof.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Using a rack scan, RackTrack helps identify visible network devices, patch panels, ports, cables, labels, uplinks, and physical rack placement. This information can then be compared against expected topology, diagrams, CMDB records, and switch telemetry.</p><p class="text-[15px] leading-relaxed mt-3 measure">Instead of relying only on a diagram, teams get a verified physical layer view. Engineers move from assumption-based troubleshooting to evidence-based troubleshooting. Instead of asking, "Is the diagram correct?", teams can ask, "What does the rack show right now?"</p></div>
+<div><h4 class="h4">Example scenario — A cleaner core switch migration.</h4><p class="text-[15px] leading-relaxed mt-3 measure">A network engineering team is preparing for a core switch migration across several data center rows. The official diagram shows redundant uplinks from each top-of-rack switch to the aggregation layer, but the team suspects some field changes were never updated in the documentation.</p><p class="text-[15px] leading-relaxed mt-3 measure">With RackTrack, the site team scans the racks and the detected rack information is compared with the expected topology. The team finds mismatched uplinks before the migration window begins. The result: fewer surprises, cleaner execution, and stronger confidence in the migration plan.</p></div>
+<div><h4 class="h4">How RackTrack works — From scan to topology.</h4>
+<ol class="row-list border-t border-outline-variant mt-4">
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">01 Capture</span><span class="text-[14.5px] leading-relaxed">A technician records or photographs the rack using a mobile device.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">02 Detect</span><span class="text-[14.5px] leading-relaxed">Visible network devices, patch panels, ports, cables, and labels are identified.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">03 Compare</span><span class="text-[14.5px] leading-relaxed">Scanned data is compared against diagrams, CMDB, and switch telemetry.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">04 Validate</span><span class="text-[14.5px] leading-relaxed">Engineers review mismatches and flag unclear or risky changes.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">05 Update</span><span class="text-[14.5px] leading-relaxed">Validated information supports updated documentation and cleaner records.</span></li>
+</ol></div>
+<div><h4 class="h4">Business impact</h4><p class="text-[15px] leading-relaxed mt-3 measure">RackTrack reduces the operational friction caused by unreliable network documentation. Engineers spend less time verifying physical connections and more time solving real problems. Leadership gains fewer outages, faster changes, and a network environment that can be trusted from diagram to rack.</p></div>
+<a class="link-arrow" href="contact-us.html">Request platform brief →</a>
+</div>
+</details>
+</div>
+</div>
+</article>
+
+<!-- ROLE 03 -->
+<article data-reveal class="pt-10 md:pt-14" id="role-3">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8">
+<div class="lg:col-span-4">
+<span class="idx">/03</span>
+<h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">Security &amp; Vulnerability Teams</h3>
+<p class="stat mt-8">0</p>
+<p class="eyebrow mt-2.5">Agent blind spots in scope</p>
+<p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Inventory complete · Blind spots surfaced · Risk in scope</p>
+</div>
+<div class="lg:col-span-7 lg:col-start-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 border-t border-outline-variant pt-7">
+<div><p class="eyebrow">Pain</p><p class="text-[15px] leading-relaxed mt-3">Your vulnerability management starts from incomplete inventory. Agents don't run on switches, patch panels, or PDUs. The CMDB lags. By the time you have a clean asset list, the CVE is two months old.</p></div>
+<div><p class="eyebrow text-primary">With RackTrack</p><p class="text-[15px] leading-relaxed mt-3 text-on-background">Start from a complete inventory of every physical device, including the ones agents can't reach. Firmware posture and vulnerability state, surfaced per device, in real time.</p></div>
+</div>
+<ul class="row-list border-t border-outline-variant mt-9">
+<li class="py-4 text-[15px] leading-relaxed">Patch panels, PDUs, OOB controllers all visible to the program</li>
+<li class="py-4 text-[15px] leading-relaxed">Firmware posture per device, not per fleet average</li>
+<li class="py-4 text-[15px] leading-relaxed">CVE triage starts from a list you can defend, not one you are still building</li>
+</ul>
+<details class="border-t border-outline-variant pt-5">
+<summary class="flex items-center justify-between gap-4"><span class="link-arrow">Read the full case</span><span class="material-symbols-outlined chev text-outline !text-[20px]">expand_more</span></summary>
+<div class="pt-9 flex flex-col gap-9">
+<p class="lede text-on-background measure">Vulnerability management starts with complete inventory. RackTrack helps security teams close blind spots by starting from the physical rack itself.</p>
+<div><h4 class="h4">The challenge — Security teams cannot protect assets they cannot see.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Every vulnerability program depends on one basic truth: the asset list must be complete. Agents do not run on every device. Switches, patch panels, PDUs, firewalls, controllers, appliances, and out-of-band devices can be missed by traditional scanning tools.</p><p class="text-[15px] leading-relaxed mt-3 measure">If an asset is missing from inventory, it may also be missing from vulnerability scans, firmware tracking, patch planning, and risk reporting. A vulnerability team may believe they are working from a complete asset list while critical physical infrastructure remains outside the scope.</p></div>
+<div><h4 class="h4">What RackTrack does — A physical-first view of infrastructure.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Using rack images or video, RackTrack helps identify visible devices inside the rack, including switches, servers, firewalls, routers, patch panels, PDUs, controllers, storage devices, labels, ports, and rack positions.</p><p class="text-[15px] leading-relaxed mt-3 measure">This physical inventory can be compared against the CMDB, vulnerability scanner scope, agent coverage, firmware records, and device ownership data. Teams move from "these are the assets our tools found" to "these are the assets physically present and in scope."</p></div>
+<div><h4 class="h4">Example scenario — Critical CVE response with fewer blind spots.</h4><p class="text-[15px] leading-relaxed mt-3 measure">A security team receives a critical CVE affecting a specific firewall and network appliance firmware version. The scanner shows several impacted devices, but the team is unsure whether all physical appliances are included in scan scope.</p><p class="text-[15px] leading-relaxed mt-3 measure">With RackTrack, the site team scans the racks and quickly finds devices that were physically present but missing from scan scope — resulting in faster triage and a vulnerability response based on real infrastructure coverage.</p></div>
+<div><h4 class="h4">How RackTrack works — From scan to prioritized risk.</h4>
+<ol class="row-list border-t border-outline-variant mt-4">
+<li class="py-4 grid grid-cols-[104px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">01 Capture</span><span class="text-[14.5px] leading-relaxed">A technician scans or photographs the rack using a mobile device.</span></li>
+<li class="py-4 grid grid-cols-[104px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">02 Detect</span><span class="text-[14.5px] leading-relaxed">Devices, rack positions, labels, ports, patch panels, and PDUs are identified.</span></li>
+<li class="py-4 grid grid-cols-[104px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">03 Compare</span><span class="text-[14.5px] leading-relaxed">Physical inventory is compared with CMDB, scanner scope, and agent coverage.</span></li>
+<li class="py-4 grid grid-cols-[104px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">04 Surface gaps</span><span class="text-[14.5px] leading-relaxed">Assets physically present but missing from security workflows are highlighted.</span></li>
+<li class="py-4 grid grid-cols-[104px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">05 Prioritize</span><span class="text-[14.5px] leading-relaxed">Verified inventory improves CVE triage and remediation planning.</span></li>
+</ol></div>
+<div><h4 class="h4">Security starts with visibility</h4><p class="text-[15px] leading-relaxed mt-3 measure">A vulnerability program is only as strong as the inventory behind it. If devices are missing from scope, risk is missing from the report. RackTrack helps security and vulnerability teams bring physical infrastructure into view, close agent blind spots, and build vulnerability decisions on complete rack-level truth.</p></div>
+<a class="link-arrow" href="contact-us.html">Request platform brief →</a>
+</div>
+</details>
+</div>
+</div>
+</article>
+
+<!-- ROLE 04 -->
+<article data-reveal class="pt-10 md:pt-14" id="role-4">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8">
+<div class="lg:col-span-4">
+<span class="idx">/04</span>
+<h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">Compliance &amp; Audit Owners</h3>
+<p class="stat mt-8">&lt;1 day</p>
+<p class="eyebrow mt-2.5">Evidence prep, end-to-end</p>
+<p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Evidence ready · Variance surfaced · Proof traceable</p>
+</div>
+<div class="lg:col-span-7 lg:col-start-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 border-t border-outline-variant pt-7">
+<div><p class="eyebrow">Pain</p><p class="text-[15px] leading-relaxed mt-3">Three to six weeks of evidence prep, every cycle, and the auditor still finds gaps. Half your team's quarter disappears into screenshots and spreadsheets.</p></div>
+<div><p class="eyebrow text-primary">With RackTrack</p><p class="text-[15px] leading-relaxed mt-3 text-on-background">Audit-ready evidence generated continuously, mapped to SOC 2, ISO 27001, HIPAA, and PCI-DSS Requirement 9. The day the auditor arrives, the artifact already exists.</p></div>
+</div>
+<ul class="row-list border-t border-outline-variant mt-9">
+<li class="py-4 text-[15px] leading-relaxed">Continuous mapping to SOC 2, ISO 27001, HIPAA, PCI-DSS Req 9</li>
+<li class="py-4 text-[15px] leading-relaxed">Variance surfaced before the auditor finds it</li>
+<li class="py-4 text-[15px] leading-relaxed">Every record carries a timestamped verification with a citable source</li>
+</ul>
+<details class="border-t border-outline-variant pt-5">
+<summary class="flex items-center justify-between gap-4"><span class="link-arrow">Read the full case</span><span class="material-symbols-outlined chev text-outline !text-[20px]">expand_more</span></summary>
+<div class="pt-9 flex flex-col gap-9">
+<p class="lede text-on-background measure">Audit-ready evidence generated continuously. RackTrack helps compliance teams move from last-minute evidence collection to rack-level proof.</p>
+<div><h4 class="h4">The challenge — Evidence is prepared after the fact.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Compliance teams do not fail audits only because controls are missing. They often struggle because evidence is scattered across screenshots, spreadsheets, ticket comments, rack photos, CMDB exports, and manual confirmations.</p><p class="text-[15px] leading-relaxed mt-3 measure">Frameworks like SOC 2, ISO 27001, HIPAA, and PCI-DSS require organizations to prove that assets, controls, access, changes, and infrastructure records are properly managed. Devices are added, cables are moved, hardware is replaced, and CMDB records lag behind actual rack reality.</p></div>
+<div><h4 class="h4">What RackTrack does — Visual scans become audit-ready evidence.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Using rack images or video, RackTrack captures the physical state of infrastructure and turns it into structured, reviewable evidence. This helps teams document what devices exist, where they are located, whether records match the rack, and when verification occurred.</p><p class="text-[15px] leading-relaxed mt-3 measure">Each verified record can carry timestamp, physical location, asset identity, rack position, and visual source context. Instead of waiting until audit season, teams can continuously build a reliable evidence trail.</p></div>
+<div><h4 class="h4">Example scenario — SOC 2 evidence without the scramble.</h4><p class="text-[15px] leading-relaxed mt-3 measure">A compliance team preparing for a SOC 2 audit needs proof that physical infrastructure inventory is accurate, current, and mapped to control requirements.</p><p class="text-[15px] leading-relaxed mt-3 measure">With RackTrack, the team already has recent rack scans and verified asset evidence. They can show which devices were identified, when the rack was verified, and where records match or differ from the system of record. The result is faster evidence preparation, fewer surprises, and a stronger audit response.</p></div>
+<div><h4 class="h4">How RackTrack works — From scan to audit evidence.</h4>
+<ol class="row-list border-t border-outline-variant mt-4">
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">01 Capture</span><span class="text-[14.5px] leading-relaxed">A technician scans the rack during normal site operations.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">02 Detect</span><span class="text-[14.5px] leading-relaxed">Devices, rack positions, labels, patch panels, PDUs, and ports are identified.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">03 Verify</span><span class="text-[14.5px] leading-relaxed">Teams review detected output and confirm whether rack data is accurate.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">04 Map</span><span class="text-[14.5px] leading-relaxed">Verified evidence is aligned to SOC 2, ISO 27001, HIPAA, and PCI-DSS.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">05 Report</span><span class="text-[14.5px] leading-relaxed">Verified records become audit-ready evidence with timestamps and source context.</span></li>
+</ol></div>
+<div><h4 class="h4">Audit confidence starts before the audit</h4><p class="text-[15px] leading-relaxed mt-3 measure">When every rack record has a source, a timestamp, and a verified connection to the physical environment, compliance becomes easier to prove. RackTrack helps compliance and audit owners move from reactive evidence collection to continuous audit readiness.</p></div>
+<a class="link-arrow" href="contact-us.html">Request platform brief →</a>
+</div>
+</details>
+</div>
+</div>
+</article>
+
+<!-- ROLE 05 -->
+<article data-reveal class="pt-10 md:pt-14" id="role-5">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8">
+<div class="lg:col-span-4">
+<span class="idx">/05</span>
+<h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">Incident Responders &amp; On-Call</h3>
+<p class="stat mt-8">-35 min</p>
+<p class="eyebrow mt-2.5">Median MTTL recovered</p>
+<p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Device located · Port identified · Runbook started</p>
+</div>
+<div class="lg:col-span-7 lg:col-start-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 border-t border-outline-variant pt-7">
+<div><p class="eyebrow">Pain</p><p class="text-[15px] leading-relaxed mt-3">Twenty to forty minutes of every incident lost confirming what's actually in the rack, before the real work starts.</p></div>
+<div><p class="eyebrow text-primary">With RackTrack</p><p class="text-[15px] leading-relaxed mt-3 text-on-background">Find the device, find the port, before you open the door. Spatial search, current state, no detour through three other systems.</p></div>
+</div>
+<ul class="row-list border-t border-outline-variant mt-9">
+<li class="py-4 text-[15px] leading-relaxed">Spatial search from page-out to physical row in seconds</li>
+<li class="py-4 text-[15px] leading-relaxed">Current device state without a detour through DCIM and CMDB</li>
+<li class="py-4 text-[15px] leading-relaxed">Runbooks that start at the rack, not at the asset tag</li>
+</ul>
+<details class="border-t border-outline-variant pt-5">
+<summary class="flex items-center justify-between gap-4"><span class="link-arrow">Read the full case</span><span class="material-symbols-outlined chev text-outline !text-[20px]">expand_more</span></summary>
+<div class="pt-9 flex flex-col gap-9">
+<p class="lede text-on-background measure">Find the device. Find the port. Before you open the door. RackTrack gives responders current rack-level visibility before they reach the aisle.</p>
+<div><h4 class="h4">The challenge — Incident response should begin with action.</h4><p class="text-[15px] leading-relaxed mt-3 measure">When an alert fires, the responder may know the hostname, IP address, switch name, or asset tag, but that does not always translate into a clear physical location. They still need to know which rack the device is in, which row to walk to, which port is connected, and whether the CMDB location is correct.</p><p class="text-[15px] leading-relaxed mt-3 measure">Responders often jump between DCIM, CMDB, monitoring tools, spreadsheets, old diagrams, and messaging threads before they can start real work. That delay increases mean time to locate, mean time to respond, and mean time to recover.</p></div>
+<div><h4 class="h4">What RackTrack does — A spatial view of the rack environment.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Using visual rack scans, RackTrack helps identify devices, rack positions, visible ports, labels, cables, and current physical placement. A responder can search by device, rack, port, row, asset label, or site context and quickly understand where the issue is located.</p><p class="text-[15px] leading-relaxed mt-3 measure">RackTrack helps answer the most important first question: where exactly do I need to go? Instead of starting at the asset tag, responders can start at the rack.</p></div>
+<div><h4 class="h4">Example scenario — Packet loss response without tool-hopping.</h4><p class="text-[15px] leading-relaxed mt-3 measure">A monitoring alert shows packet loss from a critical application server connected through a top-of-rack switch. The on-call engineer needs to confirm switch, port, cable path, and physical rack location.</p><p class="text-[15px] leading-relaxed mt-3 measure">With RackTrack, the engineer searches the device or switch context, sees the current rack location, identifies the related physical area, and starts the runbook from the correct rack. The result is faster location, fewer detours, and quicker recovery.</p></div>
+<div><h4 class="h4">How RackTrack works — From alert to rack-level clarity.</h4>
+<ol class="row-list border-t border-outline-variant mt-4">
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">01 Capture</span><span class="text-[14.5px] leading-relaxed">Site teams scan racks during normal operations or after changes.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">02 Detect</span><span class="text-[14.5px] leading-relaxed">Devices, rack positions, labels, ports, and cables are identified.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">03 Search</span><span class="text-[14.5px] leading-relaxed">Responders search for a device, port, rack, row, or asset label.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">04 Locate</span><span class="text-[14.5px] leading-relaxed">RackTrack shows the physical location and surrounding rack context.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">05 Respond</span><span class="text-[14.5px] leading-relaxed">The runbook begins from the real rack location, reducing wasted time.</span></li>
+</ol></div>
+<div><h4 class="h4">Incident response should not begin with a search party</h4><p class="text-[15px] leading-relaxed mt-3 measure">When every device, port, and rack location is easier to find, responders can act faster and recover faster. RackTrack helps on-call teams move from alert to rack-level clarity in seconds.</p></div>
+<a class="link-arrow" href="contact-us.html">Request platform brief →</a>
+</div>
+</details>
+</div>
+</div>
+</article>
+
+<!-- ROLE 06 -->
+<article data-reveal class="pt-10 md:pt-14" id="role-6">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8">
+<div class="lg:col-span-4">
+<span class="idx">/06</span>
+<h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">M&amp;A &amp; Migration Teams</h3>
+<p class="stat mt-8">10 days</p>
+<p class="eyebrow mt-2.5">From sweep to defensible plan</p>
+<p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Footprint known · Risk surfaced · Plan defensible</p>
+</div>
+<div class="lg:col-span-7 lg:col-start-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 border-t border-outline-variant pt-7">
+<div><p class="eyebrow">Pain</p><p class="text-[15px] leading-relaxed mt-3">You inherit an unknown footprint with no current documentation. Characterizing it the old way means quarters of work before the integration plan can start.</p></div>
+<div><p class="eyebrow text-primary">With RackTrack</p><p class="text-[15px] leading-relaxed mt-3 text-on-background">Walk the rows with a phone. Days later, you have the inventory, topology, and posture you would otherwise spend a quarter assembling.</p></div>
+</div>
+<ul class="row-list border-t border-outline-variant mt-9">
+<li class="py-4 text-[15px] leading-relaxed">Diligence runs against ground truth, not the seller's spreadsheet</li>
+<li class="py-4 text-[15px] leading-relaxed">Integration plans built on the inventory that exists today</li>
+<li class="py-4 text-[15px] leading-relaxed">Migration risk surfaced before close, not after</li>
+</ul>
+<details class="border-t border-outline-variant pt-5">
+<summary class="flex items-center justify-between gap-4"><span class="link-arrow">Read the full case</span><span class="material-symbols-outlined chev text-outline !text-[20px]">expand_more</span></summary>
+<div class="pt-9 flex flex-col gap-9">
+<p class="lede text-on-background measure">Turn an unknown footprint into a defensible migration plan. RackTrack helps teams understand inherited infrastructure by starting from the rack itself.</p>
+<div><h4 class="h4">The challenge — Inherited environments are rarely clean.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Mergers, acquisitions, consolidations, and migrations often begin with one major problem: nobody fully trusts the infrastructure documentation. The acquired site may have old spreadsheets, partial rack diagrams, missing CMDB records, unclear device ownership, and network details that no longer match the physical floor.</p><p class="text-[15px] leading-relaxed mt-3 measure">If the team does not know what exists, they cannot confidently decide what to keep, replace, move, retire, secure, or integrate. Without clear rack-level visibility, the integration plan becomes guesswork.</p></div>
+<div><h4 class="h4">What RackTrack does — Rapidly characterize inherited infrastructure.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Using rack scans, RackTrack identifies visible devices, rack positions, labels, ports, cables, patch panels, PDUs, switches, servers, firewalls, routers, storage units, and other physical components.</p><p class="text-[15px] leading-relaxed mt-3 measure">Instead of waiting months to manually assemble inventory and topology, RackTrack helps teams build a defensible plan in days. Instead of asking, "Can we trust the seller's spreadsheet?", teams can ask, "What does the floor actually show?"</p></div>
+<div><h4 class="h4">Example scenario — A clearer inherited data center footprint.</h4><p class="text-[15px] leading-relaxed mt-3 measure">A company acquires a regional business with multiple data center rooms and inherited network environments. Seller spreadsheets, rack diagrams, and CMDB exports may not match the floor.</p><p class="text-[15px] leading-relaxed mt-3 measure">With RackTrack, site teams scan rows using mobile devices. Within days, the migration team has a clearer picture of what exists, what is missing from documentation, and where the highest risks are.</p></div>
+<div><h4 class="h4">How RackTrack works — From unknown footprint to plan.</h4>
+<ol class="row-list border-t border-outline-variant mt-4">
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">01 Capture</span><span class="text-[14.5px] leading-relaxed">Site teams walk rows and scan racks using a mobile device.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">02 Detect</span><span class="text-[14.5px] leading-relaxed">Components, rack positions, labels, cables, ports, and device types are identified.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">03 Compare</span><span class="text-[14.5px] leading-relaxed">Scanned data is compared with seller spreadsheets, CMDB exports, and DCIM records.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">04 Surface risk</span><span class="text-[14.5px] leading-relaxed">Missing records, unknown assets, and unclear topology are highlighted.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">05 Plan</span><span class="text-[14.5px] leading-relaxed">Verified inventory supports a phased, defensible integration plan.</span></li>
+</ol></div>
+<div><h4 class="h4">Migration success depends on knowing what you inherited</h4><p class="text-[15px] leading-relaxed mt-3 measure">RackTrack helps M&amp;A and migration teams turn unknown infrastructure into verified inventory, topology context, and practical migration intelligence. When the plan is built on ground truth, the migration becomes faster, cleaner, and easier to defend.</p></div>
+<a class="link-arrow" href="contact-us.html">Request platform brief →</a>
+</div>
+</details>
+</div>
+</div>
+</article>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="shell-band py-16 md:py-24">
+<div class="max-w-container-max-width mx-auto px-margin grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-7">
+<p class="eyebrow">Next step</p>
+<h2 class="h2 mt-5 max-w-[18ch]">Bring the role you own into the room.</h2>
+</div>
+<div class="md:col-span-4 md:col-start-9 flex flex-col gap-7 md:pt-10">
+<p class="text-[15px] leading-relaxed">We'll scope the sweep, the reconciliation, and the artifact your stakeholder needs, in the language of the role you actually work in.</p>
+<a class="btn btn-primary max-w-fit" href="contact-us.html">Request platform brief</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-shell-deep border-t border-shell-line pt-12 md:pt-16 pb-7 text-shell-text">
+<div class="max-w-container-max-width mx-auto px-margin">
+<div class="grid grid-cols-2 md:grid-cols-12 gap-x-gutter gap-y-10">
+<div class="col-span-2 md:col-span-4 flex flex-col gap-3">
+<span class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="logo.jpg"/>RackTrack</span>
+<p class="text-[13.5px] leading-relaxed max-w-[30ch]">Physical Infrastructure Intelligence for Data Centers.</p>
+</div>
+<nav class="md:col-span-2 md:col-start-6 flex flex-col gap-2.5">
+<span class="eyebrow !text-white/45">Platform</span>
+<a class="text-[13.5px] hover:text-white transition-colors" href="why-racktrack.html">Why RackTrack</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="solutions.html">Solutions</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="use-cases.html">Use Cases</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="trust-security.html">Trust &amp; Security</a>
+</nav>
+<nav class="md:col-span-2 flex flex-col gap-2.5">
+<span class="eyebrow !text-white/45">Company</span>
+<a class="text-[13.5px] hover:text-white transition-colors" href="resources.html">Resources</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="about-us.html">About Us</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="contact-us.html">Contact Us</a>
+</nav>
+<div class="col-span-2 md:col-span-3 md:col-start-10 flex flex-col gap-2.5">
+<span class="eyebrow !text-white/45">Contact</span>
+<a class="text-[13.5px] hover:text-white transition-colors" href="mailto:info@racktrack.ai">info@racktrack.ai</a>
+<a class="text-[13.5px] hover:text-white transition-colors" href="tel:+18608782448">+1 (860) 878 2448</a>
+<address class="text-[13.5px] not-italic leading-relaxed text-shell-text/70">85 Felt Rd, Suite #604<br/>South Windsor, CT 06074</address>
+</div>
+</div>
+<div class="border-t border-shell-line mt-10 pt-5 flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4">
+<p class="mono text-[10.5px] text-shell-text/60 tracking-[0.04em]">© 2026 RackTrack Inc. · Physical Infrastructure Intelligence for Data Centers · Patent Pending</p>
+<div class="flex gap-5">
+<a class="text-[12.5px] hover:text-white transition-colors" href="https://www.linkedin.com/company/racktrack/" rel="noopener" target="_blank">LinkedIn</a>
+<a class="text-[12.5px] hover:text-white transition-colors" href="https://www.instagram.com/racktrack_inc/" rel="noopener" target="_blank">Instagram</a>
+<a class="text-[12.5px] hover:text-white transition-colors" href="https://www.facebook.com/share/18depF5xzA/" rel="noopener" target="_blank">Facebook</a>
+</div>
+</div>
+</div></footer>
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+        var menu = document.getElementById('mobile-menu');
+        var open = menu.classList.toggle('hidden') === false;
+        menu.classList.toggle('flex', open);
+        this.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        this.querySelector('.material-symbols-outlined').textContent = open ? 'close' : 'menu';
+    });
+</script>
+<script>
+    (function () {
+        var els = [].slice.call(document.querySelectorAll('[data-reveal],[data-reveal-img]'));
+        var reveal = function (el) { el.classList.add('is-in'); };
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            els.forEach(reveal);
+        } else {
+            var pending = els, ticking = false;
+            var check = function () {
+                ticking = false;
+                var vh = window.innerHeight || document.documentElement.clientHeight;
+                pending = pending.filter(function (el) {
+                    var r = el.getBoundingClientRect();
+                    // reveal once any part enters the lower 94% of the viewport
+                    if (r.top < vh * 0.94 && r.bottom > 0) { reveal(el); return false; }
+                    return true;
+                });
+                if (!pending.length) {
+                    window.removeEventListener('scroll', onScrollCheck);
+                    window.removeEventListener('resize', onScrollCheck);
+                }
+            };
+            var onScrollCheck = function () {
+                if (!ticking) { ticking = true; window.requestAnimationFrame(check); }
+            };
+            window.addEventListener('scroll', onScrollCheck, { passive: true });
+            window.addEventListener('resize', onScrollCheck);
+            check();
+            window.addEventListener('load', check);
+            // failsafe: never leave content stranded if something goes wrong above
+            setTimeout(function () { if (pending.length) { check(); } }, 1200);
+        }
+
+        var nav = document.querySelector('nav');
+        var onScroll = function () { nav.classList.toggle('nav-scrolled', window.scrollY > 8); };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+</script>
+<script>
+    (function () {
+        var root = document.getElementById('proof-tour');
+        if (!root) { return; }
+        var views  = root.querySelectorAll('.tour-view');
+        var steps  = root.querySelectorAll('.tour-step');
+        var crumbs = root.querySelectorAll('.tour-crumb');
+        var dots   = root.querySelectorAll('.tour-dot');
+        var count  = document.getElementById('tour-count');
+        var prev   = document.getElementById('tour-prev');
+        var next   = document.getElementById('tour-next');
+        var total  = views.length, at = 0;
+        var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+
+        function show(i) {
+            at = Math.max(0, Math.min(total - 1, i));
+            [views, steps, crumbs, dots].forEach(function (set) {
+                for (var k = 0; k < set.length; k++) { set[k].classList.toggle('is-active', k === at); }
+            });
+            count.textContent = pad(at + 1) + ' / ' + pad(total);
+            prev.disabled = at === 0;
+            next.disabled = at === total - 1;
+        }
+        // drill down by clicking the drawing itself
+        root.addEventListener('click', function (e) {
+            var h = e.target.closest ? e.target.closest('.hot') : null;
+            if (h) { show(parseInt(h.dataset.goto, 10)); }
+        });
+        root.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter' && e.key !== ' ') { return; }
+            var h = e.target.closest ? e.target.closest('.hot, .pmap-p.live') : null;
+            if (!h) { return; }
+            e.preventDefault();
+            if (h.classList.contains('hot')) { show(parseInt(h.dataset.goto, 10)); }
+            else { pickPort(h); }
+        });
+
+        // per-port inspection on the switch sheet
+        function pickPort(g) {
+            root.querySelectorAll('.pmap-p.is-picked').forEach(function (o) { o.classList.remove('is-picked'); });
+            g.classList.add('is-picked');
+            var d = g.dataset, set = function (id, v) {
+                var el = document.getElementById(id); if (el) { el.textContent = v; }
+            };
+            set('pd-sel', 'PORT 1/' + d.port + ' SELECTED');
+            set('pd-port', 'Eth1/' + d.port);
+            set('pd-speed', d.speed); set('pd-vlan', d.vlan);
+            set('pd-nbr', d.nbr); set('pd-via', d.via); set('pd-chg', d.chg);
+            // move the marker on the captured frame to the matching port column
+            var mark = document.querySelector('#port-mark rect');
+            if (mark) { mark.setAttribute('x', (14 + Math.floor((d.port - 1) / 2) * 5.6).toFixed(2)); }
+        }
+        root.querySelectorAll('.pmap-p.live').forEach(function (g) {
+            g.addEventListener('click', function () { pickPort(g); });
+        });
+
+        prev.addEventListener('click', function () { show(at - 1); });
+        next.addEventListener('click', function () { show(at + 1); });
+        dots.forEach(function (d) {
+            d.addEventListener('click', function () { show(parseInt(d.dataset.goto, 10)); });
+        });
+        root.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowLeft')  { show(at - 1); }
+            if (e.key === 'ArrowRight') { show(at + 1); }
+        });
+        show(0);
+    })();
+</script>
+</body></html>
