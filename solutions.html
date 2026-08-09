@@ -298,6 +298,16 @@
             figure img { transition: none; }
             .btn { transition: none; }
         }
+
+        /* hero sheet stamp — the drawing title block, carried into every page hero */
+        .hero-stamp { border-top: 1px solid rgba(255,255,255,.16); }
+        .hero-stamp > div { display: flex; align-items: baseline; justify-content: space-between;
+            gap: 16px; padding: 10px 0; }
+        .hero-stamp dt { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 9.5px;
+            letter-spacing: .16em; text-transform: uppercase; color: rgba(196,214,244,.55); white-space: nowrap; }
+        .hero-stamp dd { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11.5px;
+            color: #eaf1ff; text-align: right; letter-spacing: .02em; }
+        .hero-stamp dd .stamp-live { color: var(--accent); }
         img { -webkit-user-drag: none; }
 
         /* Guided tour */
@@ -485,7 +495,7 @@
 <a class="btn btn-ghost" href="#workflow">See the workflow</a>
 </div>
 </div>
-<p class="md:col-span-3 md:col-start-10 md:row-start-1 text-[13.5px] leading-relaxed text-shell-text/75 self-end mt-10 md:mt-0 md:pb-2">Built on patent-pending innovations for automated network cable mapping.</p>
+<dl class="hero-stamp md:col-span-3 md:col-start-10 md:row-start-1 self-start mt-10 md:mt-0 md:pt-2"><div><dt>Doc</dt><dd>RT-SOL-003</dd></div><div><dt>Subject</dt><dd>Capture → verified record</dd></div><div><dt>Issued</dt><dd>2026-08-07</dd></div><div><dt>Rev</dt><dd>C</dd></div></dl>
 </div>
 </div>
 </section>
