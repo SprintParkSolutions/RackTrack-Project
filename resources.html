@@ -193,6 +193,80 @@
         details > summary::-webkit-details-marker { display: none; }
         details[open] .chev { transform: rotate(180deg); }
         .chev { transition: transform .2s ease; }
+
+        /* primary nav dropdowns */
+        .rt-nav-item { position: relative; }
+        .rt-dd { position: absolute; top: 100%; left: -14px; min-width: 268px; padding: 8px;
+            background: #08183a; border: 1px solid #1b2942; box-shadow: 0 18px 34px -12px rgba(0,0,0,.55);
+            opacity: 0; visibility: hidden; transform: translateY(-4px);
+            transition: opacity .16s ease, transform .16s ease, visibility .16s; z-index: 60; }
+        .rt-nav-item:hover .rt-dd, .rt-nav-item:focus-within .rt-dd { opacity: 1; visibility: visible; transform: none; }
+        .rt-dd::before { content: ''; position: absolute; top: -10px; left: 0; right: 0; height: 10px; }
+        .rt-dd-item { display: block; padding: 8px 12px; font-size: 13px; color: #b9c9e2;
+            border-radius: 2px; transition: background-color .12s ease, color .12s ease; }
+        .rt-dd-item:hover { background: rgba(138,180,255,.10); color: #fff; }
+        @media (max-width: 1023px) { .rt-dd { display: none; } }
+
+        /* ── craft layer ───────────────────────────────────────────────── */
+
+        /* 1 · nav: one ink bar that travels between items instead of six static borders */
+        .nav-rail { position: relative; }
+        .nav-ink { position: absolute; bottom: -1px; height: 1.5px; background: var(--accent);
+            width: 0; left: 0; opacity: 0; pointer-events: none;
+            transition: transform .34s cubic-bezier(.22,1,.28,1), width .34s cubic-bezier(.22,1,.28,1), opacity .2s ease; }
+        .nav-rail a { border-bottom-color: transparent !important; }
+
+        /* 2 · links draw their underline in, they don't just switch it on */
+        .link-arrow, .prose-rt a, .rs-title {
+            background-image: linear-gradient(currentColor, currentColor);
+            background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat;
+            transition: background-size .32s cubic-bezier(.22,1,.28,1), color .16s ease;
+            text-decoration: none !important;
+        }
+        .link-arrow:hover, .prose-rt a:hover, .rs-row:hover .rs-title { background-size: 100% 1px; }
+
+        /* 3 · buttons acknowledge the press */
+        .btn { transform: translateZ(0); transition: background-color .15s ease, border-color .15s ease,
+            color .15s ease, transform .09s ease; }
+        .btn:active { transform: translateY(1px); }
+
+        /* 4 · one focus ring, everywhere, keyboard only */
+        :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 1px; }
+        .shell-band :focus-visible, .app-bar :focus-visible { outline-color: var(--accent); }
+
+        /* 5 · section marks — the drawing set's registration ticks, carried into the page */
+        .sec-mark { position: absolute; left: 0; top: 0; width: 9px; height: 9px;
+            border-left: 1px solid var(--hair-2); border-top: 1px solid var(--hair-2); opacity: .9; }
+        .shell-band .sec-mark { border-color: #2b4270; }
+        .sec-idx { position: absolute; left: 0; top: 18px; font-family: 'Geist Mono', ui-monospace, monospace;
+            font-size: 9.5px; letter-spacing: .14em; color: var(--muted); writing-mode: vertical-rl; }
+        .shell-band .sec-idx { color: #5f77a6; }
+        @media (max-width: 1339px) { .sec-mark, .sec-idx { display: none; } }
+
+        /* 6 · reveals: text rises, figures wipe — different gestures for different content */
+        [data-reveal] { opacity: 0; transform: translateY(10px);
+            transition: opacity .62s cubic-bezier(.22,1,.28,1), transform .62s cubic-bezier(.22,1,.28,1); }
+        [data-reveal].is-in { opacity: 1; transform: none; }
+        [data-reveal-img] { opacity: 0; clip-path: inset(0 0 12% 0);
+            transition: opacity .72s cubic-bezier(.22,1,.28,1), clip-path .86s cubic-bezier(.22,1,.28,1); }
+        [data-reveal-img].is-in { opacity: 1; clip-path: inset(0 0 0 0); }
+        [data-reveal] [data-reveal] { opacity: 1; transform: none; }
+
+        /* 7 · data rows respond, quietly */
+        .ev-table tbody tr { transition: background-color .14s ease; }
+        .ev-table tbody tr:hover { background-color: #f7f9fe; }
+
+        /* 8 · figures lift a touch when you point at them */
+        figure img { transition: transform .5s cubic-bezier(.22,1,.28,1); }
+        figure:hover > div > img { transform: scale(1.012); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .nav-ink { display: none; }
+            [data-reveal], [data-reveal-img] { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none; }
+            .link-arrow, .prose-rt a, .rs-title { transition: none; }
+            figure img { transition: none; }
+            .btn { transition: none; }
+        }
         img { -webkit-user-drag: none; }
 
         /* Guided tour */
@@ -335,14 +409,14 @@
 <!-- TopNavBar -->
 <nav class="fixed top-0 w-full z-50 bg-shell border-b border-shell-line">
 <div class="flex justify-between items-center w-full px-margin h-[60px] max-w-container-max-width mx-auto">
-<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="code.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="logo.jpg"/>RackTrack</a>
-<div class="hidden lg:flex gap-6 xl:gap-7 items-center">
+<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="code.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="assets/logo.jpg"/>RackTrack</a>
+<div class="hidden lg:flex gap-6 xl:gap-7 items-center nav-rail">
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="code.html">Home</a>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="why-racktrack.html">Why RackTrack</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="solutions.html">Solutions</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a>
+<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="solutions.html">Solutions</a><span class="rt-dd"><a class="rt-dd-item" href="solutions.html#principles">Principles</a><a class="rt-dd-item" href="solutions.html#rack-3d">3D topology</a><a class="rt-dd-item" href="solutions.html#workflow">Six intelligence surfaces</a><a class="rt-dd-item" href="why-racktrack.html#matrix">How we compare</a></span></span>
+<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="trust-security.html">Trust &amp; Security</a>
-<a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="resources.html">Resources</a>
+<span class="rt-nav-item"><a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="resources.html" data-current="">Resources</a><span class="rt-dd"><a class="rt-dd-item" href="resources.html">All articles</a><a class="rt-dd-item" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every CMDB is 40% wrong</a><a class="rt-dd-item" href="article-what-network-verified-actually-means.html">What “network-verified” means</a><a class="rt-dd-item" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Preparing for SOC 2</a><a class="rt-dd-item" href="article-free-port-discovery-and-rack-capacity-planning.html">Free port discovery</a></span></span>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="about-us.html">About Us</a>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="contact-us.html">Contact Us</a>
 </div>
@@ -404,25 +478,9 @@
 </figure>
 <div class="lg:col-span-6 lg:col-start-7">
 <p class="mono text-[11px] tracking-[0.1em] uppercase text-outline">Featured · Operations</p>
-<h3 class="h2 !text-[24px] md:!text-[30px] mt-4">Why every enterprise CMDB is 40% wrong — and the architecture that closes the gap</h3>
+<h3 class="h2 !text-[24px] md:!text-[30px] mt-4"><a class="hover:text-primary transition-colors" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every enterprise CMDB is 40% wrong — and the architecture that closes the gap</a></h3>
 <p class="lede mt-5">When the CMDB drifts from physical reality, every downstream decision built on it becomes less reliable — and the cost compounds across every operational workflow.</p>
-<details class="mt-8 border-t border-outline-variant pt-5">
-<summary class="flex items-center justify-between gap-4"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[20px]">expand_more</span></summary>
-<div class="pt-8 flex flex-col gap-8">
-<p class="text-[15px] leading-relaxed">CMDB drift is not just a documentation problem. It quietly degrades planning, troubleshooting, security reviews, and investment decisions across the infrastructure team. This article explains why physical verification matters when the system of record no longer matches what is really installed in the rack.</p>
-<div class="border-t border-outline-variant pt-5">
-<p class="eyebrow">Key takeaways</p>
-<ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5">
-<li>Configuration systems decay faster than most teams expect.</li>
-<li>Operational risk compounds when asset records are assumed to be correct.</li>
-<li>Visual verification gives teams a defensible way to close the gap.</li>
-</ul>
-</div>
-<div><h4 class="h4">Why drift happens — Change moves faster than documentation.</h4><p class="text-[15px] leading-relaxed mt-2.5">Rack environments are dynamic. Hardware gets replaced, labels change, uplinks move, and temporary fixes often become permanent. In many teams, those changes are documented later, if they are documented at all. The result is a CMDB that still looks complete on paper while slowly diverging from what engineers would find if they walked the room today.</p></div>
-<div><h4 class="h4">Why it matters — Bad inventory creates expensive decisions.</h4><p class="text-[15px] leading-relaxed mt-2.5">Capacity planning, incident response, refresh forecasting, compliance reviews, and vulnerability scoping all depend on accurate infrastructure records. Once the source of truth drifts, every downstream workflow inherits uncertainty. That uncertainty turns into wasted time, avoidable hardware purchases, longer outages, and difficult audit conversations.</p></div>
-<div><h4 class="h4">What good teams do differently — They verify the rack, not just the record.</h4><p class="text-[15px] leading-relaxed mt-2.5">High-trust infrastructure programs treat physical verification as part of operational hygiene. They compare what is documented against what is visible in the rack and use that evidence to reconcile the system of record. This approach turns the CMDB from a best-effort spreadsheet into something teams can rely on under pressure.</p></div>
-</div>
-</details>
+<a class="link-arrow mt-7" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Read article →</a>
 </div>
 </article>
 </div>
@@ -456,145 +514,72 @@
 <article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="infrastructure">
 <p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Infrastructure</p>
 <div class="md:col-span-10 md:col-start-3">
-<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">The hidden cost of unreconciled infrastructure: A framework for quantifying topology debt</h3>
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-the-hidden-cost-of-unreconciled-infrastructure-a-framework-f.html">The hidden cost of unreconciled infrastructure: A framework for quantifying topology debt</a></h3>
 <p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Manual audits are slow, expensive, and often out of date before the work is complete — creating topology debt that spreads across teams.</p>
-<details class="mt-6">
-<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
-<div class="pt-7 flex flex-col gap-7">
-<p class="text-[15px] leading-relaxed measure">Manual rack audits feel safe because they are familiar, but they break down quickly once teams operate across many rows, rooms, and sites. This piece outlines the common failure modes that make spreadsheet-first rack validation hard to trust at scale.</p>
-<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Manual audits introduce delay before accuracy is achieved.</li><li>Human transcription creates inconsistent records and missed exceptions.</li><li>Teams need repeatable capture, not one-time cleanup efforts.</li></ul></div>
-<div><h4 class="h4">The hidden problem — Manual audits are snapshots with a long lag.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">By the time a team completes a manual audit, reviews notes, fixes labels, and updates the inventory system, the environment has usually changed again. That means the record is already aging before it is even approved as complete.</p></div>
-<div><h4 class="h4">Where they fail — The weak point is consistency.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Different engineers capture different levels of detail. Some log serial numbers. Some stop at device class. Some note cables. Others focus only on occupied rack units. This inconsistency makes cross-site comparison difficult and turns every audit cycle into a fresh data-cleaning project.</p></div>
-<div><h4 class="h4">A better pattern — Standardized evidence beats handwritten interpretation.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">A modern audit workflow starts from structured capture and repeatable evidence. Teams should be able to inspect the same rack later and arrive at the same core result. That is how inventory validation becomes scalable instead of heroic.</p></div>
-</div>
-</details>
+<a class="link-arrow mt-5" href="article-the-hidden-cost-of-unreconciled-infrastructure-a-framework-f.html">Read article →</a>
 </div>
 </article>
 
 <article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="strategy">
 <p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Strategy</p>
 <div class="md:col-span-10 md:col-start-3">
-<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">From audit to autonomy: How continuous reconciliation reshapes data center operations</h3>
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-from-audit-to-autonomy-how-continuous-reconciliation-reshape.html">From audit to autonomy: How continuous reconciliation reshapes data center operations</a></h3>
 <p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Defensible infrastructure inventory starts with traceable evidence, not static records or assumptions.</p>
-<details class="mt-6">
-<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
-<div class="pt-7 flex flex-col gap-7">
-<p class="text-[15px] leading-relaxed measure">Evidence-grade inventory means every important infrastructure record can be traced back to something verifiable, not just something entered into a form. The strongest inventory programs do not stop at asset lists. They preserve the proof behind the list.</p>
-<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Trust improves when records are tied to visible evidence.</li><li>Audit readiness depends on traceability, not just completeness.</li><li>Evidence-first inventory supports both operations and governance.</li></ul></div>
-<div><h4 class="h4">What it means — Evidence-grade is inventory you can defend.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">An evidence-grade record is not just a row in a database. It is a row that can be tied back to visual proof, capture context, and a clear verification step. That makes it useful in executive review, incident analysis, and external audit conversations alike.</p></div>
-<div><h4 class="h4">Static records age, evidence holds up.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Most infrastructure systems assume records stay true until someone updates them. Evidence-grade workflows reverse that assumption. They ask teams to prove what is there when it matters most. This makes the inventory base more reliable for planning, risk review, and cross-functional decision making.</p></div>
-<div><h4 class="h4">What changes — Teams move from opinion to proof.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">With evidence attached to physical inventory, reconciliation becomes simpler. Disagreements can be resolved by checking the source, not by debating who last edited a record. That shift reduces friction across infrastructure, security, and compliance teams.</p></div>
-</div>
-</details>
+<a class="link-arrow mt-5" href="article-from-audit-to-autonomy-how-continuous-reconciliation-reshape.html">Read article →</a>
 </div>
 </article>
 
 <article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="security">
 <p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Security</p>
 <div class="md:col-span-10 md:col-start-3">
-<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">Physical Layer: The Missing Link in Infrastructure Security</h3>
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-physical-layer-the-missing-link-in-infrastructure-security.html">Physical Layer: The Missing Link in Infrastructure Security</a></h3>
 <p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Network tools see what is active on the network, not what is physically in the rack. That gap is where risk accumulates.</p>
-<details class="mt-6">
-<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
-<div class="pt-7 flex flex-col gap-7">
-<p class="text-[15px] leading-relaxed measure">Security programs often assume inventory starts from the network, but many infrastructure risks begin before a device is properly classified or monitored there. This article looks at the blind spots created when security teams cannot reliably connect physical presence to logical visibility.</p>
-<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Network visibility does not equal physical completeness.</li><li>Untracked physical devices create real security exposure.</li><li>Security posture improves when rack-level truth is part of inventory.</li></ul></div>
-<div><h4 class="h4">The security gap — If it is not in inventory, it is hard to govern.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Switches, appliances, patch equipment, out-of-band systems, and legacy devices can all fall outside traditional endpoint-centered tooling. If a security team cannot confirm what is physically present, vulnerability prioritization starts on an incomplete foundation.</p></div>
-<div><h4 class="h4">Why teams miss it — Logical tools answer a different question.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Most security tooling is excellent at showing what is reachable, active, scanned, or authenticated. It is not designed to prove what is physically installed in each rack location. That distinction matters whenever ownership, firmware posture, or unauthorized hardware is in question.</p></div>
-<div><h4 class="h4">What improves — Physical awareness strengthens security operations.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">When security teams can reconcile physical presence with network state, they gain a cleaner inventory baseline for remediation programs, exception handling, and audit preparation. The outcome is not just more data. It is better scoping.</p></div>
-</div>
-</details>
+<a class="link-arrow mt-5" href="article-physical-layer-the-missing-link-in-infrastructure-security.html">Read article →</a>
 </div>
 </article>
 
 <article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="compliance">
 <p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Compliance</p>
 <div class="md:col-span-10 md:col-start-3">
-<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">How Infrastructure Teams Prepare for SOC 2 Audits</h3>
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">How Infrastructure Teams Prepare for SOC 2 Audits</a></h3>
 <p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">SOC 2 Type II requires continuous evidence of asset control. Here is how teams can generate it systematically.</p>
-<details class="mt-6">
-<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
-<div class="pt-7 flex flex-col gap-7">
-<p class="text-[15px] leading-relaxed measure">SOC 2 readiness is difficult when teams collect proof manually at the end of the cycle instead of building evidence throughout the year. Infrastructure organizations can reduce audit stress by treating physical asset verification as a recurring control activity.</p>
-<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Auditors care about control evidence, not just policy statements.</li><li>Continuous verification reduces the scramble before review.</li><li>Physical inventory evidence supports broader asset-control claims.</li></ul></div>
-<div><h4 class="h4">What auditors ask — Control claims need supporting evidence.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">SOC 2 does not reward confidence alone. Teams need to show how they know where assets are, how access is controlled, and how exceptions are identified and handled. That becomes difficult when physical infrastructure records are fragmented or stale.</p></div>
-<div><h4 class="h4">What slows teams down — Preparation becomes a project instead of a process.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Many teams treat audit readiness as a seasonal cleanup effort. They gather screenshots, spreadsheets, emails, and exported lists shortly before the auditor arrives. This creates rushed validation work and leaves little confidence that the evidence reflects normal operations.</p></div>
-<div><h4 class="h4">What works better — Build a repeatable evidence trail.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">The strongest teams produce audit support from day-to-day operating processes. They verify assets regularly, preserve proof, and make exceptions visible early. That approach shortens the audit cycle and improves control credibility.</p></div>
-</div>
-</details>
+<a class="link-arrow mt-5" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Read article →</a>
 </div>
 </article>
 
 <article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="operations">
 <p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Operations</p>
 <div class="md:col-span-10 md:col-start-3">
-<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">DCIM vs. Physical Reality: Why the Gap Matters</h3>
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-dcim-vs-physical-reality-why-the-gap-matters.html">DCIM vs. Physical Reality: Why the Gap Matters</a></h3>
 <p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">DCIM platforms model intent. Understanding the gap between model and reality helps teams solve the right problem.</p>
-<details class="mt-6">
-<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
-<div class="pt-7 flex flex-col gap-7">
-<p class="text-[15px] leading-relaxed measure">DCIM is valuable, but only when teams understand where the model ends and physical verification must begin. This article explains why the difference between planned infrastructure and installed infrastructure is operationally important.</p>
-<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>DCIM often reflects expected state, not confirmed state.</li><li>Reality gaps distort capacity, dependency, and risk analysis.</li><li>Verification should complement DCIM, not replace it.</li></ul></div>
-<div><h4 class="h4">The model — DCIM is strongest when it captures intent.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Planning systems help teams document expected layouts, power relationships, rack occupancy, and deployment standards. That structure is useful and necessary. The problem begins when teams assume the model is automatically true in the room.</p></div>
-<div><h4 class="h4">The gap — Physical environments drift from planned layouts.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Moves, additions, emergency swaps, patch changes, and label decay all create divergence. Over time, the planned state and the installed state are no longer the same thing. When teams ignore that difference, they troubleshoot and plan against fiction.</p></div>
-<div><h4 class="h4">The right approach — Use DCIM as structure and verification as proof.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">The most effective programs combine planning systems with physical validation. DCIM holds the operating model. Verification confirms whether the environment still matches it. That combination creates a stronger source of truth than either system alone.</p></div>
-</div>
-</details>
+<a class="link-arrow mt-5" href="article-dcim-vs-physical-reality-why-the-gap-matters.html">Read article →</a>
 </div>
 </article>
 
 <article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="finance">
 <p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Finance</p>
 <div class="md:col-span-10 md:col-start-3">
-<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">The Hidden Cost of Wrong Rack Inventory</h3>
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-the-hidden-cost-of-wrong-rack-inventory.html">The Hidden Cost of Wrong Rack Inventory</a></h3>
 <p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Misidentified hardware, premature refreshes, and wasted capacity often go unmeasured until they become costly.</p>
-<details class="mt-6">
-<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
-<div class="pt-7 flex flex-col gap-7">
-<p class="text-[15px] leading-relaxed measure">Inventory inaccuracy creates financial waste in quiet ways. Teams often feel the cost long before they measure it directly. Better rack visibility improves budget quality by reducing avoidable purchases, bad assumptions, and preventable rework.</p>
-<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Wrong inventory distorts investment decisions.</li><li>Overbuying often starts as an accuracy problem.</li><li>Verified rack data makes business cases easier to defend.</li></ul></div>
-<div><h4 class="h4">Where the cost hides — Waste usually looks like uncertainty.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">When teams cannot trust what is already installed, they buy defensively. They reserve extra hardware, overestimate risk, or accelerate refresh decisions before they are necessary. That caution may feel responsible, but it increases spend.</p></div>
-<div><h4 class="h4">Operational fallout — Bad inventory also burns labor.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Finance impact is not limited to equipment purchases. Engineers lose time validating rack state during planning, migrations, and incident response. That hidden labor cost compounds across every major infrastructure project.</p></div>
-<div><h4 class="h4">What changes with better visibility — Confidence improves the quality of spend.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">When teams can confirm what exists, what is available, and what has changed, budgets become more precise. Capacity conversations shift from assumption to evidence. That makes both finance and engineering teams more effective.</p></div>
-</div>
-</details>
+<a class="link-arrow mt-5" href="article-the-hidden-cost-of-wrong-rack-inventory.html">Read article →</a>
 </div>
 </article>
 
 <article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="infrastructure">
 <p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Infrastructure</p>
 <div class="md:col-span-10 md:col-start-3">
-<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">What "Network-Verified" Actually Means</h3>
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-what-network-verified-actually-means.html">What "Network-Verified" Actually Means</a></h3>
 <p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Reconciling physical presence with live network state is what makes infrastructure inventory trustworthy.</p>
-<details class="mt-6">
-<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
-<div class="pt-7 flex flex-col gap-7">
-<p class="text-[15px] leading-relaxed measure">Network-verified inventory is more than device discovery. It is the process of proving that the physical rack and the logical network perspective support the same story. This article breaks down why physical evidence and network telemetry are most useful when they are reconciled together.</p>
-<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Physical and logical views each answer different questions.</li><li>Trust improves when both views align.</li><li>Reconciliation turns discovery into usable infrastructure intelligence.</li></ul></div>
-<div><h4 class="h4">The phrase — Network-verified should mean reconciled, not assumed.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Many tools claim network verification when they discover active devices and collect telemetry. That is useful, but it does not confirm that the physical rack inventory is complete or correctly labeled. Verification is stronger when network data is matched against what is physically visible and installed.</p></div>
-<div><h4 class="h4">Why the distinction matters — Telemetry alone cannot resolve every ambiguity.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">A live network can tell you what is speaking. It cannot always tell you what is missing from the rack record, what was swapped without documentation, or how the physical layout has changed. That is why physical context still matters.</p></div>
-<div><h4 class="h4">What good looks like — One inventory story from two evidence sources.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">When physical capture and network discovery agree, teams can trust the output more deeply. When they disagree, the gap becomes a clear action item instead of a hidden risk. That is the real value of network-verified infrastructure intelligence.</p></div>
-</div>
-</details>
+<a class="link-arrow mt-5" href="article-what-network-verified-actually-means.html">Read article →</a>
 </div>
 </article>
 
 <article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="infrastructure">
 <p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Infrastructure</p>
 <div class="md:col-span-10 md:col-start-3">
-<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]">Free Port Discovery and Rack Capacity Planning</h3>
+<h3 class="h2 !text-[21px] md:!text-[24px] max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-free-port-discovery-and-rack-capacity-planning.html">Free Port Discovery and Rack Capacity Planning</a></h3>
 <p class="text-[15.5px] leading-relaxed mt-3 max-w-[78ch]">Teams plan capacity better when they can see which switch ports are truly available instead of relying on outdated assumptions.</p>
-<details class="mt-6">
-<summary class="flex items-center gap-2"><span class="link-arrow">Read article</span><span class="material-symbols-outlined chev text-outline !text-[18px]">expand_more</span></summary>
-<div class="pt-7 flex flex-col gap-7">
-<p class="text-[15px] leading-relaxed measure">Free port discovery sounds simple, but it becomes difficult when rack documentation, switch usage, and physical cabling no longer tell the same story. Good capacity planning starts by resolving that gap. This article explains why visually verified port availability helps infrastructure teams plan growth, reduce wasted time, and avoid avoidable deployment delays.</p>
-<div class="border-t border-outline-variant pt-5"><p class="eyebrow">Key takeaways</p><ul class="text-[15px] leading-relaxed mt-3 flex flex-col gap-1.5 measure"><li>Available switch capacity is often overstated or understated in static records.</li><li>Physical port visibility helps teams plan adds, moves, and expansions faster.</li><li>Capacity conversations improve when port availability is verified, not guessed.</li></ul></div>
-<div><h4 class="h4">The planning problem — Port availability is rarely as clear as it looks in the spreadsheet.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Many teams assume they know how much switch capacity is available because a diagram, spreadsheet, or DCIM record says a set of ports is still open. In reality, field changes, patch updates, temporary links, and incomplete documentation can make those records unreliable. A port that looks available in the system may already be in use, while a port that appears occupied may no longer serve a production workload.</p></div>
-<div><h4 class="h4">Capacity planning depends on the physical truth of the rack.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">Free port discovery affects more than cable work. It impacts deployment speed, expansion planning, migration readiness, and refresh timelines. When teams cannot confidently identify spare switch capacity, every new project starts with extra validation effort. That slows down implementation and creates avoidable uncertainty during change windows.</p></div>
-<div><h4 class="h4">What strong teams do — They verify physical port state before they promise capacity.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">The most effective infrastructure teams compare logical switch data with visible rack conditions. They confirm which ports are patched, which are unused, and whether cabling matches the expected topology before committing new capacity to a project. This approach reduces surprises and turns port planning into a faster, more defensible workflow.</p></div>
-<div><h4 class="h4">Operational impact — Accurate port visibility saves time across every rack change.</h4><p class="text-[15px] leading-relaxed mt-2.5 measure">When port availability is clear, engineers spend less time tracing cables, second-guessing diagrams, or reopening change plans. New installs move faster because the team starts from a verified view of the rack instead of a debated one. That creates smoother provisioning, cleaner rack layouts, and more reliable infrastructure planning over time.</p></div>
-</div>
-</details>
+<a class="link-arrow mt-5" href="article-free-port-discovery-and-rack-capacity-planning.html">Read article →</a>
 </div>
 </article>
 
@@ -652,7 +637,7 @@
 <div class="max-w-container-max-width mx-auto px-margin">
 <div class="grid grid-cols-2 md:grid-cols-12 gap-x-gutter gap-y-10">
 <div class="col-span-2 md:col-span-4 flex flex-col gap-3">
-<span class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="logo.jpg"/>RackTrack</span>
+<span class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="assets/logo.jpg"/>RackTrack</span>
 <p class="text-[13.5px] leading-relaxed max-w-[30ch]">Physical Infrastructure Intelligence for Data Centers.</p>
 </div>
 <nav class="md:col-span-2 md:col-start-6 flex flex-col gap-2.5">
@@ -800,5 +785,51 @@
         });
         show(0);
     })();
+</script>
+
+<script>
+(function () {
+    var root = document.documentElement;
+    root.classList.add('js');                       // gate for motion-dependent styles
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* nav ink — one bar that travels, settling on the current page */
+    var rail = document.querySelector('.nav-rail');
+    if (rail && !reduce) {
+        var ink = document.createElement('span');
+        ink.className = 'nav-ink';
+        rail.appendChild(ink);
+        var links = [].slice.call(rail.querySelectorAll('a[href$=".html"]'));
+        var current = rail.querySelector('a[data-current]') || links[0];
+        function moveTo(el, show) {
+            if (!el) { return; }
+            ink.style.width = el.offsetWidth + 'px';
+            ink.style.transform = 'translateX(' + el.offsetLeft + 'px)';
+            ink.style.opacity = show ? '1' : '0';
+        }
+        function settle() { moveTo(current, !!rail.querySelector('a[data-current]')); }
+        links.forEach(function (a) {
+            a.addEventListener('mouseenter', function () { moveTo(a, true); });
+            a.addEventListener('focus', function () { moveTo(a, true); });
+        });
+        rail.addEventListener('mouseleave', settle);
+        window.addEventListener('resize', settle);
+        requestAnimationFrame(settle);
+    }
+
+    /* section marks — registration ticks + a margin index, as on the sheets */
+    var sections = [].slice.call(document.querySelectorAll('main > section'));
+    var n = 0;
+    sections.forEach(function (sec) {
+        if (!sec.querySelector('h1, h2')) { return; }
+        n += 1;
+        if (getComputedStyle(sec).position === 'static') { sec.style.position = 'relative'; }
+        var mark = document.createElement('span'); mark.className = 'sec-mark'; mark.setAttribute('aria-hidden', 'true');
+        var idx = document.createElement('span'); idx.className = 'sec-idx'; idx.setAttribute('aria-hidden', 'true');
+        idx.textContent = (n < 10 ? '0' : '') + n;
+        sec.appendChild(mark); sec.appendChild(idx);
+    });
+})();
 </script>
 </body></html>

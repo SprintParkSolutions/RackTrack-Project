@@ -3,8 +3,8 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Contact RackTrack | Request Platform Brief</title>
-<meta content="Contact RackTrack to request a platform brief, scope a deployment, and explore continuous reconciliation across your infrastructure." name="description"/>
+<title>Network Architects &amp;amp; Engineers | RackTrack</title>
+<meta content="Port-level topology that matches the cables you can actually touch. RackTrack helps network teams connect digital network design with physical rack reality." name="description"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -193,6 +193,117 @@
         details > summary::-webkit-details-marker { display: none; }
         details[open] .chev { transform: rotate(180deg); }
         .chev { transition: transform .2s ease; }
+
+        /* product evidence — real detection output */
+        .ev { border: 1px solid var(--hair); background: #fff; }
+        .ev-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+            gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--hair); background: #f7f8fb; }
+        .ev-title { font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
+        .ev-sub { font-size: 10.5px; letter-spacing: .06em; color: var(--muted); }
+        .ev-table { width: 100%; border-collapse: collapse; font-family: 'Geist Mono', ui-monospace, monospace; }
+        .ev-table td { padding: 8px 14px; font-size: 11.5px; border-bottom: 1px solid #eef0f5; vertical-align: top; }
+        .ev-table tr:last-child td { border-bottom: 0; }
+        .ev-u { width: 62px; color: var(--muted); white-space: nowrap; }
+        .ev-dev { color: var(--ink); }
+        .ev-note { color: var(--muted); text-align: right; white-space: nowrap; }
+        .ev-conf { width: 46px; text-align: right; color: var(--muted); }
+        .ev-ok .ev-note { color: #1a7f4f; }
+        .ev-warn { background: #fffaf0; }
+        .ev-warn .ev-note { color: #a86a00; }
+        .ev-miss { background: #fff6f6; }
+        .ev-miss .ev-note, .ev-miss .ev-dev { color: #a4232b; }
+        .ev-free .ev-dev, .ev-free .ev-note { color: #9aa1ae; }
+        .ev-foot { padding: 10px 14px; border-top: 1px solid var(--hair); font-size: 10.5px;
+            letter-spacing: .05em; color: var(--muted); background: #fbfcfe; }
+
+        /* technical data stays legible: rows scroll inside the panel, page never does */
+        .ev-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .ev-table tbody { display: table; width: 100%; min-width: 430px; }
+        @media (max-width: 480px) {
+            .ev-head { padding: 10px 12px; }
+            .ev-table td { padding: 7px 12px; font-size: 11px; }
+            .ev-foot { padding: 9px 12px; font-size: 10px; }
+        }
+
+        .prose-rt h4 { font-size: 17px; margin-top: 34px; letter-spacing: -.015em; }
+        .prose-rt p { font-size: 16px; line-height: 1.65; margin-top: 14px; max-width: 68ch; }
+        .prose-rt ul { margin-top: 14px; }
+        .prose-rt li { font-size: 16px; line-height: 1.6; margin-top: 7px; }
+        .prose-rt .eyebrow { margin-top: 30px; display: block; }
+
+        /* primary nav dropdowns */
+        .rt-nav-item { position: relative; }
+        .rt-dd { position: absolute; top: 100%; left: -14px; min-width: 268px; padding: 8px;
+            background: #08183a; border: 1px solid #1b2942; box-shadow: 0 18px 34px -12px rgba(0,0,0,.55);
+            opacity: 0; visibility: hidden; transform: translateY(-4px);
+            transition: opacity .16s ease, transform .16s ease, visibility .16s; z-index: 60; }
+        .rt-nav-item:hover .rt-dd, .rt-nav-item:focus-within .rt-dd { opacity: 1; visibility: visible; transform: none; }
+        .rt-dd::before { content: ''; position: absolute; top: -10px; left: 0; right: 0; height: 10px; }
+        .rt-dd-item { display: block; padding: 8px 12px; font-size: 13px; color: #b9c9e2;
+            border-radius: 2px; transition: background-color .12s ease, color .12s ease; }
+        .rt-dd-item:hover { background: rgba(138,180,255,.10); color: #fff; }
+        @media (max-width: 1023px) { .rt-dd { display: none; } }
+
+        /* ── craft layer ───────────────────────────────────────────────── */
+
+        /* 1 · nav: one ink bar that travels between items instead of six static borders */
+        .nav-rail { position: relative; }
+        .nav-ink { position: absolute; bottom: -1px; height: 1.5px; background: var(--accent);
+            width: 0; left: 0; opacity: 0; pointer-events: none;
+            transition: transform .34s cubic-bezier(.22,1,.28,1), width .34s cubic-bezier(.22,1,.28,1), opacity .2s ease; }
+        .nav-rail a { border-bottom-color: transparent !important; }
+
+        /* 2 · links draw their underline in, they don't just switch it on */
+        .link-arrow, .prose-rt a, .rs-title {
+            background-image: linear-gradient(currentColor, currentColor);
+            background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat;
+            transition: background-size .32s cubic-bezier(.22,1,.28,1), color .16s ease;
+            text-decoration: none !important;
+        }
+        .link-arrow:hover, .prose-rt a:hover, .rs-row:hover .rs-title { background-size: 100% 1px; }
+
+        /* 3 · buttons acknowledge the press */
+        .btn { transform: translateZ(0); transition: background-color .15s ease, border-color .15s ease,
+            color .15s ease, transform .09s ease; }
+        .btn:active { transform: translateY(1px); }
+
+        /* 4 · one focus ring, everywhere, keyboard only */
+        :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 1px; }
+        .shell-band :focus-visible, .app-bar :focus-visible { outline-color: var(--accent); }
+
+        /* 5 · section marks — the drawing set's registration ticks, carried into the page */
+        .sec-mark { position: absolute; left: 0; top: 0; width: 9px; height: 9px;
+            border-left: 1px solid var(--hair-2); border-top: 1px solid var(--hair-2); opacity: .9; }
+        .shell-band .sec-mark { border-color: #2b4270; }
+        .sec-idx { position: absolute; left: 0; top: 18px; font-family: 'Geist Mono', ui-monospace, monospace;
+            font-size: 9.5px; letter-spacing: .14em; color: var(--muted); writing-mode: vertical-rl; }
+        .shell-band .sec-idx { color: #5f77a6; }
+        @media (max-width: 1339px) { .sec-mark, .sec-idx { display: none; } }
+
+        /* 6 · reveals: text rises, figures wipe — different gestures for different content */
+        [data-reveal] { opacity: 0; transform: translateY(10px);
+            transition: opacity .62s cubic-bezier(.22,1,.28,1), transform .62s cubic-bezier(.22,1,.28,1); }
+        [data-reveal].is-in { opacity: 1; transform: none; }
+        [data-reveal-img] { opacity: 0; clip-path: inset(0 0 12% 0);
+            transition: opacity .72s cubic-bezier(.22,1,.28,1), clip-path .86s cubic-bezier(.22,1,.28,1); }
+        [data-reveal-img].is-in { opacity: 1; clip-path: inset(0 0 0 0); }
+        [data-reveal] [data-reveal] { opacity: 1; transform: none; }
+
+        /* 7 · data rows respond, quietly */
+        .ev-table tbody tr { transition: background-color .14s ease; }
+        .ev-table tbody tr:hover { background-color: #f7f9fe; }
+
+        /* 8 · figures lift a touch when you point at them */
+        figure img { transition: transform .5s cubic-bezier(.22,1,.28,1); }
+        figure:hover > div > img { transform: scale(1.012); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .nav-ink { display: none; }
+            [data-reveal], [data-reveal-img] { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none; }
+            .link-arrow, .prose-rt a, .rs-title { transition: none; }
+            figure img { transition: none; }
+            .btn { transition: none; }
+        }
         img { -webkit-user-drag: none; }
 
         /* Guided tour */
@@ -335,16 +446,16 @@
 <!-- TopNavBar -->
 <nav class="fixed top-0 w-full z-50 bg-shell border-b border-shell-line">
 <div class="flex justify-between items-center w-full px-margin h-[60px] max-w-container-max-width mx-auto">
-<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="code.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="logo.jpg"/>RackTrack</a>
-<div class="hidden lg:flex gap-6 xl:gap-7 items-center">
+<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="code.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="assets/logo.jpg"/>RackTrack</a>
+<div class="hidden lg:flex gap-6 xl:gap-7 items-center nav-rail">
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="code.html">Home</a>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="why-racktrack.html">Why RackTrack</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="solutions.html">Solutions</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a>
+<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="solutions.html">Solutions</a><span class="rt-dd"><a class="rt-dd-item" href="solutions.html#principles">Principles</a><a class="rt-dd-item" href="solutions.html#rack-3d">3D topology</a><a class="rt-dd-item" href="solutions.html#workflow">Six intelligence surfaces</a><a class="rt-dd-item" href="why-racktrack.html#matrix">How we compare</a></span></span>
+<span class="rt-nav-item"><a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="trust-security.html">Trust &amp; Security</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="resources.html">Resources</a>
+<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="resources.html">Resources</a><span class="rt-dd"><a class="rt-dd-item" href="resources.html">All articles</a><a class="rt-dd-item" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every CMDB is 40% wrong</a><a class="rt-dd-item" href="article-what-network-verified-actually-means.html">What “network-verified” means</a><a class="rt-dd-item" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Preparing for SOC 2</a><a class="rt-dd-item" href="article-free-port-discovery-and-rack-capacity-planning.html">Free port discovery</a></span></span>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="about-us.html">About Us</a>
-<a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="contact-us.html">Contact Us</a>
+<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="contact-us.html">Contact Us</a>
 </div>
 <div class="flex items-center gap-4">
 <a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] !py-[7px] !px-[14px] !text-[13px]" href="contact-us.html">Get a demo</a>
@@ -355,244 +466,61 @@
 <a class="text-[15px] font-normal text-shell-text" href="code.html">Home</a>
 <a class="text-[15px] font-normal text-shell-text" href="why-racktrack.html">Why RackTrack</a>
 <a class="text-[15px] font-normal text-shell-text" href="solutions.html">Solutions</a>
-<a class="text-[15px] font-normal text-shell-text" href="use-cases.html">Use Cases</a>
+<a class="text-[15px] font-medium text-white" href="use-cases.html">Use Cases</a>
 <a class="text-[15px] font-normal text-shell-text" href="trust-security.html">Trust &amp; Security</a>
 <a class="text-[15px] font-normal text-shell-text" href="resources.html">Resources</a>
 <a class="text-[15px] font-normal text-shell-text" href="about-us.html">About Us</a>
-<a class="text-[15px] font-medium text-white" href="contact-us.html">Contact Us</a>
+<a class="text-[15px] font-normal text-shell-text" href="contact-us.html">Contact Us</a>
 <a class="btn bg-white text-shell mt-2 max-w-fit" href="contact-us.html">Get a demo</a>
 </div>
 </nav>
 
+
 <main class="pt-[60px]">
-<!-- Hero -->
 <section class="shell-band">
 <div class="max-w-container-max-width mx-auto px-margin pt-12 md:pt-[68px] pb-12 md:pb-[68px]">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<div class="md:col-span-6 md:row-start-1">
-<p class="eyebrow">Contact us</p>
-<h1 class="h1 mt-6">Engage the platform team.</h1>
-</div>
-<div class="md:col-span-5 md:col-start-8 md:row-start-1 flex flex-col gap-7 items-start self-end mt-10 md:mt-0">
-<p class="lede">Whether you're evaluating the platform, scoping a deployment, or designing a continuous reconciliation strategy across your fleet — our team is ready.</p>
-<a class="btn btn-primary" href="#brief-form">Request platform brief</a>
-</div>
-</div>
+<a class="mono text-[11px] tracking-[0.1em] uppercase text-accent hover:underline" href="use-cases.html">&#8592; All roles</a>
+<p class="eyebrow mt-7">USE CASE</p>
+<h1 class="h1 mt-5 max-w-[20ch]">Network Architects &amp; Engineers</h1>
+<p class="lede mt-7 max-w-[62ch]">Port-level topology that matches the cables you can actually touch. RackTrack helps network teams connect digital network design with physical rack reality.</p>
 </div>
 </section>
-
-<!-- Contact details -->
+<article class="py-14 md:py-20">
 <div class="max-w-container-max-width mx-auto px-margin">
-<dl data-reveal class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-gutter border-t border-outline-variant">
-<div class="py-7 lg:pr-8 border-b lg:border-b-0 border-outline-variant">
-<dt class="eyebrow">Office address</dt>
-<dd class="mt-3"><address class="not-italic text-[15.5px] leading-relaxed text-on-background">85 Felt Rd, Suite #604<br/>South Windsor, CT 06074</address></dd>
-</div>
-<div class="py-7 lg:px-8 lg:border-l border-b lg:border-b-0 border-outline-variant">
-<dt class="eyebrow">Email</dt>
-<dd class="mt-3"><a class="text-[15.5px] text-primary hover:underline underline-offset-4" href="mailto:info@racktrack.ai">info@racktrack.ai</a>
-<p class="text-[14px] leading-relaxed mt-2">Share audit goals, rollout questions, or support requests.</p></dd>
-</div>
-<div class="py-7 lg:px-8 lg:border-l border-b lg:border-b-0 border-outline-variant">
-<dt class="eyebrow">Phone</dt>
-<dd class="mt-3"><a class="text-[15.5px] text-primary hover:underline underline-offset-4" href="tel:+18608782448">+1 (860) 878 2448</a>
-<p class="text-[14px] leading-relaxed mt-2">Call our contact team for demos, support, and meeting schedules.</p></dd>
-</div>
-<div class="py-7 lg:pl-8 lg:border-l border-outline-variant">
-<dt class="eyebrow">Response time</dt>
-<dd class="mt-3"><p class="text-[15.5px] text-on-background">Within 1 business day</p>
-<p class="text-[14px] leading-relaxed mt-2">We respond quickly to demos, planning, and support conversations.</p></dd>
-</div>
-</dl>
-</div>
-
-<!-- Form -->
-<section class="border-t border-outline-variant mt-14 md:mt-[72px] py-14 md:py-20 bg-surface" id="brief-form">
-<div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-12">
-<div class="lg:col-span-4">
-<p class="eyebrow">Request platform brief</p>
-<h2 class="h2 mt-5 max-w-[16ch]">Tell us about your infrastructure.</h2>
-<p class="text-[15px] leading-relaxed mt-6">Tell us about your infrastructure footprint and the RackTrack team will scope a guided demo against your environment.</p>
-<p class="text-[14px] leading-relaxed text-outline border-t border-outline-variant pt-6 mt-8">A baseline assessment typically takes about twenty minutes for a single rack or row, and compares your existing records against observed physical and network state.</p>
-</div>
-<div class="lg:col-span-7 lg:col-start-6">
-<form class="flex flex-col gap-7" id="brief-request" novalidate="">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-7">
-<div class="flex flex-col gap-2">
-<label class="text-[13.5px] font-medium text-on-background" for="fullName">Full Name <span class="text-outline font-normal">(required)</span></label>
-<input aria-describedby="err-fullName" class="border border-outline-variant rounded-lg px-3.5 py-2.5 text-[15px] bg-background text-on-background placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition" id="fullName" name="fullName" placeholder="Enter your full name" type="text"/>
-<span class="text-[12.5px] text-error hidden" id="err-fullName"></span>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-[13.5px] font-medium text-on-background" for="email">Email Address <span class="text-outline font-normal">(required)</span></label>
-<input aria-describedby="err-email" class="border border-outline-variant rounded-lg px-3.5 py-2.5 text-[15px] bg-background text-on-background placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition" id="email" name="email" placeholder="Enter your email address" type="email"/>
-<span class="text-[12.5px] text-error hidden" id="err-email"></span>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter">
+<div class="lg:col-span-7 lg:col-start-2 prose-rt"><div class="pt-9 flex flex-col gap-9">
+<p class="lede text-on-background measure">Port-level topology that matches the cables you can actually touch. RackTrack helps network teams connect digital network design with physical rack reality.</p>
+<div><h4 class="h4">The challenge — Topology drifts away from the rack.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Every switch port, patch panel connection, uplink, firewall interface, router link, and cable path matters. A single undocumented cable change can create confusion during troubleshooting, audits, migrations, and outage response.</p><p class="text-[15px] leading-relaxed mt-3 measure">Diagrams are drawn once and updated later. Cable traces are documented during installation but forgotten during change windows. Switch telemetry may show port activity, but it does not always explain what the cable physically connects to. Over time, the network diagram and the rack reality stop matching. That gap creates risk.</p></div>
+<div><h4 class="h4">What RackTrack does — The rack becomes proof.</h4><p class="text-[15px] leading-relaxed mt-3 measure">Using a rack scan, RackTrack helps identify visible network devices, patch panels, ports, cables, labels, uplinks, and physical rack placement. This information can then be compared against expected topology, diagrams, CMDB records, and switch telemetry.</p><p class="text-[15px] leading-relaxed mt-3 measure">Instead of relying only on a diagram, teams get a verified physical layer view. Engineers move from assumption-based troubleshooting to evidence-based troubleshooting. Instead of asking, "Is the diagram correct?", teams can ask, "What does the rack show right now?"</p></div>
+<div><h4 class="h4">Example scenario — A cleaner core switch migration.</h4><p class="text-[15px] leading-relaxed mt-3 measure">A network engineering team is preparing for a core switch migration across several data center rows. The official diagram shows redundant uplinks from each top-of-rack switch to the aggregation layer, but the team suspects some field changes were never updated in the documentation.</p><p class="text-[15px] leading-relaxed mt-3 measure">With RackTrack, the site team scans the racks and the detected rack information is compared with the expected topology. The team finds mismatched uplinks before the migration window begins. The result: fewer surprises, cleaner execution, and stronger confidence in the migration plan.</p></div>
+<div><h4 class="h4">How RackTrack works — From scan to topology.</h4>
+<ol class="row-list border-t border-outline-variant mt-4">
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">01 Capture</span><span class="text-[14.5px] leading-relaxed">A technician records or photographs the rack using a mobile device.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">02 Detect</span><span class="text-[14.5px] leading-relaxed">Visible network devices, patch panels, ports, cables, and labels are identified.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">03 Compare</span><span class="text-[14.5px] leading-relaxed">Scanned data is compared against diagrams, CMDB, and switch telemetry.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">04 Validate</span><span class="text-[14.5px] leading-relaxed">Engineers review mismatches and flag unclear or risky changes.</span></li>
+<li class="py-4 grid grid-cols-[92px_1fr] gap-4"><span class="mono text-[11px] tracking-[0.08em] uppercase text-outline pt-0.5">05 Update</span><span class="text-[14.5px] leading-relaxed">Validated information supports updated documentation and cleaner records.</span></li>
+</ol></div>
+<div><h4 class="h4">Business impact</h4><p class="text-[15px] leading-relaxed mt-3 measure">RackTrack reduces the operational friction caused by unreliable network documentation. Engineers spend less time verifying physical connections and more time solving real problems. Leadership gains fewer outages, faster changes, and a network environment that can be trusted from diagram to rack.</p></div>
+<a class="link-arrow" href="contact-us.html">Request platform brief →</a>
+</div></div>
 </div>
 </div>
-<div class="flex flex-col gap-2">
-<label class="text-[13.5px] font-medium text-on-background" for="company">Company Name <span class="text-outline font-normal">(optional)</span></label>
-<input class="border border-outline-variant rounded-lg px-3.5 py-2.5 text-[15px] bg-background text-on-background placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition" id="company" name="company" placeholder="Enter your company name" type="text"/>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-[13.5px] font-medium text-on-background" for="mobile">Mobile Number <span class="text-outline font-normal">(required)</span></label>
-<div class="flex gap-3">
-<select class="border border-outline-variant rounded-lg px-3 py-2.5 text-[15px] bg-background text-on-background focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition w-[132px]" id="countryCode" name="countryCode">
-<option value="+1">US +1</option>
-<option value="+44">UK +44</option>
-<option value="+91">IN +91</option>
-<option value="+61">AU +61</option>
-<option value="+49">DE +49</option>
-</select>
-<input aria-describedby="err-mobile" class="flex-1 border border-outline-variant rounded-lg px-3.5 py-2.5 text-[15px] bg-background text-on-background placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition" id="mobile" inputmode="numeric" name="mobile" placeholder="Enter 10-digit number" type="tel"/>
-</div>
-<span class="text-[12.5px] text-error hidden" id="err-mobile"></span>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-[13.5px] font-medium text-on-background" for="requirement">Requirement <span class="text-outline font-normal">(optional)</span></label>
-<textarea class="border border-outline-variant rounded-lg px-3.5 py-2.5 text-[15px] bg-background text-on-background placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition" id="requirement" name="requirement" placeholder="Enter your requirement or notes" rows="4"></textarea>
-</div>
-<div class="flex flex-wrap items-center gap-5 border-t border-outline-variant pt-7">
-<button class="btn btn-primary disabled:opacity-60" id="submit-btn" type="submit">Request Platform Brief</button>
-<p class="text-[13px] text-outline max-w-[38ch]">By submitting, you agree that RackTrack may contact you about your request.</p>
-</div>
-</form>
-</div>
-</div>
-</div>
-</section>
-
-<!-- FAQ -->
-<section class="py-14 md:py-20" id="faq">
-<div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<div class="md:col-span-4">
-<p class="eyebrow">FAQ</p>
-<h2 class="h2 mt-5">Before you connect.</h2>
-</div>
-<div class="md:col-span-7 md:col-start-6 row-list border-t border-b border-outline-variant">
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Can RackTrack scan existing racks without downtime?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack uses a smartphone video sweep to capture rack state without agents, downtime, or disruption to production infrastructure.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">What kind of infrastructure can RackTrack identify?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack supports a broad and continuously expanding range of enterprise networking and data center infrastructure devices.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">How does RackTrack verify inventory accuracy?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack reconciles physical scan data against live infrastructure signals to maintain continuously verified inventory and topology records.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Does RackTrack replace our CMDB or DCIM?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">No. RackTrack acts as the physical infrastructure intelligence layer underneath existing CMDB, DCIM, and ITSM platforms — helping reconcile what systems report against what is physically present in the rack.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Is RackTrack useful for compliance and audit preparation?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack helps generate continuously updated inventory, topology, and infrastructure evidence that supports audit readiness and operational reviews.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Can RackTrack help during incidents and outages?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack helps teams quickly identify devices, ports, and cable relationships so responders spend less time validating rack state during critical incidents.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Does RackTrack support security and vulnerability workflows?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack provides device-level firmware and infrastructure posture visibility to help security teams identify operational and compliance risks faster.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">How long does a baseline assessment take?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Typically about twenty minutes for a single rack or row. The assessment compares your existing records against observed physical and network state.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Can we request a demo before committing?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. You can schedule a guided walkthrough against your own environment to see how RackTrack performs on real infrastructure.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Does RackTrack work with existing enterprise tools?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack is designed to integrate with existing infrastructure, inventory, compliance, and operational workflows.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Where can RackTrack be deployed?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack supports cloud-hosted, private cloud, on-premise, and air-gapped deployment models for regulated or restricted environments.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Who uses RackTrack?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack is built for infrastructure leaders, network engineering teams, security operations, compliance owners, incident responders, and data center operators.</p></details>
-</div>
-</div>
+</article>
+<section class="border-t border-outline-variant py-14 md:py-20 bg-surface">
+<div class="max-w-container-max-width mx-auto px-margin grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-7"><h2 class="h2 max-w-[18ch]">See it run against your own rack.</h2></div>
+<div class="md:col-span-4 md:col-start-9 flex md:justify-end md:pt-3">
+<a class="btn btn-primary max-w-fit" href="contact-us.html">Request platform brief</a></div>
 </div>
 </section>
 </main>
-
-<!-- Success modal -->
-<div aria-modal="true" class="hidden fixed inset-0 z-[60] items-center justify-center bg-inverse-surface/35 backdrop-blur-[2px] px-margin" id="success-modal" role="dialog">
-<div class="bg-background border border-outline-variant max-w-[480px] w-full p-9 flex flex-col gap-4">
-<p class="eyebrow">Confirmation</p>
-<h3 class="h2 !text-[24px]">Demo Request Submitted</h3>
-<p class="text-[15px] leading-relaxed">Your demo request has been submitted successfully.</p>
-<p class="text-[15px] leading-relaxed">We have received your request and our team will review it shortly before reaching out with the next steps.</p>
-<a class="btn btn-primary max-w-fit mt-3" href="code.html">Close and Go Home</a>
-</div>
-</div>
-<script>
-    (function () {
-        var form = document.getElementById('brief-request');
-        var btn = document.getElementById('submit-btn');
-        var modal = document.getElementById('success-modal');
-
-        function setError(id, message) {
-            var field = document.getElementById(id);
-            var slot = document.getElementById('err-' + id);
-            slot.textContent = message || '';
-            slot.classList.toggle('hidden', !message);
-            field.classList.toggle('border-error', !!message);
-            field.classList.toggle('border-outline-variant', !message);
-            return !message;
-        }
-
-        function validate() {
-            var name = form.fullName.value.trim();
-            var email = form.email.value.trim();
-            var mobile = form.mobile.value.trim();
-
-            var okName = setError('fullName',
-                !name ? 'Full name is required.'
-                    : !/^[A-Za-z][A-Za-z\s'.-]*$/.test(name) ? 'Name must contain only letters.'
-                    : '');
-            var okEmail = setError('email',
-                !email ? 'Email address is required.'
-                    : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) ? 'Enter a valid email address.'
-                    : '');
-            var okMobile = setError('mobile',
-                !mobile ? 'Mobile number is required.'
-                    : !/^\d{10}$/.test(mobile) ? 'Mobile number must be exactly 10 digits.'
-                    : '');
-
-            return okName && okEmail && okMobile;
-        }
-
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-            if (!validate()) { return; }
-
-            btn.disabled = true;
-            btn.textContent = 'Sending';
-
-            // Lead payload for the Salesforce Experience Cloud endpoint:
-            // POST /services/apexrest/racktrack/lead
-            var payload = {
-                fullName: form.fullName.value.trim(),
-                email: form.email.value.trim(),
-                company: form.company.value.trim(),
-                mobile: form.countryCode.value + form.mobile.value.trim(),
-                requirement: form.requirement.value.trim()
-            };
-
-            submitLead(payload).then(function () {
-                btn.textContent = 'Message Sent';
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                form.reset();
-            }).catch(function () {
-                btn.disabled = false;
-                btn.textContent = 'Try Again';
-            });
-        });
-
-        // Replace this stub with the live Salesforce call once the endpoint is wired up, e.g.
-        // return fetch('/services/apexrest/racktrack/lead', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(payload)
-        // }).then(function (r) { if (!r.ok) { throw new Error(r.status); } });
-        function submitLead(payload) {
-            return new Promise(function (resolve) {
-                console.log('Lead payload', payload);
-                setTimeout(resolve, 700);
-            });
-        }
-
-        modal.addEventListener('click', function (event) {
-            if (event.target === modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                btn.disabled = false;
-                btn.textContent = 'Request Platform Brief';
-            }
-        });
-    })();
-</script>
 <!-- Footer -->
 <footer class="bg-shell-deep border-t border-shell-line pt-12 md:pt-16 pb-7 text-shell-text">
 <div class="max-w-container-max-width mx-auto px-margin">
 <div class="grid grid-cols-2 md:grid-cols-12 gap-x-gutter gap-y-10">
 <div class="col-span-2 md:col-span-4 flex flex-col gap-3">
-<span class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="logo.jpg"/>RackTrack</span>
+<span class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="assets/logo.jpg"/>RackTrack</span>
 <p class="text-[13.5px] leading-relaxed max-w-[30ch]">Physical Infrastructure Intelligence for Data Centers.</p>
 </div>
 <nav class="md:col-span-2 md:col-start-6 flex flex-col gap-2.5">
@@ -740,5 +668,51 @@
         });
         show(0);
     })();
+</script>
+
+<script>
+(function () {
+    var root = document.documentElement;
+    root.classList.add('js');                       // gate for motion-dependent styles
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* nav ink — one bar that travels, settling on the current page */
+    var rail = document.querySelector('.nav-rail');
+    if (rail && !reduce) {
+        var ink = document.createElement('span');
+        ink.className = 'nav-ink';
+        rail.appendChild(ink);
+        var links = [].slice.call(rail.querySelectorAll('a[href$=".html"]'));
+        var current = rail.querySelector('a[data-current]') || links[0];
+        function moveTo(el, show) {
+            if (!el) { return; }
+            ink.style.width = el.offsetWidth + 'px';
+            ink.style.transform = 'translateX(' + el.offsetLeft + 'px)';
+            ink.style.opacity = show ? '1' : '0';
+        }
+        function settle() { moveTo(current, !!rail.querySelector('a[data-current]')); }
+        links.forEach(function (a) {
+            a.addEventListener('mouseenter', function () { moveTo(a, true); });
+            a.addEventListener('focus', function () { moveTo(a, true); });
+        });
+        rail.addEventListener('mouseleave', settle);
+        window.addEventListener('resize', settle);
+        requestAnimationFrame(settle);
+    }
+
+    /* section marks — registration ticks + a margin index, as on the sheets */
+    var sections = [].slice.call(document.querySelectorAll('main > section'));
+    var n = 0;
+    sections.forEach(function (sec) {
+        if (!sec.querySelector('h1, h2')) { return; }
+        n += 1;
+        if (getComputedStyle(sec).position === 'static') { sec.style.position = 'relative'; }
+        var mark = document.createElement('span'); mark.className = 'sec-mark'; mark.setAttribute('aria-hidden', 'true');
+        var idx = document.createElement('span'); idx.className = 'sec-idx'; idx.setAttribute('aria-hidden', 'true');
+        idx.textContent = (n < 10 ? '0' : '') + n;
+        sec.appendChild(mark); sec.appendChild(idx);
+    });
+})();
 </script>
 </body></html>

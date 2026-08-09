@@ -224,6 +224,80 @@
             .ev-table td { padding: 7px 12px; font-size: 11px; }
             .ev-foot { padding: 9px 12px; font-size: 10px; }
         }
+
+        /* primary nav dropdowns */
+        .rt-nav-item { position: relative; }
+        .rt-dd { position: absolute; top: 100%; left: -14px; min-width: 268px; padding: 8px;
+            background: #08183a; border: 1px solid #1b2942; box-shadow: 0 18px 34px -12px rgba(0,0,0,.55);
+            opacity: 0; visibility: hidden; transform: translateY(-4px);
+            transition: opacity .16s ease, transform .16s ease, visibility .16s; z-index: 60; }
+        .rt-nav-item:hover .rt-dd, .rt-nav-item:focus-within .rt-dd { opacity: 1; visibility: visible; transform: none; }
+        .rt-dd::before { content: ''; position: absolute; top: -10px; left: 0; right: 0; height: 10px; }
+        .rt-dd-item { display: block; padding: 8px 12px; font-size: 13px; color: #b9c9e2;
+            border-radius: 2px; transition: background-color .12s ease, color .12s ease; }
+        .rt-dd-item:hover { background: rgba(138,180,255,.10); color: #fff; }
+        @media (max-width: 1023px) { .rt-dd { display: none; } }
+
+        /* ── craft layer ───────────────────────────────────────────────── */
+
+        /* 1 · nav: one ink bar that travels between items instead of six static borders */
+        .nav-rail { position: relative; }
+        .nav-ink { position: absolute; bottom: -1px; height: 1.5px; background: var(--accent);
+            width: 0; left: 0; opacity: 0; pointer-events: none;
+            transition: transform .34s cubic-bezier(.22,1,.28,1), width .34s cubic-bezier(.22,1,.28,1), opacity .2s ease; }
+        .nav-rail a { border-bottom-color: transparent !important; }
+
+        /* 2 · links draw their underline in, they don't just switch it on */
+        .link-arrow, .prose-rt a, .rs-title {
+            background-image: linear-gradient(currentColor, currentColor);
+            background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat;
+            transition: background-size .32s cubic-bezier(.22,1,.28,1), color .16s ease;
+            text-decoration: none !important;
+        }
+        .link-arrow:hover, .prose-rt a:hover, .rs-row:hover .rs-title { background-size: 100% 1px; }
+
+        /* 3 · buttons acknowledge the press */
+        .btn { transform: translateZ(0); transition: background-color .15s ease, border-color .15s ease,
+            color .15s ease, transform .09s ease; }
+        .btn:active { transform: translateY(1px); }
+
+        /* 4 · one focus ring, everywhere, keyboard only */
+        :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 1px; }
+        .shell-band :focus-visible, .app-bar :focus-visible { outline-color: var(--accent); }
+
+        /* 5 · section marks — the drawing set's registration ticks, carried into the page */
+        .sec-mark { position: absolute; left: 0; top: 0; width: 9px; height: 9px;
+            border-left: 1px solid var(--hair-2); border-top: 1px solid var(--hair-2); opacity: .9; }
+        .shell-band .sec-mark { border-color: #2b4270; }
+        .sec-idx { position: absolute; left: 0; top: 18px; font-family: 'Geist Mono', ui-monospace, monospace;
+            font-size: 9.5px; letter-spacing: .14em; color: var(--muted); writing-mode: vertical-rl; }
+        .shell-band .sec-idx { color: #5f77a6; }
+        @media (max-width: 1339px) { .sec-mark, .sec-idx { display: none; } }
+
+        /* 6 · reveals: text rises, figures wipe — different gestures for different content */
+        [data-reveal] { opacity: 0; transform: translateY(10px);
+            transition: opacity .62s cubic-bezier(.22,1,.28,1), transform .62s cubic-bezier(.22,1,.28,1); }
+        [data-reveal].is-in { opacity: 1; transform: none; }
+        [data-reveal-img] { opacity: 0; clip-path: inset(0 0 12% 0);
+            transition: opacity .72s cubic-bezier(.22,1,.28,1), clip-path .86s cubic-bezier(.22,1,.28,1); }
+        [data-reveal-img].is-in { opacity: 1; clip-path: inset(0 0 0 0); }
+        [data-reveal] [data-reveal] { opacity: 1; transform: none; }
+
+        /* 7 · data rows respond, quietly */
+        .ev-table tbody tr { transition: background-color .14s ease; }
+        .ev-table tbody tr:hover { background-color: #f7f9fe; }
+
+        /* 8 · figures lift a touch when you point at them */
+        figure img { transition: transform .5s cubic-bezier(.22,1,.28,1); }
+        figure:hover > div > img { transform: scale(1.012); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .nav-ink { display: none; }
+            [data-reveal], [data-reveal-img] { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none; }
+            .link-arrow, .prose-rt a, .rs-title { transition: none; }
+            figure img { transition: none; }
+            .btn { transition: none; }
+        }
         img { -webkit-user-drag: none; }
 
         /* Guided tour */
@@ -366,14 +440,14 @@
 <!-- TopNavBar -->
 <nav class="fixed top-0 w-full z-50 bg-shell border-b border-shell-line">
 <div class="flex justify-between items-center w-full px-margin h-[60px] max-w-container-max-width mx-auto">
-<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="code.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="logo.jpg"/>RackTrack</a>
-<div class="hidden lg:flex gap-6 xl:gap-7 items-center">
+<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="code.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="assets/logo.jpg"/>RackTrack</a>
+<div class="hidden lg:flex gap-6 xl:gap-7 items-center nav-rail">
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="code.html">Home</a>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="why-racktrack.html">Why RackTrack</a>
-<a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="solutions.html">Solutions</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a>
+<span class="rt-nav-item"><a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="solutions.html" data-current="">Solutions</a><span class="rt-dd"><a class="rt-dd-item" href="solutions.html#principles">Principles</a><a class="rt-dd-item" href="solutions.html#rack-3d">3D topology</a><a class="rt-dd-item" href="solutions.html#workflow">Six intelligence surfaces</a><a class="rt-dd-item" href="why-racktrack.html#matrix">How we compare</a></span></span>
+<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="trust-security.html">Trust &amp; Security</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="resources.html">Resources</a>
+<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="resources.html">Resources</a><span class="rt-dd"><a class="rt-dd-item" href="resources.html">All articles</a><a class="rt-dd-item" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every CMDB is 40% wrong</a><a class="rt-dd-item" href="article-what-network-verified-actually-means.html">What “network-verified” means</a><a class="rt-dd-item" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Preparing for SOC 2</a><a class="rt-dd-item" href="article-free-port-discovery-and-rack-capacity-planning.html">Free port discovery</a></span></span>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="about-us.html">About Us</a>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="contact-us.html">Contact Us</a>
 </div>
@@ -420,10 +494,10 @@
 <figure class="ev"><figcaption class="ev-head"><span class="ev-title">Port state — RT-7600-24T-E at U35</span><span class="ev-sub mono">read from sweep + LLDP</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">Eth1/1</td><td class="ev-dev">LEAF-01</td><td class="ev-note">link up · 1G</td><td class="ev-conf">—</td></tr><tr class="ev-warn"><td class="ev-u">Eth1/14</td><td class="ev-dev">SPINE-02</td><td class="ev-note">link up · 25G · not in CMDB</td><td class="ev-conf">—</td></tr><tr class="ev-free"><td class="ev-u">Eth1/16</td><td class="ev-dev">—</td><td class="ev-note">no link · patched</td><td class="ev-conf">—</td></tr><tr class="ev-free"><td class="ev-u">Eth1/21</td><td class="ev-dev">—</td><td class="ev-note">no link · unused</td><td class="ev-conf">—</td></tr><tr class="ev-miss"><td class="ev-u">Eth1/23</td><td class="ev-dev">unreadable label</td><td class="ev-note">manual check needed</td><td class="ev-conf">0.42</td></tr></tbody></table><p class="ev-foot mono">12 of 24 ports carrying link · 4 SFP+ cages reserved for uplinks</p></figure>
 </div>
 <figure data-reveal class="max-w-container-max-width mx-auto px-margin mt-8 md:mt-10">
-<div class="w-full aspect-[16/10] md:aspect-[21/9] overflow-hidden bg-surface-dim">
-<img alt="Network rack with patch panels and structured cabling" class="w-full h-full object-cover object-center" src="https://images.unsplash.com/photo-1695668548342-c0c1ad479aee?auto=format&amp;fit=crop&amp;w=2400&amp;q=80"/>
+<div class="w-full aspect-[16/10] md:aspect-[21/7] overflow-hidden bg-surface-dim">
+<img alt="Cold aisle between cabinet rows in a production data hall" class="w-full h-full object-cover object-center" loading="lazy" decoding="async" src="assets/media-solutions-datahall.jpg"/>
 </div>
-<figcaption class="mono text-[11px] text-outline tracking-[0.04em] pt-3">Fig. 2.0 — Capture environment</figcaption>
+<figcaption class="mono text-[10.5px] text-outline tracking-[0.04em] pt-3">Fig. 2.0 — Capture environment. A sweep is walked down the cold aisle, one cabinet at a time.</figcaption>
 </figure>
 
 <!-- Principles -->
@@ -623,7 +697,7 @@
 <div class="max-w-container-max-width mx-auto px-margin">
 <div class="grid grid-cols-2 md:grid-cols-12 gap-x-gutter gap-y-10">
 <div class="col-span-2 md:col-span-4 flex flex-col gap-3">
-<span class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="logo.jpg"/>RackTrack</span>
+<span class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="assets/logo.jpg"/>RackTrack</span>
 <p class="text-[13.5px] leading-relaxed max-w-[30ch]">Physical Infrastructure Intelligence for Data Centers.</p>
 </div>
 <nav class="md:col-span-2 md:col-start-6 flex flex-col gap-2.5">
@@ -771,5 +845,51 @@
         });
         show(0);
     })();
+</script>
+
+<script>
+(function () {
+    var root = document.documentElement;
+    root.classList.add('js');                       // gate for motion-dependent styles
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* nav ink — one bar that travels, settling on the current page */
+    var rail = document.querySelector('.nav-rail');
+    if (rail && !reduce) {
+        var ink = document.createElement('span');
+        ink.className = 'nav-ink';
+        rail.appendChild(ink);
+        var links = [].slice.call(rail.querySelectorAll('a[href$=".html"]'));
+        var current = rail.querySelector('a[data-current]') || links[0];
+        function moveTo(el, show) {
+            if (!el) { return; }
+            ink.style.width = el.offsetWidth + 'px';
+            ink.style.transform = 'translateX(' + el.offsetLeft + 'px)';
+            ink.style.opacity = show ? '1' : '0';
+        }
+        function settle() { moveTo(current, !!rail.querySelector('a[data-current]')); }
+        links.forEach(function (a) {
+            a.addEventListener('mouseenter', function () { moveTo(a, true); });
+            a.addEventListener('focus', function () { moveTo(a, true); });
+        });
+        rail.addEventListener('mouseleave', settle);
+        window.addEventListener('resize', settle);
+        requestAnimationFrame(settle);
+    }
+
+    /* section marks — registration ticks + a margin index, as on the sheets */
+    var sections = [].slice.call(document.querySelectorAll('main > section'));
+    var n = 0;
+    sections.forEach(function (sec) {
+        if (!sec.querySelector('h1, h2')) { return; }
+        n += 1;
+        if (getComputedStyle(sec).position === 'static') { sec.style.position = 'relative'; }
+        var mark = document.createElement('span'); mark.className = 'sec-mark'; mark.setAttribute('aria-hidden', 'true');
+        var idx = document.createElement('span'); idx.className = 'sec-idx'; idx.setAttribute('aria-hidden', 'true');
+        idx.textContent = (n < 10 ? '0' : '') + n;
+        sec.appendChild(mark); sec.appendChild(idx);
+    });
+})();
 </script>
 </body></html>
