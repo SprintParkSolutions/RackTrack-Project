@@ -21,7 +21,7 @@
                         "surface-dim": "#e7ebf2",
                         "on-tertiary": "#ffffff",
                         "on-tertiary-container": "#eff1f3",
-                        "outline-variant": "#dde2ec",
+                        "outline-variant": "#ecf0f6",
                         "primary-fixed": "#dbe1ff",
                         "on-secondary": "#ffffff",
                         "on-secondary-fixed": "#131b2e",
@@ -111,8 +111,8 @@
     </script>
 <style>
         :root {
-            --hair: #dde2ec;
-            --hair-2: #c6cddb;
+            --hair: #ecf0f6;
+            --hair-2: #d8dee9;
             --ink: #0a111e;
             --body: #3f4757;
             --muted: #727a8a;
@@ -181,7 +181,11 @@
         .link-arrow { display: inline-flex; align-items: baseline; gap: 6px; font-size: 14px; font-weight: 500; color: var(--blue); }
         .link-arrow:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-        .row-list > * + * { border-top: 1px solid var(--hair); }
+        /* rules separate groups, not every item — spacing does the item work */
+        .row-list > * + * { border-top: 0; }
+        .row-list > * { padding-top: 6px; padding-bottom: 6px; }
+        .row-list > * + * { margin-top: 14px; }
+        /* keep one rule per group: the container's own top/bottom edge */
         .shell-band .row-list > * + * { border-top-color: var(--shell-line); }
         .idx { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 10.5px; color: var(--muted); letter-spacing: 0.08em; }
 
@@ -201,7 +205,7 @@
         .ev-title { font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
         .ev-sub { font-size: 10.5px; letter-spacing: .06em; color: var(--muted); }
         .ev-table { width: 100%; border-collapse: collapse; font-family: 'Geist Mono', ui-monospace, monospace; }
-        .ev-table td { padding: 8px 14px; font-size: 11.5px; border-bottom: 1px solid #eef0f5; vertical-align: top; }
+        .ev-table td { padding: 9px 14px; font-size: 11.5px; border-bottom: 1px solid #f4f6fa; vertical-align: top; }
         .ev-table tr:last-child td { border-bottom: 0; }
         .ev-u { width: 62px; color: var(--muted); white-space: nowrap; }
         .ev-dev { color: var(--ink); }
@@ -252,6 +256,11 @@
             width: 0; left: 0; opacity: 0; pointer-events: none;
             transition: transform .34s cubic-bezier(.22,1,.28,1), width .34s cubic-bezier(.22,1,.28,1), opacity .2s ease; }
         .nav-rail a { border-bottom-color: transparent !important; }
+        .nav-rail a[data-current] { border-bottom-color: var(--accent) !important; }
+        .js .nav-rail a[data-current] { border-bottom-color: transparent !important; }
+        @media (prefers-reduced-motion: reduce) {
+            .js .nav-rail a[data-current] { border-bottom-color: var(--accent) !important; }
+        }
 
         /* 2 · links draw their underline in, they don't just switch it on */
         .link-arrow, .prose-rt a, .rs-title {
@@ -270,15 +279,6 @@
         /* 4 · one focus ring, everywhere, keyboard only */
         :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 1px; }
         .shell-band :focus-visible, .app-bar :focus-visible { outline-color: var(--accent); }
-
-        /* 5 · section marks — the drawing set's registration ticks, carried into the page */
-        .sec-mark { position: absolute; left: 0; top: 0; width: 9px; height: 9px;
-            border-left: 1px solid var(--hair-2); border-top: 1px solid var(--hair-2); opacity: .9; }
-        .shell-band .sec-mark { border-color: #2b4270; }
-        .sec-idx { position: absolute; left: 0; top: 18px; font-family: 'Geist Mono', ui-monospace, monospace;
-            font-size: 9.5px; letter-spacing: .14em; color: var(--muted); writing-mode: vertical-rl; }
-        .shell-band .sec-idx { color: #5f77a6; }
-        @media (max-width: 1339px) { .sec-mark, .sec-idx { display: none; } }
 
         /* 6 · reveals: text rises, figures wipe — different gestures for different content */
         [data-reveal] { opacity: 0; transform: translateY(10px);
@@ -451,7 +451,7 @@
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="code.html">Home</a>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="why-racktrack.html">Why RackTrack</a>
 <span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="solutions.html">Solutions</a><span class="rt-dd"><a class="rt-dd-item" href="solutions.html#principles">Principles</a><a class="rt-dd-item" href="solutions.html#rack-3d">3D topology</a><a class="rt-dd-item" href="solutions.html#workflow">Six intelligence surfaces</a><a class="rt-dd-item" href="why-racktrack.html#matrix">How we compare</a></span></span>
-<span class="rt-nav-item"><a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
+<span class="rt-nav-item"><a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="use-cases.html" data-current="">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="trust-security.html">Trust &amp; Security</a>
 <span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="resources.html">Resources</a><span class="rt-dd"><a class="rt-dd-item" href="resources.html">All articles</a><a class="rt-dd-item" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every CMDB is 40% wrong</a><a class="rt-dd-item" href="article-what-network-verified-actually-means.html">What “network-verified” means</a><a class="rt-dd-item" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Preparing for SOC 2</a><a class="rt-dd-item" href="article-free-port-discovery-and-rack-capacity-planning.html">Free port discovery</a></span></span>
 <a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="about-us.html">About Us</a>
@@ -687,8 +687,9 @@
         var current = rail.querySelector('a[data-current]') || links[0];
         function moveTo(el, show) {
             if (!el) { return; }
-            ink.style.width = el.offsetWidth + 'px';
-            ink.style.transform = 'translateX(' + el.offsetLeft + 'px)';
+            var rr = rail.getBoundingClientRect(), er = el.getBoundingClientRect();
+            ink.style.width = er.width + 'px';
+            ink.style.transform = 'translateX(' + (er.left - rr.left) + 'px)';
             ink.style.opacity = show ? '1' : '0';
         }
         function settle() { moveTo(current, !!rail.querySelector('a[data-current]')); }
@@ -699,20 +700,14 @@
         rail.addEventListener('mouseleave', settle);
         window.addEventListener('resize', settle);
         requestAnimationFrame(settle);
+        window.addEventListener('load', settle);
+        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(settle); }
+        // the webfont swap changes link widths after first paint — re-measure when it does
+        if (window.ResizeObserver) {
+            var ro = new ResizeObserver(function () { settle(); });
+            links.forEach(function (a) { ro.observe(a); });
+        }
     }
-
-    /* section marks — registration ticks + a margin index, as on the sheets */
-    var sections = [].slice.call(document.querySelectorAll('main > section'));
-    var n = 0;
-    sections.forEach(function (sec) {
-        if (!sec.querySelector('h1, h2')) { return; }
-        n += 1;
-        if (getComputedStyle(sec).position === 'static') { sec.style.position = 'relative'; }
-        var mark = document.createElement('span'); mark.className = 'sec-mark'; mark.setAttribute('aria-hidden', 'true');
-        var idx = document.createElement('span'); idx.className = 'sec-idx'; idx.setAttribute('aria-hidden', 'true');
-        idx.textContent = (n < 10 ? '0' : '') + n;
-        sec.appendChild(mark); sec.appendChild(idx);
-    });
 })();
 </script>
 </body></html>

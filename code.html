@@ -21,7 +21,7 @@
                         "surface-dim": "#e7ebf2",
                         "on-tertiary": "#ffffff",
                         "on-tertiary-container": "#eff1f3",
-                        "outline-variant": "#dde2ec",
+                        "outline-variant": "#ecf0f6",
                         "primary-fixed": "#dbe1ff",
                         "on-secondary": "#ffffff",
                         "on-secondary-fixed": "#131b2e",
@@ -111,8 +111,8 @@
     </script>
 <style>
         :root {
-            --hair: #dde2ec;
-            --hair-2: #c6cddb;
+            --hair: #ecf0f6;
+            --hair-2: #d8dee9;
             --ink: #0a111e;
             --body: #3f4757;
             --muted: #727a8a;
@@ -181,7 +181,11 @@
         .link-arrow { display: inline-flex; align-items: baseline; gap: 6px; font-size: 14px; font-weight: 500; color: var(--blue); }
         .link-arrow:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-        .row-list > * + * { border-top: 1px solid var(--hair); }
+        /* rules separate groups, not every item — spacing does the item work */
+        .row-list > * + * { border-top: 0; }
+        .row-list > * { padding-top: 6px; padding-bottom: 6px; }
+        .row-list > * + * { margin-top: 14px; }
+        /* keep one rule per group: the container's own top/bottom edge */
         .shell-band .row-list > * + * { border-top-color: var(--shell-line); }
         .idx { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 10.5px; color: var(--muted); letter-spacing: 0.08em; }
 
@@ -215,6 +219,11 @@
             width: 0; left: 0; opacity: 0; pointer-events: none;
             transition: transform .34s cubic-bezier(.22,1,.28,1), width .34s cubic-bezier(.22,1,.28,1), opacity .2s ease; }
         .nav-rail a { border-bottom-color: transparent !important; }
+        .nav-rail a[data-current] { border-bottom-color: var(--accent) !important; }
+        .js .nav-rail a[data-current] { border-bottom-color: transparent !important; }
+        @media (prefers-reduced-motion: reduce) {
+            .js .nav-rail a[data-current] { border-bottom-color: var(--accent) !important; }
+        }
 
         /* 2 · links draw their underline in, they don't just switch it on */
         .link-arrow, .prose-rt a, .rs-title {
@@ -233,15 +242,6 @@
         /* 4 · one focus ring, everywhere, keyboard only */
         :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 1px; }
         .shell-band :focus-visible, .app-bar :focus-visible { outline-color: var(--accent); }
-
-        /* 5 · section marks — the drawing set's registration ticks, carried into the page */
-        .sec-mark { position: absolute; left: 0; top: 0; width: 9px; height: 9px;
-            border-left: 1px solid var(--hair-2); border-top: 1px solid var(--hair-2); opacity: .9; }
-        .shell-band .sec-mark { border-color: #2b4270; }
-        .sec-idx { position: absolute; left: 0; top: 18px; font-family: 'Geist Mono', ui-monospace, monospace;
-            font-size: 9.5px; letter-spacing: .14em; color: var(--muted); writing-mode: vertical-rl; }
-        .shell-band .sec-idx { color: #5f77a6; }
-        @media (max-width: 1339px) { .sec-mark, .sec-idx { display: none; } }
 
         /* 6 · reveals: text rises, figures wipe — different gestures for different content */
         [data-reveal] { opacity: 0; transform: translateY(10px);
@@ -545,8 +545,8 @@
 <p class="text-[13px] text-shell-text/70 mt-6 max-w-[46ch]">Built on patent-pending innovations for automated network cable mapping.</p>
 <dl data-reveal class="grid grid-cols-1 sm:grid-cols-3 border-t border-shell-line mt-9">
 <div class="py-4 sm:pr-6"><dt class="text-[13.5px] text-white font-medium">Infrastructure digitized</dt><dd class="text-[12.5px] text-shell-text/75 mt-0.5">Every device, port and label captured.</dd></div>
-<div class="py-4 sm:px-6 sm:border-l border-shell-line"><dt class="text-[13.5px] text-white font-medium">Connectivity intelligence</dt><dd class="text-[12.5px] text-shell-text/75 mt-0.5">Cable-to-port maps verified live.</dd></div>
-<div class="py-4 sm:pl-6 sm:border-l border-shell-line"><dt class="text-[13.5px] text-white font-medium">Source of truth, continuously</dt><dd class="text-[12.5px] text-shell-text/75 mt-0.5">Reconciled on every scan.</dd></div>
+<div class="py-4 sm:px-6 border-shell-line"><dt class="text-[13.5px] text-white font-medium">Connectivity intelligence</dt><dd class="text-[12.5px] text-shell-text/75 mt-0.5">Cable-to-port maps verified live.</dd></div>
+<div class="py-4 sm:pl-6 border-shell-line"><dt class="text-[13.5px] text-white font-medium">Source of truth, continuously</dt><dd class="text-[12.5px] text-shell-text/75 mt-0.5">Reconciled on every scan.</dd></div>
 </dl>
 </div>
 <figure data-reveal class="lg:col-span-4 lg:col-start-9 flex flex-col justify-end">
@@ -574,7 +574,7 @@
 </div>
 <p class="lg:col-span-5 lg:col-start-8 text-[15.5px] leading-relaxed self-end">Every infrastructure record drifts. Every CMDB lies. Every DCIM has blind spots. RackTrack delivers continuous reconciliation between the physical world and your operational systems — autonomous, verifiable, defensible.</p>
 </div>
-<dl data-reveal class="mt-10 md:mt-12 grid grid-cols-2 lg:grid-cols-5 border-t border-l border-outline-variant bg-background">
+<dl data-reveal class="mt-10 md:mt-12 grid grid-cols-2 lg:grid-cols-5 border-t border-outline-variant bg-background">
 <div class="border-r border-b border-outline-variant p-5">
 <dt class="stat">40-60%</dt>
 <dd class="h4 mt-3">Truth decay</dd>
@@ -1237,8 +1237,9 @@
         var current = rail.querySelector('a[data-current]') || links[0];
         function moveTo(el, show) {
             if (!el) { return; }
-            ink.style.width = el.offsetWidth + 'px';
-            ink.style.transform = 'translateX(' + el.offsetLeft + 'px)';
+            var rr = rail.getBoundingClientRect(), er = el.getBoundingClientRect();
+            ink.style.width = er.width + 'px';
+            ink.style.transform = 'translateX(' + (er.left - rr.left) + 'px)';
             ink.style.opacity = show ? '1' : '0';
         }
         function settle() { moveTo(current, !!rail.querySelector('a[data-current]')); }
@@ -1249,20 +1250,14 @@
         rail.addEventListener('mouseleave', settle);
         window.addEventListener('resize', settle);
         requestAnimationFrame(settle);
+        window.addEventListener('load', settle);
+        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(settle); }
+        // the webfont swap changes link widths after first paint — re-measure when it does
+        if (window.ResizeObserver) {
+            var ro = new ResizeObserver(function () { settle(); });
+            links.forEach(function (a) { ro.observe(a); });
+        }
     }
-
-    /* section marks — registration ticks + a margin index, as on the sheets */
-    var sections = [].slice.call(document.querySelectorAll('main > section'));
-    var n = 0;
-    sections.forEach(function (sec) {
-        if (!sec.querySelector('h1, h2')) { return; }
-        n += 1;
-        if (getComputedStyle(sec).position === 'static') { sec.style.position = 'relative'; }
-        var mark = document.createElement('span'); mark.className = 'sec-mark'; mark.setAttribute('aria-hidden', 'true');
-        var idx = document.createElement('span'); idx.className = 'sec-idx'; idx.setAttribute('aria-hidden', 'true');
-        idx.textContent = (n < 10 ? '0' : '') + n;
-        sec.appendChild(mark); sec.appendChild(idx);
-    });
 })();
 </script>
 </body></html>
