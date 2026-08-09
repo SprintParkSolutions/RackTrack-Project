@@ -193,6 +193,37 @@
         details > summary::-webkit-details-marker { display: none; }
         details[open] .chev { transform: rotate(180deg); }
         .chev { transition: transform .2s ease; }
+
+        /* product evidence — real detection output */
+        .ev { border: 1px solid var(--hair); background: #fff; }
+        .ev-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+            gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--hair); background: #f7f8fb; }
+        .ev-title { font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
+        .ev-sub { font-size: 10.5px; letter-spacing: .06em; color: var(--muted); }
+        .ev-table { width: 100%; border-collapse: collapse; font-family: 'Geist Mono', ui-monospace, monospace; }
+        .ev-table td { padding: 8px 14px; font-size: 11.5px; border-bottom: 1px solid #eef0f5; vertical-align: top; }
+        .ev-table tr:last-child td { border-bottom: 0; }
+        .ev-u { width: 62px; color: var(--muted); white-space: nowrap; }
+        .ev-dev { color: var(--ink); }
+        .ev-note { color: var(--muted); text-align: right; white-space: nowrap; }
+        .ev-conf { width: 46px; text-align: right; color: var(--muted); }
+        .ev-ok .ev-note { color: #1a7f4f; }
+        .ev-warn { background: #fffaf0; }
+        .ev-warn .ev-note { color: #a86a00; }
+        .ev-miss { background: #fff6f6; }
+        .ev-miss .ev-note, .ev-miss .ev-dev { color: #a4232b; }
+        .ev-free .ev-dev, .ev-free .ev-note { color: #9aa1ae; }
+        .ev-foot { padding: 10px 14px; border-top: 1px solid var(--hair); font-size: 10.5px;
+            letter-spacing: .05em; color: var(--muted); background: #fbfcfe; }
+
+        /* technical data stays legible: rows scroll inside the panel, page never does */
+        .ev-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .ev-table tbody { display: table; width: 100%; min-width: 430px; }
+        @media (max-width: 480px) {
+            .ev-head { padding: 10px 12px; }
+            .ev-table td { padding: 7px 12px; font-size: 11px; }
+            .ev-foot { padding: 9px 12px; font-size: 10px; }
+        }
         img { -webkit-user-drag: none; }
 
         /* Guided tour */
@@ -378,11 +409,7 @@
 </div>
 </section>
 <div class="max-w-container-max-width mx-auto px-margin">
-<dl data-reveal class="grid grid-cols-1 sm:grid-cols-3 border-y border-outline-variant">
-<div class="py-7 sm:pr-8 border-b sm:border-b-0 border-outline-variant"><dt class="stat">6</dt><dd class="eyebrow mt-3">Operational disciplines unified</dd></div>
-<div class="py-7 sm:px-8 sm:border-l border-b sm:border-b-0 border-outline-variant"><dt class="stat">&lt;10 days</dt><dd class="eyebrow mt-3">Time to continuous truth</dd></div>
-<div class="py-7 sm:pl-8 sm:border-l border-outline-variant"><dt class="stat">99.6%</dt><dd class="eyebrow mt-3">Physical-logical convergence</dd></div>
-</dl>
+<figure class="ev"><figcaption class="ev-head"><span class="ev-title">Coverage — DC1 ground floor</span><span class="ev-sub mono">rows A–D · survey RT-DC1-A-101</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">Row A</td><td class="ev-dev">12 cabinets</td><td class="ev-note">swept</td><td class="ev-conf">—</td></tr><tr class="ev-ok"><td class="ev-u">Row B</td><td class="ev-dev">12 cabinets</td><td class="ev-note">swept</td><td class="ev-conf">—</td></tr><tr class="ev-warn"><td class="ev-u">Row C</td><td class="ev-dev">11 cabinets</td><td class="ev-note">2 pending access</td><td class="ev-conf">—</td></tr><tr class="ev-warn"><td class="ev-u">Row D</td><td class="ev-dev">9 cabinets</td><td class="ev-note">7 pending access</td><td class="ev-conf">—</td></tr><tr class="ev-free"><td class="ev-u">Rows E/F</td><td class="ev-dev">—</td><td class="ev-note">future phase 2</td><td class="ev-conf">—</td></tr></tbody></table><p class="ev-foot mono">56 cabinets in scope · 47 swept · 9 pending · re-sweep scheduled on change</p></figure>
 </div>
 
 <!-- Impact -->
@@ -391,32 +418,11 @@
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <div class="md:col-span-5">
 <p class="eyebrow">Impact that matters</p>
-<h2 class="h2 mt-5 max-w-[18ch]">Operational outcomes, measured against physical truth.</h2>
+<h2 class="h2 mt-5 max-w-[18ch]">What changes for each team.</h2>
 </div>
 <p class="md:col-span-6 md:col-start-7 lede self-end">RackTrack turns verified rack evidence into faster decisions, stronger controls, and less manual reconciliation work.</p>
 </div>
-<dl data-reveal class="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-gutter border-t border-outline-variant">
-<div class="py-7 lg:pr-8 border-b lg:border-b-0 border-outline-variant">
-<dt class="stat">99%+</dt>
-<dd class="h4 mt-4">State Fidelity</dd>
-<p class="text-[14px] leading-relaxed mt-1.5">Verified rack, device, and port data replaces stale audit assumptions.</p>
-</div>
-<div class="py-7 lg:px-8 lg:border-l border-b lg:border-b-0 border-outline-variant">
-<dt class="stat">5-15 Min</dt>
-<dd class="h4 mt-4">Rack Capture to Insight</dd>
-<p class="text-[14px] leading-relaxed mt-1.5">Teams move from capture to useful operational context in minutes.</p>
-</div>
-<div class="py-7 lg:px-8 lg:border-l border-b lg:border-b-0 border-outline-variant">
-<dt class="stat">90%+</dt>
-<dd class="h4 mt-4">Manual Operations Eliminated</dd>
-<p class="text-[14px] leading-relaxed mt-1.5">Manual reconciliation, spreadsheet cleanup, and evidence prep shrink dramatically.</p>
-</div>
-<div class="py-7 lg:pl-8 lg:border-l border-outline-variant">
-<dt class="stat stat-sm">Continuous</dt>
-<dd class="h4 mt-4">Continuous Reconciliation</dd>
-<p class="text-[14px] leading-relaxed mt-1.5">Physical inventory and network truth stay aligned across changes.</p>
-</div>
-</dl>
+<figure class="ev"><figcaption class="ev-head"><span class="ev-title">Sweep output — cabinet B-06</span><span class="ev-sub mono">2026-08-07 09:14 · sweep-03</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">U42-41</td><td class="ev-dev">Patch panel, 24 port</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.98</td></tr><tr class="ev-ok"><td class="ev-u">U39</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.99</td></tr><tr class="ev-warn"><td class="ev-u">U35</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">model differs — CMDB says 24T</td><td class="ev-conf">0.99</td></tr><tr class="ev-ok"><td class="ev-u">U31</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.97</td></tr><tr class="ev-miss"><td class="ev-u">U27</td><td class="ev-dev">Unidentified 1U appliance</td><td class="ev-note">no CMDB record</td><td class="ev-conf">0.61</td></tr><tr class="ev-free"><td class="ev-u">U18-05</td><td class="ev-dev">—</td><td class="ev-note">14U free</td><td class="ev-conf">—</td></tr></tbody></table><p class="ev-foot mono">11 devices identified · 9 matched · 2 exceptions · raised as work order WO-2026-0814</p></figure>
 </div>
 </section>
 
@@ -454,8 +460,8 @@
 <div class="lg:col-span-4">
 <span class="idx">/01</span>
 <h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">Infrastructure &amp; Data Center Leaders</h3>
-<p class="stat mt-8">100%</p>
-<p class="eyebrow mt-2.5">Sites on one source of truth</p>
+<p class="stat mt-8">47 / 56</p>
+<p class="eyebrow mt-2.5">Cabinets swept · DC1 ground floor</p>
 <p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Every rack verified · Every site reconciled · Every plan defensible</p>
 </div>
 <div class="lg:col-span-7 lg:col-start-6">
@@ -497,8 +503,8 @@
 <div class="lg:col-span-4">
 <span class="idx">/02</span>
 <h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">Network Architects &amp; Engineers</h3>
-<p class="stat mt-8">99.6%</p>
-<p class="eyebrow mt-2.5">Fabric to floor agreement</p>
+<p class="stat mt-8">24 + 4</p>
+<p class="eyebrow mt-2.5">RJ45 + SFP+ ports mapped per switch</p>
 <p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Ports verified · Cables reconciled · Topology trusted</p>
 </div>
 <div class="lg:col-span-7 lg:col-start-6">
@@ -540,8 +546,8 @@
 <div class="lg:col-span-4">
 <span class="idx">/03</span>
 <h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">Security &amp; Vulnerability Teams</h3>
-<p class="stat mt-8">0</p>
-<p class="eyebrow mt-2.5">Agent blind spots in scope</p>
+<p class="stat mt-8">2</p>
+<p class="eyebrow mt-2.5">Devices found with no agent coverage</p>
 <p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Inventory complete · Blind spots surfaced · Risk in scope</p>
 </div>
 <div class="lg:col-span-7 lg:col-start-6">
@@ -583,8 +589,8 @@
 <div class="lg:col-span-4">
 <span class="idx">/04</span>
 <h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">Compliance &amp; Audit Owners</h3>
-<p class="stat mt-8">&lt;1 day</p>
-<p class="eyebrow mt-2.5">Evidence prep, end-to-end</p>
+<p class="stat mt-8">09:14</p>
+<p class="eyebrow mt-2.5">Sweep timestamp carried on every record</p>
 <p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Evidence ready · Variance surfaced · Proof traceable</p>
 </div>
 <div class="lg:col-span-7 lg:col-start-6">
@@ -626,8 +632,8 @@
 <div class="lg:col-span-4">
 <span class="idx">/05</span>
 <h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">Incident Responders &amp; On-Call</h3>
-<p class="stat mt-8">-35 min</p>
-<p class="eyebrow mt-2.5">Median MTTL recovered</p>
+<p class="stat stat-sm mt-8">B-06 / U35</p>
+<p class="eyebrow mt-2.5">Device located to cabinet and rack unit</p>
 <p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Device located · Port identified · Runbook started</p>
 </div>
 <div class="lg:col-span-7 lg:col-start-6">
@@ -669,8 +675,8 @@
 <div class="lg:col-span-4">
 <span class="idx">/06</span>
 <h3 class="h2 !text-[25px] md:!text-[28px] mt-3 max-w-[16ch]">M&amp;A &amp; Migration Teams</h3>
-<p class="stat mt-8">10 days</p>
-<p class="eyebrow mt-2.5">From sweep to defensible plan</p>
+<p class="stat mt-8">4</p>
+<p class="eyebrow mt-2.5">CMDB deltas surfaced on one cabinet</p>
 <p class="mono text-[11px] tracking-[0.06em] text-outline mt-7 leading-relaxed">Footprint known · Risk surfaced · Plan defensible</p>
 </div>
 <div class="lg:col-span-7 lg:col-start-6">

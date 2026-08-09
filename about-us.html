@@ -193,6 +193,37 @@
         details > summary::-webkit-details-marker { display: none; }
         details[open] .chev { transform: rotate(180deg); }
         .chev { transition: transform .2s ease; }
+
+        /* product evidence — real detection output */
+        .ev { border: 1px solid var(--hair); background: #fff; }
+        .ev-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+            gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--hair); background: #f7f8fb; }
+        .ev-title { font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
+        .ev-sub { font-size: 10.5px; letter-spacing: .06em; color: var(--muted); }
+        .ev-table { width: 100%; border-collapse: collapse; font-family: 'Geist Mono', ui-monospace, monospace; }
+        .ev-table td { padding: 8px 14px; font-size: 11.5px; border-bottom: 1px solid #eef0f5; vertical-align: top; }
+        .ev-table tr:last-child td { border-bottom: 0; }
+        .ev-u { width: 62px; color: var(--muted); white-space: nowrap; }
+        .ev-dev { color: var(--ink); }
+        .ev-note { color: var(--muted); text-align: right; white-space: nowrap; }
+        .ev-conf { width: 46px; text-align: right; color: var(--muted); }
+        .ev-ok .ev-note { color: #1a7f4f; }
+        .ev-warn { background: #fffaf0; }
+        .ev-warn .ev-note { color: #a86a00; }
+        .ev-miss { background: #fff6f6; }
+        .ev-miss .ev-note, .ev-miss .ev-dev { color: #a4232b; }
+        .ev-free .ev-dev, .ev-free .ev-note { color: #9aa1ae; }
+        .ev-foot { padding: 10px 14px; border-top: 1px solid var(--hair); font-size: 10.5px;
+            letter-spacing: .05em; color: var(--muted); background: #fbfcfe; }
+
+        /* technical data stays legible: rows scroll inside the panel, page never does */
+        .ev-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .ev-table tbody { display: table; width: 100%; min-width: 430px; }
+        @media (max-width: 480px) {
+            .ev-head { padding: 10px 12px; }
+            .ev-table td { padding: 7px 12px; font-size: 11px; }
+            .ev-foot { padding: 9px 12px; font-size: 10px; }
+        }
         img { -webkit-user-drag: none; }
 
         /* Guided tour */
@@ -476,27 +507,11 @@
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <div class="md:col-span-5">
 <p class="eyebrow">Why it matters</p>
-<h2 class="h2 mt-5 max-w-[16ch]">Less manual audit work. More usable rack data.</h2>
+<h2 class="h2 mt-5 max-w-[16ch]">What the sweep replaced.</h2>
 </div>
 <p class="md:col-span-6 md:col-start-7 lede self-end">RackTrack keeps physical rack data current, structured, and ready for the teams that operate it every day.</p>
 </div>
-<dl data-reveal class="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-x-gutter border-t border-outline-variant">
-<div class="py-8 sm:pr-8 border-b sm:border-b-0 border-outline-variant">
-<dt class="eyebrow">Truth fidelity</dt>
-<dd class="stat mt-4">99.2%</dd>
-<p class="text-[14px] leading-relaxed mt-2.5">Verified device and port recognition</p>
-</div>
-<div class="py-8 sm:px-8 sm:border-l border-b sm:border-b-0 border-outline-variant">
-<dt class="eyebrow">Time to verified state</dt>
-<dd class="stat mt-4">Minutes</dd>
-<p class="text-[14px] leading-relaxed mt-2.5">From rack capture to operational context</p>
-</div>
-<div class="py-8 sm:pl-8 sm:border-l border-outline-variant">
-<dt class="eyebrow">Manual operations reduced</dt>
-<dd class="stat mt-4">34%</dd>
-<p class="text-[14px] leading-relaxed mt-2.5">Less manual discovery and triage</p>
-</div>
-</dl>
+<figure class="ev"><figcaption class="ev-head"><span class="ev-title">Sweep output — cabinet B-06</span><span class="ev-sub mono">2026-08-07 09:14 · sweep-03</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">U42-41</td><td class="ev-dev">Patch panel, 24 port</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.98</td></tr><tr class="ev-ok"><td class="ev-u">U39</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.99</td></tr><tr class="ev-warn"><td class="ev-u">U35</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">model differs — CMDB says 24T</td><td class="ev-conf">0.99</td></tr><tr class="ev-ok"><td class="ev-u">U31</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.97</td></tr><tr class="ev-miss"><td class="ev-u">U27</td><td class="ev-dev">Unidentified 1U appliance</td><td class="ev-note">no CMDB record</td><td class="ev-conf">0.61</td></tr><tr class="ev-free"><td class="ev-u">U18-05</td><td class="ev-dev">—</td><td class="ev-note">14U free</td><td class="ev-conf">—</td></tr></tbody></table><p class="ev-foot mono">11 devices identified · 9 matched · 2 exceptions · raised as work order WO-2026-0814</p></figure>
 </div>
 </section>
 

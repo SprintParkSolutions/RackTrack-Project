@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RackTrack — version compare</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box} html,body{margin:0;height:100%;font-family:Geist,system-ui,sans-serif;background:#0a111e;color:#e8eefa}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:12px 18px;background:#061127;border-bottom:1px solid #1b2942}
+h1{font-size:15px;font-weight:600;margin:0;letter-spacing:-.01em}
+.mono{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.06em;color:#8fa3c0}
+select,button{font:inherit;font-size:13px;padding:6px 10px;background:#0d1b33;color:#e8eefa;border:1px solid #24395c;border-radius:3px}
+button{cursor:pointer} button:hover{border-color:#4a6289}
+button.on{background:#1a3fd4;border-color:#1a3fd4;color:#fff}
+.wrap{display:grid;grid-template-columns:1fr 1fr;height:calc(100% - 53px)}
+.wrap.solo{grid-template-columns:1fr} .wrap.solo .pane.b{display:none}
+.pane{display:flex;flex-direction:column;min-width:0;border-right:1px solid #1b2942}
+.pane:last-child{border-right:0}
+.tag{padding:7px 14px;background:#0d1b33;border-bottom:1px solid #1b2942;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.tag.new{color:#8ab4ff} .tag.old{color:#9aa1ae}
+iframe{flex:1;width:100%;border:0;background:#fff}
+</style></head><body>
+<header>
+  <h1>RackTrack — version compare</h1>
+  <select id="page"><option value="code.html">Home</option><option value="why-racktrack.html">Why RackTrack</option><option value="solutions.html">Solutions</option><option value="use-cases.html">Use Cases</option><option value="trust-security.html">Trust & Security</option><option value="resources.html">Resources</option><option value="about-us.html">About Us</option><option value="contact-us.html">Contact Us</option></select>
+  <button id="both" class="on">Side by side</button>
+  <button id="onlyNew">Refined only</button>
+  <button id="onlyOld">Stable only</button>
+  <span class="mono" id="note">stable = _stable_2026-08-09_2337</span>
+</header>
+<div class="wrap" id="wrap">
+  <div class="pane a"><div class="tag new">Refined — current</div><iframe id="fa" src="code.html"></iframe></div>
+  <div class="pane b"><div class="tag old">Stable — _stable_2026-08-09_2337</div><iframe id="fb" src="_stable_2026-08-09_2337/code.html"></iframe></div>
+</div>
+<script>
+var sel=document.getElementById('page'),fa=document.getElementById('fa'),fb=document.getElementById('fb'),wrap=document.getElementById('wrap');
+var btnBoth=document.getElementById('both'),btnNew=document.getElementById('onlyNew'),btnOld=document.getElementById('onlyOld');
+function load(){ fa.src=sel.value; fb.src='_stable_2026-08-09_2337/'+sel.value; }
+sel.addEventListener('change',load);
+function mode(m){
+  [btnBoth,btnNew,btnOld].forEach(function(b){b.classList.remove('on');});
+  if(m==='both'){wrap.classList.remove('solo');btnBoth.classList.add('on');
+    document.querySelector('.pane.a').style.display='flex';}
+  if(m==='new'){wrap.classList.add('solo');btnNew.classList.add('on');
+    document.querySelector('.pane.a').style.display='flex';}
+  if(m==='old'){wrap.classList.add('solo');btnOld.classList.add('on');
+    document.querySelector('.pane.a').style.display='none';
+    wrap.classList.remove('solo');wrap.style.gridTemplateColumns='1fr';
+    document.querySelector('.pane.b').style.display='flex';}
+  else { document.querySelector('.pane.b').style.display = (m==='both')?'flex':'none'; wrap.style.gridTemplateColumns=''; }
+}
+btnBoth.onclick=function(){mode('both')}; btnNew.onclick=function(){mode('new')}; btnOld.onclick=function(){mode('old')};
+</script></body></html>

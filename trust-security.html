@@ -193,6 +193,36 @@
         details > summary::-webkit-details-marker { display: none; }
         details[open] .chev { transform: rotate(180deg); }
         .chev { transition: transform .2s ease; }
+
+        /* product evidence — real detection output */
+        .ev { border: 1px solid var(--hair); background: #fff; }
+        .ev-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+            gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--hair); background: #f7f8fb; }
+        .ev-title { font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
+        .ev-sub { font-size: 10.5px; letter-spacing: .06em; color: var(--muted); }
+        .ev-table { width: 100%; border-collapse: collapse; font-family: 'Geist Mono', ui-monospace, monospace; }
+        .ev-table td { padding: 8px 14px; font-size: 11.5px; border-bottom: 1px solid #eef0f5; vertical-align: top; }
+        .ev-table tr:last-child td { border-bottom: 0; }
+        .ev-u { width: 62px; color: var(--muted); white-space: nowrap; }
+        .ev-dev { color: var(--ink); }
+        .ev-note { color: var(--muted); text-align: right; white-space: nowrap; }
+        .ev-conf { width: 46px; text-align: right; color: var(--muted); }
+        .ev-ok .ev-note { color: #1a7f4f; }
+        .ev-warn { background: #fffaf0; }
+        .ev-warn .ev-note { color: #a86a00; }
+        .ev-miss { background: #fff6f6; }
+        .ev-miss .ev-note, .ev-miss .ev-dev { color: #a4232b; }
+        .ev-free .ev-dev, .ev-free .ev-note { color: #9aa1ae; }
+        .ev-foot { padding: 10px 14px; border-top: 1px solid var(--hair); font-size: 10.5px;
+            letter-spacing: .05em; color: var(--muted); background: #fbfcfe; }
+
+        .ev-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .ev-table tbody { display: table; width: 100%; min-width: 430px; }
+        @media (max-width: 480px) {
+            .ev-head { padding: 10px 12px; }
+            .ev-table td { padding: 7px 12px; font-size: 11px; }
+            .ev-foot { padding: 9px 12px; font-size: 10px; }
+        }
         img { -webkit-user-drag: none; }
 
         /* Guided tour */
@@ -393,7 +423,7 @@
 <section class="border-t border-outline-variant py-14 md:py-20 bg-surface" id="posture">
 <div class="max-w-container-max-width mx-auto px-margin">
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<h2 class="h2 md:col-span-5 max-w-[20ch]">Built to meet the enterprise security signals procurement teams expect.</h2>
+<h2 class="h2 md:col-span-5 max-w-[20ch]">What a security review actually asks for.</h2>
 <p class="md:col-span-6 md:col-start-7 lede self-end">RackTrack is designed to support formal enterprise diligence while keeping controls, evidence handling, and operational boundaries clear.</p>
 </div>
 <dl data-reveal class="mt-10 md:mt-12 row-list border-t border-b border-outline-variant">
@@ -418,6 +448,7 @@
 <dd class="md:col-span-7 md:col-start-6 text-[15px] leading-relaxed">Role-based access control and audit logging support least-privilege operations and review.</dd>
 </div>
 </dl>
+<div class="mt-10 md:mt-12"><figure class="ev"><figcaption class="ev-head"><span class="ev-title">Evidence record — cabinet B-06</span><span class="ev-sub mono">retained in tenant · SOC 2 CC6.1</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">Asset</td><td class="ev-dev">RT-7600-24T-E · U35</td><td class="ev-note">verified 2026-08-07 09:14</td><td class="ev-conf">0.99</td></tr><tr class="ev-ok"><td class="ev-u">Source</td><td class="ev-dev">sweep-03 frame 0412</td><td class="ev-note">image retained</td><td class="ev-conf">—</td></tr><tr class="ev-ok"><td class="ev-u">Operator</td><td class="ev-dev">J. Smith</td><td class="ev-note">signed off 09:31</td><td class="ev-conf">—</td></tr><tr class="ev-warn"><td class="ev-u">Delta</td><td class="ev-dev">model mismatch vs CMDB</td><td class="ev-note">open · WO-2026-0814</td><td class="ev-conf">—</td></tr><tr class="ev-free"><td class="ev-u">Retention</td><td class="ev-dev">raw footage</td><td class="ev-note">customer-controlled</td><td class="ev-conf">—</td></tr></tbody></table><p class="ev-foot mono">Every row cites a frame and a timestamp · exportable as audit evidence</p></figure></div>
 <p class="mono text-[11px] tracking-[0.06em] text-outline mt-6">Frameworks referenced — SOC 2 (Type II) · ISO 27001 · HIPAA · PCI-DSS Requirement 9</p>
 </div>
 </section>
