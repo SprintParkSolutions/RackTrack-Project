@@ -1,6 +1,6 @@
 # RackTrack — marketing site
 
-Static HTML. No framework, no server required — open `code.html` in a browser.
+Static HTML. No framework, no server required — open `index.html` in a browser.
 
 ## Build
 
@@ -18,7 +18,7 @@ the element just silently falls back to its inherited style.
 ## Layout
 
 ```
-code.html                 home — the entry point
+index.html                 home — the entry point
 why-racktrack.html        \
 solutions.html             |
 use-cases.html             |  the seven top-level pages
