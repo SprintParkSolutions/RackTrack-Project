@@ -28,7 +28,7 @@
         body {
             font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
             color: var(--body);
-            font-size: 15.5px;
+            font-size:15px;
             line-height: 1.55;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -38,25 +38,26 @@
 
         .h1  { font-size: clamp(34px, 5.2vw, 66px); line-height: 1.02; letter-spacing: -0.036em; font-weight: 600; }
         .h2  { font-size: clamp(26px, 3.1vw, 42px); line-height: 1.08; letter-spacing: -0.032em; font-weight: 600; }
-        .h3  { font-size: clamp(17px, 1.45vw, 19.5px); line-height: 1.28; letter-spacing: -0.02em; font-weight: 600; }
+      .h2-sm{font-size:clamp(26px,2.1vw,30px);line-height:1.14;letter-spacing:-0.026em;font-weight:600}
+        .h3  { font-size: 20px; line-height: 1.28; letter-spacing: -0.02em; font-weight: 600; }
         .h4  { font-size: 15px; line-height: 1.35; letter-spacing: -0.012em; font-weight: 600; color: var(--ink); }
-        .lede { font-size: clamp(16.5px, 1.45vw, 19px); line-height: 1.5; }
+        .lede { font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; }
         .measure    { max-width: 62ch; }
         .measure-sm { max-width: 46ch; }
         .measure-xs { max-width: 34ch; }
 
-        .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, monospace; font-variant-numeric: tabular-nums; }
+        .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
         .eyebrow {
-            font-family: 'Geist Mono', ui-monospace, monospace;
-            font-size: 10.5px; font-weight: 500; letter-spacing: 0.14em;
+            font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
             text-transform: uppercase; color: var(--muted);
         }
         .stat {
             font-variant-numeric: tabular-nums;
-            font-size: clamp(28px, 2.7vw, 36px); font-weight: 500;
+            font-size:clamp(38px,3.4vw,46px); font-weight: 500;
             letter-spacing: -0.04em; line-height: 1.02; color: var(--ink);
         }
-        .stat-sm { font-size: clamp(22px, 2vw, 27px); }
+        .stat-sm { font-size: clamp(26px,2.1vw,30px); }
 
         /* Dark shell bands — nav, hero, CTA, footer */
         .shell-band { background: var(--shell); color: var(--shell-text); }
@@ -67,10 +68,11 @@
 
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            font-size: 14px; font-weight: 500; letter-spacing: -0.006em;
+            font-size: 15px; font-weight: 500; letter-spacing: -0.006em;
             padding: 11px 20px; border-radius: 3px;
             transition: background-color .15s ease, border-color .15s ease, color .15s ease;
         }
+      .btn-sm{font-size:13px;padding:7px 14px}
         .btn-primary { background: var(--blue); color: #fff; }
         .btn-primary:hover { background: #12309f; }
         .btn-ghost { border: 1px solid var(--hair-2); color: var(--ink); }
@@ -80,7 +82,7 @@
         .shell-band .btn-ghost { border-color: #2c3d5c; color: #fff; }
         .shell-band .btn-ghost:hover { border-color: #4a5f83; }
 
-        .link-arrow { display: inline-flex; align-items: baseline; gap: 6px; font-size: 14px; font-weight: 500; color: var(--blue); }
+        .link-arrow { display: inline-flex; align-items: baseline; gap: 6px; font-size: 15px; font-weight: 500; color: var(--blue); }
         .link-arrow:hover { text-decoration: underline; text-underline-offset: 3px; }
 
         /* rules separate groups, not every item — spacing does the item work */
@@ -89,7 +91,7 @@
         .row-list > * + * { margin-top: 14px; }
         /* keep one rule per group: the container's own top/bottom edge */
         .shell-band .row-list > * + * { border-top-color: var(--shell-line); }
-        .idx { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 10.5px; color: var(--muted); letter-spacing: 0.08em; }
+        .idx { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
 
         /* Compact module: gives sections structure without generic cards */
         .mod { background: #fff; border: 1px solid var(--hair); padding: 22px; transition: border-color .15s ease, background-color .15s ease; }
@@ -97,7 +99,7 @@
 
         details > summary { list-style: none; cursor: pointer; }
         details > summary::-webkit-details-marker { display: none; }
-        details[open] .chev { transform: rotate(180deg); }
+        details[open] .chev {font-size:20px; transform: rotate(180deg); }
         .chev { transition: transform .2s ease; }
 
         /* primary nav dropdowns */
@@ -202,13 +204,13 @@
         .app-dots { display: flex; gap: 5px; }
         .app-dots i { width: 8px; height: 8px; border-radius: 9999px; background: #24395c; display: block; }
         .app-dots i:first-child { background: #3d5480; }
-        .app-brand { display: inline-flex; align-items: center; gap: 6px; font-size: 12px;
+        .app-brand { display: inline-flex; align-items: center; gap: 6px; font-size: 13px;
             font-weight: 500; color: #dce6f5; letter-spacing: -.01em; }
         .app-brand img { width: 16px; height: 16px; mix-blend-mode: screen; }
-        .app-path { flex: 1; font-size: 10.5px; color: #8fa6c6; letter-spacing: .04em;
+        .app-path { flex: 1; font-size: 11px; color: #8fa6c6; letter-spacing: .04em;
             background: #0a1730; border: 1px solid #1b2942; padding: 3px 10px; text-align: center;
             overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .app-count { font-size: 10.5px; letter-spacing: .08em; color: #8ab4ff; }
+        .app-count { font-size: 11px; letter-spacing: .08em; color: #8ab4ff; }
         .shot { position: relative; overflow: hidden; background: #060d1b; }
         .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .shot-row img { height: 300px; object-position: center 42%; }
@@ -221,20 +223,20 @@
         .shot-dev img  { object-fit: cover; object-position: 50% 52%; }
         .shot-ov { position: absolute; inset: 0; width: 100%; height: 100%; }
         .shot-ov .dev rect { fill: none; stroke: #7f98bd; stroke-opacity: .55; stroke-width: .35; }
-        .shot-ov .dev text { fill: #cfe0f5; font-size: 2.1px; font-family: 'Geist Mono', monospace; letter-spacing: .04em; }
+        .shot-ov .dev text { fill: #cfe0f5; font-size: 2.1px; font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .04em; }
         .shot-ov .dev .u { fill: #8fa6c6; }
         .shot-ov .dev.is-sel rect { stroke: #8ab4ff; stroke-width: .7; fill: #8ab4ff; fill-opacity: .08; }
         .shot-ov .dev.is-sel text { fill: #8ab4ff; }
         .shot-ov .port-mark rect { fill: none; stroke: #fbbf24; stroke-width: .8; }
-        .shot-tag { position: absolute; left: 10px; bottom: 8px; font-family: 'Geist Mono', monospace;
-            font-size: 9.5px; letter-spacing: .1em; color: #8ab4ff; background: rgba(6,17,39,.82); padding: 3px 8px; }
+        .shot-tag { position: absolute; left: 10px; bottom: 8px; font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 11px; letter-spacing: .1em; color: #8ab4ff; background: rgba(6,17,39,.82); padding: 3px 8px; }
         .rack-split { display: grid; grid-template-columns: 34% 1fr; gap: 16px; padding: 12px; align-items: start; }
         .dev-split { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 12px; align-items: start; }
         @media (min-width: 900px) { .dev-split { grid-template-columns: 42% 1fr; } }
         .rec, .pmap { display: flex; flex-direction: column; }
-        .rec-h { font-family: 'Geist Mono', monospace; font-size: 9.5px; letter-spacing: .1em;
+        .rec-h { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: .1em;
             color: #6b82a6; border-bottom: 1px solid #24395c; padding-bottom: 7px; margin-bottom: 4px; }
-        .rec-row { display: flex; justify-content: space-between; font-family: 'Geist Mono', monospace;
+        .rec-row { display: flex; justify-content: space-between; font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
             font-size: 11px; color: #dce6f5; border-bottom: 1px solid #16294a; padding: 7px 0; }
         .rec-row span:first-child { color: #6b82a6; }
         .rec-row .ok { color: #8ab4ff; }
@@ -242,7 +244,7 @@
         .pmap-sfp { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin-top: 6px; max-width: 160px; }
         .pmap-p { border: 1px solid #24395c; background: #0d1a30; aspect-ratio: 1 / .78;
             display: flex; align-items: center; justify-content: center; cursor: default; padding: 0; }
-        .pmap-p span { font-family: 'Geist Mono', monospace; font-size: 8.5px; color: #55688a; }
+        .pmap-p span { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: #55688a; }
         .pmap-p.live { background: #0e4f63; border-color: #8ab4ff; cursor: pointer; }
         .pmap-p.live span { color: #bdf1fb; }
         .pmap-p.live:hover { background: #17708a; }
@@ -250,28 +252,28 @@
         .pmap-p.sfp { border-style: dashed; }
         .pd { margin-top: 12px; border-top: 1px solid #24395c; padding-top: 10px;
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 10px; }
-        .pd-sel { grid-column: 1 / -1; font-family: 'Geist Mono', monospace; font-size: 9.5px;
+        .pd-sel { grid-column: 1 / -1; font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px;
             letter-spacing: .08em; color: #fbbf24; }
-        .pd-c { display: flex; flex-direction: column; font-family: 'Geist Mono', monospace; }
-        .pd-c span:first-child { font-size: 8.5px; color: #6b82a6; }
+        .pd-c { display: flex; flex-direction: column; font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+        .pd-c span:first-child { font-size: 11px; color: #6b82a6; }
         .pd-c span:last-child { font-size: 11px; color: #dce6f5; }
         .pmap-trace { margin-top: 12px; align-self: start; border: 1px solid #8ab4ff; color: #8ab4ff;
-            background: rgba(34,211,238,.07); font-family: 'Geist Mono', monospace; font-size: 10px;
+            background: rgba(34,211,238,.07); font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px;
             letter-spacing: .08em; padding: 8px 14px; cursor: pointer; }
         .pmap-trace:hover { background: rgba(34,211,238,.16); }
         .sheet-band { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end;
             gap: 10px; border-top: 1px solid #24395c; padding: 10px 12px; }
         .sheet-meta { display: flex; flex-direction: column; gap: 2px; }
-        .sheet-title { font-family: 'Geist Mono', monospace; font-size: 10px; color: #dce6f5; letter-spacing: .04em; }
-        .sheet-note { font-family: 'Geist Mono', monospace; font-size: 8.5px; color: #6b82a6; }
+        .sheet-title { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: #dce6f5; letter-spacing: .04em; }
+        .sheet-note { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: #6b82a6; }
         .tb { display: flex; border: 1px solid #24395c; }
         .tb-cell { padding: 5px 10px; border-left: 1px solid #24395c; display: flex; flex-direction: column; gap: 2px; }
         .tb-cell:first-child { border-left: 0; }
-        .tb-k { font-family: 'Geist Mono', monospace; font-size: 7px; letter-spacing: .1em; color: #6b82a6; }
-        .tb-v { font-family: 'Geist Mono', monospace; font-size: 9px; color: #dce6f5; }
+        .tb-k { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 7px; letter-spacing: .1em; color: #6b82a6; }
+        .tb-v { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; color: #dce6f5; }
         .tour-nav {
             width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
-            border: 1px solid #2c3d5c; color: #fff; font-size: 14px; line-height: 1;
+            border: 1px solid #2c3d5c; color: #fff; font-size: 15px; line-height: 1;
             transition: border-color .15s ease, background-color .15s ease, opacity .15s ease;
         }
         .tour-nav:hover:not(:disabled) { border-color: #4a5f83; background: rgba(255,255,255,.04); }
@@ -323,7 +325,7 @@
 <a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="contact-us.html" data-current="">Contact Us</a>
 </div>
 <div class="flex items-center gap-4">
-<a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] !py-[7px] !px-[14px] !text-[13px]" href="contact-us.html">Get a demo</a>
+<a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] btn-sm" href="contact-us.html">Get a demo</a>
 <button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
 </div>
 </div>
@@ -360,22 +362,22 @@
 <dl data-reveal class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-gutter border-t border-outline-variant">
 <div class="py-7 lg:pr-8 border-b lg:border-b-0 border-outline-variant">
 <dt class="eyebrow">Office address</dt>
-<dd class="mt-3"><address class="not-italic text-[15.5px] leading-relaxed text-on-background">85 Felt Rd, Suite #604<br/>South Windsor, CT 06074</address></dd>
+<dd class="mt-3"><address class="not-italic text-[15px] leading-relaxed text-on-background">85 Felt Rd, Suite #604<br/>South Windsor, CT 06074</address></dd>
 </div>
 <div class="py-7 lg:px-8 border-b lg:border-b-0 border-outline-variant">
 <dt class="eyebrow">Email</dt>
-<dd class="mt-3"><a class="text-[15.5px] text-primary hover:underline underline-offset-4" href="mailto:info@racktrack.ai">info@racktrack.ai</a>
-<p class="text-[14px] leading-relaxed mt-2">Share audit goals, rollout questions, or support requests.</p></dd>
+<dd class="mt-3"><a class="text-[15px] text-primary hover:underline underline-offset-4" href="mailto:info@racktrack.ai">info@racktrack.ai</a>
+<p class="text-[15px] leading-relaxed mt-2">Share audit goals, rollout questions, or support requests.</p></dd>
 </div>
 <div class="py-7 lg:px-8 border-b lg:border-b-0 border-outline-variant">
 <dt class="eyebrow">Phone</dt>
-<dd class="mt-3"><a class="text-[15.5px] text-primary hover:underline underline-offset-4" href="tel:+18608782448">+1 (860) 878 2448</a>
-<p class="text-[14px] leading-relaxed mt-2">Call our contact team for demos, support, and meeting schedules.</p></dd>
+<dd class="mt-3"><a class="text-[15px] text-primary hover:underline underline-offset-4" href="tel:+18608782448">+1 (860) 878 2448</a>
+<p class="text-[15px] leading-relaxed mt-2">Call our contact team for demos, support, and meeting schedules.</p></dd>
 </div>
 <div class="py-7 lg:pl-8 border-outline-variant">
 <dt class="eyebrow">Response time</dt>
-<dd class="mt-3"><p class="text-[15.5px] text-on-background">Within 1 business day</p>
-<p class="text-[14px] leading-relaxed mt-2">We respond quickly to demos, planning, and support conversations.</p></dd>
+<dd class="mt-3"><p class="text-[15px] text-on-background">Within 1 business day</p>
+<p class="text-[15px] leading-relaxed mt-2">We respond quickly to demos, planning, and support conversations.</p></dd>
 </div>
 </dl>
 </div>
@@ -388,28 +390,28 @@
 <p class="eyebrow">Request platform brief</p>
 <h2 class="h2 mt-5 max-w-[16ch]">Tell us about your infrastructure.</h2>
 <p class="text-[15px] leading-relaxed mt-6">Tell us about your infrastructure footprint and the RackTrack team will scope a guided demo against your environment.</p>
-<p class="text-[14px] leading-relaxed text-outline border-t border-outline-variant pt-6 mt-8">A baseline assessment typically takes about twenty minutes for a single rack or row, and compares your existing records against observed physical and network state.</p>
+<p class="text-[15px] leading-relaxed text-outline border-t border-outline-variant pt-6 mt-8">A baseline assessment typically takes about twenty minutes for a single rack or row, and compares your existing records against observed physical and network state.</p>
 </div>
 <div class="lg:col-span-7 lg:col-start-6">
 <form class="flex flex-col gap-7" id="brief-request" novalidate="">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-7">
 <div class="flex flex-col gap-2">
-<label class="text-[13.5px] font-medium text-on-background" for="fullName">Full Name <span class="text-outline font-normal">(required)</span></label>
+<label class="text-[13px] font-medium text-on-background" for="fullName">Full Name <span class="text-outline font-normal">(required)</span></label>
 <input aria-describedby="err-fullName" class="border border-outline-variant rounded-lg px-3.5 py-2.5 text-[15px] bg-background text-on-background placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition" id="fullName" name="fullName" placeholder="Enter your full name" type="text"/>
-<span class="text-[12.5px] text-error hidden" id="err-fullName"></span>
+<span class="text-[13px] text-error hidden" id="err-fullName"></span>
 </div>
 <div class="flex flex-col gap-2">
-<label class="text-[13.5px] font-medium text-on-background" for="email">Email Address <span class="text-outline font-normal">(required)</span></label>
+<label class="text-[13px] font-medium text-on-background" for="email">Email Address <span class="text-outline font-normal">(required)</span></label>
 <input aria-describedby="err-email" class="border border-outline-variant rounded-lg px-3.5 py-2.5 text-[15px] bg-background text-on-background placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition" id="email" name="email" placeholder="Enter your email address" type="email"/>
-<span class="text-[12.5px] text-error hidden" id="err-email"></span>
+<span class="text-[13px] text-error hidden" id="err-email"></span>
 </div>
 </div>
 <div class="flex flex-col gap-2">
-<label class="text-[13.5px] font-medium text-on-background" for="company">Company Name <span class="text-outline font-normal">(optional)</span></label>
+<label class="text-[13px] font-medium text-on-background" for="company">Company Name <span class="text-outline font-normal">(optional)</span></label>
 <input class="border border-outline-variant rounded-lg px-3.5 py-2.5 text-[15px] bg-background text-on-background placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition" id="company" name="company" placeholder="Enter your company name" type="text"/>
 </div>
 <div class="flex flex-col gap-2">
-<label class="text-[13.5px] font-medium text-on-background" for="mobile">Mobile Number <span class="text-outline font-normal">(required)</span></label>
+<label class="text-[13px] font-medium text-on-background" for="mobile">Mobile Number <span class="text-outline font-normal">(required)</span></label>
 <div class="flex gap-3">
 <select class="border border-outline-variant rounded-lg px-3 py-2.5 text-[15px] bg-background text-on-background focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition w-[132px]" id="countryCode" name="countryCode">
 <option value="+1">US +1</option>
@@ -420,10 +422,10 @@
 </select>
 <input aria-describedby="err-mobile" class="flex-1 border border-outline-variant rounded-lg px-3.5 py-2.5 text-[15px] bg-background text-on-background placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition" id="mobile" inputmode="numeric" name="mobile" placeholder="Enter 10-digit number" type="tel"/>
 </div>
-<span class="text-[12.5px] text-error hidden" id="err-mobile"></span>
+<span class="text-[13px] text-error hidden" id="err-mobile"></span>
 </div>
 <div class="flex flex-col gap-2">
-<label class="text-[13.5px] font-medium text-on-background" for="requirement">Requirement <span class="text-outline font-normal">(optional)</span></label>
+<label class="text-[13px] font-medium text-on-background" for="requirement">Requirement <span class="text-outline font-normal">(optional)</span></label>
 <textarea class="border border-outline-variant rounded-lg px-3.5 py-2.5 text-[15px] bg-background text-on-background placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary/25 outline-none transition" id="requirement" name="requirement" placeholder="Enter your requirement or notes" rows="4"></textarea>
 </div>
 <div class="flex flex-wrap items-center gap-5 border-t border-outline-variant pt-7">
@@ -445,18 +447,18 @@
 <h2 class="h2 mt-5">Before you connect.</h2>
 </div>
 <div class="md:col-span-7 md:col-start-6 row-list border-t border-b border-outline-variant">
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Can RackTrack scan existing racks without downtime?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack uses a smartphone video sweep to capture rack state without agents, downtime, or disruption to production infrastructure.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">What kind of infrastructure can RackTrack identify?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack supports a broad and continuously expanding range of enterprise networking and data center infrastructure devices.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">How does RackTrack verify inventory accuracy?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack reconciles physical scan data against live infrastructure signals to maintain continuously verified inventory and topology records.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Does RackTrack replace our CMDB or DCIM?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">No. RackTrack acts as the physical infrastructure intelligence layer underneath existing CMDB, DCIM, and ITSM platforms — helping reconcile what systems report against what is physically present in the rack.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Is RackTrack useful for compliance and audit preparation?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack helps generate continuously updated inventory, topology, and infrastructure evidence that supports audit readiness and operational reviews.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Can RackTrack help during incidents and outages?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack helps teams quickly identify devices, ports, and cable relationships so responders spend less time validating rack state during critical incidents.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Does RackTrack support security and vulnerability workflows?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack provides device-level firmware and infrastructure posture visibility to help security teams identify operational and compliance risks faster.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">How long does a baseline assessment take?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Typically about twenty minutes for a single rack or row. The assessment compares your existing records against observed physical and network state.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Can we request a demo before committing?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. You can schedule a guided walkthrough against your own environment to see how RackTrack performs on real infrastructure.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Does RackTrack work with existing enterprise tools?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack is designed to integrate with existing infrastructure, inventory, compliance, and operational workflows.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Where can RackTrack be deployed?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack supports cloud-hosted, private cloud, on-premise, and air-gapped deployment models for regulated or restricted environments.</p></details>
-<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Who uses RackTrack?</span><span class="material-symbols-outlined chev text-outline !text-[20px] shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack is built for infrastructure leaders, network engineering teams, security operations, compliance owners, incident responders, and data center operators.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Can RackTrack scan existing racks without downtime?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack uses a smartphone video sweep to capture rack state without agents, downtime, or disruption to production infrastructure.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">What kind of infrastructure can RackTrack identify?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack supports a broad and continuously expanding range of enterprise networking and data center infrastructure devices.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">How does RackTrack verify inventory accuracy?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack reconciles physical scan data against live infrastructure signals to maintain continuously verified inventory and topology records.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Does RackTrack replace our CMDB or DCIM?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">No. RackTrack acts as the physical infrastructure intelligence layer underneath existing CMDB, DCIM, and ITSM platforms — helping reconcile what systems report against what is physically present in the rack.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Is RackTrack useful for compliance and audit preparation?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack helps generate continuously updated inventory, topology, and infrastructure evidence that supports audit readiness and operational reviews.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Can RackTrack help during incidents and outages?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack helps teams quickly identify devices, ports, and cable relationships so responders spend less time validating rack state during critical incidents.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Does RackTrack support security and vulnerability workflows?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack provides device-level firmware and infrastructure posture visibility to help security teams identify operational and compliance risks faster.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">How long does a baseline assessment take?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Typically about twenty minutes for a single rack or row. The assessment compares your existing records against observed physical and network state.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Can we request a demo before committing?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. You can schedule a guided walkthrough against your own environment to see how RackTrack performs on real infrastructure.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Does RackTrack work with existing enterprise tools?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">Yes. RackTrack is designed to integrate with existing infrastructure, inventory, compliance, and operational workflows.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Where can RackTrack be deployed?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack supports cloud-hosted, private cloud, on-premise, and air-gapped deployment models for regulated or restricted environments.</p></details>
+<details><summary class="flex justify-between items-baseline gap-6 py-5"><span class="h3 pr-2">Who uses RackTrack?</span><span class="material-symbols-outlined chev text-outline shrink-0">expand_more</span></summary><p class="text-[15px] leading-relaxed pb-6 measure">RackTrack is built for infrastructure leaders, network engineering teams, security operations, compliance owners, incident responders, and data center operators.</p></details>
 </div>
 </div>
 </div>
@@ -467,7 +469,7 @@
 <div aria-modal="true" class="hidden fixed inset-0 z-[60] items-center justify-center bg-inverse-surface/35 backdrop-blur-[2px] px-margin" id="success-modal" role="dialog">
 <div class="bg-background border border-outline-variant max-w-[480px] w-full p-9 flex flex-col gap-4">
 <p class="eyebrow">Confirmation</p>
-<h3 class="h2 !text-[24px]">Demo Request Submitted</h3>
+<h3 class="h2-sm">Demo Request Submitted</h3>
 <p class="text-[15px] leading-relaxed">Your demo request has been submitted successfully.</p>
 <p class="text-[15px] leading-relaxed">We have received your request and our team will review it shortly before reaching out with the next steps.</p>
 <a class="btn btn-primary max-w-fit mt-3" href="code.html">Close and Go Home</a>
@@ -567,34 +569,34 @@
 <div class="grid grid-cols-2 md:grid-cols-12 gap-x-gutter gap-y-10">
 <div class="col-span-2 md:col-span-4 flex flex-col gap-3">
 <span class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="assets/logo.jpg"/>RackTrack</span>
-<p class="text-[13.5px] leading-relaxed max-w-[30ch]">Physical Infrastructure Intelligence for Data Centers.</p>
+<p class="text-[13px] leading-relaxed max-w-[30ch]">Physical Infrastructure Intelligence for Data Centers.</p>
 </div>
 <nav class="md:col-span-2 md:col-start-6 flex flex-col gap-2.5">
 <span class="eyebrow !text-white/45">Platform</span>
-<a class="text-[13.5px] hover:text-white transition-colors" href="why-racktrack.html">Why RackTrack</a>
-<a class="text-[13.5px] hover:text-white transition-colors" href="solutions.html">Solutions</a>
-<a class="text-[13.5px] hover:text-white transition-colors" href="use-cases.html">Use Cases</a>
-<a class="text-[13.5px] hover:text-white transition-colors" href="trust-security.html">Trust &amp; Security</a>
+<a class="text-[13px] hover:text-white transition-colors" href="why-racktrack.html">Why RackTrack</a>
+<a class="text-[13px] hover:text-white transition-colors" href="solutions.html">Solutions</a>
+<a class="text-[13px] hover:text-white transition-colors" href="use-cases.html">Use Cases</a>
+<a class="text-[13px] hover:text-white transition-colors" href="trust-security.html">Trust &amp; Security</a>
 </nav>
 <nav class="md:col-span-2 flex flex-col gap-2.5">
 <span class="eyebrow !text-white/45">Company</span>
-<a class="text-[13.5px] hover:text-white transition-colors" href="resources.html">Resources</a>
-<a class="text-[13.5px] hover:text-white transition-colors" href="about-us.html">About Us</a>
-<a class="text-[13.5px] hover:text-white transition-colors" href="contact-us.html">Contact Us</a>
+<a class="text-[13px] hover:text-white transition-colors" href="resources.html">Resources</a>
+<a class="text-[13px] hover:text-white transition-colors" href="about-us.html">About Us</a>
+<a class="text-[13px] hover:text-white transition-colors" href="contact-us.html">Contact Us</a>
 </nav>
 <div class="col-span-2 md:col-span-3 md:col-start-10 flex flex-col gap-2.5">
 <span class="eyebrow !text-white/45">Contact</span>
-<a class="text-[13.5px] hover:text-white transition-colors" href="mailto:info@racktrack.ai">info@racktrack.ai</a>
-<a class="text-[13.5px] hover:text-white transition-colors" href="tel:+18608782448">+1 (860) 878 2448</a>
-<address class="text-[13.5px] not-italic leading-relaxed text-shell-text/70">85 Felt Rd, Suite #604<br/>South Windsor, CT 06074</address>
+<a class="text-[13px] hover:text-white transition-colors" href="mailto:info@racktrack.ai">info@racktrack.ai</a>
+<a class="text-[13px] hover:text-white transition-colors" href="tel:+18608782448">+1 (860) 878 2448</a>
+<address class="text-[13px] not-italic leading-relaxed text-shell-text/70">85 Felt Rd, Suite #604<br/>South Windsor, CT 06074</address>
 </div>
 </div>
 <div class="border-t border-shell-line mt-10 pt-5 flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4">
-<p class="mono text-[10.5px] text-shell-text/60 tracking-[0.04em]">© 2026 RackTrack Inc. · Physical Infrastructure Intelligence for Data Centers · Patent Pending</p>
+<p class="mono text-[11px] text-shell-text/60 tracking-[0.04em]">© 2026 RackTrack Inc. · Physical Infrastructure Intelligence for Data Centers · Patent Pending</p>
 <div class="flex gap-5">
-<a class="text-[12.5px] hover:text-white transition-colors" href="https://www.linkedin.com/company/racktrack/" rel="noopener" target="_blank">LinkedIn</a>
-<a class="text-[12.5px] hover:text-white transition-colors" href="https://www.instagram.com/racktrack_inc/" rel="noopener" target="_blank">Instagram</a>
-<a class="text-[12.5px] hover:text-white transition-colors" href="https://www.facebook.com/share/18depF5xzA/" rel="noopener" target="_blank">Facebook</a>
+<a class="text-[13px] hover:text-white transition-colors" href="https://www.linkedin.com/company/racktrack/" rel="noopener" target="_blank">LinkedIn</a>
+<a class="text-[13px] hover:text-white transition-colors" href="https://www.instagram.com/racktrack_inc/" rel="noopener" target="_blank">Instagram</a>
+<a class="text-[13px] hover:text-white transition-colors" href="https://www.facebook.com/share/18depF5xzA/" rel="noopener" target="_blank">Facebook</a>
 </div>
 </div>
 </div></footer>
