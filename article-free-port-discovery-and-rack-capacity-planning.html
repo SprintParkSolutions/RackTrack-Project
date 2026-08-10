@@ -63,6 +63,32 @@
 
         /* Dark shell bands — nav, hero, CTA, footer */
         .shell-band { background: var(--shell); color: var(--shell-text); }
+
+      /* hero appearance: one class on <html> restyles every page's hero band */
+      html:not(.hero-light) [data-hero="light"] { display: none; }
+      html.hero-light [data-hero="dark"] { display: none; }
+      html.hero-light .shell-band { background: #fff; color: var(--body); }
+      html.hero-light .shell-band h1, html.hero-light .shell-band h2,
+      html.hero-light .shell-band h3, html.hero-light .shell-band h4 { color: var(--ink); }
+      html.hero-light .shell-band .eyebrow { color: var(--muted); }
+      html.hero-light .shell-band .stat { color: var(--ink); }
+      html.hero-light .shell-band .btn-primary { background: var(--blue); color: #fff; }
+      html.hero-light .shell-band .btn-primary:hover { background: #12309f; }
+      html.hero-light .shell-band .btn-ghost { border-color: var(--hair-2); color: var(--ink); }
+      html.hero-light .shell-band .btn-ghost:hover { border-color: #97a1b3; }
+      html.hero-light .shell-band .text-white { color: var(--ink); }
+      html.hero-light .shell-band [class*="text-shell-text"] { color: var(--muted); }
+      html.hero-light .shell-band [class*="border-shell-line"] { border-color: var(--hair); }
+      html.hero-light .shell-band { border-bottom: 1px solid var(--hair); }
+      /* pages whose hero is a photograph: light mode drops the picture for paper */
+      html.hero-light .shell-band > img, html.hero-light .shell-band > div[aria-hidden="true"] { display: none; }
+      /* the switch itself */
+      .hero-switch { width: 34px; height: 34px; border-radius: 9999px; display: inline-flex;
+        align-items: center; justify-content: center; border: 1px solid var(--shell-line);
+        color: var(--shell-text); transition: color .15s ease, border-color .15s ease; cursor: pointer; }
+      .hero-switch:hover { color: #fff; border-color: #4a5f83; }
+      .hero-switch .material-symbols-outlined { font-size: 18px; }
+
         .shell-band h1, .shell-band h2, .shell-band h3, .shell-band h4 { color: #fff; }
         .shell-band .eyebrow { color: var(--accent); }
         .shell-band .stat { color: #fff; }
@@ -334,7 +360,7 @@
 </div>
 <div class="flex items-center gap-4">
 <a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] btn-sm" href="contact-us.html">Get a demo</a>
-<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
+<button type="button" class="hero-switch" id="hero-switch" aria-pressed="false" aria-label="Switch hero appearance" title="Switch hero appearance"><span class="material-symbols-outlined" aria-hidden="true" data-hero-icon>light_mode</span></button><button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
 </div>
 </div>
 <div class="hidden lg:hidden border-t border-shell-line bg-shell px-margin py-5 flex-col gap-4" id="mobile-menu">
@@ -575,6 +601,26 @@
             links.forEach(function (a) { ro.observe(a); });
         }
     }
+})();
+</script>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('hero-switch');
+  function apply(light) {
+    root.classList.toggle('hero-light', light);
+    if (btn) {
+      btn.setAttribute('aria-pressed', String(light));
+      var ic = btn.querySelector('[data-hero-icon]');
+      if (ic) { ic.textContent = light ? 'dark_mode' : 'light_mode'; }
+    }
+    try { localStorage.setItem('rt-hero', light ? 'light' : 'dark'); } catch (e) {}
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('rt-hero'); } catch (e) {}
+  apply(saved === 'light');
+  if (btn) { btn.addEventListener('click', function () { apply(!root.classList.contains('hero-light')); }); }
 })();
 </script>
 </body></html>
