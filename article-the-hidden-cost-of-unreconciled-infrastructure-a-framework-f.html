@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>The hidden cost of unreconciled infrastructure: A framework for quantifying topology debt | RackTrack</title>
-<meta content="Manual audits are slow, expensive, and often out of date before the work is complete — creating topology debt that spreads across teams." name="description"/>
+<meta content="Manual audits are slow, expensive, and often out of date before the work is complete - creating topology debt that spreads across teams." name="description"/>
 <link href="racktrack.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -61,33 +61,8 @@
         }
         .stat-sm { font-size: clamp(26px,2.1vw,30px); }
 
-        /* Dark shell bands — nav, hero, CTA, footer */
+        /* Dark shell bands - nav, hero, CTA, footer */
         .shell-band { background: var(--shell); color: var(--shell-text); }
-
-      /* hero appearance: one class on <html> restyles every page's hero band */
-      html:not(.hero-light) [data-hero="light"] { display: none; }
-      html.hero-light [data-hero="dark"] { display: none; }
-      html.hero-light .shell-band { background: #fff; color: var(--body); }
-      html.hero-light .shell-band h1, html.hero-light .shell-band h2,
-      html.hero-light .shell-band h3, html.hero-light .shell-band h4 { color: var(--ink); }
-      html.hero-light .shell-band .eyebrow { color: var(--muted); }
-      html.hero-light .shell-band .stat { color: var(--ink); }
-      html.hero-light .shell-band .btn-primary { background: var(--blue); color: #fff; }
-      html.hero-light .shell-band .btn-primary:hover { background: #12309f; }
-      html.hero-light .shell-band .btn-ghost { border-color: var(--hair-2); color: var(--ink); }
-      html.hero-light .shell-band .btn-ghost:hover { border-color: #97a1b3; }
-      html.hero-light .shell-band .text-white { color: var(--ink); }
-      html.hero-light .shell-band [class*="text-shell-text"] { color: var(--muted); }
-      html.hero-light .shell-band [class*="border-shell-line"] { border-color: var(--hair); }
-      html.hero-light .shell-band { border-bottom: 1px solid var(--hair); }
-      /* pages whose hero is a photograph: light mode drops the picture for paper */
-      html.hero-light .shell-band > img, html.hero-light .shell-band > div[aria-hidden="true"] { display: none; }
-      /* the switch itself */
-      .hero-switch { width: 34px; height: 34px; border-radius: 9999px; display: inline-flex;
-        align-items: center; justify-content: center; border: 1px solid var(--shell-line);
-        color: var(--shell-text); transition: color .15s ease, border-color .15s ease; cursor: pointer; }
-      .hero-switch:hover { color: #fff; border-color: #4a5f83; }
-      .hero-switch .material-symbols-outlined { font-size: 18px; }
 
         .shell-band h1, .shell-band h2, .shell-band h3, .shell-band h4 { color: #fff; }
         .shell-band .eyebrow { color: var(--accent); }
@@ -113,7 +88,7 @@
         .link-arrow { display: inline-flex; align-items: baseline; gap: 6px; font-size: 15px; font-weight: 500; color: var(--blue); }
         .link-arrow:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-        /* rules separate groups, not every item — spacing does the item work */
+        /* rules separate groups, not every item - spacing does the item work */
         .row-list > * + * { border-top: 0; }
         .row-list > * { padding-top: 6px; padding-bottom: 6px; }
         .row-list > * + * { margin-top: 14px; }
@@ -181,7 +156,7 @@
         :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 1px; }
         .shell-band :focus-visible, .app-bar :focus-visible { outline-color: var(--accent); }
 
-        /* 6 · reveals: text rises, figures wipe — different gestures for different content */
+        /* 6 · reveals: text rises, figures wipe - different gestures for different content */
         [data-reveal] { opacity: 0; transform: translateY(10px);
             transition: opacity .62s cubic-bezier(.22,1,.28,1), transform .62s cubic-bezier(.22,1,.28,1); }
         [data-reveal].is-in { opacity: 1; transform: none; }
@@ -250,7 +225,7 @@
         .shot-row img { height: 300px; object-position: center 42%; }
         /* photo aspect matches the source so the overlay registers 1:1 */
         .shot-rack, .shot-dev { position: relative; width: 100%; height: 0; align-self: start; }
-        .shot-rack { padding-top: 150%; }                 /* source is 2:3 — overlay maps 1:1 */
+        .shot-rack { padding-top: 150%; }                 /* source is 2:3 - overlay maps 1:1 */
         .shot-dev  { padding-top: 62%; }                  /* landscape switch close-up */
         .shot-rack img, .shot-dev img { position: absolute; inset: 0; width: 100%; height: 100%; }
         .shot-rack img { object-fit: fill; }
@@ -317,7 +292,7 @@
             .js .hot .hot-ring { animation: none; }
         }
 
-        /* Motion — one quiet reveal on first view. No loops, no bounce, no overshoot. */
+        /* Motion - one quiet reveal on first view. No loops, no bounce, no overshoot. */
         .js [data-reveal] { opacity: 0; transform: translateY(14px); }
         .js [data-reveal].is-in {
             opacity: 1; transform: none;
@@ -360,7 +335,7 @@
 </div>
 <div class="flex items-center gap-4">
 <a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] btn-sm" href="contact-us.html">Get a demo</a>
-<button type="button" class="hero-switch" id="hero-switch" aria-pressed="false" aria-label="Switch hero appearance" title="Switch hero appearance"><span class="material-symbols-outlined" aria-hidden="true" data-hero-icon>light_mode</span></button><button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
+<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
 </div>
 </div>
 <div class="hidden lg:hidden border-t border-shell-line bg-shell px-margin py-5 flex-col gap-4" id="mobile-menu">
@@ -383,7 +358,7 @@
 <a class="mono text-[11px] tracking-[0.1em] uppercase text-accent hover:underline" href="resources.html">&#8592; All articles</a>
 <p class="eyebrow mt-7">INFRASTRUCTURE</p>
 <h1 class="h1 mt-5 max-w-[20ch]">The hidden cost of unreconciled infrastructure: A framework for quantifying topology debt</h1>
-<p class="lede mt-7 max-w-[62ch]">Manual audits are slow, expensive, and often out of date before the work is complete — creating topology debt that spreads across teams.</p>
+<p class="lede mt-7 max-w-[62ch]">Manual audits are slow, expensive, and often out of date before the work is complete - creating topology debt that spreads across teams.</p>
 </div>
 </section>
 <article class="py-14 md:py-20">
@@ -569,7 +544,7 @@
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* nav ink — one bar that travels, settling on the current page */
+    /* nav ink - one bar that travels, settling on the current page */
     var rail = document.querySelector('.nav-rail');
     if (rail && !reduce) {
         var ink = document.createElement('span');
@@ -594,7 +569,7 @@
         requestAnimationFrame(settle);
         window.addEventListener('load', settle);
         if (document.fonts && document.fonts.ready) { document.fonts.ready.then(settle); }
-        // the webfont swap changes link widths after first paint — re-measure when it does
+        // the webfont swap changes link widths after first paint - re-measure when it does
         if (window.ResizeObserver) {
             var ro = new ResizeObserver(function () { settle(); });
             links.forEach(function (a) { ro.observe(a); });
@@ -603,23 +578,5 @@
 })();
 </script>
 
-<script>
-(function () {
-  var root = document.documentElement;
-  var btn = document.getElementById('hero-switch');
-  function apply(light) {
-    root.classList.toggle('hero-light', light);
-    if (btn) {
-      btn.setAttribute('aria-pressed', String(light));
-      var ic = btn.querySelector('[data-hero-icon]');
-      if (ic) { ic.textContent = light ? 'dark_mode' : 'light_mode'; }
-    }
-    try { localStorage.setItem('rt-hero', light ? 'light' : 'dark'); } catch (e) {}
-  }
-  var saved = null;
-  try { saved = localStorage.getItem('rt-hero'); } catch (e) {}
-  apply(saved === 'light');
-  if (btn) { btn.addEventListener('click', function () { apply(!root.classList.contains('hero-light')); }); }
-})();
-</script>
+
 </body></html>

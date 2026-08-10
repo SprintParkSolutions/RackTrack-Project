@@ -61,33 +61,8 @@
         }
         .stat-sm { font-size: clamp(26px,2.1vw,30px); }
 
-        /* Dark shell bands — nav, hero, CTA, footer */
+        /* Dark shell bands - nav, hero, CTA, footer */
         .shell-band { background: var(--shell); color: var(--shell-text); }
-
-      /* hero appearance: one class on <html> restyles every page's hero band */
-      html:not(.hero-light) [data-hero="light"] { display: none; }
-      html.hero-light [data-hero="dark"] { display: none; }
-      html.hero-light .shell-band { background: #fff; color: var(--body); }
-      html.hero-light .shell-band h1, html.hero-light .shell-band h2,
-      html.hero-light .shell-band h3, html.hero-light .shell-band h4 { color: var(--ink); }
-      html.hero-light .shell-band .eyebrow { color: var(--muted); }
-      html.hero-light .shell-band .stat { color: var(--ink); }
-      html.hero-light .shell-band .btn-primary { background: var(--blue); color: #fff; }
-      html.hero-light .shell-band .btn-primary:hover { background: #12309f; }
-      html.hero-light .shell-band .btn-ghost { border-color: var(--hair-2); color: var(--ink); }
-      html.hero-light .shell-band .btn-ghost:hover { border-color: #97a1b3; }
-      html.hero-light .shell-band .text-white { color: var(--ink); }
-      html.hero-light .shell-band [class*="text-shell-text"] { color: var(--muted); }
-      html.hero-light .shell-band [class*="border-shell-line"] { border-color: var(--hair); }
-      html.hero-light .shell-band { border-bottom: 1px solid var(--hair); }
-      /* pages whose hero is a photograph: light mode drops the picture for paper */
-      html.hero-light .shell-band > img, html.hero-light .shell-band > div[aria-hidden="true"] { display: none; }
-      /* the switch itself */
-      .hero-switch { width: 34px; height: 34px; border-radius: 9999px; display: inline-flex;
-        align-items: center; justify-content: center; border: 1px solid var(--shell-line);
-        color: var(--shell-text); transition: color .15s ease, border-color .15s ease; cursor: pointer; }
-      .hero-switch:hover { color: #fff; border-color: #4a5f83; }
-      .hero-switch .material-symbols-outlined { font-size: 18px; }
 
         .shell-band h1, .shell-band h2, .shell-band h3, .shell-band h4 { color: #fff; }
         .shell-band .eyebrow { color: var(--accent); }
@@ -113,7 +88,7 @@
         .link-arrow { display: inline-flex; align-items: baseline; gap: 6px; font-size: 15px; font-weight: 500; color: var(--blue); }
         .link-arrow:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-        /* rules separate groups, not every item — spacing does the item work */
+        /* rules separate groups, not every item - spacing does the item work */
         .row-list > * + * { border-top: 0; }
         .row-list > * { padding-top: 6px; padding-bottom: 6px; }
         .row-list > * + * { margin-top: 14px; }
@@ -130,7 +105,7 @@
         details[open] .chev {font-size:20px; transform: rotate(180deg); }
         .chev { transition: transform .2s ease; }
 
-        /* product evidence — real detection output */
+        /* product evidence - real detection output */
         .ev { border: 1px solid var(--hair); background: #fff; }
         .ev-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
             gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--hair); background: #f7f8fb; }
@@ -206,7 +181,7 @@
         :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 1px; }
         .shell-band :focus-visible, .app-bar :focus-visible { outline-color: var(--accent); }
 
-        /* 6 · reveals: text rises, figures wipe — different gestures for different content */
+        /* 6 · reveals: text rises, figures wipe - different gestures for different content */
         [data-reveal] { opacity: 0; transform: translateY(10px);
             transition: opacity .62s cubic-bezier(.22,1,.28,1), transform .62s cubic-bezier(.22,1,.28,1); }
         [data-reveal].is-in { opacity: 1; transform: none; }
@@ -275,7 +250,7 @@
         .shot-row img { height: 300px; object-position: center 42%; }
         /* photo aspect matches the source so the overlay registers 1:1 */
         .shot-rack, .shot-dev { position: relative; width: 100%; height: 0; align-self: start; }
-        .shot-rack { padding-top: 150%; }                 /* source is 2:3 — overlay maps 1:1 */
+        .shot-rack { padding-top: 150%; }                 /* source is 2:3 - overlay maps 1:1 */
         .shot-dev  { padding-top: 62%; }                  /* landscape switch close-up */
         .shot-rack img, .shot-dev img { position: absolute; inset: 0; width: 100%; height: 100%; }
         .shot-rack img { object-fit: fill; }
@@ -342,7 +317,7 @@
             .js .hot .hot-ring { animation: none; }
         }
 
-        /* Motion — one quiet reveal on first view. No loops, no bounce, no overshoot. */
+        /* Motion - one quiet reveal on first view. No loops, no bounce, no overshoot. */
         .js [data-reveal] { opacity: 0; transform: translateY(14px); }
         .js [data-reveal].is-in {
             opacity: 1; transform: none;
@@ -385,7 +360,7 @@
 </div>
 <div class="flex items-center gap-4">
 <a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] btn-sm" href="contact-us.html">Get a demo</a>
-<button type="button" class="hero-switch" id="hero-switch" aria-pressed="false" aria-label="Switch hero appearance" title="Switch hero appearance"><span class="material-symbols-outlined" aria-hidden="true" data-hero-icon>light_mode</span></button><button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
+<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
 </div>
 </div>
 <div class="hidden lg:hidden border-t border-shell-line bg-shell px-margin py-5 flex-col gap-4" id="mobile-menu">
@@ -409,7 +384,7 @@
 <div class="md:col-span-8 md:col-start-3 md:row-start-1 text-center">
 <p class="eyebrow">Our story</p>
 <h1 class="h1-page mt-6 mx-auto max-w-[24ch]">Why we built RackTrack</h1>
-<p class="lede mt-7 max-w-[56ch] mx-auto">Two decades of running enterprise infrastructure — and one problem that never went away. We stopped waiting for someone else to solve it.</p>
+<p class="lede mt-7 max-w-[56ch] mx-auto">Two decades of running enterprise infrastructure - and one problem that never went away. We stopped waiting for someone else to solve it.</p>
 </div>
 
 </div>
@@ -417,7 +392,7 @@
 </section><!-- 20 minutes -->
 <section class="border-t border-outline-variant py-14 md:py-[72px] bg-surface">
 <div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4"><div class="md:col-span-6"><p class="eyebrow">Baseline assessment</p><h2 class="h2 mt-4 max-w-[20ch]">Three sources, one afternoon.</h2></div><div class="md:col-span-5 md:col-start-8 self-end"><p class="stat">20 minutes</p><p class="text-[15px] leading-relaxed text-outline mt-2">for a single rack or row — your records, your network, and the rack itself, put side by side.</p></div></div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4"><div class="md:col-span-6"><p class="eyebrow">Baseline assessment</p><h2 class="h2 mt-4 max-w-[20ch]">Three sources, one afternoon.</h2></div><div class="md:col-span-5 md:col-start-8 self-end"><p class="stat">20 minutes</p><p class="text-[15px] leading-relaxed text-outline mt-2">for a single rack or row - your records, your network, and the rack itself, put side by side.</p></div></div>
 <div class="mt-12 md:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8">
 <ol data-reveal class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-x-gutter border-t border-outline-variant">
 <li class="py-7 sm:pr-7 border-b sm:border-b-0 border-outline-variant">
@@ -440,7 +415,7 @@
 <p class="text-[15px] leading-relaxed mt-2">CMDB vs Network vs RackTrack. Discrepancies. Gaps. Verified.</p>
 </div>
 </div>
-<p class="mono text-[11px] tracking-[0.06em] text-outline border-t border-outline-variant pt-6 mt-0">Clarity. Confidence. Control. — All in twenty minutes.</p>
+<p class="mono text-[11px] tracking-[0.06em] text-outline border-t border-outline-variant pt-6 mt-0">Clarity. Confidence. Control. - All in twenty minutes.</p>
 </div>
 </section>
 
@@ -448,8 +423,8 @@
 <section class="py-14 md:py-20">
 <div class="max-w-container-max-width mx-auto px-margin">
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<h2 class="h2 md:col-span-5 max-w-[20ch]">Physical infrastructure intelligence — captured, validated, reconciled, and operationalized.</h2>
-<p class="md:col-span-6 md:col-start-7 lede self-end">One phone sweep produces a continuously reconciled digital twin of your physical rack — inventory, topology, port state, and firmware posture synced to every system your teams already run.</p>
+<h2 class="h2 md:col-span-5 max-w-[20ch]">Physical infrastructure intelligence - captured, validated, reconciled, and operationalized.</h2>
+<p class="md:col-span-6 md:col-start-7 lede self-end">One phone sweep produces a continuously reconciled digital twin of your physical rack - inventory, topology, port state, and firmware posture synced to every system your teams already run.</p>
 </div>
 <dl data-reveal class="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-gutter border-t border-outline-variant">
 <div class="py-7 lg:pr-8 border-b lg:border-b-0 border-outline-variant"><dt class="eyebrow"><span class="mono text-[11px] text-outline">01 &#183; </span>Capture</dt><dd class="h3 mt-3">Phone-guided rack sensing</dd></div>
@@ -457,7 +432,7 @@
 <div class="py-7 lg:px-8 border-b lg:border-b-0 border-outline-variant"><dt class="eyebrow"><span class="mono text-[11px] text-outline">03 &#183; </span>Reconcile</dt><dd class="h3 mt-3">Structured intelligence</dd></div>
 <div class="py-7 lg:pl-8 border-outline-variant"><dt class="eyebrow"><span class="mono text-[11px] text-outline">04 &#183; </span>Operationalize</dt><dd class="h3 mt-3">Audit-ready artifacts</dd></div>
 </dl>
-<p class="mono text-[11px] tracking-[0.06em] text-outline border-t border-outline-variant pt-6">Workflow — Compare, approve, sync, and share the rack state across your operating stack.</p>
+<p class="mono text-[11px] tracking-[0.06em] text-outline border-t border-outline-variant pt-6">Workflow - Compare, approve, sync, and share the rack state across your operating stack.</p>
 </div>
 </section>
 
@@ -502,7 +477,7 @@
 </div>
 <p class="md:col-span-6 md:col-start-7 lede self-end">RackTrack keeps physical rack data current, structured, and ready for the teams that operate it every day.</p>
 </div>
-<figure class="ev"><figcaption class="ev-head"><span class="ev-title">Sweep output — cabinet B-06</span><span class="ev-sub mono">2026-08-07 09:14 · sweep-03</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">U42-41</td><td class="ev-dev">Patch panel, 24 port</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.98</td></tr><tr class="ev-ok"><td class="ev-u">U39</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.99</td></tr><tr class="ev-warn"><td class="ev-u">U35</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">model differs — CMDB says 24T</td><td class="ev-conf">0.99</td></tr><tr class="ev-ok"><td class="ev-u">U31</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.97</td></tr><tr class="ev-miss"><td class="ev-u">U27</td><td class="ev-dev">Unidentified 1U appliance</td><td class="ev-note">no CMDB record</td><td class="ev-conf">0.61</td></tr><tr class="ev-free"><td class="ev-u">U18-05</td><td class="ev-dev">—</td><td class="ev-note">14U free</td><td class="ev-conf">—</td></tr></tbody></table><p class="ev-foot mono">11 devices identified · 9 matched · 2 exceptions · raised as work order WO-2026-0814</p></figure>
+<figure class="ev"><figcaption class="ev-head"><span class="ev-title">Sweep output - cabinet B-06</span><span class="ev-sub mono">2026-08-07 09:14 · sweep-03</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">U42-41</td><td class="ev-dev">Patch panel, 24 port</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.98</td></tr><tr class="ev-ok"><td class="ev-u">U39</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.99</td></tr><tr class="ev-warn"><td class="ev-u">U35</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">model differs - CMDB says 24T</td><td class="ev-conf">0.99</td></tr><tr class="ev-ok"><td class="ev-u">U31</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.97</td></tr><tr class="ev-miss"><td class="ev-u">U27</td><td class="ev-dev">Unidentified 1U appliance</td><td class="ev-note">no CMDB record</td><td class="ev-conf">0.61</td></tr><tr class="ev-free"><td class="ev-u">U18-05</td><td class="ev-dev">-</td><td class="ev-note">14U free</td><td class="ev-conf">-</td></tr></tbody></table><p class="ev-foot mono">11 devices identified · 9 matched · 2 exceptions · raised as work order WO-2026-0814</p></figure>
 </div>
 </section>
 
@@ -699,7 +674,7 @@
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* nav ink — one bar that travels, settling on the current page */
+    /* nav ink - one bar that travels, settling on the current page */
     var rail = document.querySelector('.nav-rail');
     if (rail && !reduce) {
         var ink = document.createElement('span');
@@ -724,7 +699,7 @@
         requestAnimationFrame(settle);
         window.addEventListener('load', settle);
         if (document.fonts && document.fonts.ready) { document.fonts.ready.then(settle); }
-        // the webfont swap changes link widths after first paint — re-measure when it does
+        // the webfont swap changes link widths after first paint - re-measure when it does
         if (window.ResizeObserver) {
             var ro = new ResizeObserver(function () { settle(); });
             links.forEach(function (a) { ro.observe(a); });
@@ -733,23 +708,5 @@
 })();
 </script>
 
-<script>
-(function () {
-  var root = document.documentElement;
-  var btn = document.getElementById('hero-switch');
-  function apply(light) {
-    root.classList.toggle('hero-light', light);
-    if (btn) {
-      btn.setAttribute('aria-pressed', String(light));
-      var ic = btn.querySelector('[data-hero-icon]');
-      if (ic) { ic.textContent = light ? 'dark_mode' : 'light_mode'; }
-    }
-    try { localStorage.setItem('rt-hero', light ? 'light' : 'dark'); } catch (e) {}
-  }
-  var saved = null;
-  try { saved = localStorage.getItem('rt-hero'); } catch (e) {}
-  apply(saved === 'light');
-  if (btn) { btn.addEventListener('click', function () { apply(!root.classList.contains('hero-light')); }); }
-})();
-</script>
+
 </body></html>

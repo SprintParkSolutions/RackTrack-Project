@@ -61,33 +61,8 @@
         }
         .stat-sm { font-size: clamp(26px,2.1vw,30px); }
 
-        /* Dark shell bands — nav, hero, CTA, footer */
+        /* Dark shell bands - nav, hero, CTA, footer */
         .shell-band { background: var(--shell); color: var(--shell-text); }
-
-      /* hero appearance: one class on <html> restyles every page's hero band */
-      html:not(.hero-light) [data-hero="light"] { display: none; }
-      html.hero-light [data-hero="dark"] { display: none; }
-      html.hero-light .shell-band { background: #fff; color: var(--body); }
-      html.hero-light .shell-band h1, html.hero-light .shell-band h2,
-      html.hero-light .shell-band h3, html.hero-light .shell-band h4 { color: var(--ink); }
-      html.hero-light .shell-band .eyebrow { color: var(--muted); }
-      html.hero-light .shell-band .stat { color: var(--ink); }
-      html.hero-light .shell-band .btn-primary { background: var(--blue); color: #fff; }
-      html.hero-light .shell-band .btn-primary:hover { background: #12309f; }
-      html.hero-light .shell-band .btn-ghost { border-color: var(--hair-2); color: var(--ink); }
-      html.hero-light .shell-band .btn-ghost:hover { border-color: #97a1b3; }
-      html.hero-light .shell-band .text-white { color: var(--ink); }
-      html.hero-light .shell-band [class*="text-shell-text"] { color: var(--muted); }
-      html.hero-light .shell-band [class*="border-shell-line"] { border-color: var(--hair); }
-      html.hero-light .shell-band { border-bottom: 1px solid var(--hair); }
-      /* pages whose hero is a photograph: light mode drops the picture for paper */
-      html.hero-light .shell-band > img, html.hero-light .shell-band > div[aria-hidden="true"] { display: none; }
-      /* the switch itself */
-      .hero-switch { width: 34px; height: 34px; border-radius: 9999px; display: inline-flex;
-        align-items: center; justify-content: center; border: 1px solid var(--shell-line);
-        color: var(--shell-text); transition: color .15s ease, border-color .15s ease; cursor: pointer; }
-      .hero-switch:hover { color: #fff; border-color: #4a5f83; }
-      .hero-switch .material-symbols-outlined { font-size: 18px; }
 
         .shell-band h1, .shell-band h2, .shell-band h3, .shell-band h4 { color: #fff; }
         .shell-band .eyebrow { color: var(--accent); }
@@ -113,7 +88,7 @@
         .link-arrow { display: inline-flex; align-items: baseline; gap: 6px; font-size: 15px; font-weight: 500; color: var(--blue); }
         .link-arrow:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-        /* rules separate groups, not every item — spacing does the item work */
+        /* rules separate groups, not every item - spacing does the item work */
         .row-list > * + * { border-top: 0; }
         .row-list > * { padding-top: 6px; padding-bottom: 6px; }
         .row-list > * + * { margin-top: 14px; }
@@ -130,7 +105,7 @@
         details[open] .chev {font-size:20px; transform: rotate(180deg); }
         .chev { transition: transform .2s ease; }
 
-        /* product evidence — real detection output */
+        /* product evidence - real detection output */
         .ev { border: 1px solid var(--hair); background: #fff; }
         .ev-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
             gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--hair); background: #f7f8fb; }
@@ -206,7 +181,7 @@
         :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 1px; }
         .shell-band :focus-visible, .app-bar :focus-visible { outline-color: var(--accent); }
 
-        /* 6 · reveals: text rises, figures wipe — different gestures for different content */
+        /* 6 · reveals: text rises, figures wipe - different gestures for different content */
         [data-reveal] { opacity: 0; transform: translateY(10px);
             transition: opacity .62s cubic-bezier(.22,1,.28,1), transform .62s cubic-bezier(.22,1,.28,1); }
         [data-reveal].is-in { opacity: 1; transform: none; }
@@ -275,7 +250,7 @@
         .shot-row img { height: 300px; object-position: center 42%; }
         /* photo aspect matches the source so the overlay registers 1:1 */
         .shot-rack, .shot-dev { position: relative; width: 100%; height: 0; align-self: start; }
-        .shot-rack { padding-top: 150%; }                 /* source is 2:3 — overlay maps 1:1 */
+        .shot-rack { padding-top: 150%; }                 /* source is 2:3 - overlay maps 1:1 */
         .shot-dev  { padding-top: 62%; }                  /* landscape switch close-up */
         .shot-rack img, .shot-dev img { position: absolute; inset: 0; width: 100%; height: 100%; }
         .shot-rack img { object-fit: fill; }
@@ -342,7 +317,7 @@
             .js .hot .hot-ring { animation: none; }
         }
 
-        /* Motion — one quiet reveal on first view. No loops, no bounce, no overshoot. */
+        /* Motion - one quiet reveal on first view. No loops, no bounce, no overshoot. */
         .js [data-reveal] { opacity: 0; transform: translateY(14px); }
         .js [data-reveal].is-in {
             opacity: 1; transform: none;
@@ -385,7 +360,7 @@
 </div>
 <div class="flex items-center gap-4">
 <a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] btn-sm" href="contact-us.html">Get a demo</a>
-<button type="button" class="hero-switch" id="hero-switch" aria-pressed="false" aria-label="Switch hero appearance" title="Switch hero appearance"><span class="material-symbols-outlined" aria-hidden="true" data-hero-icon>light_mode</span></button><button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
+<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined">menu</span></button>
 </div>
 </div>
 <div class="hidden lg:hidden border-t border-shell-line bg-shell px-margin py-5 flex-col gap-4" id="mobile-menu">
@@ -411,7 +386,7 @@
 <h1 class="h1-page mt-6 max-w-[26ch]">Rack data becomes verified intelligence.</h1>
 </div>
 <div class="md:col-span-5 md:col-start-8 md:row-start-1 flex flex-col gap-7 items-start self-end">
-<p class="lede-page">From physical perception to continuous reconciliation, RackTrack turns rack data into verified infrastructure intelligence — synced to every system your teams already use.</p>
+<p class="lede-page">From physical perception to continuous reconciliation, RackTrack turns rack data into verified infrastructure intelligence - synced to every system your teams already use.</p>
 <div class="flex flex-wrap items-center gap-3">
 <a class="btn btn-primary" href="#rack-3d">Explore the 3D topology</a>
 <a class="btn btn-ghost" href="#workflow">See the workflow</a>
@@ -452,13 +427,13 @@
 <div class="border border-outline-variant bg-background overflow-x-auto -webkit-overflow-scrolling-touch"><div class="min-w-[1040px] px-4 py-5 md:px-8 md:py-8">
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 620' class='w-full h-auto block' shape-rendering='geometricPrecision' role='img' aria-label='System schematic: rack sweep and network telemetry reconciled, then published to systems of record'><defs><pattern id='sysHatch' width='6' height='6' patternUnits='userSpaceOnUse' patternTransform='rotate(45)'><line x1='0' y1='0' x2='0' y2='6' stroke='#b8b8b8' stroke-width='.7'/></pattern></defs><rect x='0' y='0' class='w-full h-auto block' fill='#ffffff'/><rect x='44' y='34' width='232' height='30' fill='#1a3fd4' stroke='none' stroke-width='0'/><text x='56' y='54' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='13' fill='#ffffff' text-anchor='start' letter-spacing='0.10em' font-weight='500'>DC1 / SYSTEM SCHEMATIC</text><text x='1556' y='48' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='13' fill='#1a1a1a' text-anchor='end' letter-spacing='0.10em' font-weight='500'>RECONCILIATION DATA FLOW</text><text x='1556' y='68' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='end' letter-spacing='0.06em' font-weight='400'>DWG RT-SYS-001 &#183; REV A &#183; NOT TO SCALE</text><line x1='44' y1='88' x2='1556' y2='88' stroke='#1a1a1a' stroke-width='1.2'/><text x='44' y='112' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.14em' font-weight='400'>SOURCES</text><text x='800' y='112' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='middle' letter-spacing='0.14em' font-weight='400'>RECONCILIATION</text><text x='1556' y='112' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='end' letter-spacing='0.14em' font-weight='400'>SYSTEMS OF RECORD</text><rect x='44' y='150' width='150' height='168' fill='#ffffff' stroke='#1a1a1a' stroke-width='1.2'/><rect x='60' y='166' width='118' height='11' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='60' y='182' width='118' height='11' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='60' y='182' width='118' height='11' fill='#eaf1ff' stroke='#1a3fd4' stroke-width='0.55'/><rect x='60' y='198' width='118' height='11' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='60' y='214' width='118' height='11' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='60' y='230' width='118' height='11' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='60' y='230' width='118' height='11' fill='#eaf1ff' stroke='#1a3fd4' stroke-width='0.55'/><rect x='60' y='246' width='118' height='11' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='60' y='262' width='118' height='11' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='60' y='278' width='118' height='11' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='60' y='294' width='118' height='11' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><line x1='52' y1='150' x2='52' y2='318' stroke='#6f6f6f' stroke-width='0.55'/><line x1='186' y1='150' x2='186' y2='318' stroke='#6f6f6f' stroke-width='0.55'/><text x='44' y='342' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#1a1a1a' text-anchor='start' letter-spacing='0.10em' font-weight='500'>RACK SWEEP</text><text x='44' y='360' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>IMAGES &#183; LABELS &#183; PORTS</text><rect x='44' y='400' width='150' height='46' fill='#ffffff' stroke='#1a1a1a' stroke-width='1.2'/><rect x='56' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='67' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='78' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='89' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='100' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='111' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='122' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='133' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='144' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='155' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='166' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='177' y='414' width='7' height='8' fill='#ffffff' stroke='#6f6f6f' stroke-width='0.55'/><rect x='89' y='414' width='7' height='8' fill='#1a3fd4' stroke='#1a3fd4' stroke-width='0.55'/><rect x='100' y='414' width='7' height='8' fill='#1a3fd4' stroke='#1a3fd4' stroke-width='0.55'/><rect x='144' y='414' width='7' height='8' fill='#1a3fd4' stroke='#1a3fd4' stroke-width='0.55'/><text x='56' y='438' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>ToR</text><text x='44' y='472' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#1a1a1a' text-anchor='start' letter-spacing='0.10em' font-weight='500'>NETWORK TELEMETRY</text><text x='44' y='490' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>CDP &#183; LLDP &#183; NEIGHBOUR</text><line x1='194' y1='234' x2='554' y2='234' stroke='#1a1a1a' stroke-width='1.1'/><path d='M554,234 L545.0,237.4 L545.0,230.6 Z' fill='#1a1a1a'/><line x1='194' y1='423' x2='380' y2='423' stroke='#1a1a1a' stroke-width='1.1'/><path d='M380,423 L371.0,426.4 L371.0,419.6 Z' fill='#1a1a1a'/><line x1='380' y1='423' x2='380' y2='330' stroke='#1a1a1a' stroke-width='0.6'/><line x1='380' y1='330' x2='554' y2='330' stroke='#1a1a1a' stroke-width='1.1'/><path d='M554,330 L545.0,333.4 L545.0,326.6 Z' fill='#1a1a1a'/><text x='300' y='226' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='middle' letter-spacing='0.06em' font-weight='400'>PHYSICAL</text><text x='300' y='415' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='middle' letter-spacing='0.06em' font-weight='400'>LOGICAL</text><rect x='560' y='150' width='470' height='340' fill='#ffffff' stroke='#1a1a1a' stroke-width='1.2'/><line x1='560' y1='150' x2='1030' y2='150' stroke='#1a1a1a' stroke-width='1.6'/><text x='580' y='180' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='13' fill='#1a1a1a' text-anchor='start' letter-spacing='0.10em' font-weight='500'>RACKTRACK ENGINE</text><text x='1010' y='180' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='end' letter-spacing='0.06em' font-weight='400'>3 STAGES</text><line x1='560' y1='196' x2='1030' y2='196' stroke='#1a1a1a' stroke-width='0.6'/><text x='580' y='230' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#1a3fd4' text-anchor='start' letter-spacing='0.06em' font-weight='500'>01</text><text x='614' y='230' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='13' fill='#1a1a1a' text-anchor='start' letter-spacing='0.08em' font-weight='500'>PERCEIVE</text><text x='614' y='252' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>every device, port, label and cable read from the sweep</text><line x1='614' y1='264' x2='1010' y2='264' stroke='#b8b8b8' stroke-width='0.55'/><line x1='560' y1='294' x2='1030' y2='294' stroke='#b8b8b8' stroke-width='0.55'/><text x='580' y='328' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#1a3fd4' text-anchor='start' letter-spacing='0.06em' font-weight='500'>02</text><text x='614' y='328' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='13' fill='#1a1a1a' text-anchor='start' letter-spacing='0.08em' font-weight='500'>RECONCILE</text><text x='614' y='350' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>observations validated against live switch data</text><line x1='614' y1='362' x2='1010' y2='362' stroke='#b8b8b8' stroke-width='0.55'/><line x1='560' y1='392' x2='1030' y2='392' stroke='#b8b8b8' stroke-width='0.55'/><text x='580' y='426' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#1a3fd4' text-anchor='start' letter-spacing='0.06em' font-weight='500'>03</text><text x='614' y='426' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='13' fill='#1a1a1a' text-anchor='start' letter-spacing='0.08em' font-weight='500'>COGNIZE</text><text x='614' y='448' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>change, drift and dependency resolved across scans</text><line x1='614' y1='460' x2='1010' y2='460' stroke='#b8b8b8' stroke-width='0.55'/><rect x='1180' y='168' width='376' height='74' fill='#ffffff' stroke='#1a1a1a' stroke-width='1.2'/><line x1='1180' y1='168' x2='1180' y2='242' stroke='#1a3fd4' stroke-width='3.4'/><text x='1200' y='198' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='13' fill='#1a1a1a' text-anchor='start' letter-spacing='0.08em' font-weight='500'>CMDB</text><text x='1200' y='220' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>RECORD UPDATED</text><line x1='1036' y1='205' x2='1174' y2='205' stroke='#1a1a1a' stroke-width='1.1'/><path d='M1174,205 L1165.0,208.4 L1165.0,201.6 Z' fill='#1a1a1a'/><rect x='1180' y='284' width='376' height='74' fill='#ffffff' stroke='#1a1a1a' stroke-width='1.2'/><text x='1200' y='314' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='13' fill='#1a1a1a' text-anchor='start' letter-spacing='0.08em' font-weight='500'>DCIM</text><text x='1200' y='336' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>CAPACITY &#183; U-SPACE</text><line x1='1036' y1='321' x2='1174' y2='321' stroke='#1a1a1a' stroke-width='1.1'/><path d='M1174,321 L1165.0,324.4 L1165.0,317.6 Z' fill='#1a1a1a'/><rect x='1180' y='400' width='376' height='74' fill='#ffffff' stroke='#1a1a1a' stroke-width='1.2'/><text x='1200' y='430' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='13' fill='#1a1a1a' text-anchor='start' letter-spacing='0.08em' font-weight='500'>AUDIT PACK</text><text x='1200' y='452' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>EVIDENCE &#183; DATED</text><line x1='1036' y1='437' x2='1174' y2='437' stroke='#1a1a1a' stroke-width='1.1'/><path d='M1174,437 L1165.0,440.4 L1165.0,433.6 Z' fill='#1a1a1a'/><line x1='1368' y1='242' x2='1368' y2='560' stroke='#1a3fd4' stroke-width='0.9' stroke-dasharray='6 4'/><line x1='1368' y1='560' x2='800' y2='560' stroke='#1a3fd4' stroke-width='0.9' stroke-dasharray='6 4'/><line x1='800' y1='560' x2='800' y2='496' stroke='#1a3fd4' stroke-width='0.9' stroke-dasharray='6 4'/><path d='M800,496 L803.4,505.0 L796.6,505.0 Z' fill='#1a3fd4'/><text x='986' y='552' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#1a3fd4' text-anchor='middle' letter-spacing='0.08em' font-weight='400'>WRITE-BACK &#183; ON APPROVAL ONLY</text><text x='44' y='560' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.14em' font-weight='400'>KEY</text><line x1='96' y1='556' x2='122' y2='556' stroke='#1a1a1a' stroke-width='1.1'/><text x='134' y='560' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>READ THIS SWEEP</text><line x1='290' y1='556' x2='316' y2='556' stroke='#1a3fd4' stroke-width='0.9' stroke-dasharray='6 4'/><text x='328' y='560' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>CONDITIONAL PATH</text><rect x='492' y='551' width='26' height='10' fill='#eaf1ff' stroke='#1a3fd4' stroke-width='0.55'/><text x='530' y='560' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>VERIFIED / TRACED</text><line x1='44' y1='588' x2='1556' y2='588' stroke='#b8b8b8' stroke-width='0.6'/><text x='44' y='606' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='start' letter-spacing='0.06em' font-weight='400'>RACKTRACK &#183; PHYSICAL INFRASTRUCTURE INTELLIGENCE</text><text x='1556' y='606' font-family='Geist Mono,ui-monospace,SFMono-Regular,Menlo,monospace' font-size='11' fill='#6f6f6f' text-anchor='end' letter-spacing='0.06em' font-weight='400'>SHEET 00 &#183; SYSTEM</text></svg>
 </div></div>
-<figcaption class="mono text-[11px] text-outline tracking-[0.06em] pt-3">Fig. 2.1 — System schematic · DWG RT-SYS-001 · Rev A</figcaption>
+<figcaption class="mono text-[11px] text-outline tracking-[0.06em] pt-3">Fig. 2.1 - System schematic · DWG RT-SYS-001 · Rev A</figcaption>
 </figure>
 </div>
 
 <!-- Source of truth diagram -->
 <div class="mt-10 md:mt-12 border-t border-outline-variant pt-10">
-<p class="eyebrow">Data fusion — reconcile in practice</p>
+<p class="eyebrow">Data fusion - reconcile in practice</p>
 <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-10 items-center mt-9">
 <div class="border border-outline-variant bg-background p-6">
 <p class="eyebrow border-b border-outline-variant pb-3">Switch telemetry</p>
@@ -504,7 +479,7 @@
 <p class="eyebrow">3D topology</p>
 <h2 class="h2 mt-5 max-w-[18ch]">A rack you can perceive, reconcile &amp; operationalize.</h2>
 </div>
-<p class="md:col-span-6 md:col-start-7 lede self-end">RackTrack reads rack imagery to build a continuously reconciled digital twin — switches, patch panels, servers, port activity, LED state, and cable routes — turning one cabinet sweep into verified infrastructure intelligence.</p>
+<p class="md:col-span-6 md:col-start-7 lede self-end">RackTrack reads rack imagery to build a continuously reconciled digital twin - switches, patch panels, servers, port activity, LED state, and cable routes - turning one cabinet sweep into verified infrastructure intelligence.</p>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-14 mt-10 md:mt-12">
 <div class="lg:col-span-4 row-list border-t border-outline-variant self-start">
@@ -522,19 +497,19 @@
 <div class="flex flex-col mt-5 gap-px bg-outline-variant border border-outline-variant">
 <div class="flex items-center gap-5 bg-background px-5 py-4">
 <span class="mono text-[11px] text-outline w-[52px] shrink-0">U42-38</span>
-<span class="text-[15px] font-medium text-on-background flex-1">Patch Panel — 48 port</span>
+<span class="text-[15px] font-medium text-on-background flex-1">Patch Panel - 48 port</span>
 <span class="flex gap-[3px] shrink-0">
 <i class="w-1 h-3.5 bg-on-background inline-block"></i><i class="w-1 h-3.5 bg-on-background inline-block"></i><i class="w-1 h-3.5 bg-outline-variant inline-block"></i><i class="w-1 h-3.5 bg-on-background inline-block"></i><i class="w-1 h-3.5 bg-outline-variant inline-block"></i><i class="w-1 h-3.5 bg-on-background inline-block"></i>
 </span>
 </div>
 <div class="flex items-center gap-5 bg-background px-5 py-4">
 <span class="mono text-[11px] text-outline w-[52px] shrink-0">U37-34</span>
-<span class="text-[15px] font-medium text-on-background flex-1">ToR Switch — NX-9336C</span>
+<span class="text-[15px] font-medium text-on-background flex-1">ToR Switch - NX-9336C</span>
 <span class="mono text-[11px] tracking-[0.08em] uppercase text-primary shrink-0">Verified</span>
 </div>
 <div class="flex items-center gap-5 bg-background px-5 py-4">
 <span class="mono text-[11px] text-outline w-[52px] shrink-0">U33-20</span>
-<span class="text-[15px] font-medium text-on-background flex-1">Compute — 8× 2U server</span>
+<span class="text-[15px] font-medium text-on-background flex-1">Compute - 8× 2U server</span>
 <span class="mono text-[11px] tracking-[0.08em] uppercase text-outline shrink-0">Identified</span>
 </div>
 <div class="flex items-center gap-5 bg-background px-5 py-4">
@@ -544,7 +519,7 @@
 </div>
 <div class="flex items-center gap-5 bg-surface px-5 py-4">
 <span class="mono text-[11px] text-outline w-[52px] shrink-0">U05-01</span>
-<span class="text-[15px] text-outline flex-1">Available capacity — 5U</span>
+<span class="text-[15px] text-outline flex-1">Available capacity - 5U</span>
 <span class="mono text-[11px] tracking-[0.08em] uppercase text-outline shrink-0">Free</span>
 </div>
 </div>
@@ -559,7 +534,7 @@
 <div class="max-w-container-max-width mx-auto px-margin">
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <h2 class="h2 md:col-span-5 max-w-[18ch]">What runs on every sweep.</h2>
-<p class="md:col-span-6 md:col-start-7 lede self-end">Every intelligence surface in RackTrack is powered by one continuous workflow — perceive, cognize, connect, twin, reconcile, and secure.</p>
+<p class="md:col-span-6 md:col-start-7 lede self-end">Every intelligence surface in RackTrack is powered by one continuous workflow - perceive, cognize, connect, twin, reconcile, and secure.</p>
 </div>
 <div class="mt-10 md:mt-12 row-list border-t border-outline-variant">
 <article data-reveal class="py-7 grid grid-cols-1 md:grid-cols-12 gap-y-3 gap-x-gutter">
@@ -772,7 +747,7 @@
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* nav ink — one bar that travels, settling on the current page */
+    /* nav ink - one bar that travels, settling on the current page */
     var rail = document.querySelector('.nav-rail');
     if (rail && !reduce) {
         var ink = document.createElement('span');
@@ -797,7 +772,7 @@
         requestAnimationFrame(settle);
         window.addEventListener('load', settle);
         if (document.fonts && document.fonts.ready) { document.fonts.ready.then(settle); }
-        // the webfont swap changes link widths after first paint — re-measure when it does
+        // the webfont swap changes link widths after first paint - re-measure when it does
         if (window.ResizeObserver) {
             var ro = new ResizeObserver(function () { settle(); });
             links.forEach(function (a) { ro.observe(a); });
@@ -806,23 +781,5 @@
 })();
 </script>
 
-<script>
-(function () {
-  var root = document.documentElement;
-  var btn = document.getElementById('hero-switch');
-  function apply(light) {
-    root.classList.toggle('hero-light', light);
-    if (btn) {
-      btn.setAttribute('aria-pressed', String(light));
-      var ic = btn.querySelector('[data-hero-icon]');
-      if (ic) { ic.textContent = light ? 'dark_mode' : 'light_mode'; }
-    }
-    try { localStorage.setItem('rt-hero', light ? 'light' : 'dark'); } catch (e) {}
-  }
-  var saved = null;
-  try { saved = localStorage.getItem('rt-hero'); } catch (e) {}
-  apply(saved === 'light');
-  if (btn) { btn.addEventListener('click', function () { apply(!root.classList.contains('hero-light')); }); }
-})();
-</script>
+
 </body></html>

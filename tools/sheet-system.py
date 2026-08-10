@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sheet 00 — system schematic. Same drafting language as the tour set:
+"""Sheet 00 - system schematic. Same drafting language as the tour set:
 white paper, #1a1a1a linework, #6f6f6f secondary, #b8b8b8 hatch, one blue #1a3fd4."""
 
 INK, MID, LT, BLUE = '#1a1a1a', '#6f6f6f', '#b8b8b8', '#1a3fd4'
@@ -53,7 +53,7 @@ t(44, 112, 'SOURCES', 11, MID, ls='0.14em')
 t(800, 112, 'RECONCILIATION', 11, MID, 'middle', ls='0.14em')
 t(1556, 112, 'SYSTEMS OF RECORD', 11, MID, 'end', ls='0.14em')
 
-# ── source A — rack sweep (cabinet elevation glyph) ───────────────────────
+# ── source A - rack sweep (cabinet elevation glyph) ───────────────────────
 ax, ay = 44, 150
 box(ax, ay, 150, 168)
 for i in range(9):                                    # U-slots
@@ -66,7 +66,7 @@ line(ax + 142, ay, ax + 142, ay + 168, 0.55, MID)
 t(ax, ay + 192, 'RACK SWEEP', 11, INK, ls='0.10em', weight='500')
 t(ax, ay + 210, 'IMAGES &#183; LABELS &#183; PORTS', 11, MID)
 
-# ── source B — network telemetry (switch glyph) ───────────────────────────
+# ── source B - network telemetry (switch glyph) ───────────────────────────
 bx, by = 44, 400
 box(bx, by, 150, 46)
 for i in range(12):                                    # port row
