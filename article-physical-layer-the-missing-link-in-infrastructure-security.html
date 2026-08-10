@@ -61,6 +61,17 @@
         /* Dark shell bands - nav, hero, CTA, footer */
         .shell-band { background: var(--shell); color: var(--shell-text); }
 
+      /* touch targets: 44px minimum on phones, without changing how it looks */
+      @media (max-width: 1023px) {
+        footer a, .link-arrow, .filter-btn, #mobile-menu a {
+          min-height: 44px; display: inline-flex; align-items: center;
+        }
+        #menu-toggle { min-width: 44px; min-height: 44px; justify-content: center; }
+        nav .btn-sm { min-height: 40px; }
+        .rs-row { min-height: 44px; }
+      }
+
+
         .shell-band h1, .shell-band h2, .shell-band h3, .shell-band h4 { color: #fff; }
         .shell-band .eyebrow { color: var(--accent); }
         .shell-band .stat { color: #fff; }
