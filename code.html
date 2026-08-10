@@ -185,6 +185,12 @@
             justify-content: center; padding: 24px; background: rgba(255,255,255,.9); }
         .tour-end[hidden] { display: none; }
         .tour-end-card { background: #fff; border: 1px solid #1a1a1a; padding: 30px 34px; max-width: 560px; }
+        /* the walkthrough is one-way once the callout goes; this is the way back */
+        .tour-end-back { display: inline-block; margin-top: 16px; padding: 0; background: none; border: 0;
+            font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px;
+            letter-spacing: .08em; text-transform: uppercase; color: #6f7ba8; cursor: pointer;
+            transition: color .15s ease; }
+        .tour-end-back:hover { color: #1a3fd4; }
         .js .tour-end:not([hidden]) .tour-end-card { animation: tourIn .4s cubic-bezier(.16,1,.3,1) both; }
         @media (prefers-reduced-motion: reduce) {
             .js .tour-end:not([hidden]) .tour-end-card { animation: none; }
@@ -590,6 +596,7 @@
 <a class="btn btn-primary" href="contact-us.html">Run a topology diagnostic</a>
 <button class="btn btn-ghost" id="tour-restart" type="button">Restart walkthrough</button>
 </div>
+<button class="tour-end-back" id="tour-back" type="button">&#8592; Back to the last step</button>
 </div>
 </div>
 
@@ -1009,6 +1016,7 @@
         var count  = document.getElementById('tour-count');
         var prev   = document.getElementById('tour-prev');
         var total  = views.length, at = 0;
+        var armed = false, endTimer = null;      // end-card state
         var endCard = document.getElementById('tour-end');
         var actionEl = document.getElementById('tour-action');
         var cueStep  = document.getElementById('tour-cue-step');
@@ -1203,9 +1211,13 @@
         if (nextBtn) { nextBtn.addEventListener('click', function () { show(at + 1); }); }
         var restart = document.getElementById('tour-restart');
         if (restart) { restart.addEventListener('click', function () { show(0); }); }
+        // the last sheet hides the callout, so the end card carries the way back
+        var backBtn = document.getElementById('tour-back');
+        if (backBtn) { backBtn.addEventListener('click', function () { show(at - 1); }); }
         prev.addEventListener('click', function () { show(at - 1); });
         root.addEventListener('keydown', function (e) {
             if (e.key === 'ArrowLeft')  { show(at - 1); }
+            if (e.key === 'ArrowRight') { show(at + 1); }
         });
         show(0);
     })();
