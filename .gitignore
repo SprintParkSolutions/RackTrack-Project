@@ -1,0 +1,9 @@
+# dependencies — restore with `npm install`
+node_modules/
+
+# raw inputs: source photography, screen recordings, superseded assets.
+# kept on disk, out of the repo (they were adding ~35 MB)
+media/
+
+# OS
+.DS_Store
