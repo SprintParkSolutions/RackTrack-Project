@@ -375,10 +375,10 @@
 
 <main class="pt-[60px]">
 <!-- Hero -->
-<section class="shell-band">
+<section class="shell-band relative overflow-hidden">
 <div class="max-w-container-max-width mx-auto px-margin pt-12 md:pt-[68px] pb-12 md:pb-[68px]">
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<div class="md:col-span-9 md:row-start-1">
+<div class="md:col-span-6 md:row-start-1">
 <p class="eyebrow">The platform</p>
 <h1 class="h1 mt-6 max-w-[19ch]">Rack data becomes verified intelligence.</h1>
 </div>
@@ -392,7 +392,7 @@
 </div>
 </div>
 </div>
-</section>
+<img alt="Patch cables terminated across switch ports" class="hidden md:block absolute inset-y-0 right-0 w-[44%] h-full object-cover object-center border-l border-shell-line" loading="lazy" decoding="async" src="assets/media-switch-ports.jpg"/></section>
 <!-- Hero stats + figure -->
 <div class="max-w-container-max-width mx-auto px-margin">
 <figure class="ev"><figcaption class="ev-head"><span class="ev-title">Port state — RT-7600-24T-E at U35</span><span class="ev-sub mono">read from sweep + LLDP</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">Eth1/1</td><td class="ev-dev">LEAF-01</td><td class="ev-note">link up · 1G</td><td class="ev-conf">—</td></tr><tr class="ev-warn"><td class="ev-u">Eth1/14</td><td class="ev-dev">SPINE-02</td><td class="ev-note">link up · 25G · not in CMDB</td><td class="ev-conf">—</td></tr><tr class="ev-free"><td class="ev-u">Eth1/16</td><td class="ev-dev">—</td><td class="ev-note">no link · patched</td><td class="ev-conf">—</td></tr><tr class="ev-free"><td class="ev-u">Eth1/21</td><td class="ev-dev">—</td><td class="ev-note">no link · unused</td><td class="ev-conf">—</td></tr><tr class="ev-miss"><td class="ev-u">Eth1/23</td><td class="ev-dev">unreadable label</td><td class="ev-note">manual check needed</td><td class="ev-conf">0.42</td></tr></tbody></table><p class="ev-foot mono">12 of 24 ports carrying link · 4 SFP+ cages reserved for uplinks</p></figure>
@@ -538,15 +538,7 @@
 </div>
 </section>
 
-<figure class="relative w-full h-[280px] md:h-[420px] overflow-hidden" data-reveal-img>
-<img alt="Patch cables terminated across switch ports" class="w-full h-full object-cover object-center" src="assets/media-switch-ports.jpg"/>
-<figcaption class="absolute inset-0 bg-shell/60 flex items-end">
-<div class="max-w-container-max-width mx-auto px-margin w-full pb-9 md:pb-12" data-reveal>
-<p class="eyebrow !text-accent">Connectivity</p>
-<p class="h2 text-white max-w-[22ch] mt-3">Port state read from the rack, not the diagram.</p>
-</div>
-</figcaption>
-</figure>
+
 <!-- Workflow -->
 <section class="border-t border-outline-variant py-14 md:py-20 bg-surface" id="workflow">
 <div class="max-w-container-max-width mx-auto px-margin">
