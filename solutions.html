@@ -377,14 +377,14 @@
 
 <main class="pt-[60px]">
 <!-- Hero -->
-<section class="shell-band relative overflow-hidden"><img alt="Patch cables terminated across switch ports" class="absolute inset-0 w-full h-full object-cover" style="object-position:50% 38%" loading="lazy" decoding="async" src="assets/media-switch-ports.jpg"/><div class="absolute inset-0" style="background-color:rgba(6,17,39,0.76)" aria-hidden="true"></div>
-<div class="relative z-10 max-w-container-max-width mx-auto px-margin pt-12 md:pt-[68px] pb-12 md:pb-[68px]">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<section class="shell-band">
+<div class="max-w-container-max-width mx-auto px-margin pt-12 md:pt-[68px] pb-12 md:pb-[68px]">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-0">
 <div class="md:col-span-9 md:row-start-1">
 <p class="eyebrow">The platform</p>
 <h1 class="h1-page mt-6 max-w-[26ch]">Rack data becomes verified intelligence.</h1>
 </div>
-<div class="md:col-span-5 md:row-start-2 md:col-start-1 flex flex-col gap-8 items-start mt-10 md:mt-12">
+<div class="md:col-span-5 md:row-start-2 md:col-start-1 flex flex-col gap-7 items-start mt-7">
 <p class="lede-page">From physical perception to continuous reconciliation, RackTrack turns rack data into verified infrastructure intelligence — synced to every system your teams already use.</p>
 <div class="flex flex-wrap items-center gap-3">
 <a class="btn btn-primary" href="#rack-3d">Explore the 3D topology</a>
@@ -395,6 +395,11 @@
 </div>
 </div>
 </section>
+<figure data-reveal>
+<img alt="Patch cables terminated across switch ports" class="w-full h-auto block" loading="lazy" decoding="async" src="assets/media-switch-ports.jpg"/>
+<figcaption class="max-w-container-max-width mx-auto px-margin mono text-[11px] text-outline tracking-[0.06em] pt-3">Fig. 2.0 — Patch field, switch uplinks</figcaption>
+</figure>
+
 <!-- Hero stats + figure -->
 <div class="max-w-container-max-width mx-auto px-margin">
 <figure class="ev"><figcaption class="ev-head"><span class="ev-title">Port state — RT-7600-24T-E at U35</span><span class="ev-sub mono">read from sweep + LLDP</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">Eth1/1</td><td class="ev-dev">LEAF-01</td><td class="ev-note">link up · 1G</td><td class="ev-conf">—</td></tr><tr class="ev-warn"><td class="ev-u">Eth1/14</td><td class="ev-dev">SPINE-02</td><td class="ev-note">link up · 25G · not in CMDB</td><td class="ev-conf">—</td></tr><tr class="ev-free"><td class="ev-u">Eth1/16</td><td class="ev-dev">—</td><td class="ev-note">no link · patched</td><td class="ev-conf">—</td></tr><tr class="ev-free"><td class="ev-u">Eth1/21</td><td class="ev-dev">—</td><td class="ev-note">no link · unused</td><td class="ev-conf">—</td></tr><tr class="ev-miss"><td class="ev-u">Eth1/23</td><td class="ev-dev">unreadable label</td><td class="ev-note">manual check needed</td><td class="ev-conf">0.42</td></tr></tbody></table><p class="ev-foot mono">12 of 24 ports carrying link · 4 SFP+ cages reserved for uplinks</p></figure>
