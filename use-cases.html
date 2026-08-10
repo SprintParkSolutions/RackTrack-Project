@@ -161,11 +161,11 @@
         .rs-with { color: var(--ink); }
         .rs-go { font-size: 13px; color: var(--blue); letter-spacing: .04em; white-space: nowrap; }
         @media (min-width: 900px) {
-            .rs-head { display: grid; grid-template-columns: 44px minmax(200px,1.05fr) 1.2fr 1.2fr 108px;
+            .rs-head { display: grid; grid-template-columns: minmax(200px,1.05fr) 1.2fr 1.2fr 108px;
                 gap: 20px; padding: 0 0 10px; }
             .rs-head span { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: .12em;
                 text-transform: uppercase; color: var(--muted); }
-            .rs-row { grid-template-columns: 44px minmax(200px,1.05fr) 1.2fr 1.2fr 108px; align-items: start; padding: 22px 0; }
+            .rs-row { grid-template-columns: minmax(200px,1.05fr) 1.2fr 1.2fr 108px; align-items: start; padding: 22px 0; }
             .rs-go { text-align: right; }
         }
 
@@ -447,44 +447,38 @@
 <p class="md:col-span-6 md:col-start-7 lede self-end">Each role lives with a specific failure mode of the current stack. Each one gets a specific intelligence surface.</p>
 </div>
 <div class="rs mt-10 md:mt-12">
-<div class="rs-head"><span></span><span>Role</span><span>What breaks today</span><span>With RackTrack</span><span></span></div>
+<div class="rs-head"><span>Role</span><span>What breaks today</span><span>With RackTrack</span><span></span></div>
 <a class="rs-row" href="use-case-infrastructure-data-center-leaders.html">
-<span class="rs-idx mono">/01</span>
 <span class="rs-role"><span class="rs-title">Infrastructure &amp; Data Center Leaders</span>
 <span class="rs-ev mono">47 / 56 &middot; Cabinets swept · DC1 ground floor</span></span>
 <span class="rs-pain">You can't manage what you can't measure, and what you measure today is months old. Every leadership review starts with a footnote on data quality.</span>
 <span class="rs-with">One source of truth across every site, every row, every rack, continuously reconciled. Budget conversations move from spreadsheet arguments to capacity planning.</span>
 <span class="rs-go mono">Read the case &rarr;</span>
 </a><a class="rs-row" href="use-case-network-architects-engineers.html">
-<span class="rs-idx mono">/02</span>
 <span class="rs-role"><span class="rs-title">Network Architects &amp; Engineers</span>
 <span class="rs-ev mono">24 + 4 &middot; RJ45 + SFP+ ports mapped per switch</span></span>
 <span class="rs-pain">The diagram you draw and the cable you trace rarely match. Port-level changes happen in the field and never make it back to the system of record.</span>
 <span class="rs-with">Port-level topology that matches the cables you can actually touch, and stays current because verification happens every time a phone walks the row.</span>
 <span class="rs-go mono">Read the case &rarr;</span>
 </a><a class="rs-row" href="use-case-security-vulnerability-teams.html">
-<span class="rs-idx mono">/03</span>
 <span class="rs-role"><span class="rs-title">Security &amp; Vulnerability Teams</span>
 <span class="rs-ev mono">2 &middot; Devices found with no agent coverage</span></span>
 <span class="rs-pain">Your vulnerability management starts from incomplete inventory. Agents don't run on switches, patch panels, or PDUs. The CMDB lags. By the time you have a clean asset list, the CVE is two months old.</span>
 <span class="rs-with">Start from a complete inventory of every physical device, including the ones agents can't reach. Firmware posture and vulnerability state, surfaced per device, in real time.</span>
 <span class="rs-go mono">Read the case &rarr;</span>
 </a><a class="rs-row" href="use-case-compliance-audit-owners.html">
-<span class="rs-idx mono">/04</span>
 <span class="rs-role"><span class="rs-title">Compliance &amp; Audit Owners</span>
 <span class="rs-ev mono">09:14 &middot; Sweep timestamp carried on every record</span></span>
 <span class="rs-pain">Three to six weeks of evidence prep, every cycle, and the auditor still finds gaps. Half your team's quarter disappears into screenshots and spreadsheets.</span>
 <span class="rs-with">Audit-ready evidence generated continuously, mapped to SOC 2, ISO 27001, HIPAA, and PCI-DSS Requirement 9. The day the auditor arrives, the artifact already exists.</span>
 <span class="rs-go mono">Read the case &rarr;</span>
 </a><a class="rs-row" href="use-case-incident-responders-on-call.html">
-<span class="rs-idx mono">/05</span>
 <span class="rs-role"><span class="rs-title">Incident Responders &amp; On-Call</span>
 <span class="rs-ev mono">B-06 / U35 &middot; Device located to cabinet and rack unit</span></span>
 <span class="rs-pain">Twenty to forty minutes of every incident lost confirming what's actually in the rack, before the real work starts.</span>
 <span class="rs-with">Find the device, find the port, before you open the door. Spatial search, current state, no detour through three other systems.</span>
 <span class="rs-go mono">Read the case &rarr;</span>
 </a><a class="rs-row" href="use-case-m-a-migration-teams.html">
-<span class="rs-idx mono">/06</span>
 <span class="rs-role"><span class="rs-title">M&amp;A &amp; Migration Teams</span>
 <span class="rs-ev mono">4 &middot; CMDB deltas surfaced on one cabinet</span></span>
 <span class="rs-pain">You inherit an unknown footprint with no current documentation. Characterizing it the old way means quarters of work before the integration plan can start.</span>
