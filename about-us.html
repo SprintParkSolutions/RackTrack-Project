@@ -17,6 +17,7 @@
             --muted: #727a8a;
             --blue: #1a3fd4;
             --shell: #061127;
+            --shell-hero: #0f1d36;
             --shell-line: #1b2942;
             --shell-text: #9fb0c9;
             --accent: #8ab4ff;
@@ -30,15 +31,15 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        section[id], div[id], article[id] { scroll-margin-top: 80px; }
+        section[id], div[id], article[id] { scroll-margin-top: 88px; }
         h1, h2, h3, h4 { color: var(--ink); font-weight: 600; }
 
         .h1  { font-size: clamp(34px, 5.2vw, 66px); line-height: 1.02; letter-spacing: -0.036em; font-weight: 600; }
       .h1-page{font-size:clamp(30px,3.4vw,46px);line-height:1.06;letter-spacing:-0.03em;font-weight:600}
       .lede-page{font-size:18px;line-height:1.55}
-        .h2  { font-size: clamp(26px, 3.1vw, 42px); line-height: 1.08; letter-spacing: -0.032em; font-weight: 600; }
-      .h2-sm{font-size:clamp(26px,2.1vw,30px);line-height:1.14;letter-spacing:-0.026em;font-weight:600}
-        .h3  { font-size: 20px; line-height: 1.28; letter-spacing: -0.02em; font-weight: 600; }
+        .h2  { font-size: clamp(29px, 3.3vw, 46px); line-height: 1.07; letter-spacing: -0.032em; font-weight: 600; }
+      .h2-sm{font-size:clamp(27px,2.3vw,33px);line-height:1.13;letter-spacing:-0.026em;font-weight:600}
+        .h3  { font-size: 22px; line-height: 1.26; letter-spacing: -0.02em; font-weight: 600; }
         .h4  { font-size: 15px; line-height: 1.35; letter-spacing: -0.012em; font-weight: 600; color: var(--ink); }
         .lede { font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; }
         .measure    { max-width: 62ch; }
@@ -60,6 +61,7 @@
 
         /* Dark shell bands - nav, hero, CTA, footer */
         .shell-band { background: var(--shell); color: var(--shell-text); }
+        .hero-band  { background: var(--shell-hero); }
 
       /* motion: entrances that follow the reading direction */
       [data-reveal="left"]  { opacity: 0; transform: translateX(-18px); }
@@ -91,7 +93,6 @@
         .shell-band .flex.flex-wrap.items-center.gap-3,
         .flex.flex-wrap.items-center.gap-3 { display: flex; flex-direction: column; align-items: stretch; width: 100%; }
         .btn-sm { width: auto; }
-        nav .btn { width: auto; }
         /* anything that scrolls sideways says so */
         .overflow-x-auto { position: relative; }
         .ev, .overflow-x-auto { scrollbar-width: thin; }
@@ -104,7 +105,6 @@
           min-height: 44px; display: inline-flex; align-items: center;
         }
         #menu-toggle { min-width: 44px; min-height: 44px; justify-content: center; }
-        nav .btn-sm { min-height: 40px; }
         .rs-row { min-height: 44px; }
       }
 
@@ -140,6 +140,268 @@
         /* keep one rule per group: the container's own top/bottom edge */
         .shell-band .row-list > * + * { border-top-color: var(--shell-line); }
         .idx { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+
+
+
+        /* ── motion ────────────────────────────────────────────────────
+           Entrances resolve out of a slight blur so type lands sharp
+           rather than simply appearing. */
+        .js [data-reveal] { filter: blur(5px); transition:
+            opacity .62s cubic-bezier(.22,1,.28,1),
+            transform .62s cubic-bezier(.22,1,.28,1),
+            filter .62s cubic-bezier(.22,1,.28,1); }
+        .js [data-reveal].is-in { filter: blur(0); }
+        .js [data-reveal] [data-reveal] { filter: none; }
+
+        /* photographs travel against the scroll - the band becomes a window
+           you move past rather than a picture pinned to the page */
+        @supports (animation-timeline: view()) {
+            @media (prefers-reduced-motion: no-preference) {
+                [data-reveal-img] img, .rt-drift img {
+                    animation: rtPar linear both; animation-timeline: view();
+                    will-change: transform;
+                }
+                @keyframes rtPar {
+                    from { transform: translate3d(0,-8%,0) scale(1.18); }
+                    to   { transform: translate3d(0, 8%,0) scale(1.18); }
+                }
+                /* section blocks settle as they come into frame */
+                [data-reveal] { animation: rtSettle linear both;
+                    animation-timeline: view(); animation-range: entry 0% entry 62%; }
+                @keyframes rtSettle { from { transform: translateY(22px); } to { transform: none; } }
+            }
+        }
+
+        /* how far down the page you are */
+        .rt-progress { position: fixed; top: 68px; left: 0; z-index: 60;
+            width: 100%; height: 2px; background: var(--blue);
+            transform: scaleX(0); transform-origin: 0 50%; pointer-events: none; }
+        @supports (animation-timeline: scroll()) {
+            .rt-progress { animation: rtProg linear both; animation-timeline: scroll(root block); }
+            @keyframes rtProg { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .rt-progress { display: none; }
+        }
+
+        /* the thread between the layers draws downward on arrival */
+        .js .layer-rail::before { transform: scaleY(0); transform-origin: top;
+            transition: transform 1.05s cubic-bezier(.22,1,.28,1) .1s; }
+        .js .layer-rail:has(.layer-step.is-in)::before { transform: scaleY(1); }
+
+        /* figures hold their width while they count */
+        .stat { font-variant-numeric: tabular-nums; }
+
+        /* buttons lean into the pointer */
+        .btn-primary, .rt-signin { position: relative; overflow: hidden; }
+        .btn-primary::after, .rt-signin::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%);
+            transform: translateX(-100%); transition: transform .6s cubic-bezier(.22,1,.28,1);
+        }
+        .btn-primary:hover::after, .rt-signin:hover::after { transform: translateX(100%); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .js [data-reveal] { filter: none !important; }
+            .js .layer-rail::before { transform: none; transition: none; }
+            .btn-primary::after, .rt-signin::after { display: none; }
+        }
+
+
+
+        /* the about hero gives the photograph room; the headline sits low in it */
+        .rt-hero-tall { display: flex; align-items: flex-end; min-height: 466px; }
+        .rt-hero-tall > .relative { width: 100%; }
+        @media (min-width: 768px) { .rt-hero-tall { min-height: 726px; } }
+
+
+        /* at a glance: the brief's own icons, one per claim */
+        .ga-icon { width: 46px; height: 46px; display: block; margin-bottom: 15px;
+            transition: transform .3s cubic-bezier(.22,1,.28,1); }
+        .rt-card:hover .ga-icon { transform: translateY(-3px) scale(1.04); }
+        .ga-card::before { content: none !important; }
+        @media (prefers-reduced-motion: reduce) {
+            .ga-icon { transition: none; }
+            .rt-card:hover .ga-icon { transform: none; }
+        }
+
+
+        /* ── founder narrative: four beats on one thread ────────────────── */
+        .fn { position: relative; }
+        .fn::before { content: ''; position: absolute; left: 5px; top: 14px; bottom: 14px; width: 1px;
+            background: linear-gradient(180deg, rgba(26,63,212,.5), rgba(26,63,212,.08)); }
+        .fn-beat { position: relative; padding-left: 34px; padding-bottom: 34px; }
+        .fn-beat:last-child { padding-bottom: 0; }
+        .fn-beat::before { content: ''; position: absolute; left: 0; top: 5px; width: 11px; height: 11px;
+            background: #fff; border: 2px solid var(--hair-2); transform: rotate(45deg);
+            transition: border-color .3s ease, background-color .3s ease; }
+        .fn-beat:hover::before { border-color: var(--blue); background: var(--blue); }
+        .fn-label { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--blue); }
+        .fn-beat p { margin-top: 10px; font-size: 15.5px; line-height: 1.62; color: var(--body); }
+        /* the line the whole company turns on gets said out loud */
+        .fn-quote { margin: 4px 0 0; padding: 26px 28px; border-radius: 10px;
+            background: #f4f7fc; border-left: 3px solid var(--blue); }
+        .fn-quote p { font-size: clamp(19px, 1.7vw, 23px); line-height: 1.38; letter-spacing: -.018em;
+            color: var(--ink); font-weight: 500; }
+        .fn-quote span { display: block; margin-top: 12px;
+            font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+        @media (prefers-reduced-motion: reduce) { .fn-beat::before { transition: none; } }
+
+
+        .rt-statement { display: flex; flex-direction: column; }
+        .st-shot { position: relative; overflow: hidden; border-radius: 8px; background: #0a1730;
+            height: 150px; margin-bottom: 22px; flex: none; }
+        .st-shot img { width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform .7s cubic-bezier(.22,1,.28,1); }
+        .rt-statement:hover .st-shot img { transform: scale(1.06); }
+        @media (prefers-reduced-motion: reduce) { .st-shot img { transition: none; } }
+
+
+        /* ── founder narrative: one beat at a time, chosen by the reader ── */
+        .fs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .fs-panels { flex-basis: 100%; }
+        .fs input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+        .fs label { display: inline-flex; align-items: center; min-height: 42px; padding: 0 18px;
+            border-radius: 999px; border: 1px solid var(--hair-2); background: #fff;
+            font-size: 14px; font-weight: 500; letter-spacing: -.008em; color: var(--body);
+            cursor: pointer; transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
+        .fs label:hover { border-color: var(--blue); color: var(--blue); }
+        .fs input:checked + label { background: var(--blue); border-color: var(--blue); color: #fff; }
+        .fs input:focus-visible + label { outline: 2px solid var(--blue); outline-offset: 3px; }
+        .fs-panel { display: none; margin-top: 26px; }
+        .fs-panel p { font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; color: var(--body);
+            max-width: 62ch; }
+        .fs-1:checked ~ .fs-panels .fs-p1,
+        .fs-2:checked ~ .fs-panels .fs-p2,
+        .fs-3:checked ~ .fs-panels .fs-p3,
+        .fs-4:checked ~ .fs-panels .fs-p4 { display: block; }
+        @media (prefers-reduced-motion: no-preference) {
+            .fs-panel { animation: fsIn .42s cubic-bezier(.22,1,.28,1) both; }
+            @keyframes fsIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+        }
+        @media (prefers-reduced-motion: reduce) { .fs label { transition: none; } }
+
+        /* pills for short qualifiers */
+        .rt-pill { display: inline-flex; align-items: center; padding: 8px 15px; border-radius: 999px;
+            border: 1px solid var(--hair-2); background: #fff; font-size: 13px; font-weight: 500;
+            letter-spacing: -.006em; color: var(--body);
+            transition: border-color .25s ease, color .25s ease, transform .25s ease; }
+        .rt-pill:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+
+        /* a statement carries one idea and nothing else */
+        .rt-statement { position: relative; overflow: hidden; background: #fff;
+            border: 1px solid var(--hair); border-radius: 8px; padding: 28px 30px 34px;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease; }
+        .rt-statement::after { content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+            background: var(--blue); transition: width .5s cubic-bezier(.22,1,.28,1); }
+        .rt-statement:hover { border-color: #ccd6e8; transform: translateY(-2px);
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28); }
+        .rt-statement:hover::after { width: 64px; }
+        @media (prefers-reduced-motion: reduce) {
+            .rt-pill, .rt-statement { transition: none; }
+            .rt-pill:hover, .rt-statement:hover { transform: none; }
+        }
+
+
+        /* ── closing CTA: the last thing on the page should carry weight ── */
+        .rt-cta { position: relative; overflow: hidden;
+            background: radial-gradient(128% 150% at 10% 0%, #e9eefb 0%, #f4f7fc 42%, #ffffff 100%); }
+        .rt-cta::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+            background:
+              repeating-linear-gradient(180deg, rgba(26,63,212,.055) 0 1px, transparent 1px 46px);
+            -webkit-mask-image: linear-gradient(100deg, #000 0%, transparent 58%);
+            mask-image: linear-gradient(100deg, #000 0%, transparent 58%); }
+        .rt-cta::after { content: ''; position: absolute; right: -8%; top: -40%;
+            width: 46%; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+            background: radial-gradient(circle, rgba(26,63,212,.13) 0%, rgba(26,63,212,0) 68%); }
+        .rt-cta > * { position: relative; z-index: 1; }
+        .rt-cta-btn { display: inline-flex; align-items: center; gap: 11px;
+            padding: 15px 26px; border-radius: 999px; background: var(--blue); color: #fff;
+            font-size: 16px; font-weight: 500; letter-spacing: -.01em;
+            box-shadow: 0 14px 30px -14px rgba(26,63,212,.65);
+            transition: background-color .2s ease, box-shadow .3s ease, transform .2s ease; }
+        .rt-cta-btn svg { transition: transform .34s cubic-bezier(.2,.7,.3,1); }
+        .rt-cta-btn:hover { background: #12309f; transform: translateY(-2px);
+            box-shadow: 0 20px 38px -16px rgba(26,63,212,.7); }
+        .rt-cta-btn:hover svg { transform: translateX(5px); }
+        .rt-cta-btn:active { transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) {
+            .rt-cta-btn, .rt-cta-btn svg { transition: none; }
+            .rt-cta-btn:hover { transform: none; }
+        }
+
+        /* ── surfaces ──────────────────────────────────────────────────
+           Ruled lists read as a document. These read as a product: a real
+           surface, a quiet index, and one gesture on hover. */
+        .rt-cards { display: grid; gap: 12px; border-top: 0 !important; }
+        .rt-card {
+            position: relative; overflow: hidden;
+            background: #fff; border: 1px solid var(--hair); border-radius: 8px;
+            padding: 20px 22px 22px;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease;
+        }
+        /* the rule draws itself in rather than switching on */
+        .rt-card::after {
+            content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+            background: var(--blue); transition: width .5s cubic-bezier(.22,1,.28,1);
+        }
+        .rt-card:hover {
+            border-color: #ccd6e8; transform: translateY(-2px);
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28), 0 2px 6px -2px rgba(10,17,30,.06);
+        }
+        .rt-card:hover::after { width: 56px; }
+        .rt-card dt:not(.stat), .rt-card .h4 { font-size: 17px; letter-spacing: -.014em; }
+        .rt-card dd { margin-top: 6px; }
+        @media (min-width: 768px) { .rt-cards { gap: 14px; } .rt-card { padding: 22px 24px 24px; } }
+
+        /* the same language for the existing module card */
+        .mod {
+            position: relative; overflow: hidden; border-radius: 8px; padding: 22px 24px 24px;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease;
+        }
+        .mod::after {
+            content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+            background: var(--blue); transition: width .5s cubic-bezier(.22,1,.28,1);
+        }
+        .mod:hover {
+            border-color: #ccd6e8; transform: translateY(-2px);
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28), 0 2px 6px -2px rgba(10,17,30,.06);
+        }
+        .mod:hover::after { width: 56px; }
+
+        /* article cards lift with their picture */
+        .article-card { border-radius: 8px; overflow: hidden;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease; }
+        .article-card:hover { transform: translateY(-2px); border-color: #ccd6e8;
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28); }
+
+        /* a row you can point at should say so */
+        .rs-row { position: relative; }
+        .rs-row::after { content: ''; position: absolute; left: 0; top: 0; bottom: -1px; width: 2px;
+            background: var(--blue); transform: scaleY(0); transform-origin: top;
+            transition: transform .32s cubic-bezier(.22,1,.28,1); }
+        .rs-row:hover::after { transform: scaleY(1); }
+
+        /* labels get a leading rule - a printed-page habit, not a template one */
+        .eyebrow { display: inline-flex; align-items: center; }
+        p.eyebrow, div.eyebrow, dt.eyebrow { display: flex; }
+
+        /* cards arrive one after another, not all at once */
+        .rt-cards > [data-reveal]:nth-child(1), .stagger > [data-reveal]:nth-child(1) { transition-delay: 0ms; }
+        .rt-cards > [data-reveal]:nth-child(2), .stagger > [data-reveal]:nth-child(2) { transition-delay: 70ms; }
+        .rt-cards > [data-reveal]:nth-child(3), .stagger > [data-reveal]:nth-child(3) { transition-delay: 140ms; }
+        .rt-cards > [data-reveal]:nth-child(4), .stagger > [data-reveal]:nth-child(4) { transition-delay: 210ms; }
+        .rt-cards > [data-reveal]:nth-child(5), .stagger > [data-reveal]:nth-child(5) { transition-delay: 280ms; }
+        .rt-cards > [data-reveal]:nth-child(6), .stagger > [data-reveal]:nth-child(6) { transition-delay: 350ms; }
+        .rt-cards > [data-reveal]:nth-child(n+7), .stagger > [data-reveal]:nth-child(n+7) { transition-delay: 420ms; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rt-card, .mod, .article-card, .rs-row::after { transition: none !important; }
+            .rt-card:hover, .mod:hover, .article-card:hover { transform: none; }
+            .rt-card::after, .mod::after { display: none; }
+        }
 
         /* Compact module: gives sections structure without generic cards */
         .mod { background: #fff; border: 1px solid var(--hair); padding: 22px; transition: border-color .15s ease, background-color .15s ease; }
@@ -181,32 +443,46 @@
             .ev-foot { padding: 9px 12px; font-size: 11px; }
         }
 
-        /* primary nav dropdowns */
+        /* ── primary navigation ────────────────────────────────────── */
+        .rt-link { position: relative; display: inline-flex; align-items: center;
+            padding: 6px 0; font-size: 14px; font-weight: 500; letter-spacing: -0.01em;
+            color: var(--ink); white-space: nowrap; transition: color .15s ease; }
+        .rt-link:hover { color: var(--blue); }
+        @media (min-width: 1280px) { .rt-link { font-size: 15px; } }
+        .rt-link[data-current] { color: var(--blue); font-weight: 600; }
+        .rt-link[data-current]::after { content: ''; position: absolute; left: 0; right: 0;
+            bottom: -7px; height: 3px; background: var(--blue); }
+
+        /* display comes from the utility class so `hidden sm:inline-flex` still wins */
+        .rt-signin { align-items: center; justify-content: center;
+            height: 38px; padding: 0 18px; border-radius: 3px;
+            background: var(--blue); color: #fff;
+            font-size: 15px; font-weight: 500; letter-spacing: -0.01em;
+            transition: background-color .15s ease; }
+        .rt-signin:hover { background: #12309f; }
+        .rt-signin:active { transform: translateY(1px); }
+
+        .rt-m-link { display: flex; align-items: center; min-height: 46px;
+            font-size: 16px; font-weight: 500; color: var(--ink); }
+        .rt-m-link[data-current] { color: var(--blue); }
+
+        /* the mark ships as a white glyph on black; invert it for the light bar */
+        .rt-mark { filter: invert(1) contrast(1.12); mix-blend-mode: multiply; }
+
         .rt-nav-item { position: relative; display: flex; align-items: center; }
-        .rt-dd { position: absolute; top: 100%; left: -14px; min-width: 268px; padding: 8px;
-            background: #08183a; border: 1px solid #1b2942; box-shadow: 0 18px 34px -12px rgba(0,0,0,.55);
+        .rt-dd { position: absolute; top: calc(100% + 14px); left: -12px; min-width: 284px; padding: 6px;
+            background: #fff; border: 1px solid #e8ebf1; border-radius: 8px;
+            box-shadow: 0 14px 30px -10px rgba(10,17,30,.16), 0 2px 6px rgba(10,17,30,.04);
             opacity: 0; visibility: hidden; transform: translateY(-4px);
             transition: opacity .16s ease, transform .16s ease, visibility .16s; z-index: 60; }
         .rt-nav-item:hover .rt-dd, .rt-nav-item:focus-within .rt-dd { opacity: 1; visibility: visible; transform: none; }
-        .rt-dd::before { content: ''; position: absolute; top: -10px; left: 0; right: 0; height: 10px; }
-        .rt-dd-item { display: block; padding: 8px 12px; font-size: 13px; color: #b9c9e2;
-            border-radius: 2px; transition: background-color .12s ease, color .12s ease; }
-        .rt-dd-item:hover { background: rgba(138,180,255,.10); color: #fff; }
+        .rt-dd::before { content: ''; position: absolute; top: -16px; left: 0; right: 0; height: 16px; }
+        .rt-dd-item { display: block; padding: 8px 10px; font-size: 13.5px; color: var(--body);
+            border-radius: 5px; transition: background-color .12s ease, color .12s ease; }
+        .rt-dd-item:hover { background: #f2f4f8; color: var(--ink); }
         @media (max-width: 1023px) { .rt-dd { display: none; } }
 
         /* ── craft layer ───────────────────────────────────────────────── */
-
-        /* 1 · nav: one ink bar that travels between items instead of six static borders */
-        .nav-rail { position: relative; }
-        .nav-ink { position: absolute; bottom: -1px; height: 1.5px; background: var(--accent);
-            width: 0; left: 0; opacity: 0; pointer-events: none;
-            transition: transform .34s cubic-bezier(.22,1,.28,1), width .34s cubic-bezier(.22,1,.28,1), opacity .2s ease; }
-        .nav-rail a { border-bottom-color: transparent !important; }
-        .nav-rail a[data-current] { border-bottom-color: var(--accent) !important; }
-        .js .nav-rail a[data-current] { border-bottom-color: transparent !important; }
-        @media (prefers-reduced-motion: reduce) {
-            .js .nav-rail a[data-current] { border-bottom-color: var(--accent) !important; }
-        }
 
         /* 2 · links draw their underline in, they don't just switch it on */
         .link-arrow, .prose-rt a, .rs-title {
@@ -244,7 +520,6 @@
         figure:hover > div > img { transform: scale(1.012); }
 
         @media (prefers-reduced-motion: reduce) {
-            .nav-ink { display: none; }
             [data-reveal], [data-reveal-img] { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none; }
             .link-arrow, .prose-rt a, .rs-title { transition: none; }
             figure img { transition: none; }
@@ -373,7 +648,7 @@
         .js [data-reveal-img] img { transform: scale(1.06); }
         .js [data-reveal-img].is-in img { transform: scale(1); transition: transform 1.5s cubic-bezier(.16,1,.3,1); }
         nav { transition: box-shadow .25s ease; }
-        nav.nav-scrolled { box-shadow: 0 1px 0 rgba(255,255,255,.07), 0 8px 24px rgba(2,9,22,.35); }
+        nav.nav-scrolled { box-shadow: 0 1px 0 rgba(10,17,30,.05), 0 6px 20px rgba(10,17,30,.07); }
         .mod { transition: border-color .18s ease, transform .18s ease; }
         .mod:hover { transform: translateY(-1px); }
 
@@ -390,169 +665,172 @@
 </head>
 <body class="bg-background text-secondary antialiased selection:bg-primary selection:text-on-primary">
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-shell border-b border-shell-line">
-<div class="flex justify-between items-center w-full px-margin h-[60px] max-w-container-max-width mx-auto">
-<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="index.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="assets/logo.jpg"/>RackTrack</a>
-<div class="hidden lg:flex gap-6 xl:gap-7 items-center nav-rail">
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="index.html">Home</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="why-racktrack.html">Why RackTrack</a>
-<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="solutions.html">Solutions</a><span class="rt-dd"><a class="rt-dd-item" href="solutions.html#principles">Principles</a><a class="rt-dd-item" href="solutions.html#rack-3d">3D topology</a><a class="rt-dd-item" href="solutions.html#workflow">Six intelligence surfaces</a><a class="rt-dd-item" href="why-racktrack.html#matrix">How we compare</a></span></span>
-<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="trust-security.html">Trust &amp; Security</a>
-<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="resources.html">Resources</a><span class="rt-dd"><a class="rt-dd-item" href="resources.html">All articles</a><a class="rt-dd-item" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every CMDB is 40% wrong</a><a class="rt-dd-item" href="article-what-network-verified-actually-means.html">What “network-verified” means</a><a class="rt-dd-item" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Preparing for SOC 2</a><a class="rt-dd-item" href="article-free-port-discovery-and-rack-capacity-planning.html">Free port discovery</a></span></span>
-<a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="about-us.html" data-current="">About Us</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="contact-us.html">Contact Us</a>
+<nav class="fixed top-0 w-full z-50 bg-white border-b border-[#e6eaf2]">
+<div class="flex items-center justify-between w-full px-margin h-[68px] max-w-container-max-width mx-auto">
+<div class="shrink-0 flex items-center"><a class="inline-flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-on-surface" href="index.html"><img alt="" class="w-[24px] h-[24px] rt-mark" src="assets/logo.jpg"/>RackTrack</a></div>
+<div class="hidden lg:flex flex-1 justify-center items-center gap-4 xl:gap-7 nav-rail">
+<a class="rt-link" href="index.html">Home</a>
+<a class="rt-link" href="why-racktrack.html">Why RackTrack</a>
+<span class="rt-nav-item"><a class="rt-link" href="solutions.html">Solutions</a><span class="rt-dd"><a class="rt-dd-item" href="solutions.html#principles">Principles</a><a class="rt-dd-item" href="solutions.html#rack-3d">3D topology</a><a class="rt-dd-item" href="solutions.html#workflow">Six intelligence surfaces</a></span></span>
+<span class="rt-nav-item"><a class="rt-link" href="use-cases.html">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
+<a class="rt-link" href="trust-security.html">Trust &amp; Security</a>
+<span class="rt-nav-item"><a class="rt-link" href="resources.html">Resources</a><span class="rt-dd"><a class="rt-dd-item" href="resources.html">All articles</a><a class="rt-dd-item" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every CMDB is 40% wrong</a><a class="rt-dd-item" href="article-what-network-verified-actually-means.html">What “network-verified” means</a><a class="rt-dd-item" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Preparing for SOC 2</a><a class="rt-dd-item" href="article-free-port-discovery-and-rack-capacity-planning.html">Free port discovery</a></span></span>
+<a class="rt-link" href="about-us.html" data-current="">About Us</a>
+<a class="rt-link" href="contact-us.html">Contact Us</a>
 </div>
-<div class="flex items-center gap-4">
-<a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] btn-sm" href="contact-us.html">Get a demo</a>
-<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined" aria-hidden="true"><svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' aria-hidden='true'><path d='M3.5 6.5h17M3.5 12h17M3.5 17.5h17'/></svg></span></button>
+<div class="shrink-0 flex justify-end items-center gap-4">
+<a class="hidden sm:inline-flex rt-signin" href="https://demo.racktrack.ai/login" target="_blank" rel="noopener noreferrer">Sign In</a>
+<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-on-surface -mr-1" id="menu-toggle"><span class="material-symbols-outlined" aria-hidden="true"><svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' aria-hidden='true'><path d='M3.5 6.5h17M3.5 12h17M3.5 17.5h17'/></svg></span></button>
 </div>
 </div>
-<div class="hidden lg:hidden border-t border-shell-line bg-shell px-margin py-5 flex-col gap-4" id="mobile-menu">
-<a class="text-[15px] font-normal text-shell-text" href="index.html">Home</a>
-<a class="text-[15px] font-normal text-shell-text" href="why-racktrack.html">Why RackTrack</a>
-<a class="text-[15px] font-normal text-shell-text" href="solutions.html">Solutions</a>
-<a class="text-[15px] font-normal text-shell-text" href="use-cases.html">Use Cases</a>
-<a class="text-[15px] font-normal text-shell-text" href="trust-security.html">Trust &amp; Security</a>
-<a class="text-[15px] font-normal text-shell-text" href="resources.html">Resources</a>
-<a class="text-[15px] font-medium text-white" href="about-us.html">About Us</a>
-<a class="text-[15px] font-normal text-shell-text" href="contact-us.html">Contact Us</a>
-<a class="btn bg-white text-shell mt-2 max-w-fit" href="contact-us.html">Get a demo</a>
+<div class="hidden lg:hidden border-t border-[#e6eaf2] bg-white px-margin py-4 flex-col" id="mobile-menu">
+<a class="rt-m-link" href="index.html">Home</a>
+<a class="rt-m-link" href="why-racktrack.html">Why RackTrack</a>
+<a class="rt-m-link" href="solutions.html">Solutions</a>
+<a class="rt-m-link" href="use-cases.html">Use Cases</a>
+<a class="rt-m-link" href="trust-security.html">Trust &amp; Security</a>
+<a class="rt-m-link" href="resources.html">Resources</a>
+<a class="rt-m-link" href="about-us.html" data-current="">About Us</a>
+<a class="rt-m-link" href="contact-us.html">Contact Us</a>
+<a class="rt-signin inline-flex mt-4 max-w-fit" href="https://demo.racktrack.ai/login" target="_blank" rel="noopener noreferrer">Sign In</a>
 </div>
 </nav>
 
-<main class="pt-[60px]">
-<!-- Hero -->
-<section class="shell-band">
-<div class="max-w-container-max-width mx-auto px-margin pt-12 md:pt-[68px] pb-12 md:pb-[68px]">
+<div class="rt-progress" aria-hidden="true"></div>
+<main class="pt-[68px]">
+<!-- Hero - image led -->
+<section class="shell-band shell-media rt-drift rt-hero-tall relative overflow-hidden">
+<img alt="A field engineer checking cabling against a laptop in a data hall" class="absolute inset-0 w-full h-full object-cover" style="object-position:50% 42%" src="assets/media-about-tablet-hall.jpg" loading="eager" decoding="async"/>
+<div class="absolute inset-0" style="background-color:rgba(6,17,39,0.72)" aria-hidden="true"></div>
+<div class="relative z-10 max-w-container-max-width mx-auto px-margin pt-16 md:pt-28 pb-16 md:pb-28">
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<div class="md:col-span-8 md:col-start-3 md:row-start-1 text-center">
-<p class="eyebrow">Our story</p>
-<h1 class="h1-page mt-6 mx-auto max-w-[24ch]">Why we built RackTrack</h1>
-<p class="lede mt-7 max-w-[56ch] mx-auto">Two decades of running enterprise infrastructure - and one problem that never went away. We stopped waiting for someone else to solve it.</p>
-</div>
-
+<div class="md:col-span-9">
+<p class="eyebrow">About us</p>
+<h1 class="h1-page mt-6 max-w-[22ch]">Helping infrastructure teams build smarter data centers.</h1>
 </div>
 </div>
-</section><!-- 20 minutes -->
-<section class="border-t border-outline-variant py-14 md:py-[72px] bg-surface">
-<div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4"><div class="md:col-span-6"><p class="eyebrow">Baseline assessment</p><h2 class="h2 mt-4 max-w-[20ch]">Three sources, one afternoon.</h2></div><div data-reveal="right" class="md:col-span-5 md:col-start-8 self-end"><p class="stat">20 minutes</p><p class="text-[15px] leading-relaxed text-outline mt-2">for a single rack or row - your records, your network, and the rack itself, put side by side.</p></div></div>
-<div class="mt-12 md:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8">
-<ol data-reveal class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-x-gutter border-t border-outline-variant">
-<li class="py-7 sm:pr-7 border-b sm:border-b-0 border-outline-variant">
-<span class="idx">Input 01</span>
-<h3 class="h4 mt-3">CMDB Truth</h3>
-<p class="text-[15px] leading-relaxed mt-2">What your CMDB thinks is in the rack. We take it as the baseline.</p>
-</li><li class="py-7 sm:px-7 border-b sm:border-b-0 border-outline-variant">
-<span class="idx">Input 02</span>
-<h3 class="h4 mt-3">Network Reality</h3>
-<p class="text-[15px] leading-relaxed mt-2">What your network reports as connected. We collect the actual signals.</p>
-</li><li class="py-7 sm:pl-7 border-outline-variant">
-<span class="idx">Input 03</span>
-<h3 class="h4 mt-3">RackTrack Scan</h3>
-<p class="text-[15px] leading-relaxed mt-2">We scan the rack physically and map what's really there.</p>
-</li>
-</ol>
-<div data-reveal class="lg:col-span-4 lg:col-start-9 border-l-2 border-primary pl-6 self-start">
-<span class="idx text-primary">Output</span>
-<h3 class="h3 mt-3 text-primary">Side-by-Side Output</h3>
-<p class="text-[15px] leading-relaxed mt-2">CMDB vs Network vs RackTrack. Discrepancies. Gaps. Verified.</p>
-</div>
-</div>
-<p class="mono text-[11px] tracking-[0.06em] text-outline border-t border-outline-variant pt-6 mt-0">Clarity. Confidence. Control. - All in twenty minutes.</p>
 </div>
 </section>
 
-<!-- What RackTrack Does -->
+<!-- Intro -->
 <section class="py-14 md:py-20">
 <div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<h2 class="h2 md:col-span-5 max-w-[20ch]">Physical infrastructure intelligence - captured, validated, reconciled, and operationalized.</h2>
-<p data-reveal="right" class="md:col-span-6 md:col-start-7 lede self-end">One phone sweep produces a continuously reconciled digital twin of your physical rack - inventory, topology, port state, and firmware posture synced to every system your teams already run.</p>
+<p data-reveal class="lede text-center max-w-[68ch] mx-auto">We at RackTrack build AI-powered solutions that transform rack images into accurate, actionable inventory - enabling organizations to simplify operations, improve asset visibility, and manage their infrastructure with confidence.</p>
+<div data-reveal class="flex flex-wrap justify-center gap-3 mt-9">
+<span class="rt-pill">Enterprise ready</span>
+<span class="rt-pill">R&amp;D-driven innovation</span>
+<span class="rt-pill">Computer vision</span>
+<span class="rt-pill">Intelligent automation</span>
 </div>
-<dl data-reveal class="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-gutter border-t border-outline-variant">
-<div class="py-7 lg:pr-8 border-b lg:border-b-0 border-outline-variant"><dt class="eyebrow"><span class="mono text-[11px] text-outline">01 &#183; </span>Capture</dt><dd class="h3 mt-3">Phone-guided rack sensing</dd></div>
-<div class="py-7 lg:px-8 border-b lg:border-b-0 border-outline-variant"><dt class="eyebrow"><span class="mono text-[11px] text-outline">02 &#183; </span>Validate</dt><dd class="h3 mt-3">Physical-to-network truth</dd></div>
-<div class="py-7 lg:px-8 border-b lg:border-b-0 border-outline-variant"><dt class="eyebrow"><span class="mono text-[11px] text-outline">03 &#183; </span>Reconcile</dt><dd class="h3 mt-3">Structured intelligence</dd></div>
-<div class="py-7 lg:pl-8 border-outline-variant"><dt class="eyebrow"><span class="mono text-[11px] text-outline">04 &#183; </span>Operationalize</dt><dd class="h3 mt-3">Audit-ready artifacts</dd></div>
-</dl>
-<p class="mono text-[11px] tracking-[0.06em] text-outline border-t border-outline-variant pt-6">Workflow - Compare, approve, sync, and share the rack state across your operating stack.</p>
 </div>
 </section>
 
 
-<!-- Founder Narrative -->
-<section class="border-t border-outline-variant py-14 md:py-20 bg-surface" id="story">
+
+
+<!-- At a glance -->
+<section class="border-t border-outline-variant py-14 md:py-20 bg-surface" id="glance">
+<div class="max-w-container-max-width mx-auto px-margin">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-5">
+<p class="eyebrow">At a glance</p>
+<h2 class="h2 mt-5 max-w-[16ch]">RackTrack at a glance.</h2>
+</div>
+<p data-reveal="right" class="md:col-span-6 md:col-start-7 lede self-end">A small, senior team building for the physical layer - across two countries, backed early by the programmes that look for this kind of work.</p>
+</div>
+<dl class="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 rt-cards">
+<div class="rt-card ga-card lg:col-span-2" data-reveal><img class="ga-icon" src="assets/icon-team.png" alt="" width="176" height="176" loading="lazy" decoding="async"/><dt class="stat stat-sm">15+</dt><dd class="h4 mt-1">Employees</dd><dd class="text-[15px] leading-relaxed text-outline mt-1.5">A multidisciplinary team of AI researchers, software engineers, and domain experts who have run infrastructure themselves.</dd></div>
+<div class="rt-card ga-card lg:col-span-2" data-reveal><img class="ga-icon" src="assets/icon-locations.png" alt="" width="176" height="176" loading="lazy" decoding="async"/><dt class="stat stat-sm">2</dt><dd class="h4 mt-1">Locations - IN &amp; USA</dd><dd class="text-[15px] leading-relaxed text-outline mt-1.5">Operating from Hyderabad, India and Connecticut, USA, serving customers across regions.</dd></div>
+<div class="rt-card ga-card lg:col-span-2" data-reveal><img class="ga-icon" src="assets/icon-programs.png" alt="" width="176" height="176" loading="lazy" decoding="async"/><dt class="stat stat-sm">4+</dt><dd class="h4 mt-1">Startup programmes</dd><dd class="text-[15px] leading-relaxed text-outline mt-1.5">Recognised by leading startup ecosystems for innovation and growth potential.</dd></div>
+<div class="rt-card ga-card lg:col-span-3" data-reveal><img class="ga-icon" src="assets/icon-enterprise.png" alt="" width="176" height="176" loading="lazy" decoding="async"/><dt class="h4">Enterprise ready</dt><dd class="text-[15px] leading-relaxed text-outline mt-1.5">Designed for scalable, secure, and reliable data center operations.</dd></div>
+<div class="rt-card ga-card lg:col-span-3" data-reveal><img class="ga-icon" src="assets/icon-rnd.png" alt="" width="176" height="176" loading="lazy" decoding="async"/><dt class="h4">R&amp;D-driven innovation</dt><dd class="text-[15px] leading-relaxed text-outline mt-1.5">Leveraging computer vision and intelligent automation for infrastructure management.</dd></div>
+</dl>
+</div>
+</section>
+
+<!-- Mission & vision -->
+<section class="py-14 md:py-20" id="mission">
+<div class="max-w-container-max-width mx-auto px-margin">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+<article data-reveal class="rt-statement"><div class="st-shot"><img alt="A verified rack record being read in a data hall" src="assets/media-why-truth.jpg" loading="lazy" decoding="async"/></div>
+<p class="eyebrow">Mission</p>
+<p class="h2-sm mt-5">Empower organizations with intelligent automation, enabling smarter data center operations.</p>
+</article>
+<article data-reveal class="rt-statement"><div class="st-shot"><img alt="Switch ports with live link indicators across a rack" src="assets/media-switch-ports.jpg" loading="lazy" decoding="async"/></div>
+<p class="eyebrow">Vision</p>
+<p class="h2-sm mt-5">Advance the future of intelligent infrastructure management through continuous innovation.</p>
+</article>
+</div>
+</div>
+</section>
+
+<!-- Core values -->
+<section class="border-t border-outline-variant py-14 md:py-20 bg-surface" id="values">
+<div class="max-w-container-max-width mx-auto px-margin">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-5">
+<p class="eyebrow">Core values</p>
+<h2 class="h2 mt-5 max-w-[16ch]">What we hold ourselves to.</h2>
+</div>
+<p data-reveal="right" class="md:col-span-6 md:col-start-7 lede self-end">Our core values are the foundation of everything we do. They guide our decisions, inspire innovation, strengthen collaboration, and reflect our commitment to delivering exceptional solutions.</p>
+</div>
+<dl class="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 rt-cards">
+<div class="rt-card" data-reveal><dt class="h4">Innovation</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">Driving meaningful progress through technology.</dd></div>
+<div class="rt-card" data-reveal><dt class="h4">Customer first</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">Building solutions around customer needs.</dd></div>
+<div class="rt-card" data-reveal><dt class="h4">Excellence</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">Delivering quality, reliability, and precision.</dd></div>
+<div class="rt-card" data-reveal><dt class="h4">Integrity</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">Acting with honesty and accountability.</dd></div>
+<div class="rt-card" data-reveal><dt class="h4">Collaboration</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">Achieving more through teamwork.</dd></div>
+<div class="rt-card" data-reveal><dt class="h4">Continuous improvement</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">Learning, adapting, and growing every day.</dd></div>
+</dl>
+</div>
+</section>
+
+<!-- Full-bleed band -->
+<figure class="relative w-full h-[280px] md:h-[420px] overflow-hidden" data-reveal-img>
+<img alt="A row of cabinets photographed during an inventory sweep" class="w-full h-full object-cover object-center" src="assets/media-rack-row.jpg" loading="lazy" decoding="async"/>
+<figcaption class="absolute inset-0 bg-shell/60 flex items-end">
+<div class="max-w-container-max-width mx-auto px-margin w-full pb-9 md:pb-12" data-reveal>
+<p class="eyebrow !text-accent">Why we started</p>
+<p class="h2 text-white max-w-[24ch] mt-3">Built by people who have crouched in front of the cabinets.</p>
+</div>
+</figcaption>
+</figure>
+
+<!-- Founder narrative -->
+<section class="py-14 md:py-20" id="story">
 <div class="max-w-container-max-width mx-auto px-margin">
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <div class="md:col-span-5">
 <p class="eyebrow">Founder narrative</p>
-<h2 class="h2 mt-5">The story behind RackTrack</h2>
+<h2 class="h2 mt-5 max-w-[18ch]">The story behind RackTrack</h2>
+<div class="fn-quote mt-9" data-reveal>
+<p>The physical layer deserved the same confidence teams already expect from cloud dashboards and enterprise systems.</p>
+<span>Why we started</span>
 </div>
 </div>
-<div class="mt-9 md:mt-12 row-list border-t border-outline-variant">
-<article data-reveal class="py-8 grid grid-cols-1 md:grid-cols-12 gap-y-3 gap-x-gutter">
-<h3 class="md:col-span-3 h4">The moment</h3>
-<p class="md:col-span-8 md:col-start-5 text-[15px] leading-relaxed">RackTrack became obvious during a rack audit where the <span class="text-on-background font-medium">spreadsheet, switch labels, and live ports</span> all told different stories. A team that should have been planning a change was crouched in front of cabinets, reading tiny labels, taking photos, and cross-checking ports by hand.</p>
-</article>
-<article data-reveal class="py-8 grid grid-cols-1 md:grid-cols-12 gap-y-3 gap-x-gutter">
-<h3 class="md:col-span-3 h4">The reason</h3>
-<p class="md:col-span-8 md:col-start-5 text-[15px] leading-relaxed">One missed cable could delay a migration or send someone back into the data hall after hours. The physical layer deserved the same confidence teams already expect from <span class="text-on-background font-medium">cloud dashboards and enterprise systems</span>.</p>
-</article>
-<article data-reveal class="py-8 grid grid-cols-1 md:grid-cols-12 gap-y-3 gap-x-gutter">
-<h3 class="md:col-span-3 h4">The team</h3>
-<p class="md:col-span-8 md:col-start-5 text-[15px] leading-relaxed">Our founding team brings <span class="text-on-background font-medium">enterprise architecture leadership, Salesforce and MuleSoft integration depth, networking operations experience,</span> and product design discipline from complex infrastructure environments.</p>
-</article>
-<article data-reveal class="py-8 grid grid-cols-1 md:grid-cols-12 gap-y-3 gap-x-gutter">
-<h3 class="md:col-span-3 h4">The build</h3>
-<p class="md:col-span-8 md:col-start-5 text-[15px] leading-relaxed">RackTrack is built on patent-pending innovations for <span class="text-on-background font-medium">automated network cable mapping</span>. The architecture came out of eighteen months of engineering work, and is now the subject of a pending US utility patent application.</p>
-</article>
+<div class="md:col-span-6 md:col-start-7">
+<div class="fs" role="group" aria-label="The story behind RackTrack"><input class="fs-1" type="radio" name="founder-beat" id="fs-1" checked/><label for="fs-1">The moment</label>
+<input class="fs-2" type="radio" name="founder-beat" id="fs-2"/><label for="fs-2">The reason</label>
+<input class="fs-3" type="radio" name="founder-beat" id="fs-3"/><label for="fs-3">The team</label>
+<input class="fs-4" type="radio" name="founder-beat" id="fs-4"/><label for="fs-4">The build</label><div class="fs-panels"><div class="fs-panel fs-p1"><p>RackTrack became obvious during a rack audit where the spreadsheet, switch labels, and live ports all told different stories. A team that should have been planning a change was crouched in front of cabinets, reading tiny labels, taking photos, and cross-checking ports by hand.</p></div>
+<div class="fs-panel fs-p2"><p>One missed cable could delay a migration or send someone back into the data hall after hours.</p></div>
+<div class="fs-panel fs-p3"><p>Our founding team brings enterprise architecture leadership, Salesforce and MuleSoft integration depth, networking operations experience, and product design discipline from complex infrastructure environments.</p></div>
+<div class="fs-panel fs-p4"><p>RackTrack is built on patent-pending innovations for automated network cable mapping. The architecture came out of eighteen months of engineering work, and is now the subject of a pending US utility patent application.</p></div></div></div></div>
 </div>
 </div>
 </section>
 
-<!-- Why It Matters -->
-<section class="py-14 md:py-20">
-<div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<div class="md:col-span-5">
-<p class="eyebrow">Why it matters</p>
-<h2 class="h2 mt-5 max-w-[16ch]">What the sweep replaced.</h2>
-</div>
-<p data-reveal="right" class="md:col-span-6 md:col-start-7 lede self-end">RackTrack keeps physical rack data current, structured, and ready for the teams that operate it every day.</p>
-</div>
-<figure class="ev"><figcaption class="ev-head"><span class="ev-title">Sweep output - cabinet B-06</span><span class="ev-sub mono">2026-08-07 09:14 · sweep-03</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">U42-41</td><td class="ev-dev">Patch panel, 24 port</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.98</td></tr><tr class="ev-ok"><td class="ev-u">U39</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.99</td></tr><tr class="ev-warn"><td class="ev-u">U35</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">model differs - CMDB says 24T</td><td class="ev-conf">0.99</td></tr><tr class="ev-ok"><td class="ev-u">U31</td><td class="ev-dev">RT-7600-24T-E</td><td class="ev-note">matched CMDB</td><td class="ev-conf">0.97</td></tr><tr class="ev-miss"><td class="ev-u">U27</td><td class="ev-dev">Unidentified 1U appliance</td><td class="ev-note">no CMDB record</td><td class="ev-conf">0.61</td></tr><tr class="ev-free"><td class="ev-u">U18-05</td><td class="ev-dev">-</td><td class="ev-note">14U free</td><td class="ev-conf">-</td></tr></tbody></table><p class="ev-foot mono">11 devices identified · 9 matched · 2 exceptions · raised as work order WO-2026-0814</p></figure>
-</div>
-</section>
 
-<!-- Investors -->
-<section class="border-t border-outline-variant py-12 md:py-16 bg-surface">
-<div class="max-w-container-max-width mx-auto px-margin">
-<h2 class="h3 max-w-[34ch]">Backed by teams who understand infrastructure operations.</h2>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-x-gutter mt-10 border-t border-outline-variant">
-<div class="h-[92px] flex items-center border-b md:border-b-0 border-outline-variant"><span class="mono text-[11px] tracking-[0.1em] uppercase text-outline-variant">Investor</span></div>
-<div class="h-[92px] flex items-center md:px-8 border-b md:border-b-0 border-outline-variant"><span class="mono text-[11px] tracking-[0.1em] uppercase text-outline-variant">Investor</span></div>
-<div class="h-[92px] flex items-center md:px-8 border-outline-variant"><span class="mono text-[11px] tracking-[0.1em] uppercase text-outline-variant">Investor</span></div>
-<div class="h-[92px] flex items-center md:pl-8 border-outline-variant"><span class="mono text-[11px] tracking-[0.1em] uppercase text-outline-variant">Investor</span></div>
+<!-- Final CTA -->
+<section class="rt-cta border-t border-outline-variant py-[76px] md:py-[104px]">
+<div class="max-w-container-max-width mx-auto px-margin grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8">
+<div class="lg:col-span-7">
+<p class="eyebrow">Work with us</p>
+<h2 class="h2 mt-5 max-w-[19ch]">Build the physical infrastructure intelligence layer with us.</h2>
 </div>
-</div>
-</section>
-
-<!-- Mission CTA -->
-<section class="shell-band py-16 md:py-24">
-<div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<div class="md:col-span-7">
-<p class="eyebrow">Our mission</p>
-<h2 class="h2 mt-5 max-w-[20ch]">Build the Physical Infrastructure Intelligence Platform for data centers.</h2>
-<p class="text-[18px] md:text-[20px] leading-[1.4] tracking-[-0.02em] text-on-background mt-8 max-w-[34ch]">Not an audit tool. Not a DCIM replacement. The intelligence layer underneath both.</p>
-</div>
-<div data-reveal="right" class="md:col-span-4 md:col-start-9 flex flex-col gap-7 md:pt-12">
-<p class="mono text-[11px] tracking-[0.06em] text-shell-text/70 leading-relaxed">Not an audit tool · Not a DCIM replacement · Patent pending platform</p>
-<p class="text-[15px] leading-relaxed">Built to make physical infrastructure legible, trusted, and operational at enterprise scale. US Application 19/219,347.</p>
-<a class="btn btn-primary max-w-fit" href="contact-us.html">Request platform brief</a>
-</div>
+<div class="lg:col-span-4 lg:col-start-9 flex flex-col gap-6 justify-end">
+<p class="text-[15px] leading-relaxed">Tell us about your estate and we will scope a sweep against a single rack or row - and show you the reconciliation output.</p>
+<a class="rt-cta-btn max-w-fit" href="contact-us.html">Talk to the team<svg viewBox='0 0 18 12' width='17' height='12' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M1 6h15M11 1l5 5-5 5'/></svg></a>
 </div>
 </div>
 </section>
@@ -719,37 +997,6 @@
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* nav ink - one bar that travels, settling on the current page */
-    var rail = document.querySelector('.nav-rail');
-    if (rail && !reduce) {
-        var ink = document.createElement('span');
-        ink.className = 'nav-ink';
-        rail.appendChild(ink);
-        var links = [].slice.call(rail.querySelectorAll('a[href$=".html"]'));
-        var current = rail.querySelector('a[data-current]') || links[0];
-        function moveTo(el, show) {
-            if (!el) { return; }
-            var rr = rail.getBoundingClientRect(), er = el.getBoundingClientRect();
-            ink.style.width = er.width + 'px';
-            ink.style.transform = 'translateX(' + (er.left - rr.left) + 'px)';
-            ink.style.opacity = show ? '1' : '0';
-        }
-        function settle() { moveTo(current, !!rail.querySelector('a[data-current]')); }
-        links.forEach(function (a) {
-            a.addEventListener('mouseenter', function () { moveTo(a, true); });
-            a.addEventListener('focus', function () { moveTo(a, true); });
-        });
-        rail.addEventListener('mouseleave', settle);
-        window.addEventListener('resize', settle);
-        requestAnimationFrame(settle);
-        window.addEventListener('load', settle);
-        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(settle); }
-        // the webfont swap changes link widths after first paint - re-measure when it does
-        if (window.ResizeObserver) {
-            var ro = new ResizeObserver(function () { settle(); });
-            links.forEach(function (a) { ro.observe(a); });
-        }
-    }
 })();
 </script>
 
@@ -771,6 +1018,72 @@
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
   els.forEach(function (el) { io.observe(el); });
   setTimeout(function () { els.forEach(show); }, 4000);
+})();
+</script>
+
+<script>
+/* figures count up the first time they are seen - format is preserved, so
+   "40-60%" and "1.3 / 4" both animate without losing their punctuation */
+(function () {
+    if (document.documentElement.classList.contains('no-js')) { return; }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+    var stats = [].slice.call(document.querySelectorAll('.stat'));
+    if (!stats.length || !('IntersectionObserver' in window)) { return; }
+
+    function run(el) {
+        var raw = el.textContent, parts = raw.split(/(\d+(?:\.\d+)?)/);
+        var nums = [], any = false;
+        parts.forEach(function (p, i) { if (i % 2) { nums.push(parseFloat(p)); any = true; } });
+        if (!any) { return; }
+        var dec = parts.filter(function (p, i) { return i % 2; })
+                       .map(function (p) { return (p.split('.')[1] || '').length; });
+        var t0 = null, dur = 900, done = false;
+        // if frames stall (background tab, throttling) never leave a 0 on screen
+        var guard = setTimeout(function () { if (!done) { done = true; el.textContent = raw; } }, dur + 700);
+        function frame(t) {
+            if (done) { return; }          // the guard already restored the value
+            if (t0 === null) { t0 = t; }
+            var k = Math.min(1, (t - t0) / dur);
+            var e = 1 - Math.pow(1 - k, 3);          // ease-out cubic
+            var n = 0;
+            el.textContent = parts.map(function (p, i) {
+                if (!(i % 2)) { return p; }
+                var v = nums[n] * e;
+                return v.toFixed(dec[n++]);
+            }).join('');
+            if (k < 1) { requestAnimationFrame(frame); }
+            else { done = true; clearTimeout(guard); el.textContent = raw; }
+        }
+        requestAnimationFrame(frame);
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+            if (en.isIntersecting) { io.unobserve(en.target); run(en.target); }
+        });
+    }, { threshold: .6 });
+    stats.forEach(function (el) { io.observe(el); });
+})();
+</script>
+
+<script>
+/* scroll progress, for engines without scroll-driven animations */
+(function () {
+    var bar = document.querySelector('.rt-progress');
+    if (!bar || !window.CSS || !CSS.supports) { return; }
+    if (CSS.supports('animation-timeline: scroll()')) { return; }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+    var tick = false;
+    function set() {
+        var d = document.documentElement;
+        var max = d.scrollHeight - d.clientHeight;
+        bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, d.scrollTop / max) : 0) + ')';
+        tick = false;
+    }
+    addEventListener('scroll', function () {
+        if (!tick) { tick = true; requestAnimationFrame(set); }
+    }, { passive: true });
+    addEventListener('resize', set); set();
 })();
 </script>
 </body></html>

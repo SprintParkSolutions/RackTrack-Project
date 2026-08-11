@@ -17,6 +17,7 @@
             --muted: #727a8a;
             --blue: #1a3fd4;
             --shell: #061127;
+            --shell-hero: #0f1d36;
             --shell-line: #1b2942;
             --shell-text: #9fb0c9;
             --accent: #8ab4ff;
@@ -30,15 +31,15 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        section[id], div[id], article[id] { scroll-margin-top: 80px; }
+        section[id], div[id], article[id] { scroll-margin-top: 88px; }
         h1, h2, h3, h4 { color: var(--ink); font-weight: 600; }
 
         .h1  { font-size: clamp(34px, 5.2vw, 66px); line-height: 1.02; letter-spacing: -0.036em; font-weight: 600; }
       .h1-page{font-size:clamp(30px,3.4vw,46px);line-height:1.06;letter-spacing:-0.03em;font-weight:600}
       .lede-page{font-size:18px;line-height:1.55}
-        .h2  { font-size: clamp(26px, 3.1vw, 42px); line-height: 1.08; letter-spacing: -0.032em; font-weight: 600; }
-      .h2-sm{font-size:clamp(26px,2.1vw,30px);line-height:1.14;letter-spacing:-0.026em;font-weight:600}
-        .h3  { font-size: 20px; line-height: 1.28; letter-spacing: -0.02em; font-weight: 600; }
+        .h2  { font-size: clamp(29px, 3.3vw, 46px); line-height: 1.07; letter-spacing: -0.032em; font-weight: 600; }
+      .h2-sm{font-size:clamp(27px,2.3vw,33px);line-height:1.13;letter-spacing:-0.026em;font-weight:600}
+        .h3  { font-size: 22px; line-height: 1.26; letter-spacing: -0.02em; font-weight: 600; }
         .h4  { font-size: 15px; line-height: 1.35; letter-spacing: -0.012em; font-weight: 600; color: var(--ink); }
         .lede { font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; }
         .measure    { max-width: 62ch; }
@@ -60,6 +61,7 @@
 
         /* Dark shell bands - nav, hero, CTA, footer */
         .shell-band { background: var(--shell); color: var(--shell-text); }
+        .hero-band  { background: var(--shell-hero); }
 
       /* motion: entrances that follow the reading direction */
       [data-reveal="left"]  { opacity: 0; transform: translateX(-18px); }
@@ -91,7 +93,6 @@
         .shell-band .flex.flex-wrap.items-center.gap-3,
         .flex.flex-wrap.items-center.gap-3 { display: flex; flex-direction: column; align-items: stretch; width: 100%; }
         .btn-sm { width: auto; }
-        nav .btn { width: auto; }
         /* anything that scrolls sideways says so */
         .overflow-x-auto { position: relative; }
         .ev, .overflow-x-auto { scrollbar-width: thin; }
@@ -104,7 +105,6 @@
           min-height: 44px; display: inline-flex; align-items: center;
         }
         #menu-toggle { min-width: 44px; min-height: 44px; justify-content: center; }
-        nav .btn-sm { min-height: 40px; }
         .rs-row { min-height: 44px; }
       }
 
@@ -141,6 +141,270 @@
         .shell-band .row-list > * + * { border-top-color: var(--shell-line); }
         .idx { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
 
+
+
+        /* ── motion ────────────────────────────────────────────────────
+           Entrances resolve out of a slight blur so type lands sharp
+           rather than simply appearing. */
+        .js [data-reveal] { filter: blur(5px); transition:
+            opacity .62s cubic-bezier(.22,1,.28,1),
+            transform .62s cubic-bezier(.22,1,.28,1),
+            filter .62s cubic-bezier(.22,1,.28,1); }
+        .js [data-reveal].is-in { filter: blur(0); }
+        .js [data-reveal] [data-reveal] { filter: none; }
+
+        /* photographs travel against the scroll - the band becomes a window
+           you move past rather than a picture pinned to the page */
+        @supports (animation-timeline: view()) {
+            @media (prefers-reduced-motion: no-preference) {
+                [data-reveal-img] img, .rt-drift img {
+                    animation: rtPar linear both; animation-timeline: view();
+                    will-change: transform;
+                }
+                @keyframes rtPar {
+                    from { transform: translate3d(0,-8%,0) scale(1.18); }
+                    to   { transform: translate3d(0, 8%,0) scale(1.18); }
+                }
+                /* section blocks settle as they come into frame */
+                [data-reveal] { animation: rtSettle linear both;
+                    animation-timeline: view(); animation-range: entry 0% entry 62%; }
+                @keyframes rtSettle { from { transform: translateY(22px); } to { transform: none; } }
+            }
+        }
+
+        /* how far down the page you are */
+        .rt-progress { position: fixed; top: 68px; left: 0; z-index: 60;
+            width: 100%; height: 2px; background: var(--blue);
+            transform: scaleX(0); transform-origin: 0 50%; pointer-events: none; }
+        @supports (animation-timeline: scroll()) {
+            .rt-progress { animation: rtProg linear both; animation-timeline: scroll(root block); }
+            @keyframes rtProg { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .rt-progress { display: none; }
+        }
+
+        /* the thread between the layers draws downward on arrival */
+        .js .layer-rail::before { transform: scaleY(0); transform-origin: top;
+            transition: transform 1.05s cubic-bezier(.22,1,.28,1) .1s; }
+        .js .layer-rail:has(.layer-step.is-in)::before { transform: scaleY(1); }
+
+        /* figures hold their width while they count */
+        .stat { font-variant-numeric: tabular-nums; }
+
+        /* buttons lean into the pointer */
+        .btn-primary, .rt-signin { position: relative; overflow: hidden; }
+        .btn-primary::after, .rt-signin::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%);
+            transform: translateX(-100%); transition: transform .6s cubic-bezier(.22,1,.28,1);
+        }
+        .btn-primary:hover::after, .rt-signin:hover::after { transform: translateX(100%); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .js [data-reveal] { filter: none !important; }
+            .js .layer-rail::before { transform: none; transition: none; }
+            .btn-primary::after, .rt-signin::after { display: none; }
+        }
+
+
+        /* pills for short qualifiers */
+        .rt-pill { display: inline-flex; align-items: center; padding: 8px 15px; border-radius: 999px;
+            border: 1px solid var(--hair-2); background: #fff; font-size: 13px; font-weight: 500;
+            letter-spacing: -.006em; color: var(--body);
+            transition: border-color .25s ease, color .25s ease, transform .25s ease; }
+        .rt-pill:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+
+        /* a statement carries one idea and nothing else */
+        .rt-statement { position: relative; overflow: hidden; background: #fff;
+            border: 1px solid var(--hair); border-radius: 8px; padding: 28px 30px 34px;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease; }
+        .rt-statement::after { content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+            background: var(--blue); transition: width .5s cubic-bezier(.22,1,.28,1); }
+        .rt-statement:hover { border-color: #ccd6e8; transform: translateY(-2px);
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28); }
+        .rt-statement:hover::after { width: 64px; }
+        @media (prefers-reduced-motion: reduce) {
+            .rt-pill, .rt-statement { transition: none; }
+            .rt-pill:hover, .rt-statement:hover { transform: none; }
+        }
+
+
+        /* ── closing CTA: the last thing on the page should carry weight ── */
+        .rt-cta { position: relative; overflow: hidden;
+            background: radial-gradient(128% 150% at 10% 0%, #e9eefb 0%, #f4f7fc 42%, #ffffff 100%); }
+        .rt-cta::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+            background:
+              repeating-linear-gradient(180deg, rgba(26,63,212,.055) 0 1px, transparent 1px 46px);
+            -webkit-mask-image: linear-gradient(100deg, #000 0%, transparent 58%);
+            mask-image: linear-gradient(100deg, #000 0%, transparent 58%); }
+        .rt-cta::after { content: ''; position: absolute; right: -8%; top: -40%;
+            width: 46%; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+            background: radial-gradient(circle, rgba(26,63,212,.13) 0%, rgba(26,63,212,0) 68%); }
+        .rt-cta > * { position: relative; z-index: 1; }
+        .rt-cta-btn { display: inline-flex; align-items: center; gap: 11px;
+            padding: 15px 26px; border-radius: 999px; background: var(--blue); color: #fff;
+            font-size: 16px; font-weight: 500; letter-spacing: -.01em;
+            box-shadow: 0 14px 30px -14px rgba(26,63,212,.65);
+            transition: background-color .2s ease, box-shadow .3s ease, transform .2s ease; }
+        .rt-cta-btn svg { transition: transform .34s cubic-bezier(.2,.7,.3,1); }
+        .rt-cta-btn:hover { background: #12309f; transform: translateY(-2px);
+            box-shadow: 0 20px 38px -16px rgba(26,63,212,.7); }
+        .rt-cta-btn:hover svg { transform: translateX(5px); }
+        .rt-cta-btn:active { transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) {
+            .rt-cta-btn, .rt-cta-btn svg { transition: none; }
+            .rt-cta-btn:hover { transform: none; }
+        }
+
+
+        /* ── the library reads as a sequence of spreads ─────────────────── */
+        .lib-row { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: center;
+            padding: 30px 0; border-bottom: 1px solid var(--hair); }
+        @media (min-width: 860px) {
+            .lib-row { grid-template-columns: 44% 1fr; gap: 46px; padding: 38px 0; }
+            .lib-row:nth-child(even) .lib-shot { order: 2; }
+            .lib-row:nth-child(even) .lib-txt  { order: 1; }
+        }
+        .lib-shot { position: relative; overflow: hidden; border-radius: 10px;
+            background: #0a1730; aspect-ratio: 16 / 10; }
+        .lib-shot img { width: 100%; height: 100%; object-fit: cover; display: block;
+            transform: scale(1.06); transition: transform .8s cubic-bezier(.22,1,.28,1); }
+        .lib-row:hover .lib-shot img { transform: scale(1.12); }
+        .lib-tag { position: absolute; left: 12px; top: 12px; z-index: 1; padding: 5px 10px;
+            border-radius: 999px; background: rgba(6,17,39,.72);
+            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+            font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #cfe0ff; }
+        .lib-txt { display: flex; flex-direction: column; gap: 11px; align-items: flex-start; }
+        /* the picture resolves out of a zoom, the words rise, both tied to scroll */
+        @supports (animation-timeline: view()) {
+            @media (prefers-reduced-motion: no-preference) {
+                .lib-shot img { animation: libZoom linear both; animation-timeline: view();
+                    animation-range: entry 0% cover 52%; }
+                @keyframes libZoom { from { transform: scale(1.2); } to { transform: scale(1.02); } }
+                .lib-txt { animation: libRise linear both; animation-timeline: view();
+                    animation-range: entry 4% entry 88%; }
+                @keyframes libRise { from { opacity: .2; transform: translateY(24px); }
+                                     to   { opacity: 1; transform: none; } }
+            }
+        }
+        @media (prefers-reduced-motion: reduce) { .lib-shot img { transition: none; } }
+
+
+        /* ── featured article: the one story the page leads with ────────── */
+        .feat { position: relative; overflow: hidden; border-radius: 14px; background: #061127;
+            box-shadow: 0 30px 60px -34px rgba(2,9,22,.6); }
+        .feat > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+            opacity: .34; }
+        .feat-veil { position: absolute; inset: 0;
+            background: linear-gradient(100deg, rgba(6,17,39,.97) 0%, rgba(6,17,39,.9) 44%, rgba(6,17,39,.6) 100%); }
+        .feat-veil::after { content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(180deg, rgba(138,180,255,.05) 0 1px, transparent 1px 44px); }
+        .feat-in { position: relative; z-index: 1; padding: 32px 26px 34px; display: grid; gap: 30px; }
+        @media (min-width: 920px) { .feat-in { grid-template-columns: 1fr 300px; gap: 54px;
+            align-items: center; padding: 56px 54px; } }
+        .feat-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 13px;
+            border-radius: 999px; border: 1px solid rgba(138,180,255,.32); background: rgba(10,26,58,.5);
+            font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 10.5px; letter-spacing: .15em; text-transform: uppercase; color: #cfe0ff; }
+        .feat-h { font-size: clamp(27px, 3vw, 42px); line-height: 1.08; letter-spacing: -.03em;
+            font-weight: 600; color: #fff; margin-top: 20px; max-width: 20ch; }
+        .feat-h a { transition: color .2s ease; }
+        .feat-h a:hover { color: #8ab4ff; }
+        .feat-p { font-size: 16px; line-height: 1.6; color: #c3d2e8; margin-top: 18px; max-width: 54ch; }
+        .feat-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 26px;
+            padding: 13px 22px; border-radius: 999px; background: #fff; color: #061127;
+            font-size: 15px; font-weight: 500;
+            transition: background-color .2s ease, transform .2s ease; }
+        .feat-cta svg { transition: transform .32s cubic-bezier(.2,.7,.3,1); }
+        .feat-cta:hover { background: #dbe6f5; transform: translateY(-2px); }
+        .feat-cta:hover svg { transform: translateX(5px); }
+        /* the number the article is named after, given its own room */
+        .feat-fig { border: 1px solid rgba(138,180,255,.26); border-radius: 12px;
+            background: rgba(9,23,52,.62); padding: 28px 26px; text-align: left; }
+        .feat-fig .stat { display: block; color: #fff; font-size: clamp(52px, 5vw, 68px);
+            line-height: 1; letter-spacing: -.04em; }
+        .feat-fig p { margin-top: 14px; font-size: 13.5px; line-height: 1.5; color: #9fb0c9; }
+        .feat-fig hr { border: 0; border-top: 1px solid rgba(138,180,255,.2); margin: 18px 0 0; }
+        .feat-fig .src { margin-top: 12px; font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: #7d93b5; }
+        @media (prefers-reduced-motion: reduce) {
+            .feat-cta, .feat-cta svg, .feat-h a { transition: none; }
+            .feat-cta:hover { transform: none; }
+        }
+
+        /* ── surfaces ──────────────────────────────────────────────────
+           Ruled lists read as a document. These read as a product: a real
+           surface, a quiet index, and one gesture on hover. */
+        .rt-cards { display: grid; gap: 12px; border-top: 0 !important; }
+        .rt-card {
+            position: relative; overflow: hidden;
+            background: #fff; border: 1px solid var(--hair); border-radius: 8px;
+            padding: 20px 22px 22px;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease;
+        }
+        /* the rule draws itself in rather than switching on */
+        .rt-card::after {
+            content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+            background: var(--blue); transition: width .5s cubic-bezier(.22,1,.28,1);
+        }
+        .rt-card:hover {
+            border-color: #ccd6e8; transform: translateY(-2px);
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28), 0 2px 6px -2px rgba(10,17,30,.06);
+        }
+        .rt-card:hover::after { width: 56px; }
+        .rt-card dt:not(.stat), .rt-card .h4 { font-size: 17px; letter-spacing: -.014em; }
+        .rt-card dd { margin-top: 6px; }
+        @media (min-width: 768px) { .rt-cards { gap: 14px; } .rt-card { padding: 22px 24px 24px; } }
+
+        /* the same language for the existing module card */
+        .mod {
+            position: relative; overflow: hidden; border-radius: 8px; padding: 22px 24px 24px;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease;
+        }
+        .mod::after {
+            content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+            background: var(--blue); transition: width .5s cubic-bezier(.22,1,.28,1);
+        }
+        .mod:hover {
+            border-color: #ccd6e8; transform: translateY(-2px);
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28), 0 2px 6px -2px rgba(10,17,30,.06);
+        }
+        .mod:hover::after { width: 56px; }
+
+        /* article cards lift with their picture */
+        .article-card { border-radius: 8px; overflow: hidden;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease; }
+        .article-card:hover { transform: translateY(-2px); border-color: #ccd6e8;
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28); }
+
+        /* a row you can point at should say so */
+        .rs-row { position: relative; }
+        .rs-row::after { content: ''; position: absolute; left: 0; top: 0; bottom: -1px; width: 2px;
+            background: var(--blue); transform: scaleY(0); transform-origin: top;
+            transition: transform .32s cubic-bezier(.22,1,.28,1); }
+        .rs-row:hover::after { transform: scaleY(1); }
+
+        /* labels get a leading rule - a printed-page habit, not a template one */
+        .eyebrow { display: inline-flex; align-items: center; }
+        p.eyebrow, div.eyebrow, dt.eyebrow { display: flex; }
+
+        /* cards arrive one after another, not all at once */
+        .rt-cards > [data-reveal]:nth-child(1), .stagger > [data-reveal]:nth-child(1) { transition-delay: 0ms; }
+        .rt-cards > [data-reveal]:nth-child(2), .stagger > [data-reveal]:nth-child(2) { transition-delay: 70ms; }
+        .rt-cards > [data-reveal]:nth-child(3), .stagger > [data-reveal]:nth-child(3) { transition-delay: 140ms; }
+        .rt-cards > [data-reveal]:nth-child(4), .stagger > [data-reveal]:nth-child(4) { transition-delay: 210ms; }
+        .rt-cards > [data-reveal]:nth-child(5), .stagger > [data-reveal]:nth-child(5) { transition-delay: 280ms; }
+        .rt-cards > [data-reveal]:nth-child(6), .stagger > [data-reveal]:nth-child(6) { transition-delay: 350ms; }
+        .rt-cards > [data-reveal]:nth-child(n+7), .stagger > [data-reveal]:nth-child(n+7) { transition-delay: 420ms; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rt-card, .mod, .article-card, .rs-row::after { transition: none !important; }
+            .rt-card:hover, .mod:hover, .article-card:hover { transform: none; }
+            .rt-card::after, .mod::after { display: none; }
+        }
+
         /* Compact module: gives sections structure without generic cards */
         .mod { background: #fff; border: 1px solid var(--hair); padding: 22px; transition: border-color .15s ease, background-color .15s ease; }
         .mod:hover { border-color: var(--hair-2); }
@@ -150,32 +414,46 @@
         details[open] .chev {font-size:20px; transform: rotate(180deg); }
         .chev { transition: transform .2s ease; }
 
-        /* primary nav dropdowns */
+        /* ── primary navigation ────────────────────────────────────── */
+        .rt-link { position: relative; display: inline-flex; align-items: center;
+            padding: 6px 0; font-size: 14px; font-weight: 500; letter-spacing: -0.01em;
+            color: var(--ink); white-space: nowrap; transition: color .15s ease; }
+        .rt-link:hover { color: var(--blue); }
+        @media (min-width: 1280px) { .rt-link { font-size: 15px; } }
+        .rt-link[data-current] { color: var(--blue); font-weight: 600; }
+        .rt-link[data-current]::after { content: ''; position: absolute; left: 0; right: 0;
+            bottom: -7px; height: 3px; background: var(--blue); }
+
+        /* display comes from the utility class so `hidden sm:inline-flex` still wins */
+        .rt-signin { align-items: center; justify-content: center;
+            height: 38px; padding: 0 18px; border-radius: 3px;
+            background: var(--blue); color: #fff;
+            font-size: 15px; font-weight: 500; letter-spacing: -0.01em;
+            transition: background-color .15s ease; }
+        .rt-signin:hover { background: #12309f; }
+        .rt-signin:active { transform: translateY(1px); }
+
+        .rt-m-link { display: flex; align-items: center; min-height: 46px;
+            font-size: 16px; font-weight: 500; color: var(--ink); }
+        .rt-m-link[data-current] { color: var(--blue); }
+
+        /* the mark ships as a white glyph on black; invert it for the light bar */
+        .rt-mark { filter: invert(1) contrast(1.12); mix-blend-mode: multiply; }
+
         .rt-nav-item { position: relative; display: flex; align-items: center; }
-        .rt-dd { position: absolute; top: 100%; left: -14px; min-width: 268px; padding: 8px;
-            background: #08183a; border: 1px solid #1b2942; box-shadow: 0 18px 34px -12px rgba(0,0,0,.55);
+        .rt-dd { position: absolute; top: calc(100% + 14px); left: -12px; min-width: 284px; padding: 6px;
+            background: #fff; border: 1px solid #e8ebf1; border-radius: 8px;
+            box-shadow: 0 14px 30px -10px rgba(10,17,30,.16), 0 2px 6px rgba(10,17,30,.04);
             opacity: 0; visibility: hidden; transform: translateY(-4px);
             transition: opacity .16s ease, transform .16s ease, visibility .16s; z-index: 60; }
         .rt-nav-item:hover .rt-dd, .rt-nav-item:focus-within .rt-dd { opacity: 1; visibility: visible; transform: none; }
-        .rt-dd::before { content: ''; position: absolute; top: -10px; left: 0; right: 0; height: 10px; }
-        .rt-dd-item { display: block; padding: 8px 12px; font-size: 13px; color: #b9c9e2;
-            border-radius: 2px; transition: background-color .12s ease, color .12s ease; }
-        .rt-dd-item:hover { background: rgba(138,180,255,.10); color: #fff; }
+        .rt-dd::before { content: ''; position: absolute; top: -16px; left: 0; right: 0; height: 16px; }
+        .rt-dd-item { display: block; padding: 8px 10px; font-size: 13.5px; color: var(--body);
+            border-radius: 5px; transition: background-color .12s ease, color .12s ease; }
+        .rt-dd-item:hover { background: #f2f4f8; color: var(--ink); }
         @media (max-width: 1023px) { .rt-dd { display: none; } }
 
         /* ── craft layer ───────────────────────────────────────────────── */
-
-        /* 1 · nav: one ink bar that travels between items instead of six static borders */
-        .nav-rail { position: relative; }
-        .nav-ink { position: absolute; bottom: -1px; height: 1.5px; background: var(--accent);
-            width: 0; left: 0; opacity: 0; pointer-events: none;
-            transition: transform .34s cubic-bezier(.22,1,.28,1), width .34s cubic-bezier(.22,1,.28,1), opacity .2s ease; }
-        .nav-rail a { border-bottom-color: transparent !important; }
-        .nav-rail a[data-current] { border-bottom-color: var(--accent) !important; }
-        .js .nav-rail a[data-current] { border-bottom-color: transparent !important; }
-        @media (prefers-reduced-motion: reduce) {
-            .js .nav-rail a[data-current] { border-bottom-color: var(--accent) !important; }
-        }
 
         /* 2 · links draw their underline in, they don't just switch it on */
         .link-arrow, .prose-rt a, .rs-title {
@@ -213,7 +491,6 @@
         figure:hover > div > img { transform: scale(1.012); }
 
         @media (prefers-reduced-motion: reduce) {
-            .nav-ink { display: none; }
             [data-reveal], [data-reveal-img] { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none; }
             .link-arrow, .prose-rt a, .rs-title { transition: none; }
             figure img { transition: none; }
@@ -342,7 +619,7 @@
         .js [data-reveal-img] img { transform: scale(1.06); }
         .js [data-reveal-img].is-in img { transform: scale(1); transition: transform 1.5s cubic-bezier(.16,1,.3,1); }
         nav { transition: box-shadow .25s ease; }
-        nav.nav-scrolled { box-shadow: 0 1px 0 rgba(255,255,255,.07), 0 8px 24px rgba(2,9,22,.35); }
+        nav.nav-scrolled { box-shadow: 0 1px 0 rgba(10,17,30,.05), 0 6px 20px rgba(10,17,30,.07); }
         .mod { transition: border-color .18s ease, transform .18s ease; }
         .mod:hover { transform: translateY(-1px); }
 
@@ -359,40 +636,41 @@
 </head>
 <body class="bg-background text-secondary antialiased selection:bg-primary selection:text-on-primary">
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-shell border-b border-shell-line">
-<div class="flex justify-between items-center w-full px-margin h-[60px] max-w-container-max-width mx-auto">
-<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="index.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="assets/logo.jpg"/>RackTrack</a>
-<div class="hidden lg:flex gap-6 xl:gap-7 items-center nav-rail">
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="index.html">Home</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="why-racktrack.html">Why RackTrack</a>
-<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="solutions.html">Solutions</a><span class="rt-dd"><a class="rt-dd-item" href="solutions.html#principles">Principles</a><a class="rt-dd-item" href="solutions.html#rack-3d">3D topology</a><a class="rt-dd-item" href="solutions.html#workflow">Six intelligence surfaces</a><a class="rt-dd-item" href="why-racktrack.html#matrix">How we compare</a></span></span>
-<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="trust-security.html">Trust &amp; Security</a>
-<span class="rt-nav-item"><a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="resources.html" data-current="">Resources</a><span class="rt-dd"><a class="rt-dd-item" href="resources.html">All articles</a><a class="rt-dd-item" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every CMDB is 40% wrong</a><a class="rt-dd-item" href="article-what-network-verified-actually-means.html">What “network-verified” means</a><a class="rt-dd-item" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Preparing for SOC 2</a><a class="rt-dd-item" href="article-free-port-discovery-and-rack-capacity-planning.html">Free port discovery</a></span></span>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="about-us.html">About Us</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="contact-us.html">Contact Us</a>
+<nav class="fixed top-0 w-full z-50 bg-white border-b border-[#e6eaf2]">
+<div class="flex items-center justify-between w-full px-margin h-[68px] max-w-container-max-width mx-auto">
+<div class="shrink-0 flex items-center"><a class="inline-flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-on-surface" href="index.html"><img alt="" class="w-[24px] h-[24px] rt-mark" src="assets/logo.jpg"/>RackTrack</a></div>
+<div class="hidden lg:flex flex-1 justify-center items-center gap-4 xl:gap-7 nav-rail">
+<a class="rt-link" href="index.html">Home</a>
+<a class="rt-link" href="why-racktrack.html">Why RackTrack</a>
+<span class="rt-nav-item"><a class="rt-link" href="solutions.html">Solutions</a><span class="rt-dd"><a class="rt-dd-item" href="solutions.html#principles">Principles</a><a class="rt-dd-item" href="solutions.html#rack-3d">3D topology</a><a class="rt-dd-item" href="solutions.html#workflow">Six intelligence surfaces</a></span></span>
+<span class="rt-nav-item"><a class="rt-link" href="use-cases.html">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
+<a class="rt-link" href="trust-security.html">Trust &amp; Security</a>
+<span class="rt-nav-item"><a class="rt-link" href="resources.html" data-current="">Resources</a><span class="rt-dd"><a class="rt-dd-item" href="resources.html">All articles</a><a class="rt-dd-item" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every CMDB is 40% wrong</a><a class="rt-dd-item" href="article-what-network-verified-actually-means.html">What “network-verified” means</a><a class="rt-dd-item" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Preparing for SOC 2</a><a class="rt-dd-item" href="article-free-port-discovery-and-rack-capacity-planning.html">Free port discovery</a></span></span>
+<a class="rt-link" href="about-us.html">About Us</a>
+<a class="rt-link" href="contact-us.html">Contact Us</a>
 </div>
-<div class="flex items-center gap-4">
-<a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] btn-sm" href="contact-us.html">Get a demo</a>
-<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined" aria-hidden="true"><svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' aria-hidden='true'><path d='M3.5 6.5h17M3.5 12h17M3.5 17.5h17'/></svg></span></button>
+<div class="shrink-0 flex justify-end items-center gap-4">
+<a class="hidden sm:inline-flex rt-signin" href="https://demo.racktrack.ai/login" target="_blank" rel="noopener noreferrer">Sign In</a>
+<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-on-surface -mr-1" id="menu-toggle"><span class="material-symbols-outlined" aria-hidden="true"><svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' aria-hidden='true'><path d='M3.5 6.5h17M3.5 12h17M3.5 17.5h17'/></svg></span></button>
 </div>
 </div>
-<div class="hidden lg:hidden border-t border-shell-line bg-shell px-margin py-5 flex-col gap-4" id="mobile-menu">
-<a class="text-[15px] font-normal text-shell-text" href="index.html">Home</a>
-<a class="text-[15px] font-normal text-shell-text" href="why-racktrack.html">Why RackTrack</a>
-<a class="text-[15px] font-normal text-shell-text" href="solutions.html">Solutions</a>
-<a class="text-[15px] font-normal text-shell-text" href="use-cases.html">Use Cases</a>
-<a class="text-[15px] font-normal text-shell-text" href="trust-security.html">Trust &amp; Security</a>
-<a class="text-[15px] font-medium text-white" href="resources.html">Resources</a>
-<a class="text-[15px] font-normal text-shell-text" href="about-us.html">About Us</a>
-<a class="text-[15px] font-normal text-shell-text" href="contact-us.html">Contact Us</a>
-<a class="btn bg-white text-shell mt-2 max-w-fit" href="contact-us.html">Get a demo</a>
+<div class="hidden lg:hidden border-t border-[#e6eaf2] bg-white px-margin py-4 flex-col" id="mobile-menu">
+<a class="rt-m-link" href="index.html">Home</a>
+<a class="rt-m-link" href="why-racktrack.html">Why RackTrack</a>
+<a class="rt-m-link" href="solutions.html">Solutions</a>
+<a class="rt-m-link" href="use-cases.html">Use Cases</a>
+<a class="rt-m-link" href="trust-security.html">Trust &amp; Security</a>
+<a class="rt-m-link" href="resources.html" data-current="">Resources</a>
+<a class="rt-m-link" href="about-us.html">About Us</a>
+<a class="rt-m-link" href="contact-us.html">Contact Us</a>
+<a class="rt-signin inline-flex mt-4 max-w-fit" href="https://demo.racktrack.ai/login" target="_blank" rel="noopener noreferrer">Sign In</a>
 </div>
 </nav>
 
-<main class="pt-[60px]">
+<div class="rt-progress" aria-hidden="true"></div>
+<main class="pt-[68px]">
 <!-- Hero -->
-<section class="shell-band relative overflow-hidden"><img alt="Structured cabling across a patch field" class="absolute inset-0 w-full h-full object-cover" style="object-position:50% 50%" loading="lazy" decoding="async" src="assets/media-patchfield.jpg"/><div class="absolute inset-0" style="background-color:rgba(6,17,39,0.72)" aria-hidden="true"></div>
+<section class="shell-band hero-band relative overflow-hidden"><img alt="Structured cabling across a patch field" class="absolute inset-0 w-full h-full object-cover" style="object-position:50% 50%" loading="eager" decoding="async" src="assets/media-patchfield.jpg"/><div class="absolute inset-0" style="background-color:rgba(6,17,39,0.72)" aria-hidden="true"></div>
 <div class="relative z-10 max-w-container-max-width mx-auto px-margin pt-12 md:pt-[68px] pb-12 md:pb-[68px]">
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <div class="md:col-span-9 md:row-start-1">
@@ -402,18 +680,7 @@
 </div>
 </div>
 </div>
-</section><div class="max-w-container-max-width mx-auto px-margin">
-<dl data-reveal class="border-y border-outline-variant"><div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-1 py-5 border-b border-outline-variant last:border-b-0">
-<dt class="md:col-span-4 h4">Operational Intelligence</dt>
-<dd class="md:col-span-7 md:col-start-6 text-[15px] leading-relaxed text-outline">How teams reduce inventory drift, audit delays, and rack-level uncertainty.</dd>
-</div><div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-1 py-5 border-b border-outline-variant last:border-b-0">
-<dt class="md:col-span-4 h4">Posture &amp; Compliance Intelligence</dt>
-<dd class="md:col-span-7 md:col-start-6 text-[15px] leading-relaxed text-outline">Why physical presence still matters in infrastructure security programs.</dd>
-</div><div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-1 py-5 border-b border-outline-variant last:border-b-0">
-<dt class="md:col-span-4 h4">Infrastructure Strategy</dt>
-<dd class="md:col-span-7 md:col-start-6 text-[15px] leading-relaxed text-outline">What accurate rack data changes for upgrades, migrations, and budgeting.</dd>
-</div></dl>
-</div>
+</section>
 
 <!-- Featured -->
 <section class="py-14 md:py-20">
@@ -425,13 +692,22 @@
 </div>
 <p data-reveal="right" class="md:col-span-6 md:col-start-7 lede self-end">The most common breakdown is not missing tooling. It is teams making decisions from records that no longer match the rack.</p>
 </div>
-<article data-reveal class="mt-9 md:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-8 border-t border-outline-variant pt-10">
-
-<div class="lg:col-span-6 lg:col-start-7">
-<p class="mono text-[11px] tracking-[0.1em] uppercase text-outline">Featured · Operations</p>
-<h3 class="h2-sm mt-4"><a class="hover:text-primary transition-colors" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every enterprise CMDB is 40% wrong - and the architecture that closes the gap</a></h3>
-<p class="lede mt-5">When the CMDB drifts from physical reality, every downstream decision built on it becomes less reliable - and the cost compounds across every operational workflow.</p>
-<a class="link-arrow mt-7" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Read article →</a>
+<article data-reveal class="feat mt-9 md:mt-12">
+<img src="assets/media-resources-band.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async"/>
+<div class="feat-veil" aria-hidden="true"></div>
+<div class="feat-in">
+<div>
+<p class="feat-chip">Featured &middot; Operations</p>
+<h3 class="feat-h"><a href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every enterprise CMDB is 40% wrong - and the architecture that closes the gap</a></h3>
+<p class="feat-p">When the CMDB drifts from physical reality, every downstream decision built on it becomes less reliable - and the cost compounds across every operational workflow.</p>
+<a class="feat-cta" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Read the article<svg viewBox='0 0 18 12' width='17' height='12' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M1 6h15M11 1l5 5-5 5'/></svg></a>
+</div>
+<div class="feat-fig">
+<span class="stat">40%</span>
+<p>of enterprise CMDB records no longer match what is physically in the rack.</p>
+<hr/>
+<p class="src">The gap this article closes</p>
+</div>
 </div>
 </article>
 </div>
@@ -462,77 +738,21 @@
 
 <div class="row-list" id="article-grid">
 
-<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="infrastructure">
-<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Infrastructure</p>
-<div class="md:col-span-10 md:col-start-3">
-<h3 class="h3 max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-the-hidden-cost-of-unreconciled-infrastructure-a-framework-f.html">The hidden cost of unreconciled infrastructure: A framework for quantifying topology debt</a></h3>
-<p class="text-[15px] leading-relaxed mt-3 max-w-[78ch]">Manual audits are slow, expensive, and often out of date before the work is complete - creating topology debt that spreads across teams.</p>
-<a class="link-arrow mt-5" href="article-the-hidden-cost-of-unreconciled-infrastructure-a-framework-f.html">Read article →</a>
-</div>
-</article>
+<article class="article-card lib-row" data-category="infrastructure"><a class="lib-shot" href="article-the-hidden-cost-of-unreconciled-infrastructure-a-framework-f.html" tabindex="-1" aria-hidden="true"><img alt="" src="assets/media-tangled-cabling.jpg" loading="lazy" decoding="async"/><span class="lib-tag">Infrastructure</span></a><div class="lib-txt"><h3 class="h3 max-w-[30ch]"><a class="hover:text-primary transition-colors" href="article-the-hidden-cost-of-unreconciled-infrastructure-a-framework-f.html">The hidden cost of unreconciled infrastructure: A framework for quantifying topology debt</a></h3><p class="text-[15px] leading-relaxed text-outline max-w-[56ch]">Manual audits are slow, expensive, and often out of date before the work is complete - creating topology debt that spreads across teams.</p><a class="link-arrow" href="article-the-hidden-cost-of-unreconciled-infrastructure-a-framework-f.html">Read article &rarr;</a></div></article>
 
-<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="strategy">
-<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Strategy</p>
-<div class="md:col-span-10 md:col-start-3">
-<h3 class="h3 max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-from-audit-to-autonomy-how-continuous-reconciliation-reshape.html">From audit to autonomy: How continuous reconciliation reshapes data center operations</a></h3>
-<p class="text-[15px] leading-relaxed mt-3 max-w-[78ch]">Defensible infrastructure inventory starts with traceable evidence, not static records or assumptions.</p>
-<a class="link-arrow mt-5" href="article-from-audit-to-autonomy-how-continuous-reconciliation-reshape.html">Read article →</a>
-</div>
-</article>
+<article class="article-card lib-row" data-category="strategy"><a class="lib-shot" href="article-from-audit-to-autonomy-how-continuous-reconciliation-reshape.html" tabindex="-1" aria-hidden="true"><img alt="" src="assets/media-audit-writeup.jpg" loading="lazy" decoding="async"/><span class="lib-tag">Strategy</span></a><div class="lib-txt"><h3 class="h3 max-w-[30ch]"><a class="hover:text-primary transition-colors" href="article-from-audit-to-autonomy-how-continuous-reconciliation-reshape.html">From audit to autonomy: How continuous reconciliation reshapes data center operations</a></h3><p class="text-[15px] leading-relaxed text-outline max-w-[56ch]">Defensible infrastructure inventory starts with traceable evidence, not static records or assumptions.</p><a class="link-arrow" href="article-from-audit-to-autonomy-how-continuous-reconciliation-reshape.html">Read article &rarr;</a></div></article>
 
-<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="security">
-<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Security</p>
-<div class="md:col-span-10 md:col-start-3">
-<h3 class="h3 max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-physical-layer-the-missing-link-in-infrastructure-security.html">Physical Layer: The Missing Link in Infrastructure Security</a></h3>
-<p class="text-[15px] leading-relaxed mt-3 max-w-[78ch]">Network tools see what is active on the network, not what is physically in the rack. That gap is where risk accumulates.</p>
-<a class="link-arrow mt-5" href="article-physical-layer-the-missing-link-in-infrastructure-security.html">Read article →</a>
-</div>
-</article>
+<article class="article-card lib-row" data-category="security"><a class="lib-shot" href="article-physical-layer-the-missing-link-in-infrastructure-security.html" tabindex="-1" aria-hidden="true"><img alt="" src="assets/media-access-badge.jpg" loading="lazy" decoding="async"/><span class="lib-tag">Security</span></a><div class="lib-txt"><h3 class="h3 max-w-[30ch]"><a class="hover:text-primary transition-colors" href="article-physical-layer-the-missing-link-in-infrastructure-security.html">Physical Layer: The Missing Link in Infrastructure Security</a></h3><p class="text-[15px] leading-relaxed text-outline max-w-[56ch]">Network tools see what is active on the network, not what is physically in the rack. That gap is where risk accumulates.</p><a class="link-arrow" href="article-physical-layer-the-missing-link-in-infrastructure-security.html">Read article &rarr;</a></div></article>
 
-<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="compliance">
-<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Compliance</p>
-<div class="md:col-span-10 md:col-start-3">
-<h3 class="h3 max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">How Infrastructure Teams Prepare for SOC 2 Audits</a></h3>
-<p class="text-[15px] leading-relaxed mt-3 max-w-[78ch]">SOC 2 Type II requires continuous evidence of asset control. Here is how teams can generate it systematically.</p>
-<a class="link-arrow mt-5" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Read article →</a>
-</div>
-</article>
+<article class="article-card lib-row" data-category="compliance"><a class="lib-shot" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html" tabindex="-1" aria-hidden="true"><img alt="" src="assets/media-audit-magnifier.jpg" loading="lazy" decoding="async"/><span class="lib-tag">Compliance</span></a><div class="lib-txt"><h3 class="h3 max-w-[30ch]"><a class="hover:text-primary transition-colors" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">How Infrastructure Teams Prepare for SOC 2 Audits</a></h3><p class="text-[15px] leading-relaxed text-outline max-w-[56ch]">SOC 2 Type II requires continuous evidence of asset control. Here is how teams can generate it systematically.</p><a class="link-arrow" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Read article &rarr;</a></div></article>
 
-<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="operations">
-<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Operations</p>
-<div class="md:col-span-10 md:col-start-3">
-<h3 class="h3 max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-dcim-vs-physical-reality-why-the-gap-matters.html">DCIM vs. Physical Reality: Why the Gap Matters</a></h3>
-<p class="text-[15px] leading-relaxed mt-3 max-w-[78ch]">DCIM platforms model intent. Understanding the gap between model and reality helps teams solve the right problem.</p>
-<a class="link-arrow mt-5" href="article-dcim-vs-physical-reality-why-the-gap-matters.html">Read article →</a>
-</div>
-</article>
+<article class="article-card lib-row" data-category="operations"><a class="lib-shot" href="article-dcim-vs-physical-reality-why-the-gap-matters.html" tabindex="-1" aria-hidden="true"><img alt="" src="assets/media-crash-cart-racks.jpg" loading="lazy" decoding="async"/><span class="lib-tag">Operations</span></a><div class="lib-txt"><h3 class="h3 max-w-[30ch]"><a class="hover:text-primary transition-colors" href="article-dcim-vs-physical-reality-why-the-gap-matters.html">DCIM vs. Physical Reality: Why the Gap Matters</a></h3><p class="text-[15px] leading-relaxed text-outline max-w-[56ch]">DCIM platforms model intent. Understanding the gap between model and reality helps teams solve the right problem.</p><a class="link-arrow" href="article-dcim-vs-physical-reality-why-the-gap-matters.html">Read article &rarr;</a></div></article>
 
-<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="finance">
-<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Finance</p>
-<div class="md:col-span-10 md:col-start-3">
-<h3 class="h3 max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-the-hidden-cost-of-wrong-rack-inventory.html">The Hidden Cost of Wrong Rack Inventory</a></h3>
-<p class="text-[15px] leading-relaxed mt-3 max-w-[78ch]">Misidentified hardware, premature refreshes, and wasted capacity often go unmeasured until they become costly.</p>
-<a class="link-arrow mt-5" href="article-the-hidden-cost-of-wrong-rack-inventory.html">Read article →</a>
-</div>
-</article>
+<article class="article-card lib-row" data-category="finance"><a class="lib-shot" href="article-the-hidden-cost-of-wrong-rack-inventory.html" tabindex="-1" aria-hidden="true"><img alt="" src="assets/media-stock-scan.jpg" loading="lazy" decoding="async"/><span class="lib-tag">Finance</span></a><div class="lib-txt"><h3 class="h3 max-w-[30ch]"><a class="hover:text-primary transition-colors" href="article-the-hidden-cost-of-wrong-rack-inventory.html">The Hidden Cost of Wrong Rack Inventory</a></h3><p class="text-[15px] leading-relaxed text-outline max-w-[56ch]">Misidentified hardware, premature refreshes, and wasted capacity often go unmeasured until they become costly.</p><a class="link-arrow" href="article-the-hidden-cost-of-wrong-rack-inventory.html">Read article &rarr;</a></div></article>
 
-<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="infrastructure">
-<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Infrastructure</p>
-<div class="md:col-span-10 md:col-start-3">
-<h3 class="h3 max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-what-network-verified-actually-means.html">What "Network-Verified" Actually Means</a></h3>
-<p class="text-[15px] leading-relaxed mt-3 max-w-[78ch]">Reconciling physical presence with live network state is what makes infrastructure inventory trustworthy.</p>
-<a class="link-arrow mt-5" href="article-what-network-verified-actually-means.html">Read article →</a>
-</div>
-</article>
+<article class="article-card lib-row" data-category="infrastructure"><a class="lib-shot" href="article-what-network-verified-actually-means.html" tabindex="-1" aria-hidden="true"><img alt="" src="assets/media-port-link-led.jpg" loading="lazy" decoding="async"/><span class="lib-tag">Infrastructure</span></a><div class="lib-txt"><h3 class="h3 max-w-[30ch]"><a class="hover:text-primary transition-colors" href="article-what-network-verified-actually-means.html">What "Network-Verified" Actually Means</a></h3><p class="text-[15px] leading-relaxed text-outline max-w-[56ch]">Reconciling physical presence with live network state is what makes infrastructure inventory trustworthy.</p><a class="link-arrow" href="article-what-network-verified-actually-means.html">Read article &rarr;</a></div></article>
 
-<article data-reveal class="article-card py-9 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-4" data-category="infrastructure">
-<p class="md:col-span-2 mono text-[11px] tracking-[0.08em] uppercase text-outline md:pt-1.5">Infrastructure</p>
-<div class="md:col-span-10 md:col-start-3">
-<h3 class="h3 max-w-[46ch]"><a class="hover:text-primary transition-colors" href="article-free-port-discovery-and-rack-capacity-planning.html">Free Port Discovery and Rack Capacity Planning</a></h3>
-<p class="text-[15px] leading-relaxed mt-3 max-w-[78ch]">Teams plan capacity better when they can see which switch ports are truly available instead of relying on outdated assumptions.</p>
-<a class="link-arrow mt-5" href="article-free-port-discovery-and-rack-capacity-planning.html">Read article →</a>
-</div>
-</article>
+<article class="article-card lib-row" data-category="infrastructure"><a class="lib-shot" href="article-free-port-discovery-and-rack-capacity-planning.html" tabindex="-1" aria-hidden="true"><img alt="" src="assets/media-server-ports-free.jpg" loading="lazy" decoding="async"/><span class="lib-tag">Infrastructure</span></a><div class="lib-txt"><h3 class="h3 max-w-[30ch]"><a class="hover:text-primary transition-colors" href="article-free-port-discovery-and-rack-capacity-planning.html">Free Port Discovery and Rack Capacity Planning</a></h3><p class="text-[15px] leading-relaxed text-outline max-w-[56ch]">Teams plan capacity better when they can see which switch ports are truly available instead of relying on outdated assumptions.</p><a class="link-arrow" href="article-free-port-discovery-and-rack-capacity-planning.html">Read article &rarr;</a></div></article>
 
 </div>
 <p class="text-[15px] py-10 hidden" id="empty-state">No articles in this category.</p>
@@ -540,14 +760,14 @@
 </section>
 
 <!-- CTA -->
-<section class="shell-band py-16 md:py-24">
+<section class="rt-cta border-t border-outline-variant py-[76px] md:py-[104px]">
 <div class="max-w-container-max-width mx-auto px-margin grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <div class="md:col-span-7">
 <p class="eyebrow">Put it into practice</p>
 <h2 class="h2 mt-5 max-w-[18ch]">Read the theory. Then run it on your rack.</h2>
 </div>
 <div data-reveal="right" class="md:col-span-4 md:col-start-9 flex md:justify-end md:pt-12">
-<a class="btn btn-primary max-w-fit" href="contact-us.html">Request platform brief</a>
+<a class="rt-cta-btn max-w-fit" href="contact-us.html">Request platform brief<svg viewBox='0 0 18 12' width='17' height='12' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M1 6h15M11 1l5 5-5 5'/></svg></a>
 </div>
 </div>
 </section>
@@ -745,37 +965,6 @@
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* nav ink - one bar that travels, settling on the current page */
-    var rail = document.querySelector('.nav-rail');
-    if (rail && !reduce) {
-        var ink = document.createElement('span');
-        ink.className = 'nav-ink';
-        rail.appendChild(ink);
-        var links = [].slice.call(rail.querySelectorAll('a[href$=".html"]'));
-        var current = rail.querySelector('a[data-current]') || links[0];
-        function moveTo(el, show) {
-            if (!el) { return; }
-            var rr = rail.getBoundingClientRect(), er = el.getBoundingClientRect();
-            ink.style.width = er.width + 'px';
-            ink.style.transform = 'translateX(' + (er.left - rr.left) + 'px)';
-            ink.style.opacity = show ? '1' : '0';
-        }
-        function settle() { moveTo(current, !!rail.querySelector('a[data-current]')); }
-        links.forEach(function (a) {
-            a.addEventListener('mouseenter', function () { moveTo(a, true); });
-            a.addEventListener('focus', function () { moveTo(a, true); });
-        });
-        rail.addEventListener('mouseleave', settle);
-        window.addEventListener('resize', settle);
-        requestAnimationFrame(settle);
-        window.addEventListener('load', settle);
-        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(settle); }
-        // the webfont swap changes link widths after first paint - re-measure when it does
-        if (window.ResizeObserver) {
-            var ro = new ResizeObserver(function () { settle(); });
-            links.forEach(function (a) { ro.observe(a); });
-        }
-    }
 })();
 </script>
 
@@ -797,6 +986,72 @@
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
   els.forEach(function (el) { io.observe(el); });
   setTimeout(function () { els.forEach(show); }, 4000);
+})();
+</script>
+
+<script>
+/* figures count up the first time they are seen - format is preserved, so
+   "40-60%" and "1.3 / 4" both animate without losing their punctuation */
+(function () {
+    if (document.documentElement.classList.contains('no-js')) { return; }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+    var stats = [].slice.call(document.querySelectorAll('.stat'));
+    if (!stats.length || !('IntersectionObserver' in window)) { return; }
+
+    function run(el) {
+        var raw = el.textContent, parts = raw.split(/(\d+(?:\.\d+)?)/);
+        var nums = [], any = false;
+        parts.forEach(function (p, i) { if (i % 2) { nums.push(parseFloat(p)); any = true; } });
+        if (!any) { return; }
+        var dec = parts.filter(function (p, i) { return i % 2; })
+                       .map(function (p) { return (p.split('.')[1] || '').length; });
+        var t0 = null, dur = 900, done = false;
+        // if frames stall (background tab, throttling) never leave a 0 on screen
+        var guard = setTimeout(function () { if (!done) { done = true; el.textContent = raw; } }, dur + 700);
+        function frame(t) {
+            if (done) { return; }          // the guard already restored the value
+            if (t0 === null) { t0 = t; }
+            var k = Math.min(1, (t - t0) / dur);
+            var e = 1 - Math.pow(1 - k, 3);          // ease-out cubic
+            var n = 0;
+            el.textContent = parts.map(function (p, i) {
+                if (!(i % 2)) { return p; }
+                var v = nums[n] * e;
+                return v.toFixed(dec[n++]);
+            }).join('');
+            if (k < 1) { requestAnimationFrame(frame); }
+            else { done = true; clearTimeout(guard); el.textContent = raw; }
+        }
+        requestAnimationFrame(frame);
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+            if (en.isIntersecting) { io.unobserve(en.target); run(en.target); }
+        });
+    }, { threshold: .6 });
+    stats.forEach(function (el) { io.observe(el); });
+})();
+</script>
+
+<script>
+/* scroll progress, for engines without scroll-driven animations */
+(function () {
+    var bar = document.querySelector('.rt-progress');
+    if (!bar || !window.CSS || !CSS.supports) { return; }
+    if (CSS.supports('animation-timeline: scroll()')) { return; }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+    var tick = false;
+    function set() {
+        var d = document.documentElement;
+        var max = d.scrollHeight - d.clientHeight;
+        bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, d.scrollTop / max) : 0) + ')';
+        tick = false;
+    }
+    addEventListener('scroll', function () {
+        if (!tick) { tick = true; requestAnimationFrame(set); }
+    }, { passive: true });
+    addEventListener('resize', set); set();
 })();
 </script>
 </body></html>

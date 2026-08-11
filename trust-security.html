@@ -17,6 +17,7 @@
             --muted: #727a8a;
             --blue: #1a3fd4;
             --shell: #061127;
+            --shell-hero: #0f1d36;
             --shell-line: #1b2942;
             --shell-text: #9fb0c9;
             --accent: #8ab4ff;
@@ -30,15 +31,15 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        section[id], div[id], article[id] { scroll-margin-top: 80px; }
+        section[id], div[id], article[id] { scroll-margin-top: 88px; }
         h1, h2, h3, h4 { color: var(--ink); font-weight: 600; }
 
         .h1  { font-size: clamp(34px, 5.2vw, 66px); line-height: 1.02; letter-spacing: -0.036em; font-weight: 600; }
       .h1-page{font-size:clamp(30px,3.4vw,46px);line-height:1.06;letter-spacing:-0.03em;font-weight:600}
       .lede-page{font-size:18px;line-height:1.55}
-        .h2  { font-size: clamp(26px, 3.1vw, 42px); line-height: 1.08; letter-spacing: -0.032em; font-weight: 600; }
-      .h2-sm{font-size:clamp(26px,2.1vw,30px);line-height:1.14;letter-spacing:-0.026em;font-weight:600}
-        .h3  { font-size: 20px; line-height: 1.28; letter-spacing: -0.02em; font-weight: 600; }
+        .h2  { font-size: clamp(29px, 3.3vw, 46px); line-height: 1.07; letter-spacing: -0.032em; font-weight: 600; }
+      .h2-sm{font-size:clamp(27px,2.3vw,33px);line-height:1.13;letter-spacing:-0.026em;font-weight:600}
+        .h3  { font-size: 22px; line-height: 1.26; letter-spacing: -0.02em; font-weight: 600; }
         .h4  { font-size: 15px; line-height: 1.35; letter-spacing: -0.012em; font-weight: 600; color: var(--ink); }
         .lede { font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; }
         .measure    { max-width: 62ch; }
@@ -60,6 +61,7 @@
 
         /* Dark shell bands - nav, hero, CTA, footer */
         .shell-band { background: var(--shell); color: var(--shell-text); }
+        .hero-band  { background: var(--shell-hero); }
 
       /* motion: entrances that follow the reading direction */
       [data-reveal="left"]  { opacity: 0; transform: translateX(-18px); }
@@ -91,7 +93,6 @@
         .shell-band .flex.flex-wrap.items-center.gap-3,
         .flex.flex-wrap.items-center.gap-3 { display: flex; flex-direction: column; align-items: stretch; width: 100%; }
         .btn-sm { width: auto; }
-        nav .btn { width: auto; }
         /* anything that scrolls sideways says so */
         .overflow-x-auto { position: relative; }
         .ev, .overflow-x-auto { scrollbar-width: thin; }
@@ -104,7 +105,6 @@
           min-height: 44px; display: inline-flex; align-items: center;
         }
         #menu-toggle { min-width: 44px; min-height: 44px; justify-content: center; }
-        nav .btn-sm { min-height: 40px; }
         .rs-row { min-height: 44px; }
       }
 
@@ -140,6 +140,193 @@
         /* keep one rule per group: the container's own top/bottom edge */
         .shell-band .row-list > * + * { border-top-color: var(--shell-line); }
         .idx { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+
+
+
+        /* ── motion ────────────────────────────────────────────────────
+           Entrances resolve out of a slight blur so type lands sharp
+           rather than simply appearing. */
+        .js [data-reveal] { filter: blur(5px); transition:
+            opacity .62s cubic-bezier(.22,1,.28,1),
+            transform .62s cubic-bezier(.22,1,.28,1),
+            filter .62s cubic-bezier(.22,1,.28,1); }
+        .js [data-reveal].is-in { filter: blur(0); }
+        .js [data-reveal] [data-reveal] { filter: none; }
+
+        /* photographs travel against the scroll - the band becomes a window
+           you move past rather than a picture pinned to the page */
+        @supports (animation-timeline: view()) {
+            @media (prefers-reduced-motion: no-preference) {
+                [data-reveal-img] img, .rt-drift img {
+                    animation: rtPar linear both; animation-timeline: view();
+                    will-change: transform;
+                }
+                @keyframes rtPar {
+                    from { transform: translate3d(0,-8%,0) scale(1.18); }
+                    to   { transform: translate3d(0, 8%,0) scale(1.18); }
+                }
+                /* section blocks settle as they come into frame */
+                [data-reveal] { animation: rtSettle linear both;
+                    animation-timeline: view(); animation-range: entry 0% entry 62%; }
+                @keyframes rtSettle { from { transform: translateY(22px); } to { transform: none; } }
+            }
+        }
+
+        /* how far down the page you are */
+        .rt-progress { position: fixed; top: 68px; left: 0; z-index: 60;
+            width: 100%; height: 2px; background: var(--blue);
+            transform: scaleX(0); transform-origin: 0 50%; pointer-events: none; }
+        @supports (animation-timeline: scroll()) {
+            .rt-progress { animation: rtProg linear both; animation-timeline: scroll(root block); }
+            @keyframes rtProg { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .rt-progress { display: none; }
+        }
+
+        /* the thread between the layers draws downward on arrival */
+        .js .layer-rail::before { transform: scaleY(0); transform-origin: top;
+            transition: transform 1.05s cubic-bezier(.22,1,.28,1) .1s; }
+        .js .layer-rail:has(.layer-step.is-in)::before { transform: scaleY(1); }
+
+        /* figures hold their width while they count */
+        .stat { font-variant-numeric: tabular-nums; }
+
+        /* buttons lean into the pointer */
+        .btn-primary, .rt-signin { position: relative; overflow: hidden; }
+        .btn-primary::after, .rt-signin::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%);
+            transform: translateX(-100%); transition: transform .6s cubic-bezier(.22,1,.28,1);
+        }
+        .btn-primary:hover::after, .rt-signin:hover::after { transform: translateX(100%); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .js [data-reveal] { filter: none !important; }
+            .js .layer-rail::before { transform: none; transition: none; }
+            .btn-primary::after, .rt-signin::after { display: none; }
+        }
+
+
+        /* pills for short qualifiers */
+        .rt-pill { display: inline-flex; align-items: center; padding: 8px 15px; border-radius: 999px;
+            border: 1px solid var(--hair-2); background: #fff; font-size: 13px; font-weight: 500;
+            letter-spacing: -.006em; color: var(--body);
+            transition: border-color .25s ease, color .25s ease, transform .25s ease; }
+        .rt-pill:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+
+        /* a statement carries one idea and nothing else */
+        .rt-statement { position: relative; overflow: hidden; background: #fff;
+            border: 1px solid var(--hair); border-radius: 8px; padding: 28px 30px 34px;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease; }
+        .rt-statement::after { content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+            background: var(--blue); transition: width .5s cubic-bezier(.22,1,.28,1); }
+        .rt-statement:hover { border-color: #ccd6e8; transform: translateY(-2px);
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28); }
+        .rt-statement:hover::after { width: 64px; }
+        @media (prefers-reduced-motion: reduce) {
+            .rt-pill, .rt-statement { transition: none; }
+            .rt-pill:hover, .rt-statement:hover { transform: none; }
+        }
+
+
+        /* ── closing CTA: the last thing on the page should carry weight ── */
+        .rt-cta { position: relative; overflow: hidden;
+            background: radial-gradient(128% 150% at 10% 0%, #e9eefb 0%, #f4f7fc 42%, #ffffff 100%); }
+        .rt-cta::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+            background:
+              repeating-linear-gradient(180deg, rgba(26,63,212,.055) 0 1px, transparent 1px 46px);
+            -webkit-mask-image: linear-gradient(100deg, #000 0%, transparent 58%);
+            mask-image: linear-gradient(100deg, #000 0%, transparent 58%); }
+        .rt-cta::after { content: ''; position: absolute; right: -8%; top: -40%;
+            width: 46%; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+            background: radial-gradient(circle, rgba(26,63,212,.13) 0%, rgba(26,63,212,0) 68%); }
+        .rt-cta > * { position: relative; z-index: 1; }
+        .rt-cta-btn { display: inline-flex; align-items: center; gap: 11px;
+            padding: 15px 26px; border-radius: 999px; background: var(--blue); color: #fff;
+            font-size: 16px; font-weight: 500; letter-spacing: -.01em;
+            box-shadow: 0 14px 30px -14px rgba(26,63,212,.65);
+            transition: background-color .2s ease, box-shadow .3s ease, transform .2s ease; }
+        .rt-cta-btn svg { transition: transform .34s cubic-bezier(.2,.7,.3,1); }
+        .rt-cta-btn:hover { background: #12309f; transform: translateY(-2px);
+            box-shadow: 0 20px 38px -16px rgba(26,63,212,.7); }
+        .rt-cta-btn:hover svg { transform: translateX(5px); }
+        .rt-cta-btn:active { transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) {
+            .rt-cta-btn, .rt-cta-btn svg { transition: none; }
+            .rt-cta-btn:hover { transform: none; }
+        }
+
+        /* ── surfaces ──────────────────────────────────────────────────
+           Ruled lists read as a document. These read as a product: a real
+           surface, a quiet index, and one gesture on hover. */
+        .rt-cards { display: grid; gap: 12px; border-top: 0 !important; }
+        .rt-card {
+            position: relative; overflow: hidden;
+            background: #fff; border: 1px solid var(--hair); border-radius: 8px;
+            padding: 20px 22px 22px;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease;
+        }
+        /* the rule draws itself in rather than switching on */
+        .rt-card::after {
+            content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+            background: var(--blue); transition: width .5s cubic-bezier(.22,1,.28,1);
+        }
+        .rt-card:hover {
+            border-color: #ccd6e8; transform: translateY(-2px);
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28), 0 2px 6px -2px rgba(10,17,30,.06);
+        }
+        .rt-card:hover::after { width: 56px; }
+        .rt-card dt:not(.stat), .rt-card .h4 { font-size: 17px; letter-spacing: -.014em; }
+        .rt-card dd { margin-top: 6px; }
+        @media (min-width: 768px) { .rt-cards { gap: 14px; } .rt-card { padding: 22px 24px 24px; } }
+
+        /* the same language for the existing module card */
+        .mod {
+            position: relative; overflow: hidden; border-radius: 8px; padding: 22px 24px 24px;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease;
+        }
+        .mod::after {
+            content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+            background: var(--blue); transition: width .5s cubic-bezier(.22,1,.28,1);
+        }
+        .mod:hover {
+            border-color: #ccd6e8; transform: translateY(-2px);
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28), 0 2px 6px -2px rgba(10,17,30,.06);
+        }
+        .mod:hover::after { width: 56px; }
+
+        /* article cards lift with their picture */
+        .article-card { border-radius: 8px; overflow: hidden;
+            transition: border-color .28s ease, box-shadow .28s ease, transform .28s ease; }
+        .article-card:hover { transform: translateY(-2px); border-color: #ccd6e8;
+            box-shadow: 0 14px 32px -18px rgba(10,17,30,.28); }
+
+        /* a row you can point at should say so */
+        .rs-row { position: relative; }
+        .rs-row::after { content: ''; position: absolute; left: 0; top: 0; bottom: -1px; width: 2px;
+            background: var(--blue); transform: scaleY(0); transform-origin: top;
+            transition: transform .32s cubic-bezier(.22,1,.28,1); }
+        .rs-row:hover::after { transform: scaleY(1); }
+
+        /* labels get a leading rule - a printed-page habit, not a template one */
+        .eyebrow { display: inline-flex; align-items: center; }
+        p.eyebrow, div.eyebrow, dt.eyebrow { display: flex; }
+
+        /* cards arrive one after another, not all at once */
+        .rt-cards > [data-reveal]:nth-child(1), .stagger > [data-reveal]:nth-child(1) { transition-delay: 0ms; }
+        .rt-cards > [data-reveal]:nth-child(2), .stagger > [data-reveal]:nth-child(2) { transition-delay: 70ms; }
+        .rt-cards > [data-reveal]:nth-child(3), .stagger > [data-reveal]:nth-child(3) { transition-delay: 140ms; }
+        .rt-cards > [data-reveal]:nth-child(4), .stagger > [data-reveal]:nth-child(4) { transition-delay: 210ms; }
+        .rt-cards > [data-reveal]:nth-child(5), .stagger > [data-reveal]:nth-child(5) { transition-delay: 280ms; }
+        .rt-cards > [data-reveal]:nth-child(6), .stagger > [data-reveal]:nth-child(6) { transition-delay: 350ms; }
+        .rt-cards > [data-reveal]:nth-child(n+7), .stagger > [data-reveal]:nth-child(n+7) { transition-delay: 420ms; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rt-card, .mod, .article-card, .rs-row::after { transition: none !important; }
+            .rt-card:hover, .mod:hover, .article-card:hover { transform: none; }
+            .rt-card::after, .mod::after { display: none; }
+        }
 
         /* Compact module: gives sections structure without generic cards */
         .mod { background: #fff; border: 1px solid var(--hair); padding: 22px; transition: border-color .15s ease, background-color .15s ease; }
@@ -180,32 +367,46 @@
             .ev-foot { padding: 9px 12px; font-size: 11px; }
         }
 
-        /* primary nav dropdowns */
+        /* ── primary navigation ────────────────────────────────────── */
+        .rt-link { position: relative; display: inline-flex; align-items: center;
+            padding: 6px 0; font-size: 14px; font-weight: 500; letter-spacing: -0.01em;
+            color: var(--ink); white-space: nowrap; transition: color .15s ease; }
+        .rt-link:hover { color: var(--blue); }
+        @media (min-width: 1280px) { .rt-link { font-size: 15px; } }
+        .rt-link[data-current] { color: var(--blue); font-weight: 600; }
+        .rt-link[data-current]::after { content: ''; position: absolute; left: 0; right: 0;
+            bottom: -7px; height: 3px; background: var(--blue); }
+
+        /* display comes from the utility class so `hidden sm:inline-flex` still wins */
+        .rt-signin { align-items: center; justify-content: center;
+            height: 38px; padding: 0 18px; border-radius: 3px;
+            background: var(--blue); color: #fff;
+            font-size: 15px; font-weight: 500; letter-spacing: -0.01em;
+            transition: background-color .15s ease; }
+        .rt-signin:hover { background: #12309f; }
+        .rt-signin:active { transform: translateY(1px); }
+
+        .rt-m-link { display: flex; align-items: center; min-height: 46px;
+            font-size: 16px; font-weight: 500; color: var(--ink); }
+        .rt-m-link[data-current] { color: var(--blue); }
+
+        /* the mark ships as a white glyph on black; invert it for the light bar */
+        .rt-mark { filter: invert(1) contrast(1.12); mix-blend-mode: multiply; }
+
         .rt-nav-item { position: relative; display: flex; align-items: center; }
-        .rt-dd { position: absolute; top: 100%; left: -14px; min-width: 268px; padding: 8px;
-            background: #08183a; border: 1px solid #1b2942; box-shadow: 0 18px 34px -12px rgba(0,0,0,.55);
+        .rt-dd { position: absolute; top: calc(100% + 14px); left: -12px; min-width: 284px; padding: 6px;
+            background: #fff; border: 1px solid #e8ebf1; border-radius: 8px;
+            box-shadow: 0 14px 30px -10px rgba(10,17,30,.16), 0 2px 6px rgba(10,17,30,.04);
             opacity: 0; visibility: hidden; transform: translateY(-4px);
             transition: opacity .16s ease, transform .16s ease, visibility .16s; z-index: 60; }
         .rt-nav-item:hover .rt-dd, .rt-nav-item:focus-within .rt-dd { opacity: 1; visibility: visible; transform: none; }
-        .rt-dd::before { content: ''; position: absolute; top: -10px; left: 0; right: 0; height: 10px; }
-        .rt-dd-item { display: block; padding: 8px 12px; font-size: 13px; color: #b9c9e2;
-            border-radius: 2px; transition: background-color .12s ease, color .12s ease; }
-        .rt-dd-item:hover { background: rgba(138,180,255,.10); color: #fff; }
+        .rt-dd::before { content: ''; position: absolute; top: -16px; left: 0; right: 0; height: 16px; }
+        .rt-dd-item { display: block; padding: 8px 10px; font-size: 13.5px; color: var(--body);
+            border-radius: 5px; transition: background-color .12s ease, color .12s ease; }
+        .rt-dd-item:hover { background: #f2f4f8; color: var(--ink); }
         @media (max-width: 1023px) { .rt-dd { display: none; } }
 
         /* ── craft layer ───────────────────────────────────────────────── */
-
-        /* 1 · nav: one ink bar that travels between items instead of six static borders */
-        .nav-rail { position: relative; }
-        .nav-ink { position: absolute; bottom: -1px; height: 1.5px; background: var(--accent);
-            width: 0; left: 0; opacity: 0; pointer-events: none;
-            transition: transform .34s cubic-bezier(.22,1,.28,1), width .34s cubic-bezier(.22,1,.28,1), opacity .2s ease; }
-        .nav-rail a { border-bottom-color: transparent !important; }
-        .nav-rail a[data-current] { border-bottom-color: var(--accent) !important; }
-        .js .nav-rail a[data-current] { border-bottom-color: transparent !important; }
-        @media (prefers-reduced-motion: reduce) {
-            .js .nav-rail a[data-current] { border-bottom-color: var(--accent) !important; }
-        }
 
         /* 2 · links draw their underline in, they don't just switch it on */
         .link-arrow, .prose-rt a, .rs-title {
@@ -243,7 +444,6 @@
         figure:hover > div > img { transform: scale(1.012); }
 
         @media (prefers-reduced-motion: reduce) {
-            .nav-ink { display: none; }
             [data-reveal], [data-reveal-img] { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none; }
             .link-arrow, .prose-rt a, .rs-title { transition: none; }
             figure img { transition: none; }
@@ -372,10 +572,151 @@
         .js [data-reveal-img] img { transform: scale(1.06); }
         .js [data-reveal-img].is-in img { transform: scale(1); transition: transform 1.5s cubic-bezier(.16,1,.3,1); }
         nav { transition: box-shadow .25s ease; }
-        nav.nav-scrolled { box-shadow: 0 1px 0 rgba(255,255,255,.07), 0 8px 24px rgba(2,9,22,.35); }
+        nav.nav-scrolled { box-shadow: 0 1px 0 rgba(10,17,30,.05), 0 6px 20px rgba(10,17,30,.07); }
         .mod { transition: border-color .18s ease, transform .18s ease; }
         .mod:hover { transform: translateY(-1px); }
 
+        /* ══ A PHOTOGRAPHIC WALK INTO A SECURED FACILITY ════════════════
+           The page is a route, not a diagram. You arrive at the building,
+           you are shown the controls that hold it, you look inside the
+           room where processing happens, you choose where the walls go,
+           and you leave with the filing. Photography carries every beat;
+           type sits on it or floats above it in glass. */
+
+        .ts-sec { padding: 68px 0; }
+        @media (min-width: 768px) { .ts-sec { padding: 104px 0; } }
+
+        /* labels: mono, tracked, nothing drawn beside them */
+        .ts-label { display: block; font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 11px; font-weight: 500; letter-spacing: .17em;
+            text-transform: uppercase; color: var(--muted); }
+        .ts-label-lt { color: var(--accent); }
+
+        /* a photograph that fills whatever box it is given */
+        .ts-fill { position: absolute; inset: 0; overflow: hidden; }
+        .ts-fill img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* ── hero: the building, at night ───────────────────────────── */
+        .ts-hero { position: relative; overflow: hidden; background: var(--shell);
+            display: flex; align-items: flex-end; min-height: clamp(430px, 60vh, 580px); }
+        .ts-hero-veil { position: absolute; inset: 0; pointer-events: none;
+            background:
+              linear-gradient(90deg, rgba(4,10,22,.88) 0%, rgba(4,10,22,.6) 48%, rgba(4,10,22,.2) 100%),
+              linear-gradient(180deg, rgba(4,10,22,.6) 0%, rgba(4,10,22,.18) 32%, rgba(4,10,22,.72) 80%, rgba(4,10,22,.92) 100%); }
+        .ts-hero-in { position: relative; z-index: 1; width: 100%;
+            padding-top: 76px; padding-bottom: 48px; }
+        @media (min-width: 768px) { .ts-hero-in { padding-top: 104px; padding-bottom: 60px; } }
+        .ts-hero h1 { color: #fff; text-wrap: balance; }
+
+        /* ── section opener: the heading and a large photograph share the frame ── */
+        /* stacked, the opener photograph is full-bleed wide, so it is kept
+           shallow; beside the heading it can afford a little more height */
+        .ts-open-fig { position: relative; overflow: hidden; border-radius: 10px;
+            margin: 0; background: var(--shell); aspect-ratio: 2 / 1; }
+        @media (min-width: 1024px) { .ts-open-fig { aspect-ratio: 16 / 10; } }
+        .ts-open-fig img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* ── a set: items that read as one group, carried by type ───── */
+        .ts-set { display: grid; gap: 32px; grid-template-columns: 1fr; }
+        @media (min-width: 700px) {
+            .ts-set { grid-template-columns: repeat(4, 1fr); gap: 40px 52px; }
+            .ts-set > * { grid-column: span 2; }
+        }
+        /* two-up: an item left alone on the last row is centred, never stranded left */
+        @media (min-width: 700px) and (max-width: 1023px) {
+            .ts-set > :last-child:nth-child(odd) { grid-column: 2 / span 2; }
+        }
+        @media (min-width: 1024px) {
+            .ts-set { grid-template-columns: repeat(6, 1fr); gap: 46px 48px; }
+            /* five items read as an inverted pyramid: three over a centred two,
+               so the block narrows toward the bottom instead of hanging left */
+            .ts-set > :nth-child(4):nth-last-child(2) { grid-column: 2 / span 2; }
+            .ts-set > :nth-child(5):nth-last-child(1) { grid-column: 4 / span 2; }
+        }
+        .ts-item { border-top: 1px solid var(--hair-2); padding-top: 18px; }
+        .ts-item-t { margin-top: 11px; font-size: 19px; line-height: 1.25;
+            letter-spacing: -.018em; font-weight: 600; color: var(--ink); }
+        .ts-item-d { margin-top: 9px; font-size: 15px; line-height: 1.6; color: var(--body); max-width: 38ch; }
+        .ts-side { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--blue); }
+
+        /* ── full-bleed photographic band between the beats ──────────── */
+        .ts-band { position: relative; overflow: hidden; background: var(--shell);
+            display: flex; align-items: center; min-height: 250px; }
+        @media (min-width: 768px) { .ts-band { min-height: 310px; } }
+        .ts-band-veil { position: absolute; inset: 0; pointer-events: none;
+            background: linear-gradient(90deg, rgba(4,10,22,.94) 0%, rgba(4,10,22,.78) 52%, rgba(4,10,22,.42) 100%); }
+        /* padding-block only - the inline padding belongs to the page margin
+           utility, and the shorthand would silently flatten it */
+        .ts-band-in { position: relative; z-index: 1; width: 100%; padding-block: 46px; }
+        @media (min-width: 768px) { .ts-band-in { padding-block: 56px; } }
+        .ts-band-line { margin-top: 16px; color: #fff; font-size: clamp(20px, 2.3vw, 30px);
+            line-height: 1.28; letter-spacing: -.024em; font-weight: 600; max-width: 24ch; }
+        .ts-band-sub { margin-top: 16px; font-size: 15.5px; line-height: 1.6; color: #a9bbd4; max-width: 52ch; }
+
+        /* ── the dark room: glass floating on a photograph ───────────── */
+        .ts-dark { position: relative; overflow: hidden; background: var(--shell);
+            padding: 72px 0; color: #b9c7dc; }
+        @media (min-width: 768px) { .ts-dark { padding: 108px 0; } }
+        .ts-dark-veil { position: absolute; inset: 0; pointer-events: none;
+            background: linear-gradient(180deg, rgba(4,10,22,.9) 0%, rgba(4,10,22,.82) 40%, rgba(4,10,22,.94) 100%); }
+        .ts-dark-in { position: relative; z-index: 1; }
+        .ts-dark h2, .ts-dark h3 { color: #fff; }
+        .ts-dark .lede { color: #cad7ea; }
+
+        .ts-glass { position: relative; border-radius: 14px; padding: 24px 22px 26px;
+            background: rgba(9,19,38,.56); border: 1px solid rgba(255,255,255,.135);
+            -webkit-backdrop-filter: blur(20px) saturate(1.35); backdrop-filter: blur(20px) saturate(1.35);
+            box-shadow: 0 30px 70px -34px rgba(0,0,0,.92); }
+        @media (min-width: 768px) { .ts-glass { padding: 30px 28px 32px; } }
+        @supports not ((-webkit-backdrop-filter: blur(2px)) or (backdrop-filter: blur(2px))) {
+            .ts-glass { background: rgba(7,15,31,.93); }
+        }
+        /* the captured frame, inside the panel it never leaves */
+        .ts-frame { position: relative; display: block; overflow: hidden; border-radius: 8px;
+            background: #060d1b; aspect-ratio: 21 / 8; margin: 0 0 20px; }
+        .ts-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .ts-stage { padding: 15px 0; border-top: 1px solid rgba(255,255,255,.12); }
+        .ts-stage:first-of-type { border-top: 0; padding-top: 0; }
+        .ts-stage:last-child { padding-bottom: 0; }
+        .ts-stage b { display: block; font-size: 16px; font-weight: 600; letter-spacing: -.014em; color: #fff; }
+        .ts-stage span { display: block; margin-top: 4px; font-size: 14px; line-height: 1.5; color: #a9bbd4; }
+        .ts-lever { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.12); }
+        .ts-lever:last-child { border-bottom: 0; padding-bottom: 0; }
+        .ts-lever b { display: block; font-size: 15px; font-weight: 500; color: #fff; letter-spacing: -.008em; }
+        .ts-lever span { display: block; margin-top: 3px; font-size: 13px; color: #93a5c0; }
+        /* the dark room closes on one sentence */
+        .ts-closing { font-size: clamp(23px, 2.7vw, 35px); line-height: 1.24; letter-spacing: -.026em;
+            font-weight: 600; color: #fff; }
+
+        /* the filing itself: one line of record, not a plate */
+        .ts-filing { border-top: 1px solid var(--hair-2); padding-top: 20px; }
+        .ts-filing-no { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: clamp(17px, 1.7vw, 22px); line-height: 1.3; letter-spacing: -.014em; color: var(--ink); }
+        .ts-filing-sub { margin-top: 9px; font-size: 15px; line-height: 1.6; color: var(--body); max-width: 60ch; }
+
+        /* ── deployment: four models, each with a supporting picture ── */
+        .ts-rooms { display: grid; gap: 30px; grid-template-columns: 1fr; }
+        @media (min-width: 640px)  { .ts-rooms { grid-template-columns: repeat(2, 1fr); gap: 38px 30px; } }
+        @media (min-width: 1024px) { .ts-rooms { grid-template-columns: repeat(4, 1fr); gap: 32px; } }
+        .ts-room-img { position: relative; overflow: hidden; border-radius: 8px;
+            background: var(--shell); aspect-ratio: 16 / 9; }
+        .ts-room-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .ts-room-t { margin-top: 16px; font-size: 18px; line-height: 1.25;
+            letter-spacing: -.017em; font-weight: 600; color: var(--ink); }
+        .ts-room-d { margin-top: 7px; font-size: 14.5px; line-height: 1.55; color: var(--body); max-width: 31ch; }
+
+        .ts-fixed { border-top: 1px solid var(--hair-2); margin-top: 14px; }
+        .ts-fixed li { padding: 13px 0; border-bottom: 1px solid var(--hair);
+            font-size: 15.5px; letter-spacing: -.008em; color: var(--ink); }
+        .ts-fixed li:last-child { border-bottom: 0; }
+
+        /* Figures resolve out of a zoom and drift against the scroll via the
+           page's existing [data-reveal-img] / .rt-drift rules, which already
+           sit inside @supports (animation-timeline: view()) and carry their own
+           reduced-motion off-switch. Only the pointer gesture is new here. */
+        /* full-bleed sections must never widen the page */
+        .ts-hero, .ts-band, .ts-dark { overflow-x: clip; }
         @media print {
             .js [data-reveal], .js [data-reveal-img] img { opacity: 1 !important; transform: none !important; }
         }
@@ -389,191 +730,247 @@
 </head>
 <body class="bg-background text-secondary antialiased selection:bg-primary selection:text-on-primary">
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-shell border-b border-shell-line">
-<div class="flex justify-between items-center w-full px-margin h-[60px] max-w-container-max-width mx-auto">
-<a class="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-white" href="index.html"><img alt="" class="w-[22px] h-[22px] mix-blend-screen" src="assets/logo.jpg"/>RackTrack</a>
-<div class="hidden lg:flex gap-6 xl:gap-7 items-center nav-rail">
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="index.html">Home</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="why-racktrack.html">Why RackTrack</a>
-<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="solutions.html">Solutions</a><span class="rt-dd"><a class="rt-dd-item" href="solutions.html#principles">Principles</a><a class="rt-dd-item" href="solutions.html#rack-3d">3D topology</a><a class="rt-dd-item" href="solutions.html#workflow">Six intelligence surfaces</a><a class="rt-dd-item" href="why-racktrack.html#matrix">How we compare</a></span></span>
-<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="use-cases.html">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
-<a class="text-[13px] font-medium tracking-[-0.006em] text-white border-b border-accent pb-[3px] transition-colors" href="trust-security.html" data-current="">Trust &amp; Security</a>
-<span class="rt-nav-item"><a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="resources.html">Resources</a><span class="rt-dd"><a class="rt-dd-item" href="resources.html">All articles</a><a class="rt-dd-item" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every CMDB is 40% wrong</a><a class="rt-dd-item" href="article-what-network-verified-actually-means.html">What “network-verified” means</a><a class="rt-dd-item" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Preparing for SOC 2</a><a class="rt-dd-item" href="article-free-port-discovery-and-rack-capacity-planning.html">Free port discovery</a></span></span>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="about-us.html">About Us</a>
-<a class="text-[13px] font-normal tracking-[-0.006em] text-shell-text hover:text-white border-b border-transparent pb-[3px] transition-colors" href="contact-us.html">Contact Us</a>
+<nav class="fixed top-0 w-full z-50 bg-white border-b border-[#e6eaf2]">
+<div class="flex items-center justify-between w-full px-margin h-[68px] max-w-container-max-width mx-auto">
+<div class="shrink-0 flex items-center"><a class="inline-flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-on-surface" href="index.html"><img alt="" class="w-[24px] h-[24px] rt-mark" src="assets/logo.jpg"/>RackTrack</a></div>
+<div class="hidden lg:flex flex-1 justify-center items-center gap-4 xl:gap-7 nav-rail">
+<a class="rt-link" href="index.html">Home</a>
+<a class="rt-link" href="why-racktrack.html">Why RackTrack</a>
+<span class="rt-nav-item"><a class="rt-link" href="solutions.html">Solutions</a><span class="rt-dd"><a class="rt-dd-item" href="solutions.html#principles">Principles</a><a class="rt-dd-item" href="solutions.html#rack-3d">3D topology</a><a class="rt-dd-item" href="solutions.html#workflow">Six intelligence surfaces</a></span></span>
+<span class="rt-nav-item"><a class="rt-link" href="use-cases.html">Use Cases</a><span class="rt-dd"><a class="rt-dd-item" href="use-case-infrastructure-data-center-leaders.html">Infrastructure &amp; Data Center Leaders</a><a class="rt-dd-item" href="use-case-network-architects-engineers.html">Network Architects &amp; Engineers</a><a class="rt-dd-item" href="use-case-security-vulnerability-teams.html">Security &amp; Vulnerability Teams</a><a class="rt-dd-item" href="use-case-compliance-audit-owners.html">Compliance &amp; Audit Owners</a><a class="rt-dd-item" href="use-case-incident-responders-on-call.html">Incident Responders &amp; On-Call</a><a class="rt-dd-item" href="use-case-m-a-migration-teams.html">M&amp;A &amp; Migration Teams</a></span></span>
+<a class="rt-link" href="trust-security.html" data-current="">Trust &amp; Security</a>
+<span class="rt-nav-item"><a class="rt-link" href="resources.html">Resources</a><span class="rt-dd"><a class="rt-dd-item" href="resources.html">All articles</a><a class="rt-dd-item" href="article-why-every-enterprise-cmdb-is-40-wrong-and-the-architecture-t.html">Why every CMDB is 40% wrong</a><a class="rt-dd-item" href="article-what-network-verified-actually-means.html">What “network-verified” means</a><a class="rt-dd-item" href="article-how-infrastructure-teams-prepare-for-soc-2-audits.html">Preparing for SOC 2</a><a class="rt-dd-item" href="article-free-port-discovery-and-rack-capacity-planning.html">Free port discovery</a></span></span>
+<a class="rt-link" href="about-us.html">About Us</a>
+<a class="rt-link" href="contact-us.html">Contact Us</a>
 </div>
-<div class="flex items-center gap-4">
-<a class="hidden sm:inline-flex btn bg-white text-shell hover:bg-[#dbe6f5] btn-sm" href="contact-us.html">Get a demo</a>
-<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-white -mr-1" id="menu-toggle"><span class="material-symbols-outlined" aria-hidden="true"><svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' aria-hidden='true'><path d='M3.5 6.5h17M3.5 12h17M3.5 17.5h17'/></svg></span></button>
+<div class="shrink-0 flex justify-end items-center gap-4">
+<a class="hidden sm:inline-flex rt-signin" href="https://demo.racktrack.ai/login" target="_blank" rel="noopener noreferrer">Sign In</a>
+<button aria-label="Open navigation menu" class="lg:hidden flex items-center text-on-surface -mr-1" id="menu-toggle"><span class="material-symbols-outlined" aria-hidden="true"><svg viewBox='0 0 24 24' width='1em' height='1em' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linecap='round' aria-hidden='true'><path d='M3.5 6.5h17M3.5 12h17M3.5 17.5h17'/></svg></span></button>
 </div>
 </div>
-<div class="hidden lg:hidden border-t border-shell-line bg-shell px-margin py-5 flex-col gap-4" id="mobile-menu">
-<a class="text-[15px] font-normal text-shell-text" href="index.html">Home</a>
-<a class="text-[15px] font-normal text-shell-text" href="why-racktrack.html">Why RackTrack</a>
-<a class="text-[15px] font-normal text-shell-text" href="solutions.html">Solutions</a>
-<a class="text-[15px] font-normal text-shell-text" href="use-cases.html">Use Cases</a>
-<a class="text-[15px] font-medium text-white" href="trust-security.html">Trust &amp; Security</a>
-<a class="text-[15px] font-normal text-shell-text" href="resources.html">Resources</a>
-<a class="text-[15px] font-normal text-shell-text" href="about-us.html">About Us</a>
-<a class="text-[15px] font-normal text-shell-text" href="contact-us.html">Contact Us</a>
-<a class="btn bg-white text-shell mt-2 max-w-fit" href="contact-us.html">Get a demo</a>
+<div class="hidden lg:hidden border-t border-[#e6eaf2] bg-white px-margin py-4 flex-col" id="mobile-menu">
+<a class="rt-m-link" href="index.html">Home</a>
+<a class="rt-m-link" href="why-racktrack.html">Why RackTrack</a>
+<a class="rt-m-link" href="solutions.html">Solutions</a>
+<a class="rt-m-link" href="use-cases.html">Use Cases</a>
+<a class="rt-m-link" href="trust-security.html" data-current="">Trust &amp; Security</a>
+<a class="rt-m-link" href="resources.html">Resources</a>
+<a class="rt-m-link" href="about-us.html">About Us</a>
+<a class="rt-m-link" href="contact-us.html">Contact Us</a>
+<a class="rt-signin inline-flex mt-4 max-w-fit" href="https://demo.racktrack.ai/login" target="_blank" rel="noopener noreferrer">Sign In</a>
 </div>
 </nav>
 
-<main class="pt-[60px]">
-<!-- Hero -->
-<section class="shell-band">
-<div class="max-w-container-max-width mx-auto px-margin pt-12 md:pt-[68px] pb-12 md:pb-[68px]">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-0">
-<div class="md:col-span-7 md:row-start-1">
-<p class="eyebrow">Trust &amp; security</p>
-<h1 class="h1-page mt-6 max-w-[26ch]">Enterprise-grade by architecture. Audit-ready by default.</h1>
-</div>
-<div data-reveal="right" class="md:col-span-4 md:col-start-9 md:row-start-1 flex flex-col gap-7 items-start self-end">
-<p class="lede-page">RackTrack is designed to meet how enterprise security, compliance, and infrastructure teams assess platforms - with clear data ownership, flexible deployment, and defensible patent-pending innovation.</p>
-<div class="flex flex-wrap items-center gap-3">
-<a class="btn btn-primary" href="contact-us.html">Request a security brief</a>
-<a class="btn btn-ghost" href="solutions.html">View solutions</a>
-</div>
-</div>
-</div>
-</div>
-</section><!-- Security Posture -->
-<section class="border-t border-outline-variant py-14 md:py-20 bg-surface" id="posture">
-<div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<h2 class="h2 md:col-span-5 max-w-[20ch]">What a security review actually asks for.</h2>
-<p data-reveal="right" class="md:col-span-6 md:col-start-7 lede self-end">RackTrack is designed to support formal enterprise diligence while keeping controls, evidence handling, and operational boundaries clear.</p>
-</div>
-<dl data-reveal class="mt-9 md:mt-11 grid grid-cols-1 md:grid-cols-2 border-t border-outline-variant"><div class="py-6 md:py-7 border-b border-outline-variant md:pr-10"><dt class="h4">SOC 2 Type II</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">SOC 2 Type II is in progress, with controls and evidence practices being prepared for formal review.</dd></div><div class="py-6 md:py-7 border-b border-outline-variant md:pl-10"><dt class="h4">Tenant Isolation</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">Customer environments are isolated, with customer-controlled data residency for evidence and structured records.</dd></div><div class="py-6 md:py-7 border-b border-outline-variant md:pr-10"><dt class="h4">Encryption</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">Encryption in transit and at rest protects rack video, derived records, and operational metadata.</dd></div><div class="py-6 md:py-7 border-b border-outline-variant md:pl-10"><dt class="h4">Credential Vaulting</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">RackTrack works with customer-controlled vaulting and never stores production access keys directly.</dd></div><div class="py-6 md:py-7 border-b border-outline-variant md:pr-10"><dt class="h4">Access Control &amp; Audit Logs</dt><dd class="text-[15px] leading-relaxed text-outline mt-2">Role-based access control and audit logging support least-privilege operations and review.</dd></div></dl>
-<div class="mt-10 md:mt-12"><figure class="ev"><figcaption class="ev-head"><span class="ev-title">Evidence record - cabinet B-06</span><span class="ev-sub mono">retained in tenant · SOC 2 CC6.1</span></figcaption><table class="ev-table"><tbody><tr class="ev-ok"><td class="ev-u">Asset</td><td class="ev-dev">RT-7600-24T-E · U35</td><td class="ev-note">verified 2026-08-07 09:14</td><td class="ev-conf">0.99</td></tr><tr class="ev-ok"><td class="ev-u">Source</td><td class="ev-dev">sweep-03 frame 0412</td><td class="ev-note">image retained</td><td class="ev-conf">-</td></tr><tr class="ev-ok"><td class="ev-u">Operator</td><td class="ev-dev">J. Smith</td><td class="ev-note">signed off 09:31</td><td class="ev-conf">-</td></tr><tr class="ev-warn"><td class="ev-u">Delta</td><td class="ev-dev">model mismatch vs CMDB</td><td class="ev-note">open · WO-2026-0814</td><td class="ev-conf">-</td></tr><tr class="ev-free"><td class="ev-u">Retention</td><td class="ev-dev">raw footage</td><td class="ev-note">customer-controlled</td><td class="ev-conf">-</td></tr></tbody></table><p class="ev-foot mono">Every row cites a frame and a timestamp · exportable as audit evidence</p></figure></div>
-<p class="mono text-[11px] tracking-[0.06em] text-outline mt-6">Frameworks referenced - SOC 2 (Type II) · ISO 27001 · HIPAA · PCI-DSS Requirement 9</p>
+<div class="rt-progress" aria-hidden="true"></div>
+<main class="pt-[68px]">
+<!-- Hero - the facility, at night -->
+<section class="ts-hero">
+<div class="ts-fill rt-drift" aria-hidden="true"><img alt="" src="assets/ts-hero-facility.jpg" width="2880" height="1500" fetchpriority="high" decoding="async"/></div>
+<div class="ts-hero-veil" aria-hidden="true"></div>
+<div class="ts-hero-in max-w-container-max-width mx-auto px-margin">
+<p class="ts-label ts-label-lt">Trust &amp; security</p>
+<h1 class="h1 mt-7 max-w-[20ch]">Enterprise-grade by architecture.<br class="hidden sm:block"/> <span class="whitespace-nowrap">Audit-ready</span> by default.</h1>
 </div>
 </section>
 
-<!-- Data Handling -->
-<section class="py-14 md:py-20" id="data-handling">
+<!-- Security Posture -->
+<section class="ts-sec bg-surface" id="posture">
 <div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<div class="md:col-span-5">
-<p class="eyebrow">Data handling</p>
-<h2 class="h2 mt-5 max-w-[16ch]">Customer-controlled data sovereignty.</h2>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-9 items-center">
+<div class="lg:col-span-6" data-reveal>
+<p class="ts-label">Security posture</p>
+<h2 class="h2 mt-5 max-w-[18ch]">What a security review actually asks for.</h2>
+<p class="lede mt-6 max-w-[46ch]">RackTrack is designed to support formal enterprise diligence while keeping controls, evidence handling, and operational boundaries clear.</p>
 </div>
-<div class="md:col-span-6 md:col-start-7 flex flex-col gap-4 self-end">
+<figure class="lg:col-span-5 lg:col-start-8 ts-open-fig" data-reveal-img>
+<img alt="An engineer inspecting cabling at the front of a rack during a facility review" src="assets/ts-posture-review.jpg" width="1600" height="1200" loading="lazy" decoding="async"/>
+</figure>
+</div>
+
+<div class="ts-set stagger mt-14 md:mt-20">
+<div class="ts-item" data-reveal>
+<p class="ts-side">Your tenant</p>
+<h3 class="ts-item-t">Tenant Isolation</h3>
+<p class="ts-item-d">Customer environments are isolated, with customer-controlled data residency for evidence and structured records.</p>
+</div>
+<div class="ts-item" data-reveal>
+<p class="ts-side">Crosses the boundary</p>
+<h3 class="ts-item-t">Encryption</h3>
+<p class="ts-item-d">Encryption in transit and at rest protects rack video, derived records, and operational metadata.</p>
+</div>
+<div class="ts-item" data-reveal>
+<p class="ts-side">Your tenant</p>
+<h3 class="ts-item-t">Credential Vaulting</h3>
+<p class="ts-item-d">RackTrack works with customer-controlled vaulting and never stores production access keys directly.</p>
+</div>
+<div class="ts-item" data-reveal>
+<p class="ts-side">Crosses the boundary</p>
+<h3 class="ts-item-t">Access Control &amp; Audit Logs</h3>
+<p class="ts-item-d">Role-based access control and audit logging support least-privilege operations and review.</p>
+</div>
+<div class="ts-item" data-reveal>
+<p class="ts-side">RackTrack</p>
+<h3 class="ts-item-t">SOC 2 Type II</h3>
+<p class="ts-item-d">SOC 2 Type II is in progress, with controls and evidence practices being prepared for formal review.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Band - what the boundary is for -->
+
+
+<!-- Data Handling - the room where processing happens -->
+<section class="ts-dark" id="data-handling">
+<div class="ts-fill rt-drift" aria-hidden="true"><img alt="" src="assets/ts-data-ground.jpg" width="2880" height="1800" loading="lazy" decoding="async"/></div>
+<div class="ts-dark-veil" aria-hidden="true"></div>
+<div class="ts-dark-in max-w-container-max-width mx-auto px-margin">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-8">
+<div class="md:col-span-5" data-reveal>
+<p class="ts-label ts-label-lt">Data handling</p>
+<h2 class="h2 mt-5 max-w-[15ch]">Customer-controlled data sovereignty.</h2>
+</div>
+<div class="md:col-span-6 md:col-start-7 flex flex-col gap-4 self-end" data-reveal>
 <p class="lede">Rack video is processed in your tenant, structured into device and topology records, and retained per your data residency policy.</p>
 <p class="text-[15px] leading-relaxed">The structured output is what powers downstream workflows while the raw footage remains under your operational control. Delete it, retain it as evidence, or keep it for re-processing as the platform improves. It never leaves your control.</p>
 </div>
 </div>
-<p class="mono text-[11px] tracking-[0.06em] text-outline mt-10">Tenant-resident processing · Evidence retention on your terms · Raw footage never leaves your control</p>
-<!-- Data flow -->
-<div class="mt-9 md:mt-11 border-t border-outline-variant pt-8">
-<p class="eyebrow">Your secure tenant environment</p>
-<div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-8 mt-8">
-<ol data-reveal class="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-x-gutter border-t border-outline-variant">
-<li class="py-6 sm:pr-7 border-b sm:border-b-0 border-outline-variant">
-<span class="idx">01</span>
-<h3 class="h4 mt-3">Rack Video</h3>
-<p class="text-[15px] leading-relaxed mt-1.5">You capture. You own.</p>
-</li><li class="py-6 sm:px-7 border-b sm:border-b-0 border-outline-variant">
-<span class="idx">02</span>
-<h3 class="h4 mt-3">AI Processing</h3>
-<p class="text-[15px] leading-relaxed mt-1.5">Video is processed inside your tenant.</p>
-</li><li class="py-6 sm:pl-7 border-outline-variant">
-<span class="idx">03</span>
-<h3 class="h4 mt-3">Structured Output</h3>
-<p class="text-[15px] leading-relaxed mt-1.5">Devices, connections, and topology records.</p>
-</li>
-</ol>
-<div data-reveal class="md:col-span-4 md:col-start-9 border-t-2 border-primary pt-6">
-<span class="idx text-primary">04</span>
-<h3 class="h4 mt-3 text-primary">Your Control</h3>
+
+<div class="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-6 items-start">
+<div class="md:col-span-6 ts-glass" data-reveal>
+<div class="ts-frame">
+<img alt="A frame captured during a rack sweep, showing device faces and port detail" src="assets/ts-flow-capture.jpg" width="1200" height="525" loading="lazy" decoding="async"/>
+</div>
+<div class="ts-stage"><b>Rack Video</b><span>You capture. You own.</span></div>
+<div class="ts-stage"><b>AI Processing</b><span>Video is processed inside your tenant.</span></div>
+<div class="ts-stage"><b>Structured Output</b><span>Devices, connections, and topology records.</span></div>
+</div>
+<div class="md:col-span-6 flex flex-col gap-9 md:gap-11">
+<div class="ts-glass" data-reveal>
+<h3 class="h3">Your Control</h3>
 <p class="text-[15px] leading-relaxed mt-1.5">Retain, delete, or reprocess.</p>
-<ul class="mt-5 border-t border-outline-variant"><li class="py-3 border-b border-outline-variant last:border-b-0"><span class="text-[15px] text-on-background">Retain as Evidence</span><span class="text-[13px] text-outline block mt-0.5">Keep what matters.</span></li><li class="py-3 border-b border-outline-variant last:border-b-0"><span class="text-[15px] text-on-background">Delete Anytime</span><span class="text-[13px] text-outline block mt-0.5">Remove when needed.</span></li><li class="py-3 border-b border-outline-variant last:border-b-0"><span class="text-[15px] text-on-background">Reprocess as Platform Improves</span><span class="text-[13px] text-outline block mt-0.5">Always getting better.</span></li></ul>
+<ul class="mt-6">
+<li class="ts-lever"><b>Retain as Evidence</b><span>Keep what matters.</span></li>
+<li class="ts-lever"><b>Delete Anytime</b><span>Remove when needed.</span></li>
+<li class="ts-lever"><b>Reprocess as Platform Improves</b><span>Always getting better.</span></li>
+</ul>
 </div>
+<p class="ts-closing max-w-[22ch]" data-reveal>Raw footage never leaves your control.</p>
 </div>
-<p class="mono text-[11px] tracking-[0.06em] text-outline border-t border-outline-variant pt-6">Raw footage never leaves your control</p>
 </div>
 </div>
 </section>
 
-
 <!-- Deployment Options -->
-<section class="border-t border-outline-variant py-14 md:py-20 bg-surface" id="deployment">
+<section class="ts-sec bg-surface" id="deployment">
 <div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<h2 class="h2 md:col-span-5 max-w-[20ch]">Flexible enough for standard enterprise and restricted environments.</h2>
-<p data-reveal="right" class="md:col-span-6 md:col-start-7 lede self-end">Buyers can assess RackTrack against the operating model they already use, from managed cloud to isolated environments with stricter boundary requirements.</p>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-6">
+<div class="md:col-span-6">
+<p class="ts-label">Deployment</p>
+<h2 class="h2 mt-5 max-w-[19ch]">Flexible enough for standard enterprise and restricted environments.</h2>
 </div>
-<div class="mt-10 md:mt-14">
-<div class="hidden md:flex items-baseline justify-between mono text-[11px] tracking-[0.1em] text-outline">
-<span>Fully managed</span><span aria-hidden="true">--- boundary you hold ---</span><span>Fully isolated</span>
+<p data-reveal class="md:col-span-5 md:col-start-8 lede self-end max-w-[46ch]">Buyers can assess RackTrack against the operating model they already use, from managed cloud to isolated environments with stricter boundary requirements.</p>
 </div>
-<dl data-reveal class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-gutter border-t border-outline-variant">
-<div class="py-7 md:pr-8 border-b md:border-b-0 border-outline-variant">
-<span class="flex gap-[3px] items-center"><span class="inline-block w-[7px] h-[7px] border border-outline bg-outline"></span><span class="inline-block w-[7px] h-[7px] border border-outline "></span><span class="inline-block w-[7px] h-[7px] border border-outline "></span><span class="inline-block w-[7px] h-[7px] border border-outline "></span></span>
-<dt class="h3 mt-4">Multi-Tenant Cloud</dt>
-<dd class="text-[15px] leading-relaxed mt-2">Secure, scalable, and fastest time to value.</dd>
-</div><div class="py-7 md:px-8 border-b md:border-b-0 border-outline-variant">
-<span class="flex gap-[3px] items-center"><span class="inline-block w-[7px] h-[7px] border border-outline bg-outline"></span><span class="inline-block w-[7px] h-[7px] border border-outline bg-outline"></span><span class="inline-block w-[7px] h-[7px] border border-outline "></span><span class="inline-block w-[7px] h-[7px] border border-outline "></span></span>
-<dt class="h3 mt-4">Dedicated Cloud Tenancy</dt>
-<dd class="text-[15px] leading-relaxed mt-2">Deployed in your private environment with full control.</dd>
-</div><div class="py-7 md:px-8 border-b md:border-b-0 border-outline-variant">
-<span class="flex gap-[3px] items-center"><span class="inline-block w-[7px] h-[7px] border border-outline bg-outline"></span><span class="inline-block w-[7px] h-[7px] border border-outline bg-outline"></span><span class="inline-block w-[7px] h-[7px] border border-outline bg-outline"></span><span class="inline-block w-[7px] h-[7px] border border-outline "></span></span>
-<dt class="h3 mt-4">Customer-Hosted Deployment</dt>
-<dd class="text-[15px] leading-relaxed mt-2">Runs in your data center for regulated environments.</dd>
-</div><div class="py-7 md:pl-8 border-outline-variant">
-<span class="flex gap-[3px] items-center"><span class="inline-block w-[7px] h-[7px] border border-outline bg-outline"></span><span class="inline-block w-[7px] h-[7px] border border-outline bg-outline"></span><span class="inline-block w-[7px] h-[7px] border border-outline bg-outline"></span><span class="inline-block w-[7px] h-[7px] border border-outline bg-outline"></span></span>
-<dt class="h3 mt-4">Sovereign / Air-Gapped</dt>
-<dd class="text-[15px] leading-relaxed mt-2">For classified or restricted facilities with no external access.</dd>
+
+<div class="ts-rooms stagger mt-12 md:mt-16">
+<article class="ts-room" data-reveal>
+<div class="ts-room-img" data-reveal-img><img alt="Densely packed blade servers sharing a single chassis" src="assets/ts-deploy-multitenant.jpg" width="1200" height="900" loading="lazy" decoding="async"/></div>
+<h3 class="ts-room-t">Multi-Tenant Cloud</h3>
+<p class="ts-room-d">Secure, scalable, and fastest time to value.</p>
+</article>
+<article class="ts-room" data-reveal>
+<div class="ts-room-img" data-reveal-img><img alt="A single equipment rack cabled and racked in a secured hall" src="assets/ts-deploy-dedicated.jpg" width="1200" height="900" loading="lazy" decoding="async"/></div>
+<h3 class="ts-room-t">Dedicated Cloud Tenancy</h3>
+<p class="ts-room-d">Deployed in your private environment with full control.</p>
+</article>
+<article class="ts-room" data-reveal>
+<div class="ts-room-img" data-reveal-img><img alt="A plant corridor lined with facility control panels inside a data centre" src="assets/ts-deploy-hosted.jpg" width="1200" height="900" loading="lazy" decoding="async"/></div>
+<h3 class="ts-room-t">Customer-Hosted Deployment</h3>
+<p class="ts-room-d">Runs in your data center for regulated environments.</p>
+</article>
+<article class="ts-room" data-reveal>
+<div class="ts-room-img" data-reveal-img><img alt="A darkened corridor of sealed steel doors with no external access" src="assets/ts-deploy-sovereign.jpg" width="1200" height="900" loading="lazy" decoding="async"/></div>
+<h3 class="ts-room-t">Sovereign / Air-Gapped</h3>
+<p class="ts-room-d">For classified or restricted facilities with no external access.</p>
+</article>
 </div>
-</dl>
+
+<div class="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-x-gutter gap-y-10 border-t border-outline-variant pt-11">
+<div class="md:col-span-5" data-reveal>
+<p class="ts-label">Unchanged across all four models</p>
+<ul class="ts-fixed">
+<li>Tenant-resident processing</li>
+<li>Evidence retention on your terms</li>
+<li>Raw footage never leaves your control</li>
+</ul>
 </div>
-<div class="border-t border-outline-variant mt-12 pt-8 flex flex-col md:flex-row gap-6 md:gap-10 justify-between items-start md:items-center">
-<p class="lede max-w-[52ch]">Need deeper architecture details for procurement or security review? RackTrack can share them during the formal evaluation process.</p>
-<a class="btn btn-primary shrink-0" href="contact-us.html">Contact RackTrack</a>
+<div class="md:col-span-5 md:col-start-8 self-start" data-reveal>
+<p class="text-[15px] leading-relaxed max-w-[46ch]">Need deeper architecture details for procurement or security review? RackTrack can share them during the formal evaluation process.</p>
+<a class="btn btn-primary mt-6 max-w-fit" href="contact-us.html">Contact RackTrack</a>
+</div>
+</div>
+</div>
+</section>
+<section class="ts-band">
+<div class="ts-fill rt-drift" aria-hidden="true"><img alt="" src="assets/ts-band-frameworks.jpg" width="2880" height="900" loading="lazy" decoding="async"/></div>
+<div class="ts-band-veil" aria-hidden="true"></div>
+<div class="ts-band-in max-w-container-max-width mx-auto px-margin">
+<div class="max-w-[52ch]" data-reveal>
+<p class="ts-label ts-label-lt">Where the line falls</p>
+<p class="ts-band-line">Every control sits on a side, and the side is written down.</p>
+<p class="ts-band-sub">Some controls operate entirely inside your tenant. Some cross the boundary between your environment and RackTrack's surface. A security review is entitled to know which is which before anything is signed.</p>
 </div>
 </div>
 </section>
 
 <!-- Defensible Innovation -->
-<section class="py-14 md:py-20" id="innovation">
+<section class="ts-sec" id="innovation">
 <div class="max-w-container-max-width mx-auto px-margin">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<div class="md:col-span-5">
-<p class="eyebrow">Defensible innovation</p>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-x-gutter gap-y-9 items-center">
+<div class="lg:col-span-6" data-reveal>
+<p class="ts-label">Defensible innovation</p>
 <h2 class="h2 mt-5 max-w-[16ch]">Built on defensible innovation.</h2>
+<p class="lede mt-6 max-w-[48ch]">RackTrack's platform is supported by pending patent filings covering automated network cable mapping and infrastructure intelligence workflows - the foundation of a multi-year technical moat.</p>
 </div>
-<p data-reveal="right" class="md:col-span-6 md:col-start-7 lede self-end">RackTrack's platform is supported by pending patent filings covering automated network cable mapping and infrastructure intelligence workflows - the foundation of a multi-year technical moat.</p>
+<figure class="lg:col-span-5 lg:col-start-8 ts-open-fig" data-reveal-img>
+<img alt="A labelled patch panel with terminated cabling, device faces and port markings visible" src="assets/ts-claim-visual.jpg" width="1200" height="800" loading="lazy" decoding="async"/>
+</figure>
 </div>
-<div class="mt-10 md:mt-12 row-list border-t border-b border-outline-variant">
-<article data-reveal class="py-8 grid grid-cols-1 md:grid-cols-12 gap-y-3 gap-x-gutter">
-<h3 class="md:col-span-4 h3">Visual Rack Intelligence</h3>
-<p class="md:col-span-5 text-[15px] leading-relaxed">Patent-pending methods for capturing rack images and identifying devices, ports, cables, and labels in the rack environment.</p>
-<p class="md:col-span-3 mono text-[11px] tracking-[0.06em] text-outline md:text-right">Patent pending<br/>US Application 19/219,347</p>
-</article>
-<article data-reveal class="py-8 grid grid-cols-1 md:grid-cols-12 gap-y-3 gap-x-gutter">
-<h3 class="md:col-span-4 h3">Cable-to-Port Mapping &amp; Validation</h3>
-<p class="md:col-span-5 text-[15px] leading-relaxed">Patent-pending workflows for generating cable-to-port maps from visual data and validating them against live switch data (CDP, LLDP, ARP) and neighbor information.</p>
-<p class="md:col-span-3 mono text-[11px] tracking-[0.06em] text-outline md:text-right">Patent pending<br/>US Application 19/219,347</p>
-</article>
-<article data-reveal class="py-8 grid grid-cols-1 md:grid-cols-12 gap-y-3 gap-x-gutter">
-<h3 class="md:col-span-4 h3">Infrastructure Reconciliation Methods</h3>
-<p class="md:col-span-5 text-[15px] leading-relaxed">Patent-pending methods for merging scans across rack sessions and reconciling physical-to-logical infrastructure data into a single verified state.</p>
-<p class="md:col-span-3 mono text-[11px] tracking-[0.06em] text-outline md:text-right">Patent pending<br/>US Application 19/219,347</p>
-</article>
+
+<div class="ts-filing mt-12 md:mt-16" data-reveal>
+<p class="ts-filing-no">Patent pending &middot; US Application 19/219,347</p>
+<p class="ts-filing-sub">One filing, three claim areas. Each area below is covered by this application.</p>
+</div>
+
+<div class="ts-set stagger mt-10 md:mt-12">
+<div class="ts-item" data-reveal>
+<p class="ts-side">Claim area</p>
+<h3 class="ts-item-t">Visual Rack Intelligence</h3>
+<p class="ts-item-d">Patent-pending methods for capturing rack images and identifying devices, ports, cables, and labels in the rack environment.</p>
+</div>
+<div class="ts-item" data-reveal>
+<p class="ts-side">Claim area</p>
+<h3 class="ts-item-t">Cable-to-Port Mapping &amp; Validation</h3>
+<p class="ts-item-d">Patent-pending workflows for generating cable-to-port maps from visual data and validating them against live switch data (CDP, LLDP, ARP) and neighbor information.</p>
+</div>
+<div class="ts-item" data-reveal>
+<p class="ts-side">Claim area</p>
+<h3 class="ts-item-t">Infrastructure Reconciliation Methods</h3>
+<p class="ts-item-d">Patent-pending methods for merging scans across rack sessions and reconciling physical-to-logical infrastructure data into a single verified state.</p>
+</div>
 </div>
 </div>
 </section>
 
 <!-- CTA -->
-<section class="shell-band py-16 md:py-24">
+<section class="rt-cta border-t border-outline-variant py-[76px] md:py-[104px]">
 <div class="max-w-container-max-width mx-auto px-margin grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <div class="md:col-span-7">
 <p class="eyebrow">Security review</p>
 <h2 class="h2 mt-5 max-w-[18ch]">Bring your diligence checklist. We'll answer it.</h2>
 </div>
 <div data-reveal="right" class="md:col-span-4 md:col-start-9 flex md:justify-end md:pt-12">
-<a class="btn btn-primary max-w-fit" href="contact-us.html">Request a security brief</a>
+<a class="rt-cta-btn max-w-fit" href="contact-us.html">Request a security brief<svg viewBox='0 0 18 12' width='17' height='12' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M1 6h15M11 1l5 5-5 5'/></svg></a>
 </div>
 </div>
 </section>
@@ -740,37 +1137,6 @@
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* nav ink - one bar that travels, settling on the current page */
-    var rail = document.querySelector('.nav-rail');
-    if (rail && !reduce) {
-        var ink = document.createElement('span');
-        ink.className = 'nav-ink';
-        rail.appendChild(ink);
-        var links = [].slice.call(rail.querySelectorAll('a[href$=".html"]'));
-        var current = rail.querySelector('a[data-current]') || links[0];
-        function moveTo(el, show) {
-            if (!el) { return; }
-            var rr = rail.getBoundingClientRect(), er = el.getBoundingClientRect();
-            ink.style.width = er.width + 'px';
-            ink.style.transform = 'translateX(' + (er.left - rr.left) + 'px)';
-            ink.style.opacity = show ? '1' : '0';
-        }
-        function settle() { moveTo(current, !!rail.querySelector('a[data-current]')); }
-        links.forEach(function (a) {
-            a.addEventListener('mouseenter', function () { moveTo(a, true); });
-            a.addEventListener('focus', function () { moveTo(a, true); });
-        });
-        rail.addEventListener('mouseleave', settle);
-        window.addEventListener('resize', settle);
-        requestAnimationFrame(settle);
-        window.addEventListener('load', settle);
-        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(settle); }
-        // the webfont swap changes link widths after first paint - re-measure when it does
-        if (window.ResizeObserver) {
-            var ro = new ResizeObserver(function () { settle(); });
-            links.forEach(function (a) { ro.observe(a); });
-        }
-    }
 })();
 </script>
 
@@ -792,6 +1158,72 @@
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
   els.forEach(function (el) { io.observe(el); });
   setTimeout(function () { els.forEach(show); }, 4000);
+})();
+</script>
+
+<script>
+/* figures count up the first time they are seen - format is preserved, so
+   "40-60%" and "1.3 / 4" both animate without losing their punctuation */
+(function () {
+    if (document.documentElement.classList.contains('no-js')) { return; }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+    var stats = [].slice.call(document.querySelectorAll('.stat'));
+    if (!stats.length || !('IntersectionObserver' in window)) { return; }
+
+    function run(el) {
+        var raw = el.textContent, parts = raw.split(/(\d+(?:\.\d+)?)/);
+        var nums = [], any = false;
+        parts.forEach(function (p, i) { if (i % 2) { nums.push(parseFloat(p)); any = true; } });
+        if (!any) { return; }
+        var dec = parts.filter(function (p, i) { return i % 2; })
+                       .map(function (p) { return (p.split('.')[1] || '').length; });
+        var t0 = null, dur = 900, done = false;
+        // if frames stall (background tab, throttling) never leave a 0 on screen
+        var guard = setTimeout(function () { if (!done) { done = true; el.textContent = raw; } }, dur + 700);
+        function frame(t) {
+            if (done) { return; }          // the guard already restored the value
+            if (t0 === null) { t0 = t; }
+            var k = Math.min(1, (t - t0) / dur);
+            var e = 1 - Math.pow(1 - k, 3);          // ease-out cubic
+            var n = 0;
+            el.textContent = parts.map(function (p, i) {
+                if (!(i % 2)) { return p; }
+                var v = nums[n] * e;
+                return v.toFixed(dec[n++]);
+            }).join('');
+            if (k < 1) { requestAnimationFrame(frame); }
+            else { done = true; clearTimeout(guard); el.textContent = raw; }
+        }
+        requestAnimationFrame(frame);
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+            if (en.isIntersecting) { io.unobserve(en.target); run(en.target); }
+        });
+    }, { threshold: .6 });
+    stats.forEach(function (el) { io.observe(el); });
+})();
+</script>
+
+<script>
+/* scroll progress, for engines without scroll-driven animations */
+(function () {
+    var bar = document.querySelector('.rt-progress');
+    if (!bar || !window.CSS || !CSS.supports) { return; }
+    if (CSS.supports('animation-timeline: scroll()')) { return; }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+    var tick = false;
+    function set() {
+        var d = document.documentElement;
+        var max = d.scrollHeight - d.clientHeight;
+        bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, d.scrollTop / max) : 0) + ')';
+        tick = false;
+    }
+    addEventListener('scroll', function () {
+        if (!tick) { tick = true; requestAnimationFrame(set); }
+    }, { passive: true });
+    addEventListener('resize', set); set();
 })();
 </script>
 </body></html>
