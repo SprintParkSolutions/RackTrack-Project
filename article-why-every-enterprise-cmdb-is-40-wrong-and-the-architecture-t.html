@@ -64,8 +64,8 @@
         .hero-band  { background: var(--shell-hero); }
 
       /* motion: entrances that follow the reading direction */
-      [data-reveal="left"]  { opacity: 0; transform: translateX(-18px); }
-      [data-reveal="right"] { opacity: 0; transform: translateX(18px); }
+      .rv [data-reveal="left"] { opacity: 0; transform: translateX(-18px); }
+      .rv [data-reveal="right"] { opacity: 0; transform: translateX(18px); }
       [data-reveal="left"].is-in, [data-reveal="right"].is-in {
         opacity: 1; transform: none;
         transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
@@ -146,11 +146,11 @@
         /* ── motion ────────────────────────────────────────────────────
            Entrances resolve out of a slight blur so type lands sharp
            rather than simply appearing. */
-        .js [data-reveal] { filter: blur(5px); transition:
+        .rv [data-reveal] { filter: blur(5px); transition:
             opacity .62s cubic-bezier(.22,1,.28,1),
             transform .62s cubic-bezier(.22,1,.28,1),
             filter .62s cubic-bezier(.22,1,.28,1); }
-        .js [data-reveal].is-in { filter: blur(0); }
+        .rv [data-reveal].is-in { filter: blur(0); }
         .js [data-reveal] [data-reveal] { filter: none; }
 
         /* photographs travel against the scroll - the band becomes a window
@@ -383,10 +383,10 @@
         .shell-band :focus-visible, .app-bar :focus-visible { outline-color: var(--accent); }
 
         /* 6 · reveals: text rises, figures wipe - different gestures for different content */
-        [data-reveal] { opacity: 0; transform: translateY(10px);
+        .rv [data-reveal] { opacity: 0; transform: translateY(10px);
             transition: opacity .62s cubic-bezier(.22,1,.28,1), transform .62s cubic-bezier(.22,1,.28,1); }
         [data-reveal].is-in { opacity: 1; transform: none; }
-        [data-reveal-img] { opacity: 0; clip-path: inset(0 0 12% 0);
+        .rv .rv [data-reveal-img] { opacity: 0; clip-path: inset(0 0 12% 0);
             transition: opacity .72s cubic-bezier(.22,1,.28,1), clip-path .86s cubic-bezier(.22,1,.28,1); }
         [data-reveal-img].is-in { opacity: 1; clip-path: inset(0 0 0 0); }
         [data-reveal] [data-reveal] { opacity: 1; transform: none; }
@@ -518,14 +518,14 @@
         }
 
         /* Motion - one quiet reveal on first view. No loops, no bounce, no overshoot. */
-        .js [data-reveal] { opacity: 0; transform: translateY(14px); }
-        .js [data-reveal].is-in {
+        .rv [data-reveal] { opacity: 0; transform: translateY(14px); }
+        .rv [data-reveal].is-in {
             opacity: 1; transform: none;
             transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
             transition-delay: var(--d, 0ms);
         }
         .js [data-reveal-img] { overflow: hidden; }
-        .js [data-reveal-img] img { transform: scale(1.06); }
+        .rv [data-reveal-img] img { transform: scale(1.06); }
         .js [data-reveal-img].is-in img { transform: scale(1); transition: transform 1.5s cubic-bezier(.16,1,.3,1); }
         nav { transition: box-shadow .25s ease; }
         nav.nav-scrolled { box-shadow: 0 1px 0 rgba(10,17,30,.05), 0 6px 20px rgba(10,17,30,.07); }
@@ -536,7 +536,7 @@
             .js [data-reveal], .js [data-reveal-img] img { opacity: 1 !important; transform: none !important; }
         }
         @media (prefers-reduced-motion: reduce) {
-            .js [data-reveal], .js [data-reveal].is-in { opacity: 1; transform: none; transition: none; }
+            .js [data-reveal], .rv [data-reveal].is-in { opacity: 1; transform: none; transition: none; }
             .js [data-reveal-img] img, .js [data-reveal-img].is-in img { transform: none; transition: none; }
             .mod:hover { transform: none; }
             html { scroll-behavior: auto; }
@@ -620,7 +620,7 @@
         .art-fig, .art-hero-fig { animation: none !important; }
         .art-fig img, .art-hero-fig img { animation: none !important; transform: none !important;
             transition: none !important; }
-        .js .art-fig[data-reveal] { opacity: 0; transform: translateY(10px);
+        .js .art-fig.rv [data-reveal] { opacity: 0; transform: translateY(10px);
             transition: opacity .55s ease, transform .55s ease; }
         .js .art-fig[data-reveal].is-in { opacity: 1; transform: none; }
         @media (prefers-reduced-motion: reduce) {
@@ -885,7 +885,12 @@
 <script>
 (function () {
     var root = document.documentElement;
-    root.classList.add('js');                       // gate for motion-dependent styles
+    root.classList.add('js');
+    // hiding is only ever enabled from here, where the reveal observer that
+    // undoes it is guaranteed to run; if this file never executes, or throws
+    // before this point, every section simply stays visible
+    root.classList.add('rv');
+    setTimeout(function () { root.classList.remove('rv'); }, 2500);                       // gate for motion-dependent styles
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
