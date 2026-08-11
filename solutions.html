@@ -772,14 +772,6 @@
         /* ── closing CTA: the last thing on the page should carry weight ── */
         .rt-cta { position: relative; overflow: hidden;
             background: radial-gradient(128% 150% at 10% 0%, #e9eefb 0%, #f4f7fc 42%, #ffffff 100%); }
-        .rt-cta::before { content: ''; position: absolute; inset: 0; pointer-events: none;
-            background:
-              repeating-linear-gradient(180deg, rgba(26,63,212,.055) 0 1px, transparent 1px 46px);
-            -webkit-mask-image: linear-gradient(100deg, #000 0%, transparent 58%);
-            mask-image: linear-gradient(100deg, #000 0%, transparent 58%); }
-        .rt-cta::after { content: ''; position: absolute; right: -8%; top: -40%;
-            width: 46%; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
-            background: radial-gradient(circle, rgba(26,63,212,.13) 0%, rgba(26,63,212,0) 68%); }
         .rt-cta > * { position: relative; z-index: 1; }
         .rt-cta-btn { display: inline-flex; align-items: center; gap: 11px;
             padding: 13px 24px; border-radius: 999px; background: var(--blue); color: #fff;
