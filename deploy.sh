@@ -56,9 +56,16 @@ RedirectMatch 301 ^/WhyRackTrack/?$ /why-racktrack/
 </IfModule>
 
 # Cache what carries a stable name; keep HTML fresh
+<IfModule mod_headers.c>
+  # the stylesheet has a stable filename, so it must never be cached
+  <FilesMatch "\\.css$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/css    "access plus 7 days"
+  ExpiresByType text/css    "access plus 0 seconds"
   ExpiresByType font/woff2  "access plus 1 year"
   ExpiresByType image/jpeg  "access plus 30 days"
   ExpiresByType image/png   "access plus 30 days"
