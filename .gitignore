@@ -9,3 +9,7 @@ media/
 .DS_Store
 dist/
 racktrack-site.zip
+
+# agent scratch/verification files
+_*.html
+__*.html
