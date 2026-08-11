@@ -6,6 +6,7 @@
 <title>About RackTrack | Physical Layer Intelligence</title>
 <meta content="Learn how RackTrack is building the Physical Infrastructure Intelligence Platform for data centers - the intelligence layer underneath audits, DCIM, and rack operations." name="description"/>
 <link href="assets/fonts/fonts.css" rel="stylesheet"/>
+<link href="assets/fonts/inter.css" rel="stylesheet"/>
 <link href="racktrack.css" rel="stylesheet"/>
 <script>document.documentElement.classList.add("js")</script>
 <style>
@@ -24,14 +25,14 @@
         }
         html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
         body {
-            font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
             color: var(--body);
             font-size:18px;
             line-height: 1.55;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        section[id], div[id], article[id] { scroll-margin-top: 98px; }
+        section[id], div[id], article[id] { scroll-margin-top: 106px; }
         h1, h2, h3, h4 { color: var(--ink); font-weight: 600; }
 
         .h1  { font-size: clamp(41px, 5.2vw, 79px); line-height: 1.02; letter-spacing: -0.036em; font-weight: 600; }
@@ -173,15 +174,10 @@
         }
 
         /* how far down the page you are */
-        .rt-progress { position: fixed; top: 78px; left: 0; z-index: 60;
-            width: 100%; height: 2px; background: var(--blue);
-            transform: scaleX(0); transform-origin: 0 50%; pointer-events: none; }
         @supports (animation-timeline: scroll()) {
-            .rt-progress { animation: rtProg linear both; animation-timeline: scroll(root block); }
             @keyframes rtProg { from { transform: scaleX(0); } to { transform: scaleX(1); } }
         }
         @media (prefers-reduced-motion: reduce) {
-            .rt-progress { display: none; }
         }
 
         /* the thread between the layers draws downward on arrival */
@@ -665,9 +661,9 @@
 </head>
 <body class="bg-background text-secondary antialiased selection:bg-primary selection:text-on-primary">
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-white border-b border-[#e6eaf2]">
-<div class="flex items-center justify-between w-full px-margin h-[78px] max-w-container-max-width mx-auto">
-<div class="shrink-0 flex items-center"><a class="inline-flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-on-surface" href="index.html"><img alt="" class="w-[24px] h-[24px] rt-mark" style="width:24px;height:24px" src="assets/logo.jpg"/>RackTrack</a></div>
+<nav class="sticky top-0 w-full z-50 bg-white border-b border-[#e6eaf2]">
+<div class="flex items-center justify-between w-full px-margin h-[86px] max-w-container-max-width mx-auto" style="min-height:86px">
+<div class="shrink-0 flex items-center"><a class="inline-flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.03em] text-on-surface" style="display:inline-flex;flex-wrap:nowrap;align-items:center;gap:10px;white-space:nowrap" href="index.html"><img alt="" class="w-[24px] h-[24px] rt-mark" style="width:24px;height:24px;flex:none;display:block" src="assets/logo.jpg"/>RackTrack</a></div>
 <div class="hidden lg:flex flex-1 justify-center items-center gap-5 xl:gap-8 nav-rail">
 <a class="rt-link" href="index.html">Home</a>
 <a class="rt-link" href="why-racktrack.html">Why RackTrack</a>
@@ -696,8 +692,7 @@
 </div>
 </nav>
 
-<div class="rt-progress" aria-hidden="true"></div>
-<main class="pt-[78px]">
+<main>
 <!-- Hero - image led -->
 <section class="shell-band shell-media rt-drift rt-hero-tall relative overflow-hidden">
 <img alt="A field engineer checking cabling against a laptop in a data hall" class="absolute inset-0 w-full h-full object-cover" style="object-position:50% 42%" src="assets/media-about-tablet-hall.jpg" loading="eager" decoding="async"/>
@@ -1066,24 +1061,4 @@
 })();
 </script>
 
-<script>
-/* scroll progress, for engines without scroll-driven animations */
-(function () {
-    var bar = document.querySelector('.rt-progress');
-    if (!bar || !window.CSS || !CSS.supports) { return; }
-    if (CSS.supports('animation-timeline: scroll()')) { return; }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
-    var tick = false;
-    function set() {
-        var d = document.documentElement;
-        var max = d.scrollHeight - d.clientHeight;
-        bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, d.scrollTop / max) : 0) + ')';
-        tick = false;
-    }
-    addEventListener('scroll', function () {
-        if (!tick) { tick = true; requestAnimationFrame(set); }
-    }, { passive: true });
-    addEventListener('resize', set); set();
-})();
-</script>
 </body></html>
